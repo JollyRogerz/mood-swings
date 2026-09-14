@@ -5,7 +5,7 @@ import path from "node:path";
 import { Server, matchMaker } from "@colyseus/core";
 import { WebSocketTransport } from "@colyseus/ws-transport";
 import { createGame } from "../game/engine";
-import { cleanName, identity, MoodRoom, serverKey } from "./room";
+import { cleanName, identity, MoodRoom, serverKey, publicRooms } from "./room";
 import { store } from "./store";
 const port = Number(process.env.PORT ?? 3000);
 const app = express();
@@ -24,11 +24,11 @@ app.get("/api/health", (_req, res) =>
 );
 const limits = new Map<string, { time: number; n: number }>();
 app.use("/api/rooms", (req, res, next) => {
-  const key = req.ip ?? "unknown",
+  const key = `${req.method}:${req.ip ?? "unknown"}`,
     now = Date.now();
   for (const [k, v] of limits) if (now - v.time > 60_000) limits.delete(k);
   const r = limits.get(key) ?? { time: now, n: 0 };
-  if (++r.n > 30) {
+  if (++r.n > (req.method === "GET" ? 120 : 30)) {
     res
       .status(429)
       .json({ error: "Too many requests. Try again in a minute." });
@@ -36,6 +36,11 @@ app.use("/api/rooms", (req, res, next) => {
   }
   limits.set(key, r);
   next();
+});
+app.get("/api/rooms", (_req, res) => {
+  res
+    .set("Cache-Control", "no-store")
+    .json({ rooms: [...publicRooms.values()].slice(0, 100) });
 });
 const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const code = () =>
@@ -47,6 +52,8 @@ app.post("/api/rooms", async (req, res) => {
     let roomCode = code();
     while (await store.load(roomCode)) roomCode = code();
     const snapshot = createGame(id, name, randomBytes(4).readUInt32LE());
+    snapshot.visibility =
+      req.body?.visibility === "public" ? "public" : "private";
     await store.save(roomCode, snapshot);
     await matchMaker.createRoom("mood", {
       key: serverKey,
@@ -55,11 +62,9 @@ app.post("/api/rooms", async (req, res) => {
     });
     res.status(201).json({ code: roomCode });
   } catch (e) {
-    res
-      .status(400)
-      .json({
-        error: e instanceof Error ? e.message : "Could not create table.",
-      });
+    res.status(400).json({
+      error: e instanceof Error ? e.message : "Could not create table.",
+    });
   }
 });
 const restoring = new Map<string, Promise<unknown>>();
@@ -92,11 +97,9 @@ app.post("/api/rooms/:code/connect", async (req, res) => {
     }
     res.json({ code: roomCode });
   } catch (e) {
-    res
-      .status(404)
-      .json({
-        error: e instanceof Error ? e.message : "Could not join table.",
-      });
+    res.status(404).json({
+      error: e instanceof Error ? e.message : "Could not join table.",
+    });
   }
 });
 app.use(

@@ -28,7 +28,13 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { catalog } from "../game/catalog";
-import type { Action, Difficulty, PublicCard, View } from "../game/types";
+import type {
+  Action,
+  Difficulty,
+  PublicCard,
+  PublicRoom,
+  View,
+} from "../game/types";
 import "./style.css";
 const colorNames: Record<string, string> = {
   white: "Clarity",
@@ -69,6 +75,7 @@ function App() {
     [inspect, setInspect] = useState<string>(),
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
+  const [visibility, setVisibility] = useState<"private" | "public">("private");
   const [roundDeadline, setRoundDeadline] = useState(0);
   const [playDeadline, setPlayDeadline] = useState(0);
   const [clockNow, setClockNow] = useState(Date.now());
@@ -141,7 +148,7 @@ function App() {
       Math.min(1000 * 2 ** retries.current++, 10000),
     );
   }
-  async function enter(create: boolean) {
+  async function enter(create: boolean, selectedCode?: string) {
     if (!name.trim()) {
       setError("What should we call you at the table?");
       return;
@@ -151,8 +158,8 @@ function App() {
     localStorage.setItem("mood-name", name.trim());
     try {
       const target = create
-        ? (await post("/api/rooms", { name, token })).code
-        : code.trim().toUpperCase();
+        ? (await post("/api/rooms", { name, token, visibility })).code
+        : (selectedCode ?? code).trim().toUpperCase();
       await connect(target);
     } catch (e) {
       setError((e as Error).message);
@@ -283,6 +290,19 @@ function App() {
                   placeholder="Something your friends call you"
                   onKeyDown={(e) => e.key === "Enter" && enter(!code)}
                 />
+                <label className="visibility-choice">
+                  Table visibility
+                  <select
+                    aria-label="Table visibility"
+                    value={visibility}
+                    onChange={(e) =>
+                      setVisibility(e.target.value as "private" | "public")
+                    }
+                  >
+                    <option value="private">Private · invite friends</option>
+                    <option value="public">Public · welcome everyone</option>
+                  </select>
+                </label>
                 <div className="entry-actions">
                   <button
                     className="primary"
@@ -364,6 +384,7 @@ function App() {
               </span>
             </div>
           </section>
+          <PublicTables busy={busy} onJoin={(target) => enter(false, target)} />
           <section className="color-strip">
             {Object.entries(colorNames).map(([c, n]) => (
               <div key={c}>
@@ -409,6 +430,7 @@ function App() {
               ))}
             </div>
           </section>
+          <DonationPanel />
           <footer>
             <span>A fan-made table for Mood Swings.</span>
             <span>
@@ -435,11 +457,31 @@ function App() {
           <p>Invite a friend or three. The feelings can wait.</p>
           <button className="invite-code" onClick={invite}>
             <span>
-              <small>PRIVATE ROOM</small>
+              <small>
+                {view.visibility === "public" ? "PUBLIC ROOM" : "PRIVATE ROOM"}
+              </small>
               {roomCode}
             </span>
             {copied ? <Check /> : <Copy />}
           </button>
+          {view.you === view.host && (
+            <label className="visibility-choice">
+              Table visibility
+              <select
+                aria-label="Lobby visibility"
+                value={view.visibility ?? "private"}
+                disabled={!connected}
+                onChange={(e) =>
+                  room.current?.send("visibility", {
+                    visibility: e.target.value,
+                  })
+                }
+              >
+                <option value="private">Private · invite friends</option>
+                <option value="public">Public · listed on the home page</option>
+              </select>
+            </label>
+          )}
           <div className="lobby-seats">
             {[0, 1, 2, 3].map((i) => {
               const p = view.players[i];
@@ -1563,3 +1605,134 @@ function Catalog({
   );
 }
 createRoot(document.getElementById("root")!).render(<App />);
+
+function PublicTables({
+  busy,
+  onJoin,
+}: {
+  busy: boolean;
+  onJoin: (code: string) => void;
+}) {
+  const [rooms, setRooms] = useState<PublicRoom[]>([]);
+  const [status, setStatus] = useState("Finding open tables…");
+  useEffect(() => {
+    const controller = new AbortController();
+    let pending = false;
+    async function refresh() {
+      if (pending) return;
+      pending = true;
+      try {
+        const response = await fetch(serverURL + "/api/rooms", {
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+        setRooms(data.rooms);
+        setStatus("");
+      } catch {
+        if (!controller.signal.aborted) {
+          setRooms([]);
+          setStatus("Couldn’t load tables. Retrying shortly…");
+        }
+      } finally {
+        pending = false;
+      }
+    }
+    void refresh();
+    const timer = setInterval(refresh, 15000);
+    return () => {
+      controller.abort();
+      clearInterval(timer);
+    };
+  }, []);
+  return (
+    <section className="public-tables">
+      <div className="eyebrow">THERE’S ROOM FOR ONE MORE</div>
+      <h2>Find your next table.</h2>
+      <p>
+        Meet other players. Public tables appear here while their host is online
+        and seats are open.
+      </p>
+      {status ? (
+        <p role="status">{status}</p>
+      ) : rooms.length === 0 ? (
+        <p className="empty-tables">
+          No open tables yet. Create a public table and welcome the first guest.
+        </p>
+      ) : (
+        <div className="public-room-grid">
+          {rooms.map((r) => (
+            <article key={r.code}>
+              <div>
+                <h3>{r.hostName}’s table</h3>
+                <span>
+                  {r.players}/4 seats filled
+                  {r.bots
+                    ? ` · ${r.bots} ${r.bots === 1 ? "bot" : "bots"}`
+                    : ""}
+                </span>
+              </div>
+              <button
+                className="primary"
+                disabled={busy}
+                onClick={() => onJoin(r.code)}
+              >
+                Join table <ArrowRight size={16} />
+              </button>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+const donationAddress = "0x5e61495C929fC93355f245e5D6A31Bf142e73E69";
+function DonationPanel() {
+  const [network, setNetwork] = useState("Base");
+  const [notice, setNotice] = useState("");
+  return (
+    <details className="donation-panel">
+      <summary>Enjoying the table? Support the maintainer ♡</summary>
+      <p>
+        Optional USDC donations go directly to JollyRogerz. Every card, bot and
+        game stays free. Donations are not payments to Wizards of the Coast.
+      </p>
+      <label>
+        USDC network{" "}
+        <select
+          aria-label="USDC network"
+          value={network}
+          onChange={(e) => {
+            setNetwork(e.target.value);
+            setNotice("");
+          }}
+        >
+          {["Base", "Ethereum", "Polygon", "Arbitrum"].map((n) => (
+            <option key={n}>{n}</option>
+          ))}
+        </select>
+      </label>
+      <p>
+        Send native USDC on <strong>{network}</strong> to:
+      </p>
+      <code>{donationAddress}</code>
+      <button
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(donationAddress);
+            setNotice("Address copied.");
+          } catch {
+            setNotice("Please select and copy the address above.");
+          }
+        }}
+      >
+        <Copy size={15} /> Copy address
+      </button>
+      <p role="status">{notice}</p>
+      <small>
+        Match the network in your wallet before sending. Use native USDC, not
+        bridged USDC.e. No wallet connection is required.
+      </small>
+    </details>
+  );
+}

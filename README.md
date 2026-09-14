@@ -1,6 +1,6 @@
 # Mood Swings Online
 
-**A free, noncommercial fan adaptation of Mood Swings, made for playing with friends wherever we are.**
+**A free fan adaptation of Mood Swings, made for playing with friends wherever we are.**
 
 [Play in your browser](https://mood-swings-production.up.railway.app) · [Original game](https://secretlair.wizards.com/eu/en/mood-swings) · [Official card notes](https://magic.wizards.com/en/news/feature/mood-swings-card-notes) · [Report a bug](https://github.com/JollyRogerz/mood-swings/issues)
 
@@ -8,7 +8,7 @@
 >
 > — Ruben / [JollyRogerz](https://github.com/JollyRogerz)
 
-This is an independent fan project. **It is not made for commercial use or to earn money.** There are no paid matches, subscriptions, advertisements, purchases, or monetized features in this adaptation. Hosting is paid for by the maintainer. Please support the original game and its creators through their official channels.
+This is an independent fan project. **Every gameplay feature is free.** There are no paid matches, subscriptions, advertisements, purchases, or monetized features in this adaptation. Hosting is paid for by the maintainer; players may optionally send USDC donations directly to JollyRogerz, with no benefits or access tied to payment. Please support the original game and its creators through their official channels.
 
 Mood Swings, its original rules, card text, illustrations, branding, and other original materials belong to Wizards of the Coast and their respective rights holders. This project is not affiliated with, sponsored by, or endorsed by Wizards of the Coast, Hasbro, Secret Lair, or the original creators. A public repository and a noncommercial purpose do not grant rights to the original materials. See [rights, credits, and project policy](CREDITS.md).
 
@@ -47,7 +47,7 @@ This release does not include Duel, drafting, team variants, custom deck constru
 
 Every completed card play gets a shared six-second full-size reveal, showing who played it. Humans and bots wait while everyone reads; copied cards identify both the original mood and the copied identity. Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
-An invite is intended for the people you share it with. There is no public room directory. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
+An invite is intended for the people you share it with. Rooms are private by default. Hosts can choose Public at creation or in the lobby to appear on the home-page directory. Only waiting tables with an online host and fewer than four occupied seats are listed. The directory exposes the room code, host nickname, seat count and bot count, never session credentials or hands. Listings refresh every 15 seconds and are rebuilt as hosts reconnect after a server restart. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
 
 ## Play against bots
 
@@ -129,7 +129,7 @@ There is no email login. The browser creates a random session credential and sto
 
 Your private hand is sent to your browser. Opponents receive your hand count, not its contents. The actual deck order and internal effect queue stay on the server. This protects players from seeing hidden information through ordinary client state; the server and its database necessarily hold the complete game state.
 
-Refresh or reopen the invite using the same browser profile to return to your seat. Clearing browser storage, using another browser, or switching profiles loses access to that credential. There is no account recovery system. A second tab using the same credential replaces the earlier connection. Disconnected humans keep their seats, and the game waits if they need to act.
+Refresh or reopen the invite using the same browser profile to return to your seat. Clearing browser storage, using another browser, or switching profiles loses access to that credential. There is no account recovery system. A second tab using the same credential replaces the earlier connection. During a match, disconnected humans keep their seats, and the game waits if they need to act. In a lobby, disconnected guests release their seats; the host retains theirs.
 
 The hosted PostgreSQL store permits recovery of snapshots updated within the last 30 days. **That is a recovery cutoff, not automatic deletion:** expired database records are not currently purged. Local file snapshots have no time cutoff. Nicknames, game histories, player identifiers, and full game states are part of these snapshots. The hosting platform may also maintain operational logs. Never publish database snapshots, browser credentials, or Playwright traces containing live sessions.
 
@@ -178,6 +178,7 @@ The current automated suite contains **426 passing engine, regression, simulatio
 | `tests/simulation.test.ts`      | 60 seeded complete games with two to four players and card-conservation invariants                                             |
 | `tests/bot.test.ts`             | Difficulty behavior, hidden-information independence, card-choice paths, and complete bot matches                              |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
+| `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation networks, and mobile layout |
 | `tests/e2e/multiplayer.spec.ts` | Two-browser play/reconnect, card catalog/help/mobile layout, four-player match/rematch, and solo play against a selectable bot |
 
 ```sh
@@ -262,14 +263,14 @@ docs/                       Rule decisions and implementation background
 .github/workflows/          Continuous integration
 Dockerfile                  Production build and runtime
 railway.json                Railway healthcheck and restart configuration
-CREDITS.md                  Original creators and noncommercial project policy
+CREDITS.md                  Original creators, rights, and free-access policy
 ```
 
 ## Report an issue or contribute
 
 Please open an [issue](https://github.com/JollyRogerz/mood-swings/issues) with the relevant cards, round, turn order, expected result, and observed result. A minimal sequence of moves is particularly useful. Avoid posting session credentials, hidden hands from an ongoing match, database files, or browser traces. Room codes can grant access to open lobbies; share them thoughtfully.
 
-For code contributions, explain the official ruling or reproducible problem, add a meaningful regression test, and run the rules and browser suites affected by the change. Keep bots behind the player-view boundary and use the authoritative engine for every action. Preserve original artist credits and source provenance. Please do not add monetization, paid access, advertising, or claims of official affiliation.
+For code contributions, explain the official ruling or reproducible problem, add a meaningful regression test, and run the rules and browser suites affected by the change. Keep bots behind the player-view boundary and use the authoritative engine for every action. Preserve original artist credits and source provenance. Do not add paid access, advertising, paid gameplay advantages, or claims of official affiliation. Voluntary maintainer donations are available without rewards.
 
 Potential future work includes more interaction fixtures, stronger bot evaluations, accessibility improvements, explicit snapshot migrations, and additional formats after their rules are implemented and tested. These are ideas, not promises about availability.
 
@@ -280,3 +281,7 @@ Thank you to **Mark Rosewater**, **Corey Bowen**, **Colby Nichols**, the artists
 Mark's [history of Mood Swings](https://magic.wizards.com/en/news/making-magic/the-history-of-mood-swings) credits many of those contributors. Colby's [visual identity article](https://magic.wizards.com/en/news/feature/crafting-the-visual-identity-of-mood-swings) explains the look that makes these cards so distinctive. See [CREDITS.md](CREDITS.md) for more acknowledgments and verified public links.
 
 **To anyone from the original team who finds this project: you are warmly invited to try the browser adaptation with your friends. Thank you for making a game we love.** These credits and links express appreciation; they do not imply the creators have reviewed, approved, or played this project.
+
+## Optional maintainer donations
+
+The home-page support panel offers native USDC donations on Base, Ethereum, Polygon, or Arbitrum to `0x5e61495C929fC93355f245e5D6A31Bf142e73E69`, as supplied and confirmed by the maintainer. The panel only displays and copies the address; it never connects a wallet or initiates a transfer. Select the same network in your wallet and use native USDC, not bridged USDC.e. Donations go to JollyRogerz, not Wizards of the Coast, and grant no features or rewards. This does not establish rights-holder permission for the adaptation or its funding model.

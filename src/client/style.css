@@ -2874,3 +2874,91 @@ footer a {
     transition: none;
   }
 }
+
+/* Community tables and optional support */
+.visibility-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+  font-size: 13px;
+}
+.visibility-choice select,
+.donation-panel select {
+  padding: 10px;
+  border: 1px solid #aeb6a4;
+  border-radius: 8px;
+  background: #faf9f2;
+  color: #214b3e;
+  max-width: 100%;
+}
+.public-tables {
+  margin: 28px 0;
+  padding: 32px;
+  border: 1px solid #c7cbb9;
+  border-radius: 20px;
+  background: #eeeee2;
+}
+.public-tables h2 {
+  margin: 10px 0;
+  font-size: 32px;
+}
+.public-tables p {
+  line-height: 1.6;
+}
+.public-room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.public-room-grid article {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #faf9f2;
+}
+.public-room-grid h3 {
+  overflow-wrap: anywhere;
+  margin: 0 0 8px;
+}
+.empty-tables {
+  padding: 18px;
+  border: 1px dashed #aeb6a4;
+  border-radius: 10px;
+}
+.donation-panel {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #c7cbb9;
+  border-radius: 14px;
+  line-height: 1.6;
+}
+.donation-panel summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.donation-panel code {
+  display: block;
+  overflow-wrap: anywhere;
+  user-select: all;
+  margin: 12px 0;
+}
+.donation-panel button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid #aeb6a4;
+  border-radius: 8px;
+}
+@media (max-width: 600px) {
+  .public-tables {
+    padding: 20px;
+  }
+}

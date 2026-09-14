@@ -1,10 +1,10 @@
-# Original creators, rights, and noncommercial purpose
+# Original creators, rights, and free access
 
 ## A personal fan project
 
 Mood Swings Online is maintained by [Ruben / JollyRogerz](https://github.com/JollyRogerz) to enjoy a favorite physical game with friends online. Ruben owns two physical Mood Swings decks, supports the original makers, and is excited for future releases.
 
-**This project is not to be made commercial or used to gain money.** Its intended purpose is free social play and appreciation of the original game. No paid access, subscriptions, advertisements, in-game purchases, paid card unlocks, or other monetization are part of this project. Hosting expenses are paid by the maintainer.
+**The game and all gameplay features remain free.** No paid access, subscriptions, advertisements, in-game purchases, or paid card unlocks are offered. The maintainer pays for hosting and accepts optional USDC donations without rewards. These donations go to JollyRogerz, not the original creators or Wizards of the Coast. Their inclusion does not establish authorization under Wizards’ Fan Content Policy or any separate license.
 
 ## Original work and attribution
 

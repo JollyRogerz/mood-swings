@@ -92,6 +92,7 @@ export interface Delayed {
   round: number;
 }
 export interface Game {
+  visibility?: "private" | "public";
   version: 1;
   revision: number;
   status: "lobby" | "playing" | "finished";
@@ -150,7 +151,14 @@ export interface PublicCard extends Mood {
   image: string;
   rules: string;
 }
+export interface PublicRoom {
+  code: string;
+  hostName: string;
+  players: number;
+  bots: number;
+}
 export interface View {
+  visibility?: "private" | "public";
   roundPauseMs?: number;
   playPauseMs?: number;
   lastPlayed?: Game["lastPlayed"];

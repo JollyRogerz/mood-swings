@@ -77,14 +77,54 @@ it("recovers a private multiplayer match after the server process restarts", asy
   }
   try {
     await launch();
+    // Browsing must not consume the create/join rate allowance.
+    for (let i = 0; i < 35; i++)
+      expect((await fetch(base + "/api/rooms")).ok).toBe(true);
     const tokenA = randomUUID(),
       tokenB = randomUUID(),
       { code } = await post("/api/rooms", { name: "Alice", token: tokenA });
-    const a = await join(code, tokenA, "Alice"),
+    let a = await join(code, tokenA, "Alice"),
       b = await join(code, tokenB, "Bob");
+    const listing = async () =>
+      (await (await fetch(base + "/api/rooms")).json()).rooms;
+    expect(await listing()).toEqual([]);
+    let denied = "";
+    b.room.onMessage("error", (m: string) => {
+      denied = m;
+    });
+    b.room.send("visibility", { visibility: "public" });
+    await expect.poll(() => denied).toContain("Only the host");
+    expect(await listing()).toEqual([]);
+    a.room.send("visibility", { visibility: "public" });
+    await expect
+      .poll(listing)
+      .toEqual([{ code, hostName: "Alice", players: 2, bots: 0 }]);
+    a.room.send("add-bot", { difficulty: "easy" });
+    await expect.poll(async () => (await listing())[0]?.players).toBe(3);
+    const bot = a.view.players.find((p) => p.bot)!;
+    a.room.send("add-bot", { difficulty: "normal" });
+    await expect.poll(() => a.view.players.length).toBe(4);
+    expect(await listing()).toEqual([]);
+    a.room.send("remove-bot", { id: bot.id });
+    await expect.poll(async () => (await listing())[0]?.players).toBe(3);
+    a.room.send("remove-bot", { id: a.view.players.find((p) => p.bot)!.id });
+    await expect.poll(() => a.view.players.length).toBe(2);
+    await a.room.leave();
+    await expect.poll(listing).toEqual([]);
+    const returned = await join(code, tokenA, "Alice");
+    await expect
+      .poll(listing)
+      .toEqual([{ code, hostName: "Alice", players: 2, bots: 0 }]);
+    returned.room.send("visibility", { visibility: "private" });
+    await expect.poll(() => returned.view.visibility).toBe("private");
+    expect(await listing()).toEqual([]);
+    returned.room.send("visibility", { visibility: "public" });
+    await expect.poll(() => returned.view.visibility).toBe("public");
+    a = returned;
     a.room.send("start", { mode: "retail" });
     await expect.poll(() => a.view.status).toBe("playing");
     await expect.poll(() => b.view.status).toBe("playing");
+    expect(await listing()).toEqual([]);
     const original = a.view.hand.map((c) => c.def),
       active = a.view.active === a.view.you ? a : b;
     const other = active === a ? b : a;
@@ -100,6 +140,8 @@ it("recovers a private multiplayer match after the server process restarts", asy
     await stop();
     await launch();
     const resumed = await join(code, tokenA, "Alice");
+    expect(resumed.view.visibility).toBe("public");
+    expect(await listing()).toEqual([]);
     expect(resumed.view.round).toBe(round);
     expect(resumed.view.hand.map((c) => c.def)).toEqual(original);
     expect(resumed.view.active).toBe(other.view.you);

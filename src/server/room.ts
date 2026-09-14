@@ -9,7 +9,7 @@ import {
   startGame,
 } from "../game/engine";
 import { botAction } from "../game/bot";
-import type { Action, Difficulty, Game } from "../game/types";
+import type { Action, Difficulty, Game, PublicRoom } from "../game/types";
 import { store } from "./store";
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
@@ -26,6 +26,7 @@ export function cleanName(name: unknown): string {
   if (!value) throw new ServerError(400, "Enter your name.");
   return value;
 }
+export const publicRooms = new Map<string, PublicRoom>();
 export class MoodRoom extends Room {
   maxClients = 12;
   autoDispose = false;
@@ -41,6 +42,24 @@ export class MoodRoom extends Room {
     this.game = options.snapshot;
     for (const p of this.game.players) p.connected = !!p.bot;
     await this.setPrivate(true);
+    this.onMessage("visibility", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        if (
+          this.actor(client) !== this.game.host ||
+          this.game.status !== "lobby"
+        )
+          throw new RuleError(
+            "Only the host can change visibility in the lobby.",
+          );
+        if (!["private", "public"].includes(message?.visibility))
+          throw new RuleError("Choose private or public.");
+        const next = structuredClone(this.game);
+        next.visibility = message.visibility;
+        next.revision++;
+        await this.commit(next);
+      }, client),
+    );
     this.onMessage("sync", (client) => this.sendView(client));
     this.onMessage("action", (client, message) =>
       this.enqueue(async () => {
@@ -122,6 +141,7 @@ export class MoodRoom extends Room {
           host.name,
           randomBytes(4).readUInt32LE(),
         );
+        next.visibility = this.game.visibility;
         for (const p of this.game.players.filter((p) => p.id !== actor)) {
           addPlayer(next, p.id, p.name);
           next.players.find((x) => x.id === p.id)!.bot = p.bot;
@@ -177,6 +197,8 @@ export class MoodRoom extends Room {
       const next = structuredClone(this.game);
       const p = next.players.find((p) => p.id === id);
       if (p) p.connected = [...this.actors.values()].includes(id);
+      if (p && !p.connected && next.status === "lobby" && id !== next.host)
+        next.players = next.players.filter((player) => player.id !== id);
       next.revision++;
       await this.commit(next);
     });
@@ -218,8 +240,28 @@ export class MoodRoom extends Room {
       next.roundPauseUntil = Date.now() + 9000;
     await store.save(this.roomId, next);
     this.game = next;
+    this.updateListing();
     for (const client of this.clients) this.sendView(client);
     this.scheduleBot();
+  }
+  onDispose() {
+    publicRooms.delete(this.roomId);
+  }
+  private updateListing() {
+    const host = this.game.players.find((p) => p.id === this.game.host);
+    if (
+      this.game.visibility === "public" &&
+      this.game.status === "lobby" &&
+      host?.connected &&
+      this.game.players.length < 4
+    ) {
+      publicRooms.set(this.roomId, {
+        code: this.roomId,
+        hostName: host.name,
+        players: this.game.players.length,
+        bots: this.game.players.filter((p) => p.bot).length,
+      });
+    } else publicRooms.delete(this.roomId);
   }
   private scheduleBot() {
     this.botTimer?.clear();
@@ -275,6 +317,7 @@ export class MoodRoom extends Room {
     if (id)
       client.send("view", {
         ...publicView(this.game, id),
+        visibility: this.game.visibility ?? "private",
         playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
         roundPauseMs: Math.max(
           0,
