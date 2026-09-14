@@ -1997,7 +1997,12 @@ function finishRound(g: Game) {
   let first = g.nextFirst;
   if (!g.noScoring) {
     const who = winner(g);
-    g.lastRound = { round: g.round, scores: { ...g.scores }, winner: who };
+    g.lastRound = {
+      round: g.round,
+      scores: { ...g.scores },
+      winner: who,
+      order: [...g.order],
+    };
     const p = g.players.find((p) => p.id === who)!;
     p.wins += g.roundAward;
     log(g, `${p.name} won round ${g.round} with ${g.scores[who]} points.`);
@@ -2015,6 +2020,7 @@ function finishRound(g: Game) {
         (a, b) =>
           g.scores[a] - g.scores[b] || g.order.indexOf(b) - g.order.indexOf(a),
       )[0];
+      g.lastRound!.hurtFeelings = last;
       g.nextPlays.push({
         player: last,
         afterTurn: g.turn,
@@ -2035,6 +2041,7 @@ function finishRound(g: Game) {
     .sort((a, b) => b.serial - a.serial)[0];
   if (honor) first = honor.chosenPlayer;
   first ??= g.order[0];
+  g.lastRound!.nextFirst = first;
   const index = g.order.indexOf(first);
   g.order = [...g.order.slice(index), ...g.order.slice(0, index)];
   g.round++;

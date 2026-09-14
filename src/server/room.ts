@@ -50,6 +50,10 @@ export class MoodRoom extends Room {
           this.sendView(client);
           throw new RuleError("The table changed. Please try your move again.");
         }
+        if ((this.game.roundPauseUntil ?? 0) > Date.now())
+          throw new RuleError(
+            "The round results are being shown. Play resumes shortly.",
+          );
         const next = act(this.game, actor, message.action as Action);
         await this.commit(next);
       }, client),
@@ -204,6 +208,8 @@ export class MoodRoom extends Room {
     return client ? this.chain : job;
   }
   private async commit(next: Game) {
+    if (next.lastRound && next.lastRound.round !== this.game.lastRound?.round)
+      next.roundPauseUntil = Date.now() + 9000;
     await store.save(this.roomId, next);
     this.game = next;
     for (const client of this.clients) this.sendView(client);
@@ -219,36 +225,46 @@ export class MoodRoom extends Room {
     const id = this.game.prompt?.actor ?? this.game.order[this.game.turnIndex],
       player = this.game.players.find((p) => p.id === id);
     if (!player?.bot) return;
-    this.botTimer = this.clock.setTimeout(() => {
-      void this.enqueue(async () => {
-        const who =
-          this.game.prompt?.actor ?? this.game.order[this.game.turnIndex];
-        if (who !== id || this.game.status !== "playing") return;
-        const view = publicView(this.game, id);
-        let next: Game | undefined;
-        for (let attempt = 0; attempt < 8 && !next; attempt++) {
-          try {
-            const action = botAction(
-              view,
-              attempt ? "easy" : player.bot!,
-              this.game.revision * 997 + attempt * 31 + id.charCodeAt(4),
-            );
-            next = act(this.game, id, action);
-          } catch (error) {
-            if (attempt === 7) throw error;
+    this.botTimer = this.clock.setTimeout(
+      () => {
+        void this.enqueue(async () => {
+          const who =
+            this.game.prompt?.actor ?? this.game.order[this.game.turnIndex];
+          if (who !== id || this.game.status !== "playing") return;
+          const view = publicView(this.game, id);
+          let next: Game | undefined;
+          for (let attempt = 0; attempt < 8 && !next; attempt++) {
+            try {
+              const action = botAction(
+                view,
+                attempt ? "easy" : player.bot!,
+                this.game.revision * 997 + attempt * 31 + id.charCodeAt(4),
+              );
+              next = act(this.game, id, action);
+            } catch (error) {
+              if (attempt === 7) throw error;
+            }
           }
-        }
-        if (next) await this.commit(next);
-      }).catch((error) =>
-        console.error(
-          "Bot could not act",
-          error instanceof Error ? error.message : "Unknown error",
-        ),
-      );
-    }, 650);
+          if (next) await this.commit(next);
+        }).catch((error) =>
+          console.error(
+            "Bot could not act",
+            error instanceof Error ? error.message : "Unknown error",
+          ),
+        );
+      },
+      Math.max(650, (this.game.roundPauseUntil ?? 0) - Date.now() + 100),
+    );
   }
   private sendView(client: Client) {
     const id = this.actors.get(client.sessionId);
-    if (id) client.send("view", publicView(this.game, id));
+    if (id)
+      client.send("view", {
+        ...publicView(this.game, id),
+        roundPauseMs: Math.max(
+          0,
+          (this.game.roundPauseUntil ?? 0) - Date.now(),
+        ),
+      });
   }
 }

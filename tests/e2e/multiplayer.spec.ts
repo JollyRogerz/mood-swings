@@ -39,9 +39,7 @@ test("two friends create a table, play a mood, and reconnect", async ({
     path: "output/playwright/table.png",
     fullPage: true,
   });
-  const aliceActive = await page
-    .getByRole("button", { name: "End turn", exact: true })
-    .isEnabled();
+  const aliceActive = await page.locator(".end-turn").isEnabled();
   const current = aliceActive ? page : friend;
   await current.locator(".hand-card.playable").first().click();
   await current.getByRole("button", { name: "Play mood", exact: true }).click();
@@ -186,6 +184,21 @@ test("four friends finish a match and return to a rematch lobby", async ({
       .toBe(true);
     await actor.locator(".end-turn").click();
     if (turn < 11) await expect(actor.locator(".end-turn")).toBeDisabled();
+    if (turn === 3) {
+      const results = page.getByRole("dialog", { name: "Round 1 results" });
+      await expect(results).toBeVisible();
+      await expect(results.locator(".round-score-list > div")).toHaveCount(4);
+      await expect(
+        results.getByRole("heading", { name: /wins the round!/ }),
+      ).toBeVisible();
+      await expect(
+        results.getByText("HURT FEELINGS", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        results.getByText("FIRST NEXT ROUND", { exact: true }),
+      ).toBeVisible();
+      await page.screenshot({ path: "output/playwright/round-results.png" });
+    }
   }
   await expect(page.locator(".winner-modal")).toBeVisible();
   await page.getByRole("button", { name: "Another round of feelings" }).click();
@@ -198,6 +211,7 @@ test("four friends finish a match and return to a rematch lobby", async ({
 test("solo play adds a selectable bot that takes turns and completes the match", async ({
   page,
 }) => {
+  test.setTimeout(120000);
   await page.goto("/");
   await page.getByLabel("Your name at the table").fill("Solo player");
   await page.getByRole("button", { name: "Create a table" }).click();

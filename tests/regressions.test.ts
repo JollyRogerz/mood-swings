@@ -301,3 +301,34 @@ it("persists and restores a pending private decision atomically", async () => {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+describe("round result announcements", () => {
+  it("records the tie winner, Hurt Feelings recipient, and next starting player", () => {
+    const g = settle(pass(pass(pass(table(3)))));
+    expect(g.lastRound).toEqual({
+      round: 1,
+      scores: { a: 0, b: 0, c: 0 },
+      winner: "a",
+      hurtFeelings: "c",
+      nextFirst: "a",
+      order: ["a", "b", "c"],
+    });
+  });
+  it("announces the starting player chosen by Honor, even when another player wins", () => {
+    let g = table(3);
+    add(g, "honor", "play", "a", { chosenPlayer: "b" });
+    g = settle(pass(pass(pass(g))));
+    expect(g.lastRound!.winner).toBe("a");
+    expect(g.lastRound!.nextFirst).toBe("b");
+    expect(g.order[0]).toBe("b");
+  });
+  it("does not announce a next turn or Hurt Feelings after the match ends", () => {
+    let g = table(3);
+    g.players[0].wins = 2;
+    g = settle(pass(pass(pass(g))));
+    expect(g.status).toBe("finished");
+    expect(g.lastRound!.winner).toBe("a");
+    expect(g.lastRound!.nextFirst).toBeUndefined();
+    expect(g.lastRound!.hurtFeelings).toBeUndefined();
+  });
+});

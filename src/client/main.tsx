@@ -68,6 +68,14 @@ function App() {
     [inspect, setInspect] = useState<string>(),
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
+  const [roundDeadline, setRoundDeadline] = useState(0);
+  const [clockNow, setClockNow] = useState(Date.now());
+  const roundPaused = roundDeadline > clockNow;
+  useEffect(() => {
+    if (!roundDeadline || !roundPaused) return;
+    const timer = setInterval(() => setClockNow(Date.now()), 100);
+    return () => clearInterval(timer);
+  }, [roundDeadline, roundPaused]);
   const [botDifficulty, setBotDifficulty] = useState<Difficulty>("normal");
   const room = useRef<Room | null>(null),
     keepConnected = useRef(false),
@@ -86,6 +94,8 @@ function App() {
     joined.reconnection.enabled = false;
     joined.onMessage("view", (v: View) => {
       setView(v);
+      setClockNow(Date.now());
+      setRoundDeadline(v.roundPauseMs ? Date.now() + v.roundPauseMs : 0);
       setError("");
       setBusy(false);
       setConnected(true);
@@ -159,7 +169,7 @@ function App() {
     };
   }, []);
   function send(action: Action) {
-    if (!connected || !viewRef.current || busy) return;
+    if (!connected || !viewRef.current || busy || roundPaused) return;
     setBusy(true);
     setError("");
     room.current?.send("action", {
@@ -637,13 +647,15 @@ function App() {
                 className={`turn-status ${view.active === view.you ? "your-turn" : ""}`}
               >
                 <span className="status-dot" />
-                {view.scoring
-                  ? "Scoring the round"
-                  : view.waitingFor
-                    ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
-                    : view.active === view.you
-                      ? "Your turn. How are you feeling?"
-                      : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
+                {roundPaused
+                  ? "Round results"
+                  : view.scoring
+                    ? "Scoring the round"
+                    : view.waitingFor
+                      ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
+                      : view.active === view.you
+                        ? "Your turn. How are you feeling?"
+                        : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
               </div>
               <button
                 className="end-turn"
@@ -651,6 +663,7 @@ function App() {
                   view.active !== view.you ||
                   !!view.waitingFor ||
                   view.scoring ||
+                  roundPaused ||
                   busy ||
                   !connected
                 }
@@ -664,15 +677,15 @@ function App() {
               view={view}
               send={send}
               inspect={setInspect}
-              disabled={busy || !connected}
+              disabled={busy || !connected || roundPaused}
             />
           </section>
-          {view.prompt && (
+          {view.prompt && !roundPaused && (
             <ChoicePanel
               key={view.prompt.id}
               view={view}
               send={send}
-              disabled={busy || !connected}
+              disabled={busy || !connected || roundPaused}
             />
           )}
           {activity && (
@@ -707,7 +720,10 @@ function App() {
               </ol>
             </aside>
           )}
-          {view.status === "finished" && (
+          {roundPaused && view.lastRound && (
+            <RoundResults view={view} remaining={roundDeadline - clockNow} />
+          )}
+          {view.status === "finished" && !roundPaused && (
             <div className="modal-backdrop">
               <div className="winner-modal">
                 <span className="winner-flower">✳</span>
@@ -874,6 +890,117 @@ function CardBack() {
         </span>
       </span>
     </span>
+  );
+}
+function RoundResults({ view, remaining }: { view: View; remaining: number }) {
+  const result = view.lastRound!;
+  const elapsed = 9000 - remaining;
+  const name = (id?: string) =>
+    view.players.find((p) => p.id === id)?.name ?? "Nobody";
+  const stage =
+    elapsed < 2000 ? 0 : elapsed < 4000 ? 1 : elapsed < 6000 ? 2 : 3;
+  const order = result.order ?? view.players.map((p) => p.id);
+  const tied =
+    result.winner &&
+    Object.values(result.scores).filter(
+      (n) => n === result.scores[result.winner!],
+    ).length > 1;
+  return (
+    <div className="modal-backdrop round-results-backdrop">
+      <section
+        className="round-results"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Round ${result.round} results`}
+      >
+        <span className="eyebrow">
+          ROUND {String(result.round).padStart(2, "0")} · RESULTS
+        </span>
+        <h2 aria-live="polite">
+          {stage === 0
+            ? result.winner
+              ? "Counting the points…"
+              : "A quiet round."
+            : result.winner
+              ? `${name(result.winner)} wins the round!`
+              : "No scoring this round."}
+        </h2>
+        {result.winner ? (
+          <div className="round-score-list">
+            {order.map((id, i) => (
+              <div
+                key={id}
+                className={
+                  stage > 0 && id === result.winner ? "round-score-winner" : ""
+                }
+                style={{ animationDelay: `${i * 180}ms` }}
+              >
+                <span>
+                  {name(id)}
+                  {id === view.you ? " (you)" : ""}
+                </span>
+                <strong>{result.scores[id] ?? 0}</strong>
+                {stage > 0 && id === result.winner && <Crown size={19} />}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Scoring was skipped. No round win or Hurt Feelings is awarded.</p>
+        )}
+        {stage >= 1 && tied && (
+          <p className="round-tie-note">
+            Tied on points — earlier turn order wins the tie.
+          </p>
+        )}
+        <div className="round-awards" aria-live="polite">
+          {stage >= 2 && (
+            <div>
+              <span>HURT FEELINGS</span>
+              <strong>
+                {result.hurtFeelings
+                  ? name(result.hurtFeelings)
+                  : "Not awarded"}
+              </strong>
+              <p>
+                {result.hurtFeelings
+                  ? "One extra play on their next turn. Lowest score; later turn order breaks ties."
+                  : view.status === "finished"
+                    ? "This was the final round."
+                    : view.players.length < 3
+                      ? "Used in games with three or more players."
+                      : "No scoring this round."}
+              </p>
+            </div>
+          )}
+          {stage >= 3 && (
+            <div>
+              <span>
+                {view.status === "finished"
+                  ? "MATCH COMPLETE"
+                  : "FIRST NEXT ROUND"}
+              </span>
+              <strong>
+                {view.status === "finished"
+                  ? `${name(view.winner)} takes the table`
+                  : name(result.nextFirst)}
+              </strong>
+              <p>
+                {view.status === "finished"
+                  ? "The final results are coming up."
+                  : "The next round follows this player in table order."}
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="round-progress">
+          <span style={{ width: `${Math.min(100, elapsed / 90)}%` }} />
+        </div>
+        <small>
+          {view.status === "finished" ? "Final results" : "Play resumes"} in{" "}
+          {Math.max(1, Math.ceil(remaining / 1000))}s
+        </small>
+      </section>
+    </div>
   );
 }
 function CardZoom() {

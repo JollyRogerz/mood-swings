@@ -104,7 +104,40 @@ it("recovers a private multiplayer match after the server process restarts", asy
     expect(resumed.view.hand.map((c) => c.def)).toEqual(original);
     expect(resumed.view.active).toBe(other.view.you);
     expect(resumed.view.players).toHaveLength(2);
-    await resumed.room.leave();
+    const resumedB = await join(code, tokenB, "Bob");
+    await expect.poll(() => resumed.view.revision).toBe(resumedB.view.revision);
+    const lastActor =
+      resumed.view.active === resumed.view.you ? resumed : resumedB;
+    lastActor.room.send("action", {
+      revision: lastActor.view.revision,
+      action: { type: "pass" },
+    });
+    await expect.poll(() => resumed.view.round).toBe(2);
+    expect(resumed.view.roundPauseMs).toBeGreaterThan(0);
+    await stop();
+    await launch();
+    const duringResults = await join(code, tokenA, "Alice");
+    const duringResultsB = await join(code, tokenB, "Bob");
+    await expect
+      .poll(() => duringResults.view.revision)
+      .toBe(duringResultsB.view.revision);
+    expect(duringResults.view.roundPauseMs).toBeGreaterThan(0);
+    const nextActor =
+      duringResults.view.active === duringResults.view.you
+        ? duringResults
+        : duringResultsB;
+    let error = "";
+    nextActor.room.onMessage("error", (message: string) => {
+      error = message;
+    });
+    nextActor.room.send("action", {
+      revision: nextActor.view.revision,
+      action: { type: "pass" },
+    });
+    await expect.poll(() => error).toContain("round results");
+    expect(nextActor.view.round).toBe(2);
+    await duringResults.room.leave();
+    await duringResultsB.room.leave();
   } finally {
     await stop();
     await rm(root, { recursive: true, force: true });

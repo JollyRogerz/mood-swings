@@ -2407,3 +2407,120 @@ footer a {
 .mood-card.secondary-value:not(.suppressed) img {
   transform: rotate(180deg);
 }
+
+.round-results-backdrop {
+  background: #071f23bd;
+  backdrop-filter: blur(7px);
+  z-index: 110;
+}
+.round-results {
+  width: min(560px, 100%);
+  max-height: 92dvh;
+  overflow: auto;
+  padding: 32px;
+  background: #f5f2e5;
+  border: 1px solid #c7b776;
+  border-radius: 22px;
+  box-shadow: 0 25px 90px #001c2477;
+  text-align: center;
+}
+.round-results h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 12px 0 20px;
+}
+.round-score-list {
+  display: grid;
+  gap: 8px;
+}
+.round-score-list > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #e5e8d9;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  animation: round-score-enter 0.4s both;
+}
+.round-score-list strong {
+  margin-left: auto;
+  font-size: 24px;
+}
+.round-score-list .round-score-winner {
+  color: #fff9e6;
+  background: #285441;
+  border-color: #bda064;
+}
+.round-awards {
+  min-height: 175px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-top: 22px;
+}
+.round-awards > div {
+  animation: round-score-enter 0.4s both;
+}
+.round-awards span {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #73785e;
+}
+.round-awards strong {
+  display: block;
+  font-size: 19px;
+  margin: 8px 0;
+}
+.round-awards p,
+.round-tie-note {
+  font-size: 12px;
+  color: #6c7867;
+  line-height: 1.6;
+}
+.round-progress {
+  height: 3px;
+  background: #dcdcc9;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 14px 0 10px;
+}
+.round-progress span {
+  display: block;
+  height: 100%;
+  background: #b59550;
+  transition: width 0.1s linear;
+}
+.round-results > small {
+  color: #73816e;
+  font-size: 11px;
+}
+@keyframes round-score-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .round-score-list > div,
+  .round-awards > div {
+    animation: none;
+  }
+  .round-progress span {
+    transition: none;
+  }
+}
+@media (max-width: 600px) {
+  .round-results {
+    padding: 22px 18px;
+  }
+  .round-awards {
+    gap: 12px;
+    min-height: 185px;
+  }
+}

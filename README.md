@@ -45,7 +45,7 @@ This release does not include Duel, drafting, team variants, custom deck constru
 7. Select a card from your hand and choose **Play mood**. Resolve any decisions the card creates.
 8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions.
 
-Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After a match, the host can start a rematch with the same group.
+Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
 An invite is intended for the people you share it with. There is no public room directory. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
 
@@ -169,7 +169,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **420 passing engine, regression, simulation, bot, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
+The current automated suite contains **423 passing engine, regression, simulation, bot, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |

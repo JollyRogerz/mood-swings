@@ -119,10 +119,14 @@ export interface Game {
   roundAward: number;
   discardedRound: number;
   scores: Record<string, number>;
+  roundPauseUntil?: number;
   lastRound?: {
     round: number;
     scores: Record<string, number>;
     winner?: string;
+    hurtFeelings?: string;
+    nextFirst?: string;
+    order?: string[];
   };
   winner?: string;
   scoring: boolean;
@@ -145,6 +149,7 @@ export interface PublicCard extends Mood {
   rules: string;
 }
 export interface View {
+  roundPauseMs?: number;
   order: string[];
   suppressions: Suppression[];
   revision: number;
