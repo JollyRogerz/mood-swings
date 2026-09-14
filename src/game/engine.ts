@@ -647,9 +647,14 @@ function playTask(g: Game, t: Task) {
           ? hand(g, t.actor).filter((c) => c.uid !== m.uid)
           : inPlay(g, t.actor);
       insist(choices.length >= cost.min, "You cannot pay this card’s cost.");
+      // The permission is spent now: paying the cost may discard the very mood
+      // that granted this extra play, and the play must still complete.
+      const using = g.grants.find((gr) => gr.id === d.grant);
+      insist(using, "That extra play is no longer available.");
+      g.grants = g.grants.filter((x) => x.id !== using.id);
       ask(
         g,
-        { ...t, stage: 2 },
+        { ...t, stage: 2, data: { ...d, usedGrant: using } },
         `${definition(m).name} · Choose ${cost.zone === "hand" ? "cards from your hand" : "your moods"} to ${cost.dest === "hand" ? "return to hand" : "discard"}`,
         moodOptions(g, choices),
         cost.min,
@@ -665,7 +670,8 @@ function playTask(g: Game, t: Task) {
       m.chosenColor = definitions[chosen[0].def].color;
     batchMove(g, chosen, cost.dest, t.actor);
   }
-  const gr = g.grants.find((gr) => gr.id === d.grant);
+  const gr: Grant | undefined =
+    d.usedGrant ?? g.grants.find((gr) => gr.id === d.grant);
   insist(gr, "That extra play is no longer available.");
   g.grants = g.grants.filter((x) => x.id !== gr.id);
   move(g, m, "play", t.actor);

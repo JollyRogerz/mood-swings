@@ -26,7 +26,27 @@ export interface Mood {
   target?: string;
   turnUsed?: number;
 }
-export type Difficulty = "easy" | "normal" | "hard";
+export type Difficulty = "easy" | "normal" | "hard" | "fly";
+// Ephemeral table chatter. Neither is part of the saved game state.
+export const REACTIONS = [
+  "😂",
+  "😮",
+  "😭",
+  "🔥",
+  "👏",
+  "💀",
+  "❤️",
+  "🤔",
+] as const;
+export type Reaction = (typeof REACTIONS)[number];
+export const PRESENCES = [
+  "idle",
+  "holding",
+  "reading",
+  "rules",
+  "away",
+] as const;
+export type Presence = (typeof PRESENCES)[number];
 export interface Player {
   bot?: Difficulty;
   id: string;
@@ -139,8 +159,13 @@ export interface Game {
   pride?: string;
   seed: number;
 }
+// A decision answered from the hand, before the card is played.
+export interface PlannedChoice {
+  title: string;
+  selected: string[];
+}
 export type Action =
-  | { type: "play"; card: string; grant: string }
+  | { type: "play"; card: string; grant: string; choices?: PlannedChoice[] }
   | { type: "choose"; prompt: string; selected: string[] }
   | { type: "pass" };
 export interface PublicCard extends Mood {
@@ -159,6 +184,7 @@ export interface PublicRoom {
 }
 export interface View {
   visibility?: "private" | "public";
+  presence?: Record<string, Presence>;
   roundPauseMs?: number;
   playPauseMs?: number;
   lastPlayed?: Game["lastPlayed"];

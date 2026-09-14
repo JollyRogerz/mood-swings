@@ -128,10 +128,33 @@ it("recovers a private multiplayer match after the server process restarts", asy
     const original = a.view.hand.map((c) => c.def),
       active = a.view.active === a.view.you ? a : b;
     const other = active === a ? b : a;
+    // Reactions and presence are ephemeral table chatter shared with everyone.
+    const reactions: { player: string; emoji: string }[] = [],
+      presences: Record<string, string>[] = [];
+    other.room.onMessage(
+      "reaction",
+      (r: { id: number; player: string; emoji: string }) =>
+        reactions.push({ player: r.player, emoji: r.emoji }),
+    );
+    other.room.onMessage("presence", (p: Record<string, string>) =>
+      presences.push(p),
+    );
+    active.room.onMessage("reaction", () => {});
+    active.room.onMessage("presence", () => {});
+    active.room.send("react", { emoji: "🍕" });
+    active.room.send("react", { emoji: "😂" });
+    await expect
+      .poll(() => reactions)
+      .toEqual([{ player: active.view.you, emoji: "😂" }]);
+    active.room.send("presence", { state: "holding" });
+    await expect
+      .poll(() => presences.at(-1))
+      .toEqual({ [active.view.you]: "holding" });
     active.room.send("action", {
       revision: active.view.revision,
       action: { type: "pass" },
     });
+    await expect.poll(() => presences.at(-1)).toEqual({});
     await expect.poll(() => a.view.active).toBe(other.view.you);
     const round = a.view.round;
     expect(a.view.hand).toHaveLength(5);

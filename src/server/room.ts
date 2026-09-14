@@ -9,7 +9,26 @@ import {
   startGame,
 } from "../game/engine";
 import { botAction } from "../game/bot";
-import type { Action, Difficulty, Game, PublicRoom } from "../game/types";
+import { playPlanned, previewPlay } from "../game/plan";
+import {
+  PRESENCES,
+  REACTIONS,
+  type Action,
+  type Difficulty,
+  type Game,
+  type PlannedChoice,
+  type Presence,
+  type PublicRoom,
+} from "../game/types";
+const plannedChoices = (raw: unknown): PlannedChoice[] =>
+  Array.isArray(raw)
+    ? raw.slice(0, 12).map((c) => ({
+        title: String(c?.title ?? ""),
+        selected: Array.isArray(c?.selected)
+          ? c.selected.slice(0, 12).map(String)
+          : [],
+      }))
+    : [];
 import { store } from "./store";
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
@@ -35,6 +54,9 @@ export class MoodRoom extends Room {
   private chain: Promise<unknown> = Promise.resolve();
   private actors = new Map<string, string>();
   private rates = new Map<string, { time: number; count: number }>();
+  // What each seated human is doing right now. Never persisted or scored.
+  private activity = new Map<string, Presence>();
+  private reactionSerial = 0;
   async onCreate(options: { key: string; code: string; snapshot: Game }) {
     if (options.key !== serverKey)
       throw new ServerError(403, "Create a table from the home screen.");
@@ -77,8 +99,67 @@ export class MoodRoom extends Room {
           throw new RuleError(
             "A played card is being revealed. Play resumes shortly.",
           );
-        const next = act(this.game, actor, message.action as Action);
+        const action = message.action as Action;
+        if (action?.type === "play")
+          action.choices = plannedChoices(action.choices);
+        const next = playPlanned(this.game, actor, action);
         await this.commit(next);
+        if (this.activity.delete(actor)) this.broadcastPresence();
+      }, client),
+    );
+    // Preview a play from the hand: which decision would it ask next?
+    this.onMessage("preview", (client, message) => {
+      try {
+        this.limit(client);
+        const actor = this.actor(client);
+        if (
+          this.game.status !== "playing" ||
+          this.game.prompt ||
+          this.game.scoring ||
+          this.game.order[this.game.turnIndex] !== actor
+        )
+          return;
+        client.send(
+          "preview",
+          previewPlay(
+            this.game,
+            actor,
+            String(message?.card ?? ""),
+            String(message?.grant ?? ""),
+            plannedChoices(message?.choices),
+          ),
+        );
+      } catch (error) {
+        if (!(error instanceof RuleError) && !(error instanceof ServerError))
+          console.error(
+            "Preview failed",
+            error instanceof Error ? error.message : "Unknown error",
+          );
+      }
+    });
+    this.onMessage("react", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const player = this.actor(client);
+        if (!REACTIONS.includes(message?.emoji)) return;
+        this.broadcast("reaction", {
+          id: ++this.reactionSerial,
+          player,
+          emoji: message.emoji,
+        });
+      }, client),
+    );
+    this.onMessage("presence", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const player = this.actor(client),
+          state: Presence = PRESENCES.includes(message?.state)
+            ? message.state
+            : "idle";
+        const before = this.activity.get(player);
+        if (state === "idle") this.activity.delete(player);
+        else this.activity.set(player, state);
+        if (before !== this.activity.get(player)) this.broadcastPresence();
       }, client),
     );
     this.onMessage("start", (client, message) =>
@@ -98,13 +179,19 @@ export class MoodRoom extends Room {
           this.game.status !== "lobby"
         )
           throw new RuleError("Only the host can add bots before the game.");
-        const difficulty: Difficulty = ["easy", "normal", "hard"].includes(
-          message?.difficulty,
-        )
+        const difficulty: Difficulty = [
+          "easy",
+          "normal",
+          "hard",
+          "fly",
+        ].includes(message?.difficulty)
           ? message.difficulty
           : "normal";
         const next = structuredClone(this.game),
-          names = ["Fern", "Ember", "Sage"];
+          names =
+            difficulty === "fly"
+              ? ["Drosophila", "Fern", "Ember", "Sage"]
+              : ["Fern", "Ember", "Sage"];
         const name =
           names.find((n) => !next.players.some((p) => p.name === n)) ?? "Bot";
         const id = "bot-" + randomBytes(8).toString("hex");
@@ -193,6 +280,7 @@ export class MoodRoom extends Room {
     this.actors.delete(client.sessionId);
     this.rates.delete(client.sessionId);
     if (!id) return;
+    if (this.activity.delete(id)) this.broadcastPresence();
     await this.enqueue(async () => {
       const next = structuredClone(this.game);
       const p = next.players.find((p) => p.id === id);
@@ -263,6 +351,16 @@ export class MoodRoom extends Room {
       });
     } else publicRooms.delete(this.roomId);
   }
+  // A human with no legal play left has nothing to decide: their turn ends by
+  // itself once the table has finished reading.
+  private exhausted(id: string) {
+    return (
+      !this.game.prompt &&
+      !this.game.scoring &&
+      this.game.order[this.game.turnIndex] === id &&
+      Object.keys(publicView(this.game, id).playable).length === 0
+    );
+  }
   private scheduleBot() {
     this.botTimer?.clear();
     if (
@@ -272,13 +370,20 @@ export class MoodRoom extends Room {
       return;
     const id = this.game.prompt?.actor ?? this.game.order[this.game.turnIndex],
       player = this.game.players.find((p) => p.id === id);
-    if (!player?.bot) return;
+    if (!player) return;
+    if (!player.bot && !this.exhausted(id)) return;
+    const revision = this.game.revision;
     this.botTimer = this.clock.setTimeout(
       () => {
         void this.enqueue(async () => {
           const who =
             this.game.prompt?.actor ?? this.game.order[this.game.turnIndex];
           if (who !== id || this.game.status !== "playing") return;
+          if (!player.bot) {
+            if (this.game.revision !== revision || !this.exhausted(id)) return;
+            await this.commit(act(this.game, id, { type: "pass" }));
+            return;
+          }
           const view = publicView(this.game, id);
           let next: Game | undefined;
           for (let attempt = 0; attempt < 8 && !next; attempt++) {
@@ -296,13 +401,13 @@ export class MoodRoom extends Room {
           if (next) await this.commit(next);
         }).catch((error) =>
           console.error(
-            "Bot could not act",
+            player.bot ? "Bot could not act" : "Could not end the turn",
             error instanceof Error ? error.message : "Unknown error",
           ),
         );
       },
       Math.max(
-        650,
+        player.bot ? 650 : 1200,
         Math.max(
           this.game.roundPauseUntil ?? 0,
           this.game.playPauseUntil ?? 0,
@@ -312,11 +417,15 @@ export class MoodRoom extends Room {
       ),
     );
   }
+  private broadcastPresence() {
+    this.broadcast("presence", Object.fromEntries(this.activity));
+  }
   private sendView(client: Client) {
     const id = this.actors.get(client.sessionId);
     if (id)
       client.send("view", {
         ...publicView(this.game, id),
+        presence: Object.fromEntries(this.activity),
         visibility: this.game.visibility ?? "private",
         playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
         roundPauseMs: Math.max(

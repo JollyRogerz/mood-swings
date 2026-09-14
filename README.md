@@ -22,7 +22,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | ------------------ | ------------------------------------------------------------------- |
 | Online multiplayer | Private invite tables for 2–4 players                               |
 | Solo play          | Add one to three bots before starting                               |
-| Difficulty         | Easy, Normal, or Hard, chosen separately for each bot               |
+| Difficulty         | Easy, Normal, Hard, or a real fruit-fly brain circuit, per bot      |
 | Cards              | 133 unique moods with implemented card handlers                     |
 | Standard deck      | 45 unique cards, sampled using the retail rarity counts             |
 | Card reference     | Searchable catalog, full original images, and 497 extracted rulings |
@@ -30,6 +30,10 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Reconnection       | Return to your seat using the same browser and invite link          |
 | Persistence        | PostgreSQL snapshots for the hosted game                            |
 | Rematches          | Host returns the same players and bots to the lobby                 |
+| Table chatter      | Emoji reactions, opponents' hands as card backs, and what each player is doing |
+| Guidance           | The one control that moves the game along glows                     |
+| Decide first       | A card's decisions are previewed and answered from the hand before it is played |
+| Auto-advance       | A turn with no legal play left ends by itself                       |
 | Device support     | Browser interface with responsive layouts; no installer required    |
 
 This release does not include Duel, drafting, team variants, custom deck construction, spectators, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
@@ -42,8 +46,12 @@ This release does not include Duel, drafting, team variants, custom deck constru
 4. Copy the invite link and share it with your friends. They can also enter the room code on the home screen.
 5. Wait for everyone to join. The host can add bots to empty seats.
 6. With two to four players seated, the host selects **Start the game**.
-7. Select a card from your hand and choose **Play mood**. Resolve any decisions the card creates.
-8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions.
+7. Select a card from your hand. If its effect needs a decision, the options appear right there under the card; choose them, then choose **Play mood**. Anything you leave undecided is asked at the table after the play.
+8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions. When you have no legal play left, the table ends your turn for you after the reveal.
+
+While you wait, each opponent's seat shows their hand as face-down card backs and a short line about what they are up to: choosing a mood, holding a card, reading a card, checking the rules, deciding on an effect, or away. Those lines come from the other browser's own interface state and never name a hidden card. Eight emoji reactions float over your avatar for everyone at the table; reactions and activity are broadcast live and are not part of the saved game. The control that moves the game along glows: Start the game, Play mood once a card is selected, Confirm or Skip on a decision, and Continue or End turn when there is nothing left to play.
+
+Selecting a card asks the server to preview the play: it simulates the play on a copy of the game and returns the first decision the card would raise, with the same options and limits the table would show. Answer it, and the next decision is previewed, until the plan is complete. The play is then sent with those answers attached; the engine raises its prompts as usual and the server replays each answer into the prompt it was made for. Any prompt that does not match the preview (for example, one that depends on a random outcome, since previews are re-seeded so they cannot peek at randomness) is asked at the table as before, and you can always play without deciding first.
 
 Every completed card play gets a shared six-second full-size reveal, showing who played it. Humans and bots wait while everyone reads; copied cards identify both the original mood and the copied identity. Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
@@ -58,8 +66,11 @@ Create a table and use the lobby's difficulty selector, then **Add bot**. Repeat
 | Easy       | Seeded random legal choices, including occasional passes               | Relaxed practice and learning the interface                |
 | Normal     | Card, value, and board-state heuristics                                | A more purposeful everyday opponent                        |
 | Hard       | Compares a bounded set of candidate actions in sampled possible states | More deliberate decisions with a modest computation budget |
+| Fly brain  | A mushroom body from the MaleCNS fruit-fly connectome, taught by reward | A real fly circuit that plays a little above Normal        |
 
 This is conventional game AI running inside the server. It does **not** call an external language model, require an AI API key, or incur per-move API charges. Every bot action goes through the same rules engine as a human action.
+
+The **Fly brain** bot (seated as Drosophila) routes each decision through 2,045 Kenyon cells and 45 output neurons of a real fruit fly's mushroom body, using the wiring of the [MaleCNS v1.0 connectome](https://blog.google/innovation-and-ai/technology/research/male-fruit-fly-brain-map/) published by HHMI Janelia and Google Research in September 2026. The wiring and neurotransmitter signs are the fly's; the game encoding and the trained Kenyon cell → output synapses are ours. It was taught by imitating the Hard bot and then by winning and losing whole games, the way dopamine teaches a real fly which smells to approach. Read [docs/fly-brain.md](docs/fly-brain.md) for what is real, what is not, the measured win rates, and how to retrain it.
 
 The bot policy receives a player-specific view: its own hand, public cards, hand counts, legal options, and other public state. It does not receive the actual opponent hands, deck order, internal random generator, or effect queue. Hard constructs hypothetical hidden cards for its simulations; those are guesses, not access to the real hidden cards. It considers at most twelve pre-ranked plays plus passing, with two sampled continuations per candidate. Prompt resolution in those continuations uses the Normal policy.
 
@@ -135,7 +146,7 @@ The hosted PostgreSQL store permits recovery of snapshots updated within the las
 
 ## Run locally
 
-Use Node.js 22 and npm. Python is only needed to rerun the source collector.
+Use Node.js 22 and npm. Python is only needed to rerun the source collector or the fly-circuit extraction.
 
 ```sh
 git clone https://github.com/JollyRogerz/mood-swings.git
@@ -169,7 +180,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **426 passing engine, regression, simulation, bot, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
+The current automated suite contains **440 passing engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -177,6 +188,8 @@ The current automated suite contains **426 passing engine, regression, simulatio
 | `tests/regressions.test.ts`     | Concrete card outcomes, copy and source lifetimes, delayed effects, and file persistence                                       |
 | `tests/simulation.test.ts`      | 60 seeded complete games with two to four players and card-conservation invariants                                             |
 | `tests/bot.test.ts`             | Difficulty behavior, hidden-information independence, card-choice paths, and complete bot matches                              |
+| `tests/fly.test.ts`             | Connectome circuit integrity, feature wiring, sparse codes, legal fly decisions, and a win-rate check against Easy             |
+| `tests/plan.test.ts`            | Previewing a play from the hand, replaying planned answers, mismatch fallback, and re-seeded randomness                        |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
 | `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation address, and mobile layout |
 | `tests/e2e/multiplayer.spec.ts` | Two-browser play/reconnect, card catalog/help/mobile layout, four-player match/rematch, and solo play against a selectable bot |
@@ -235,6 +248,9 @@ The source collector archives ten official pages, extracts card definitions and 
 | `assets/cards/`                  | 135 official gallery images                                                      |
 | `assets/`                        | Additional archived supporting images                                            |
 | `scripts/scrape.py`              | Collection, extraction, normalization, and validation                            |
+| `data/fly/circuit.json`          | Mushroom body wiring extracted from the MaleCNS v1.0 connectome, with checksums  |
+| `data/fly/weights.json`          | Trained Kenyon cell → MBON synapses and the evaluation that produced them        |
+| `scripts/fly/`                   | Circuit extraction, training, and baseline measurement for the fly brain bot     |
 
 To reproduce collection:
 
@@ -254,10 +270,13 @@ src/game/types.ts           Serializable game state and action types
 src/game/catalog.ts         Typed access to the extracted catalog
 src/game/engine.ts          Rules and card-effect implementation
 src/game/bot.ts             Difficulty policies and sampled continuations
+src/game/heuristics.ts      View-only card and decision heuristics shared by the bots
+src/game/fly.ts             Fruit-fly mushroom body encoder, circuit, and readout
+src/game/plan.ts            Preview a play from the hand and replay its planned answers
 src/server/index.ts         HTTP, WebSocket, and static-serving entry point
 src/server/room.ts          Sessions, serialized actions, bots, and broadcasts
 src/server/store.ts         PostgreSQL and local-file persistence
-scripts/                    Source collection
+scripts/                    Source collection and fly-brain extraction and training
 tests/                      Automated rules, bot, restart, and browser tests
 data/                       Source snapshots and processed research
 assets/                     Original card and supporting images

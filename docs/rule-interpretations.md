@@ -64,3 +64,14 @@ regressions, seeded complete-game simulations, persistence, and real browser flo
 They do not exhaust every possible combination of 133 cards. Card notes retain
 editorial inconsistencies; unusual interaction reports should include the room
 code, round, and relevant cards so they can become new regression fixtures.
+
+## Deciding from the hand
+
+Players may answer a card's decisions before playing it. The interface previews
+the play on a copy of the game and shows the same prompts the engine would raise,
+in order; the answers travel with the play and are replayed into the live
+prompts only when the prompt's title matches. The engine's timing is unchanged:
+costs are still paid before entry, values are still read when each effect step
+asks, and a preview is re-seeded so it never reveals a random outcome. A prompt
+that depends on such an outcome, or on another player's decision, is asked at
+the table exactly as before.

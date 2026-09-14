@@ -55,9 +55,15 @@ test("two friends create a table, play a mood, and reconnect", async ({
           (await b.count()) +
           (await current.locator(".played-card-reveal").count()) +
           (await current
-            .getByRole("button", { name: /^(End turn|Continue)$/ })
+            .getByRole("button", { name: /^(End turn|Continue|Moving on)$/ })
             .isEnabled()
-            .then((x) => (x ? 1 : 0))),
+            .then((x) => (x ? 1 : 0))) +
+          // The turn may already have ended by itself.
+          (/’s turn|Round results/.test(
+            await current.locator(".turn-status").innerText(),
+          )
+            ? 1
+            : 0),
       )
       .toBeGreaterThan(0);
     const reveal = current.locator(".played-card-reveal");
@@ -106,7 +112,17 @@ test("two friends create a table, play a mood, and reconnect", async ({
     await expect(chooser.locator(".toast")).toHaveCount(0);
   }
   expect(sawReveal).toBe(true);
-  await current.getByRole("button", { name: /^(End turn|Continue)$/ }).click();
+  // With nothing left to play, the turn ends by itself; otherwise end it.
+  const endTurn = current.getByRole("button", {
+    name: /^(End turn|Continue|Moving on)$/,
+  });
+  if (await endTurn.isEnabled()) await endTurn.click();
+  await expect(endTurn).toBeDisabled();
+  await expect
+    .poll(async () => await current.locator(".turn-status").innerText(), {
+      timeout: 15000,
+    })
+    .not.toMatch(/Your turn|Moving on/);
   await expect(page.locator(".mood-card")).toHaveCount(
     await friend.locator(".mood-card").count(),
   );
@@ -246,16 +262,25 @@ test("solo play adds a selectable bot that takes turns and completes the match",
   await expect(
     page.getByRole("heading", { name: "Good company is on its way." }),
   ).toBeVisible();
-  await page.getByLabel("Bot difficulty").selectOption("easy");
+  await page.getByLabel("Bot difficulty").selectOption("fly");
   await page.getByRole("button", { name: "Add bot", exact: true }).click();
-  await expect(page.getByText("easy bot", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Remove Fern" }).click();
+  await expect(page.getByText("fly brain bot", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Remove Drosophila" }).click();
   await expect(page.locator(".lobby-seat.occupied")).toHaveCount(1);
   await page.getByLabel("Bot difficulty").selectOption("hard");
   await page.getByRole("button", { name: "Add bot", exact: true }).click();
   await expect(page.getByText("hard bot", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Start the game" }),
+  ).toHaveClass(/attention/);
   await page.getByRole("button", { name: "Start the game" }).click();
   await expect(page.locator(".board")).toBeVisible();
+  // The opponent's hand shows as card backs; reactions float over the avatar.
+  await expect(page.locator(".hand-fan")).toHaveCount(1);
+  await expect(page.locator(".hand-fan .card-back.mini")).toHaveCount(5);
+  await expect(page.locator(".reaction-bar button")).toHaveCount(8);
+  await page.getByRole("button", { name: "React 🔥" }).click();
+  await expect(page.locator(".you-label .reaction-bubble")).toHaveText("🔥");
   for (let n = 0; n < 60; n++) {
     await expect
       .poll(
