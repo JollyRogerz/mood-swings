@@ -2187,3 +2187,218 @@ footer a {
     flex-shrink: 0;
   }
 }
+
+/* A spacious felt table, with distinct places for each player. */
+.game-app {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 25%, #e5e7d7 0, #f5f3eb 70%);
+}
+.table-layout {
+  max-width: 2200px;
+}
+.board {
+  background:
+    radial-gradient(ellipse at 50% 35%, #3d79624a, transparent 65%),
+    repeating-linear-gradient(0deg, #ffffff03 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, #00000004 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, #193f35, #153a32 55%, #102f2a);
+  border-color: #bcb99c;
+  border-radius: 26px;
+  box-shadow:
+    0 5px 0 #8a947d,
+    0 18px 40px #152f2426,
+    inset 0 0 0 2px #e1cd8f30,
+    inset 0 0 90px #071e164d;
+}
+.board:after {
+  inset: 10px;
+  border-color: #e2cf962b;
+  border-radius: 13px;
+}
+.player-zone {
+  background: linear-gradient(155deg, #8baf9212, #051f2440);
+  border-color: #b5c8a73d;
+  box-shadow:
+    inset 0 1px 0 #edf3d808,
+    0 8px 18px #031a1512;
+  border-radius: 15px;
+  max-width: none;
+}
+.active-player {
+  border-color: #e5ca83;
+  background: linear-gradient(155deg, #e5ca8315, #15392d80);
+  box-shadow:
+    0 0 0 3px #e5ca8310,
+    0 0 30px #e5ca8310,
+    inset 0 1px 0 #f3e1ad25;
+}
+.player-head {
+  border-bottom: 1px solid #bdccad20;
+  padding-bottom: 12px;
+}
+.empty-zone {
+  color: #b9cbb09c;
+  font-style: italic;
+}
+.board-watermark {
+  opacity: 0.06;
+  font-size: clamp(45px, 5vw, 80px);
+}
+.your-moods {
+  max-width: none;
+  border: 1px solid #a7c0a32b;
+  background: linear-gradient(180deg, #b6d0a908, #052b2320);
+  border-radius: 15px;
+  padding: 15px 18px 8px;
+}
+.zone-label {
+  font-size: 9px;
+  color: #cfdbc2;
+}
+.round-marker {
+  min-width: 90px;
+  padding: 10px 17px;
+  border-radius: 50%;
+  border: 1px solid #cabb8340;
+  background: radial-gradient(circle, #47614b66, #12372e33);
+  box-shadow: 0 0 0 5px #dac78d05;
+}
+.hand-section {
+  margin-top: 20px;
+  padding: 18px 22px;
+  border: 1px solid #d6d8c9;
+  border-radius: 18px;
+  background: #fffdf575;
+  box-shadow: 0 8px 25px #26422e08;
+}
+@media (min-width: 1000px) {
+  .game-app .site-header {
+    height: 68px;
+    padding-inline: 2%;
+  }
+  .table-layout {
+    padding: 20px 2% 32px;
+  }
+  .board {
+    padding: 28px 30px 24px;
+    min-height: clamp(520px, 61vh, 760px);
+  }
+  .opponent-row {
+    gap: 22px;
+  }
+  .player-zone {
+    padding: 18px 20px;
+    min-height: clamp(220px, 25vh, 320px);
+  }
+  .players-2 .player-zone {
+    max-width: 1200px;
+  }
+  .player-head strong {
+    font-size: 14px;
+    font-weight: 550;
+  }
+  .player-head .avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+  }
+  .opponent-score > strong {
+    font-size: 36px;
+  }
+  .opponent-score small {
+    font-size: 8px;
+  }
+  .hand-count {
+    font-size: 12px;
+  }
+  .win-dots small {
+    font-size: 10px;
+  }
+  .mood-row {
+    min-height: 158px;
+    gap: 16px;
+    padding-top: 18px;
+  }
+  .mood-card {
+    --mood-width: 88px;
+  }
+  .table-center {
+    padding: 20px 30px;
+  }
+  .card-back {
+    width: 54px;
+    height: 76px;
+  }
+  .discard-stack img {
+    height: 76px;
+  }
+  .empty-discard {
+    width: 54px;
+    height: 76px;
+  }
+  .deck-stack > span:last-child,
+  .discard-stack > span:last-child {
+    font-size: 10px;
+  }
+  .your-moods .mood-row {
+    min-height: 145px;
+  }
+  .hand-section {
+    padding: 16px 24px 8px;
+  }
+  .hand-card {
+    width: 116px;
+  }
+}
+@media (min-width: 1600px) {
+  .player-zone {
+    min-height: 285px;
+  }
+  .mood-card {
+    --mood-width: 104px;
+  }
+  .mood-row {
+    min-height: 185px;
+  }
+  .your-moods .mood-row {
+    min-height: 170px;
+  }
+}
+@media (max-width: 999px) {
+  .board {
+    border-radius: 18px;
+  }
+  .player-zone {
+    min-height: 160px;
+  }
+  .player-head {
+    padding-bottom: 8px;
+  }
+  .your-moods {
+    padding: 12px 8px 6px;
+  }
+  .hand-section {
+    padding: 14px 10px;
+  }
+}
+@media (max-width: 600px) {
+  .players-4 .player-zone {
+    min-width: calc(50% - 8px);
+  }
+  .players-4 .player-zone:last-child {
+    flex-basis: 100%;
+  }
+  .player-zone {
+    min-height: 150px;
+  }
+  .round-marker {
+    min-width: 74px;
+    padding: 8px 10px;
+  }
+  .table-center {
+    padding-inline: 4px;
+  }
+  .hand-section {
+    margin-top: 15px;
+  }
+}
