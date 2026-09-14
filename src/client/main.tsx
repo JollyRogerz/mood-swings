@@ -1000,7 +1000,12 @@ function App() {
               <h4>DISCARD PILE</h4>
               <div className="discard-list">
                 {view.discard.map((c) => (
-                  <button key={c.uid} onClick={() => setInspect(c.def)}>
+                  <button
+                    key={c.uid}
+                    onClick={() => setInspect(c.def)}
+                    data-card-image={c.image}
+                    data-card-name={c.name}
+                  >
                     <span className={`color-dot ${c.color}`} />
                     {c.name}
                     {view.playable[c.uid] && (
