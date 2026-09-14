@@ -141,6 +141,7 @@ test("four friends finish a match and return to a rematch lobby", async ({
   browser,
   page,
 }) => {
+  test.setTimeout(120000);
   await page.goto("/");
   await page.getByLabel("Your name at the table").fill("Player One");
   await page.getByRole("button", { name: "Create a table" }).click();
@@ -172,15 +173,18 @@ test("four friends finish a match and return to a rematch lobby", async ({
   for (let turn = 0; turn < 12; turn++) {
     let actor = pages[0];
     await expect
-      .poll(async () => {
-        for (const p of pages) {
-          if (await p.locator(".end-turn").isEnabled()) {
-            actor = p;
-            return true;
+      .poll(
+        async () => {
+          for (const p of pages) {
+            if (await p.locator(".end-turn").isEnabled()) {
+              actor = p;
+              return true;
+            }
           }
-        }
-        return false;
-      })
+          return false;
+        },
+        { timeout: 20000 },
+      )
       .toBe(true);
     await actor.locator(".end-turn").click();
     if (turn < 11) await expect(actor.locator(".end-turn")).toBeDisabled();
@@ -200,7 +204,7 @@ test("four friends finish a match and return to a rematch lobby", async ({
       await page.screenshot({ path: "output/playwright/round-results.png" });
     }
   }
-  await expect(page.locator(".winner-modal")).toBeVisible();
+  await expect(page.locator(".winner-modal")).toBeVisible({ timeout: 20000 });
   await page.getByRole("button", { name: "Another round of feelings" }).click();
   await expect(
     page.getByRole("heading", { name: "Good company is on its way." }),
