@@ -42,7 +42,7 @@ describe("fair, selectable bot policies", () => {
     const av = publicView(a, "a"),
       bv = publicView(b, "a");
     expect(av).toEqual(bv);
-    for (const level of ["easy", "normal", "hard"] as Difficulty[])
+    for (const level of ["easy", "normal", "hard", "fly"] as Difficulty[])
       expect(botAction(av, level, 99)).toEqual(botAction(bv, level, 99));
   });
   it("Easy varies its legal moves across seeds", () => {
@@ -90,7 +90,7 @@ describe("fair, selectable bot policies", () => {
       expect(g.prompt).toBeUndefined();
     },
   );
-  it.each(["easy", "normal", "hard"] as Difficulty[])(
+  it.each(["easy", "normal", "hard", "fly"] as Difficulty[])(
     "%s completes matches at all player counts",
     (level) => {
       for (let n = 2; n <= 4; n++) {

@@ -24,6 +24,22 @@ describe("delayed effects and copied identities", () => {
     g = settle(pass(pass(g)));
     expect(find(g, "apathy").zone).toBe("play");
   });
+  it("an extra play survives paying its cost with the mood that granted it", () => {
+    let g = table();
+    add(g, "hope");
+    g.grants.push({
+      id: "hope",
+      label: "Hope",
+      source: "hand",
+      sourceMood: find(g, "hope").uid,
+    });
+    g = play(g, "envy", "hope");
+    g = choose(g, [find(g, "hope").uid]);
+    expect(g.prompt).toBeUndefined();
+    expect(find(g, "envy").zone).toBe("play");
+    expect(find(g, "hope").zone).toBe("discard");
+    expect(g.grants.some((x) => x.id === "hope")).toBe(false);
+  });
   it("Betrayal returns a loan even when Betrayal has left play", () => {
     let g = table();
     const uid = add(g, "love");

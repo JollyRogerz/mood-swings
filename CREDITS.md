@@ -20,6 +20,10 @@ The original game's [published history](https://magic.wizards.com/en/news/making
 
 Thank you as well to every artist whose work appears on the cards and to the wider teams who made the physical game possible. Colby Nichols describes the art direction, frames, card back, and packaging in [Crafting the Visual Identity of Mood Swings](https://magic.wizards.com/en/news/feature/crafting-the-visual-identity-of-mood-swings).
 
+## Fruit fly connectome data
+
+The Fly brain bot uses wiring from **MaleCNS v1.0**, the complete adult male *Drosophila* central nervous system connectome produced by HHMI Janelia Research Campus, Google Research, and collaborators, released in September 2026 under the CC-BY 4.0 license. The extracted circuit in `data/fly/circuit.json` records the source files and checksums. Thank you to the FlyEM and FlyWire teams and every proofreader behind that decade of work. See [docs/fly-brain.md](docs/fly-brain.md).
+
 ## Official pages and public creator accounts
 
 These are reference links for appreciation and discovery. Adding them here does not notify their owners or imply any collaboration.
