@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Client, type Room } from "@colyseus/sdk";
 import {
@@ -31,9 +31,11 @@ import { catalog } from "../game/catalog";
 import {
   PRESENCES,
   REACTIONS,
+  type PlannedChoice,
   type Presence,
   type Reaction,
 } from "../game/types";
+import type { Preview, PromptView } from "../game/plan";
 import type {
   Action,
   Difficulty,
@@ -89,6 +91,7 @@ function App() {
   >([]);
   const [presence, setPresence] = useState<Record<string, Presence>>({});
   const [holding, setHolding] = useState(false);
+  const [plan, setPlan] = useState<Preview>();
   const [hidden, setHidden] = useState(document.hidden);
   const [roundDeadline, setRoundDeadline] = useState(0);
   const [playDeadline, setPlayDeadline] = useState(0);
@@ -145,6 +148,7 @@ function App() {
     joined.onMessage("presence", (p: Record<string, Presence>) =>
       setPresence(p),
     );
+    joined.onMessage("preview", (p: Preview) => setPlan(p));
     joined.onError((_code, message) =>
       setError(message ?? "Connection interrupted."),
     );
@@ -230,6 +234,12 @@ function App() {
   function react(emoji: Reaction) {
     if (connected) room.current?.send("react", { emoji });
   }
+  const requestPlan = useCallback(
+    (card: string, grant: string, choices: PlannedChoice[]) => {
+      if (connected) room.current?.send("preview", { card, grant, choices });
+    },
+    [connected],
+  );
   function send(action: Action) {
     if (!connected || !viewRef.current || busy || interactionPaused) return;
     setBusy(true);
@@ -821,6 +831,8 @@ function App() {
               inspect={setInspect}
               disabled={busy || !connected || interactionPaused}
               onHold={setHolding}
+              plan={plan}
+              requestPlan={requestPlan}
             />
           </section>
           {view.prompt && !interactionPaused && (
@@ -1483,15 +1495,21 @@ function Hand({
   inspect,
   disabled,
   onHold,
+  plan,
+  requestPlan,
 }: {
   view: View;
   send: (a: Action) => void;
   inspect: (id: string) => void;
   disabled: boolean;
   onHold: (holding: boolean) => void;
+  plan?: Preview;
+  requestPlan: (card: string, grant: string, choices: PlannedChoice[]) => void;
 }) {
   const [selected, setSelected] = useState<string>(),
-    [grant, setGrant] = useState("");
+    [grant, setGrant] = useState(""),
+    [choices, setChoices] = useState<PlannedChoice[]>([]),
+    [picked, setPicked] = useState<string[]>([]);
   const card = [...view.hand, ...view.discard].find((c) => c.uid === selected);
   useEffect(() => onHold(!!card), [!!card, onHold]);
   const options = card
@@ -1499,10 +1517,37 @@ function Hand({
         view.grants.find((g) => g.id === id)!,
       )
     : [];
+  const activeGrant = grant || options[0]?.id || "";
   useEffect(() => {
     setSelected(undefined);
     setGrant("");
+    setChoices([]);
   }, [view.revision]);
+  // Ask the table which decision this play would raise, given the answers so far.
+  useEffect(() => {
+    setPicked([]);
+    if (card && activeGrant) requestPlan(card.uid, activeGrant, choices);
+  }, [card?.uid, activeGrant, choices, requestPlan]);
+  const current =
+    plan && card && plan.card === card.uid && plan.grant === activeGrant
+      ? plan
+      : undefined;
+  useEffect(() => {
+    if (current && current.applied < choices.length)
+      setChoices(choices.slice(0, current.applied));
+  }, [current?.applied]);
+  const step = current?.prompt;
+  const visible = [...view.hand, ...view.moods, ...view.discard];
+  function decide(selectedIds: string[]) {
+    if (step)
+      setChoices([...choices, { title: step.title, selected: selectedIds }]);
+  }
+  const stepOk =
+    !!step &&
+    picked.length >= step.min &&
+    picked.length <= step.max &&
+    (!step.constraints?.allowedCounts ||
+      step.constraints.allowedCounts.includes(picked.length));
   const playableDiscard = view.discard.filter((c) => view.playable[c.uid]);
   return (
     <>
@@ -1554,48 +1599,118 @@ function Hand({
       )}
       {card && (
         <div className="card-action">
-          <div>
-            <strong>{card.name}</strong>
-            <span>{card.rules || "No special effect."}</span>
-          </div>
-          <button
-            className="inspect-button"
-            onClick={() => inspect(card.copy ?? card.def)}
-          >
-            Inspect
-          </button>
-          {options.length > 1 && (
-            <select
-              aria-label="Extra play permission"
-              value={grant}
-              onChange={(e) => setGrant(e.target.value)}
+          <div className="card-action-row">
+            <div>
+              <strong>{card.name}</strong>
+              <span>{card.rules || "No special effect."}</span>
+            </div>
+            <button
+              className="inspect-button"
+              onClick={() => inspect(card.copy ?? card.def)}
             >
-              {options.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.label}
-                </option>
+              Inspect
+            </button>
+            {options.length > 1 && (
+              <select
+                aria-label="Extra play permission"
+                value={grant}
+                onChange={(e) => setGrant(e.target.value)}
+              >
+                {options.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.label}
+                  </option>
+                ))}
+              </select>
+            )}
+            <button
+              className={`primary ${!disabled && options.length && !step ? "attention" : ""}`}
+              disabled={disabled || !options.length}
+              onClick={() =>
+                send({
+                  type: "play",
+                  card: card.uid,
+                  grant: activeGrant,
+                  choices,
+                })
+              }
+            >
+              Play mood <ArrowUpRight size={16} />
+            </button>
+            <button
+              onClick={() => setSelected(undefined)}
+              aria-label="Deselect card"
+            >
+              <X size={18} />
+            </button>
+          </div>
+          {(choices.length > 0 || step) && (
+            <div className="card-plan" data-plan-step={choices.length + 1}>
+              {choices.map((c, i) => (
+                <div className="plan-decided" key={i}>
+                  <Check size={13} />
+                  <span>
+                    <b>{c.title}</b>
+                    {": "}
+                    {c.selected.length
+                      ? c.selected
+                          .map((id) => {
+                            const m = visible.find((x) => x.uid === id);
+                            return m ? m.name : id;
+                          })
+                          .join(", ")
+                      : "skipped"}
+                  </span>
+                  {i === choices.length - 1 && (
+                    <button
+                      className="text-button"
+                      onClick={() => setChoices(choices.slice(0, i))}
+                    >
+                      Change
+                    </button>
+                  )}
+                </div>
               ))}
-            </select>
+              {step && (
+                <div className="plan-step">
+                  <div className="choice-eyebrow">
+                    <Sparkles size={13} /> DECIDE BEFORE YOU PLAY
+                  </div>
+                  <h4>{step.title}</h4>
+                  <p>{choiceHint(step)}</p>
+                  <ChoiceOptions
+                    q={step}
+                    visible={visible}
+                    selected={picked}
+                    onToggle={(id) => setPicked(togglePick(picked, id, step))}
+                  />
+                  <div className="choice-actions">
+                    {step.min === 0 && (
+                      <button
+                        className={`text-button ${!picked.length ? "attention" : ""}`}
+                        onClick={() => decide([])}
+                      >
+                        Skip effect
+                      </button>
+                    )}
+                    <button
+                      className={`primary ${stepOk && picked.length ? "attention" : ""}`}
+                      disabled={!stepOk}
+                      onClick={() => decide(picked)}
+                    >
+                      Choose{picked.length ? ` (${picked.length})` : ""}
+                      <Check size={15} />
+                    </button>
+                  </div>
+                </div>
+              )}
+              {!step && current?.done && (
+                <p className="plan-ready">
+                  <Check size={13} /> Decisions made. Play when ready.
+                </p>
+              )}
+            </div>
           )}
-          <button
-            className={`primary ${!disabled && options.length ? "attention" : ""}`}
-            disabled={disabled || !options.length}
-            onClick={() =>
-              send({
-                type: "play",
-                card: card.uid,
-                grant: grant || options[0]?.id,
-              })
-            }
-          >
-            Play mood <ArrowUpRight size={16} />
-          </button>
-          <button
-            onClick={() => setSelected(undefined)}
-            aria-label="Deselect card"
-          >
-            <X size={18} />
-          </button>
         </div>
       )}
     </>
@@ -1613,17 +1728,6 @@ function ChoicePanel({
   const q = view.prompt!;
   const [selected, setSelected] = useState<string[]>([]);
   const visible = [...view.hand, ...view.moods, ...view.discard];
-  function toggle(id: string) {
-    setSelected((old) =>
-      old.includes(id)
-        ? old.filter((x) => x !== id)
-        : q.max === 1
-          ? [id]
-          : old.length < q.max
-            ? [...old, id]
-            : old,
-    );
-  }
   const confirmable =
     !disabled &&
     selected.length >= q.min &&
@@ -1640,33 +1744,13 @@ function ChoicePanel({
         <Sparkles size={15} /> A FEELING NEEDS YOUR ATTENTION
       </div>
       <h3>{q.title}</h3>
-      <p>
-        {q.min === q.max
-          ? `Choose ${q.min}`
-          : `Choose ${q.min ? `${q.min}–${q.max}` : `up to ${q.max}`}`}
-        {q.constraints?.maxValue !== undefined
-          ? ` · Total value ≤ ${q.constraints.maxValue}`
-          : ""}
-        {q.constraints?.differentPlayers ? " · One per player" : ""}
-      </p>
-      <div className="choice-options">
-        {q.options.map((o) => {
-          const c = visible.find((c) => c.uid === o.card);
-          return (
-            <button
-              key={o.id}
-              className={selected.includes(o.id) ? "chosen" : ""}
-              onClick={() => toggle(o.id)}
-            >
-              {c && <img src={c.image} alt="" />}
-              <span>{o.label}</span>
-              <span className="choice-check">
-                {selected.includes(o.id) && <Check size={14} />}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      <p>{choiceHint(q)}</p>
+      <ChoiceOptions
+        q={q}
+        visible={visible}
+        selected={selected}
+        onToggle={(id) => setSelected((old) => togglePick(old, id, q))}
+      />
       <div className="choice-actions">
         {q.min === 0 && (
           <button
@@ -1687,6 +1771,58 @@ function ChoicePanel({
         </button>
       </div>
     </aside>
+  );
+}
+function choiceHint(q: PromptView) {
+  return (
+    (q.min === q.max
+      ? `Choose ${q.min}`
+      : `Choose ${q.min ? `${q.min}–${q.max}` : `up to ${q.max}`}`) +
+    (q.constraints?.maxValue !== undefined
+      ? ` · Total value ≤ ${q.constraints.maxValue}`
+      : "") +
+    (q.constraints?.differentPlayers ? " · One per player" : "")
+  );
+}
+function togglePick(old: string[], id: string, q: PromptView) {
+  return old.includes(id)
+    ? old.filter((x) => x !== id)
+    : q.max === 1
+      ? [id]
+      : old.length < q.max
+        ? [...old, id]
+        : old;
+}
+function ChoiceOptions({
+  q,
+  visible,
+  selected,
+  onToggle,
+}: {
+  q: PromptView;
+  visible: PublicCard[];
+  selected: string[];
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <div className="choice-options">
+      {q.options.map((o) => {
+        const c = visible.find((c) => c.uid === o.card);
+        return (
+          <button
+            key={o.id}
+            className={selected.includes(o.id) ? "chosen" : ""}
+            onClick={() => onToggle(o.id)}
+          >
+            {c && <img src={c.image} alt="" />}
+            <span>{o.label}</span>
+            <span className="choice-check">
+              {selected.includes(o.id) && <Check size={14} />}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 function Catalog({

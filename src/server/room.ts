@@ -9,15 +9,26 @@ import {
   startGame,
 } from "../game/engine";
 import { botAction } from "../game/bot";
+import { playPlanned, previewPlay } from "../game/plan";
 import {
   PRESENCES,
   REACTIONS,
   type Action,
   type Difficulty,
   type Game,
+  type PlannedChoice,
   type Presence,
   type PublicRoom,
 } from "../game/types";
+const plannedChoices = (raw: unknown): PlannedChoice[] =>
+  Array.isArray(raw)
+    ? raw.slice(0, 12).map((c) => ({
+        title: String(c?.title ?? ""),
+        selected: Array.isArray(c?.selected)
+          ? c.selected.slice(0, 12).map(String)
+          : [],
+      }))
+    : [];
 import { store } from "./store";
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
@@ -88,11 +99,44 @@ export class MoodRoom extends Room {
           throw new RuleError(
             "A played card is being revealed. Play resumes shortly.",
           );
-        const next = act(this.game, actor, message.action as Action);
+        const action = message.action as Action;
+        if (action?.type === "play")
+          action.choices = plannedChoices(action.choices);
+        const next = playPlanned(this.game, actor, action);
         await this.commit(next);
         if (this.activity.delete(actor)) this.broadcastPresence();
       }, client),
     );
+    // Preview a play from the hand: which decision would it ask next?
+    this.onMessage("preview", (client, message) => {
+      try {
+        this.limit(client);
+        const actor = this.actor(client);
+        if (
+          this.game.status !== "playing" ||
+          this.game.prompt ||
+          this.game.scoring ||
+          this.game.order[this.game.turnIndex] !== actor
+        )
+          return;
+        client.send(
+          "preview",
+          previewPlay(
+            this.game,
+            actor,
+            String(message?.card ?? ""),
+            String(message?.grant ?? ""),
+            plannedChoices(message?.choices),
+          ),
+        );
+      } catch (error) {
+        if (!(error instanceof RuleError) && !(error instanceof ServerError))
+          console.error(
+            "Preview failed",
+            error instanceof Error ? error.message : "Unknown error",
+          );
+      }
+    });
     this.onMessage("react", (client, message) =>
       this.enqueue(async () => {
         this.limit(client);

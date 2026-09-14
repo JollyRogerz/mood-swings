@@ -3113,3 +3113,66 @@ footer a {
     display: none;
   }
 }
+/* Deciding a card's effects from the hand */
+.card-action {
+  flex-direction: column;
+  align-items: stretch;
+}
+.card-action-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.card-action-row > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.card-plan {
+  border-top: 1px dashed #d8dbcb;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.plan-decided {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  color: #42664a;
+  padding: 4px 0;
+}
+.plan-decided span {
+  flex: 1;
+}
+.plan-decided b {
+  font-weight: 600;
+}
+.plan-decided .text-button {
+  font-size: 10px;
+}
+.plan-step h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  margin: 6px 0 2px;
+}
+.plan-step > p {
+  font-size: 10px;
+  color: #7a8371;
+  margin: 0 0 8px;
+}
+.plan-step .choice-options {
+  max-height: 26vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+.plan-step .choice-actions {
+  margin-top: 10px;
+}
+.plan-ready {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: #42664a;
+  margin: 0;
+}

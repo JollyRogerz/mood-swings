@@ -159,8 +159,13 @@ export interface Game {
   pride?: string;
   seed: number;
 }
+// A decision answered from the hand, before the card is played.
+export interface PlannedChoice {
+  title: string;
+  selected: string[];
+}
 export type Action =
-  | { type: "play"; card: string; grant: string }
+  | { type: "play"; card: string; grant: string; choices?: PlannedChoice[] }
   | { type: "choose"; prompt: string; selected: string[] }
   | { type: "pass" };
 export interface PublicCard extends Mood {
