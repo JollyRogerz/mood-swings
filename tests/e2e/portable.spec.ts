@@ -215,6 +215,17 @@ test("four seats support touch, opponent navigation, rotation, reactions, and ro
   await fits(page, results);
   await expect(results.locator(".round-score-list > div")).toHaveCount(4);
   await page.screenshot({ path: info.outputPath("phone-results.png") });
+  await expect(results).toHaveCount(0, { timeout: 15000 });
+  await page.getByRole("button", { name: "Review last round" }).tap();
+  const recap = page.getByRole("dialog", { name: "Round 1 recap" });
+  await fits(page, recap);
+  await expect(
+    recap.getByText("FIRST NEXT ROUND", { exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: info.outputPath("phone-recap.png") });
+  await recap.getByRole("button", { name: "Back to table" }).tap();
+  await expect(recap).toHaveCount(0);
+  await noOverflow(page);
   for (const context of contexts) await context.close();
 });
 

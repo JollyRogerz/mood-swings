@@ -125,41 +125,9 @@ export function TableSettings({
 }) {
   const [open, setOpen] = useState(false);
   useOverlayScrollLock(open);
-  const trigger = useRef<HTMLButtonElement>(null),
-    panel = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!open) return;
-    panel.current?.querySelector<HTMLButtonElement>("button")?.focus();
-    const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-      if (e.key === "Tab") {
-        const items = [
-          ...(panel.current?.querySelectorAll<HTMLElement>(
-            "button, input, select",
-          ) ?? []),
-        ];
-        if (e.shiftKey && document.activeElement === items[0]) {
-          e.preventDefault();
-          items.at(-1)?.focus();
-        } else if (!e.shiftKey && document.activeElement === items.at(-1)) {
-          e.preventDefault();
-          items[0]?.focus();
-        }
-      }
-    };
-    document.addEventListener("keydown", key);
-    return () => {
-      document.removeEventListener("keydown", key);
-      trigger.current?.focus();
-    };
-  }, [open]);
   return (
     <>
-      <button
-        ref={trigger}
-        onClick={() => setOpen(true)}
-        aria-label="Table settings"
-      >
+      <button onClick={() => setOpen(true)} aria-label="Table settings">
         <Settings2 size={18} />
       </button>
       {open && (
@@ -169,7 +137,6 @@ export function TableSettings({
         >
           <div
             className="preferences-panel"
-            ref={panel}
             role="dialog"
             aria-modal="true"
             aria-label="Table settings"
@@ -177,6 +144,7 @@ export function TableSettings({
           >
             <button
               className="close-modal"
+              data-dialog-close
               aria-label="Close settings"
               onClick={() => setOpen(false)}
             >

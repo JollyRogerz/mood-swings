@@ -32,6 +32,8 @@ import {
   Wifi,
   WifiOff,
   MessageSquare,
+  History,
+  AlertCircle,
 } from "lucide-react";
 import { catalog } from "../game/catalog";
 import {
@@ -53,6 +55,9 @@ import "./style.css";
 import "./scrapbook.css";
 import "./polish.css";
 import "./portable.css";
+import "./clarity.css";
+import { choiceHint, selectionFeedback } from "./selection";
+import { useModalNavigation } from "./dialogs";
 import {
   OpponentOverview,
   useOverlayScrollLock,
@@ -99,6 +104,7 @@ const startingCode =
   location.pathname.match(/^\/room\/([A-Z2-9]{8})$/i)?.[1].toUpperCase() ?? "";
 function App() {
   usePortableViewport();
+  useModalNavigation();
   const { preferences, update, reduced } = usePreferences();
   const [targets, setTargets] = useState<Targets>();
   const [reactionsOpen, setReactionsOpen] = useState(false);
@@ -121,6 +127,7 @@ function App() {
   const [presence, setPresence] = useState<Record<string, Presence>>({});
   const [holding, setHolding] = useState(false);
   const [plan, setPlan] = useState<Preview>();
+  const [recap, setRecap] = useState<RoundResultView>();
   const [hidden, setHidden] = useState(document.hidden);
   const [roundDeadline, setRoundDeadline] = useState(0);
   const [playDeadline, setPlayDeadline] = useState(0);
@@ -132,6 +139,7 @@ function App() {
     !!inspect ||
       help ||
       catalogOpen ||
+      !!recap ||
       interactionPaused ||
       view?.status === "finished",
   );
@@ -141,6 +149,27 @@ function App() {
   const table = usePresentedTable(view, playPaused && !roundPaused, connected);
   useTableMotion(table, reduced, connected);
   useTurnSound(view, interactionPaused, connected);
+  useEffect(() => {
+    const mine = view?.status === "playing" && connected && !interactionPaused;
+    document.title =
+      mine && view.prompt
+        ? "Your choice · Mood Swings"
+        : mine && view.active === view.you
+          ? "Your turn · Mood Swings"
+          : "Mood Swings — A table for every feeling";
+    return () => {
+      document.title = "Mood Swings — A table for every feeling";
+    };
+  }, [
+    view?.active,
+    view?.waitingFor,
+    view?.status,
+    connected,
+    interactionPaused,
+  ]);
+  useEffect(() => {
+    if (interactionPaused) setRecap(undefined);
+  }, [interactionPaused]);
   useEffect(() => {
     if (!interactionPaused) return;
     const timer = setInterval(() => setClockNow(Date.now()), 100);
@@ -304,6 +333,7 @@ function App() {
     }
   }
   function leave() {
+    setRecap(undefined);
     keepConnected.current = false;
     clearTimeout(timer.current);
     room.current?.leave();
@@ -763,11 +793,31 @@ function App() {
                 ? "A moment for everyone to take it in."
                 : (view.log.at(-1)?.text ?? "Your table is ready.")}
             </span>
-            {view.lastPlayed && (
-              <button onClick={() => setInspect(view.lastPlayed!.def)}>
-                Last played <ArrowUpRight size={14} />
-              </button>
-            )}
+            <div className="feedback-actions">
+              {view.lastRound && (
+                <button
+                  disabled={interactionPaused}
+                  onClick={() =>
+                    setRecap({
+                      lastRound: view.lastRound,
+                      players: view.players,
+                      you: view.you,
+                      status: view.status,
+                      winner: view.winner,
+                      pace: view.pace,
+                    })
+                  }
+                  aria-label="Review last round"
+                >
+                  <History size={14} /> Last round
+                </button>
+              )}
+              {view.lastPlayed && (
+                <button onClick={() => setInspect(view.lastPlayed!.def)}>
+                  Last played <ArrowUpRight size={14} />
+                </button>
+              )}
+            </div>
           </div>
           <section className={`board players-${view.players.length}`}>
             <OpponentOverview view={table!} reduced={reduced} />
@@ -895,7 +945,9 @@ function App() {
                         : view.scoring
                           ? "Scoring the round"
                           : view.waitingFor
-                            ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
+                            ? view.waitingFor === view.you
+                              ? "Choose how this feeling plays out"
+                              : `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
                             : view.active === view.you
                               ? outOfPlays
                                 ? "Nothing left to play. Moving on…"
@@ -1037,9 +1089,17 @@ function App() {
           {roundPaused && view.lastRound && (
             <RoundResults view={view} remaining={roundDeadline - clockNow} />
           )}
+          {recap && !interactionPaused && (
+            <RoundResults view={recap} onClose={() => setRecap(undefined)} />
+          )}
           {view.status === "finished" && !interactionPaused && (
             <div className="modal-backdrop">
-              <div className="winner-modal">
+              <div
+                className="winner-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Match results"
+              >
                 <span className="winner-flower">✳</span>
                 <span className="eyebrow">THAT’S A LOT OF FEELINGS</span>
                 <h1>
@@ -1089,6 +1149,7 @@ function App() {
           >
             <button
               className="close-modal"
+              data-dialog-close
               onClick={() => setInspect(undefined)}
               aria-label="Close card"
             >
@@ -1128,6 +1189,7 @@ function App() {
           >
             <button
               className="close-modal"
+              data-dialog-close
               onClick={() => setHelp(false)}
               aria-label="Close rules"
             >
@@ -1320,12 +1382,23 @@ function PlayedCardReveal({
     </div>
   );
 }
-function RoundResults({ view, remaining }: { view: View; remaining: number }) {
+type RoundResultView = Pick<
+  View,
+  "lastRound" | "players" | "you" | "status" | "winner" | "pace"
+>;
+function RoundResults({
+  view,
+  remaining = 0,
+  onClose,
+}: {
+  view: RoundResultView;
+  remaining?: number;
+  onClose?: () => void;
+}) {
   const result = view.lastRound!;
-  const elapsed = Math.max(
-    0,
-    9000 * (1 - remaining / pacing(view.pace).results),
-  );
+  const elapsed = onClose
+    ? 9000
+    : Math.max(0, 9000 * (1 - remaining / pacing(view.pace).results));
   const [reducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
@@ -1341,18 +1414,30 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
       (n) => n === result.scores[result.winner!],
     ).length > 1;
   return (
-    <div className="modal-backdrop round-results-backdrop">
+    <div className="modal-backdrop round-results-backdrop" onClick={onClose}>
       <section
-        className="round-results"
+        className={`round-results ${onClose ? "round-recap" : ""}`}
+        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label={`Round ${result.round} results`}
+        aria-label={`Round ${result.round} ${onClose ? "recap" : "results"}`}
       >
+        {onClose && (
+          <button
+            className="close-modal"
+            data-dialog-close
+            onClick={onClose}
+            aria-label="Close round recap"
+          >
+            <X />
+          </button>
+        )}
         <div className="round-result-emblem">
           <Sparkles size={22} />
         </div>
         <span className="eyebrow">
-          ROUND {String(result.round).padStart(2, "0")} · RESULTS
+          ROUND {String(result.round).padStart(2, "0")} ·{" "}
+          {onClose ? "RECAP" : "RESULTS"}
         </span>
         <h2 aria-live="polite">
           {stage === 0
@@ -1370,9 +1455,10 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
         {result.winner ? (
           <div className="round-score-list">
             {order.map((id, i) => {
-              const progress = reducedMotion
-                ? 1
-                : Math.min(1, Math.max(0, (elapsed - i * 120) / 1200));
+              const progress =
+                reducedMotion || onClose
+                  ? 1
+                  : Math.min(1, Math.max(0, (elapsed - i * 120) / 1200));
               const displayedScore = Math.round(
                 (result.scores[id] ?? 0) * (1 - Math.pow(1 - progress, 3)),
               );
@@ -1478,28 +1564,43 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
             </p>
           </div>
         </div>
-        <div className="round-stage-track" aria-label="Round result progress">
-          {(result.winner
-            ? ["Points", "Winner", "Feelings", "Next round"]
-            : ["Awe", "No scoring", "Feelings", "Next round"]
-          ).map((label, i) => (
-            <span
-              key={label}
-              className={stage >= i ? "revealed" : ""}
-              aria-current={stage === i ? "step" : undefined}
+        {!onClose && (
+          <>
+            <div
+              className="round-stage-track"
+              aria-label="Round result progress"
             >
-              <i />
-              {label}
-            </span>
-          ))}
-        </div>
-        <div className="round-progress">
-          <span style={{ width: `${Math.min(100, elapsed / 90)}%` }} />
-        </div>
-        <small>
-          {view.status === "finished" ? "Final results" : "Play resumes"} in{" "}
-          {Math.max(1, Math.ceil(remaining / 1000))}s
-        </small>
+              {(result.winner
+                ? ["Points", "Winner", "Feelings", "Next round"]
+                : ["Awe", "No scoring", "Feelings", "Next round"]
+              ).map((label, i) => (
+                <span
+                  key={label}
+                  className={stage >= i ? "revealed" : ""}
+                  aria-current={stage === i ? "step" : undefined}
+                >
+                  <i />
+                  {label}
+                </span>
+              ))}
+            </div>
+            <div className="round-progress">
+              <span style={{ width: `${Math.min(100, elapsed / 90)}%` }} />
+            </div>
+            <small>
+              {view.status === "finished" ? "Final results" : "Play resumes"} in{" "}
+              {Math.max(1, Math.ceil(remaining / 1000))}s
+            </small>
+          </>
+        )}
+        {onClose && (
+          <div className="recap-footer">
+            <p>Take another look. Play continues at the table.</p>
+            <button className="primary" onClick={onClose}>
+              Back to table <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
       </section>
     </div>
   );
@@ -1732,6 +1833,7 @@ function Hand({
     [grant, setGrant] = useState(""),
     [choices, setChoices] = useState<PlannedChoice[]>([]),
     [picked, setPicked] = useState<string[]>([]);
+  const choiceLabels = useRef<Record<string, string>>({});
   const card = [...view.hand, ...view.discard].find((c) => c.uid === selected);
   useEffect(() => onHold(!!card), [!!card, onHold]);
   const options = card
@@ -1741,17 +1843,27 @@ function Hand({
     : [];
   const activeGrant = grant || options[0]?.id || "";
   useEffect(() => {
-    setSelected(undefined);
+    if (!card || view.prompt) setSelected(undefined);
     setGrant("");
     setChoices([]);
   }, [view.revision]);
+  useEffect(() => {
+    // A played card can return to hand or discard during its own effect.
+    // Finish the selection even when its physical card is still visible.
+    if (view.lastPlayed?.actor === view.you) setSelected(undefined);
+  }, [view.lastPlayed?.id]);
   // Ask the table which decision this play would raise, given the answers so far.
   useEffect(() => {
     setPicked([]);
     if (card && activeGrant) requestPlan(card.uid, activeGrant, choices);
-  }, [card?.uid, activeGrant, choices, requestPlan]);
+  }, [card?.uid, activeGrant, choices, requestPlan, view.revision]);
   const current =
-    plan && card && plan.card === card.uid && plan.grant === activeGrant
+    plan &&
+    plan.revision === view.revision &&
+    plan.choicesKey === JSON.stringify(choices) &&
+    card &&
+    plan.card === card.uid &&
+    plan.grant === activeGrant
       ? plan
       : undefined;
   useEffect(() => {
@@ -1772,15 +1884,13 @@ function Hand({
 
   const visible = [...view.hand, ...view.moods, ...view.discard];
   function decide(selectedIds: string[]) {
-    if (step)
+    if (step) {
+      for (const option of step.options)
+        choiceLabels.current[option.id] = option.label;
       setChoices([...choices, { title: step.title, selected: selectedIds }]);
+    }
   }
-  const stepOk =
-    !!step &&
-    picked.length >= step.min &&
-    picked.length <= step.max &&
-    (!step.constraints?.allowedCounts ||
-      step.constraints.allowedCounts.includes(picked.length));
+  const stepOk = !!step && selectionFeedback(step, picked).valid;
   const playableDiscard = view.discard.filter((c) => view.playable[c.uid]);
   return (
     <>
@@ -1809,10 +1919,12 @@ function Hand({
               sound("lift");
               setSelected(c.uid);
               setGrant(view.playable[c.uid]?.[0] ?? "");
+              setChoices([]);
             }}
             data-card-image={c.image}
             data-card-name={c.name}
             aria-label={`Select ${c.name}`}
+            aria-pressed={selected === c.uid}
           >
             <img src={c.image} alt={c.name} />
             <span>{c.name}</span>
@@ -1835,6 +1947,7 @@ function Hand({
               onClick={() => {
                 setSelected(c.uid);
                 setGrant(view.playable[c.uid][0]);
+                setChoices([]);
               }}
             >
               {c.name}
@@ -1862,8 +1975,12 @@ function Hand({
             {options.length > 1 && (
               <select
                 aria-label="Extra play permission"
-                value={grant}
-                onChange={(e) => setGrant(e.target.value)}
+                value={activeGrant}
+                disabled={disabled}
+                onChange={(e) => {
+                  setGrant(e.target.value);
+                  setChoices([]);
+                }}
               >
                 {options.map((g) => (
                   <option key={g.id} value={g.id}>
@@ -1874,17 +1991,33 @@ function Hand({
             )}
             <button
               className={`primary ${!disabled && options.length && !step ? "attention" : ""}`}
-              disabled={disabled || !options.length}
+              disabled={
+                disabled ||
+                !options.length ||
+                !current ||
+                (!!step && picked.length > 0 && !stepOk)
+              }
+              title={
+                step
+                  ? picked.length
+                    ? "Play with your selected choices"
+                    : "Play now and resolve this choice at the table"
+                  : undefined
+              }
               onClick={() =>
                 send({
                   type: "play",
                   card: card.uid,
                   grant: activeGrant,
-                  choices,
+                  choices:
+                    step && picked.length
+                      ? [...choices, { title: step.title, selected: picked }]
+                      : choices,
                 })
               }
             >
-              Play mood <ArrowUpRight size={16} />
+              {options.length && !current ? "Checking choices…" : "Play mood"}{" "}
+              <ArrowUpRight size={16} />
             </button>
             <button
               onClick={() => setSelected(undefined)}
@@ -1893,6 +2026,13 @@ function Hand({
               <X size={18} />
             </button>
           </div>
+          {!options.length && (
+            <p className="card-availability">
+              {view.active !== view.you
+                ? "Keep reading while you wait. Your playable cards light up on your turn."
+                : "This mood cannot use your remaining plays. Check its cost or choose another mood."}
+            </p>
+          )}
           {(choices.length > 0 || step) && (
             <div className="card-plan" data-plan-step={choices.length + 1}>
               {choices.map((c, i) => (
@@ -1905,7 +2045,12 @@ function Hand({
                       ? c.selected
                           .map((id) => {
                             const m = visible.find((x) => x.uid === id);
-                            return m ? m.name : id;
+                            return (
+                              choiceLabels.current[id] ??
+                              m?.name ??
+                              view.players.find((p) => p.id === id)?.name ??
+                              id
+                            );
                           })
                           .join(", ")
                       : "skipped"}
@@ -1929,14 +2074,17 @@ function Hand({
                   <p>{choiceHint(step)}</p>
                   <ChoiceOptions
                     q={step}
+                    disabled={disabled}
                     visible={visible}
                     selected={picked}
                     onToggle={(id) => setPicked(togglePick(picked, id, step))}
                   />
+                  <SelectionFeedback q={step} selected={picked} />
                   <div className="choice-actions">
                     {step.min === 0 && (
                       <button
                         className={`text-button ${!picked.length ? "attention" : ""}`}
+                        disabled={disabled}
                         onClick={() => decide([])}
                       >
                         Skip effect
@@ -1944,7 +2092,7 @@ function Hand({
                     )}
                     <button
                       className={`primary ${stepOk && picked.length ? "attention" : ""}`}
-                      disabled={!stepOk}
+                      disabled={disabled || !stepOk}
                       onClick={() => decide(picked)}
                     >
                       Choose{picked.length ? ` (${picked.length})` : ""}
@@ -1955,7 +2103,8 @@ function Hand({
               )}
               {!step && current?.done && (
                 <p className="plan-ready">
-                  <Check size={13} /> Decisions made. Play when ready.
+                  <Check size={13} /> Ready to play. Any further choices happen
+                  at the table.
                 </p>
               )}
             </div>
@@ -1988,12 +2137,7 @@ function ChoicePanel({
     return () => setTargets(undefined);
   }, [q, selected, disabled, setTargets]);
   const visible = [...view.hand, ...view.moods, ...view.discard];
-  const confirmable =
-    !disabled &&
-    selected.length >= q.min &&
-    selected.length <= q.max &&
-    (!q.constraints?.allowedCounts ||
-      q.constraints.allowedCounts.includes(selected.length));
+  const confirmable = !disabled && selectionFeedback(q, selected).valid;
   return (
     <aside
       className="choice-panel"
@@ -2007,10 +2151,12 @@ function ChoicePanel({
       <p>{choiceHint(q)}</p>
       <ChoiceOptions
         q={q}
+        disabled={disabled}
         visible={visible}
         selected={selected}
         onToggle={(id) => setSelected((old) => togglePick(old, id, q))}
       />
+      <SelectionFeedback q={q} selected={selected} />
       <div className="choice-actions">
         {q.min === 0 && (
           <button
@@ -2033,15 +2179,50 @@ function ChoicePanel({
     </aside>
   );
 }
-function choiceHint(q: PromptView) {
+function SelectionFeedback({
+  q,
+  selected,
+}: {
+  q: PromptView;
+  selected: string[];
+}) {
+  const feedback = selectionFeedback(q, selected);
+  const warning = !feedback.valid && selected.length > 0;
   return (
-    (q.min === q.max
-      ? `Choose ${q.min}`
-      : `Choose ${q.min ? `${q.min}–${q.max}` : `up to ${q.max}`}`) +
-    (q.constraints?.maxValue !== undefined
-      ? ` · Total value ≤ ${q.constraints.maxValue}`
-      : "") +
-    (q.constraints?.differentPlayers ? " · One per player" : "")
+    <div
+      className={`selection-feedback ${warning ? "selection-warning" : feedback.valid && selected.length ? "selection-ready" : ""}`}
+      role="status"
+      aria-live="polite"
+    >
+      <div>
+        <span>{feedback.count} selected</span>
+        {feedback.limit !== undefined && feedback.total !== undefined && (
+          <strong>
+            {feedback.total} / {feedback.limit} points
+          </strong>
+        )}
+      </div>
+      {feedback.limit !== undefined && feedback.total !== undefined && (
+        <div className="selection-meter" aria-hidden="true">
+          <i
+            style={{
+              width: `${Math.min(100, (feedback.total / Math.max(1, feedback.limit)) * 100)}%`,
+            }}
+          />
+        </div>
+      )}
+      <p>
+        {warning ? (
+          <AlertCircle size={14} />
+        ) : feedback.valid && selected.length ? (
+          <Check size={14} />
+        ) : null}
+        {feedback.problem ||
+          (selected.length
+            ? "Looks good. Confirm when you’re ready."
+            : "This effect is optional. Choose a target or skip.")}
+      </p>
+    </div>
   );
 }
 function togglePick(old: string[], id: string, q: PromptView) {
@@ -2058,11 +2239,13 @@ function ChoiceOptions({
   visible,
   selected,
   onToggle,
+  disabled,
 }: {
   q: PromptView;
   visible: PublicCard[];
   selected: string[];
   onToggle: (id: string) => void;
+  disabled: boolean;
 }) {
   return (
     <div className="choice-options">
@@ -2073,6 +2256,10 @@ function ChoiceOptions({
             key={o.id}
             className={selected.includes(o.id) ? "chosen" : ""}
             onClick={() => onToggle(o.id)}
+            disabled={disabled}
+            aria-pressed={selected.includes(o.id)}
+            data-card-image={c?.image}
+            data-card-name={c?.name}
           >
             {c && <img src={c.image} alt="" />}
             <span>{o.label}</span>
@@ -2102,13 +2289,18 @@ function Catalog({
         .includes(search.toLowerCase()),
   );
   return (
-    <div className="catalog-overlay">
+    <div
+      className="catalog-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Card catalog"
+    >
       <header>
         <div>
           <span className="eyebrow">THE WHOLE SPECTRUM</span>
           <h2>133 ways to feel.</h2>
         </div>
-        <button onClick={close} aria-label="Close catalog">
+        <button onClick={close} data-dialog-close aria-label="Close catalog">
           <X size={24} />
         </button>
       </header>
@@ -2128,6 +2320,7 @@ function Catalog({
               key={c}
               onClick={() => setFilter(c)}
               className={filter === c ? "selected" : ""}
+              aria-pressed={filter === c}
             >
               {c !== "all" && <span className={`color-dot ${c}`} />} {c}
             </button>
@@ -2151,6 +2344,24 @@ function Catalog({
           </button>
         ))}
       </div>
+      {!cards.length && (
+        <div className="catalog-empty">
+          <Search size={24} />
+          <h3>No moods found.</h3>
+          <p>
+            Try a different name or clear your filters to see all 133 cards.
+          </p>
+          <button
+            className="primary"
+            onClick={() => {
+              setSearch("");
+              setFilter("all");
+            }}
+          >
+            Show all cards
+          </button>
+        </div>
+      )}
     </div>
   );
 }

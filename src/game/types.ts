@@ -76,6 +76,8 @@ export interface Option {
   label: string;
   card?: string;
   player?: string;
+  value?: number;
+  color?: Color;
 }
 export interface Prompt {
   id: string;

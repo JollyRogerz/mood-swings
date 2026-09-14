@@ -53,9 +53,13 @@ While you wait, each opponent's seat shows their hand as face-down card backs an
 
 Selecting a card asks the server to preview the play: it simulates the play on a copy of the game and returns the first decision the card would raise, with the same options and limits the table would show. Answer it, and the next decision is previewed, until the plan is complete. The play is then sent with those answers attached; the engine raises its prompts as usual and the server replays each answer into the prompt it was made for. Any prompt that does not match the preview (for example, one that depends on a random outcome, since previews are re-seeded so they cannot peek at randomness) is asked at the table as before, and you can always play without deciding first.
 
+Effect choices show a live selection count, a point-budget meter when relevant, and specific guidance for matching pairs or player restrictions. Invalid combinations cannot be confirmed. The values come from the server's decision state, including value changes caused by entering play; previews identify both the board revision and the exact answers they evaluated. **Play mood** also applies valid targets currently selected in its preview, so those choices are not silently dropped. Cards you are reading remain selected across unrelated table updates, and the browser tab announces **Your turn** or **Your choice**.
+
 Every completed card play gets a shared six-second full-size reveal, showing who played it. Humans and bots wait while everyone reads; copied cards identify both the original mood and the copied identity. Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
 An invite is intended for the people you share it with. Rooms are private by default. Hosts can choose Public at creation or in the lobby to appear on the home-page directory. Only waiting tables with an online host and fewer than four occupied seats are listed. The directory exposes the room code, host nickname, seat count and bot count, never session credentials or hands. Listings refresh every 15 seconds and are rebuilt as hosts reconnect after a server restart. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
+
+Use **Last round** beside the latest move to reopen the completed round's scores, winner, Hurt Feelings, and next starting player. This personal recap has no countdown and does not pause the shared game; a new shared reveal or round result takes precedence. Catalog, inspection, rules, settings, and result dialogs keep keyboard focus inside the foremost dialog and restore it when closed. **Escape** dismisses a hover enlargement first, then a dismissible dialog. Empty catalog searches offer a **Show all cards** reset.
 
 ## Play on a phone or tablet
 
@@ -200,7 +204,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **528 engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven. The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
+The current automated suite contains **541 engine, regression, simulation, bot, fly-circuit, planning, selection, and restart tests**. **15 Playwright scenarios** exercise the actual browser application across Chromium and WebKit. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven. The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -212,8 +216,10 @@ The current automated suite contains **528 engine, regression, simulation, bot, 
 | `tests/fly.test.ts`             | Connectome circuit integrity, feature wiring, sparse codes, legal fly decisions, and a win-rate check against Easy             |
 | `tests/plan.test.ts`            | Previewing a play from the hand, complete planned selections, malformed-input rejection, and mismatch fallback                        |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
-| `tests/e2e/polish.spec.ts` | Sound and motion preferences, keyboard controls, and persistence |
-| `tests/e2e/portable.spec.ts` | Touch selection and shared play, small-screen dialogs and scroll restoration, opponent navigation, reactions, phone rotation, tablet layout, round results, and home-screen assets in Chromium and WebKit |
+| `tests/selection.test.ts` | Selection limits, pair and player constraints, authoritative preview values, response identity, and actor-only metadata |
+| `tests/e2e/clarity.spec.ts` | Isolated populated table, point-budget guidance, selected-target submission, revision updates, phone decision overflow, and round recap in Chromium and WebKit |
+| `tests/e2e/polish.spec.ts` | Sound and motion preferences, nested keyboard focus, empty-search recovery, and persistence |
+| `tests/e2e/portable.spec.ts` | Touch selection and shared play, small-screen dialogs and scroll restoration, opponent navigation, reactions, phone rotation, tablet layout, round results and recaps, and home-screen assets in Chromium and WebKit |
 | `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation address, and mobile layout |
 | `tests/e2e/multiplayer.spec.ts` | Two-browser play/reconnect, card catalog/help/mobile layout, four-player match/rematch, and solo play against a selectable bot |
 
@@ -236,7 +242,7 @@ To verify a deployment:
 TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 ```
 
-Browser tests create real rooms and matches on their target. Screenshots and retained failure traces go to ignored `output/playwright/`. The GitHub Actions workflow installs dependencies, builds, runs the automated rules suite, starts the built server, and runs all Chromium scenarios plus the portable-device scenarios in WebKit.
+Browser tests create real rooms and matches on their target. The populated-decision regression additionally starts its own built server with temporary storage, without modifying the target server. Screenshots and retained failure traces go to ignored `output/playwright/`. The GitHub Actions workflow installs dependencies, builds, runs the automated rules suite, starts the built server, and runs all Chromium scenarios plus the portable-device and populated-decision scenarios in WebKit.
 
 The handler traversal tests alone do not prove every card's semantics; targeted outcome tests and seeded games complement them. New reported interactions should become focused regression fixtures before being fixed.
 

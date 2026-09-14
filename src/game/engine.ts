@@ -371,6 +371,8 @@ function moodOptions(g: Game, ms: Mood[]): Option[] {
     label: `${definition(m).name} · ${playerName(g, m.owner)} · ${value(g, m)}`,
     card: m.uid,
     player: m.owner,
+    value: value(g, m),
+    color: color(g, m),
   }));
 }
 function playerOptions(g: Game, ids = g.players.map((p) => p.id)): Option[] {
@@ -2105,7 +2107,22 @@ export function publicView(g: Game, you: string): View {
   let prompt: View["prompt"];
   if (g.prompt?.actor === you) {
     const { task, ...q } = g.prompt;
-    prompt = q;
+    // Refresh card metadata for older saved prompts too. A preview's choices
+    // use its simulated board; live choices use the authoritative current board.
+    prompt = {
+      ...q,
+      options: q.options.map((o) => {
+        const mood = g.cards.find((c) => c.uid === o.card);
+        return mood
+          ? {
+              ...o,
+              value: value(g, mood),
+              color: color(g, mood),
+              player: mood.owner,
+            }
+          : o;
+      }),
+    };
   }
   return {
     order: g.order,

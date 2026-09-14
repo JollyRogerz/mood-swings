@@ -1,0 +1,175 @@
+/* Decision feedback and revisitable results, in the table's paper palette. */
+.app .card-action {
+  flex-wrap: nowrap;
+}
+.app .card-action > div {
+  flex: none;
+  min-width: 0;
+}
+.app .card-action::before {
+  flex-shrink: 0;
+}
+.app .selection-feedback {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid #cfc7b7;
+  border-radius: 8px;
+  background: #f4efe4;
+  color: #514940;
+  font-size: 12px;
+}
+.app .selection-feedback > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.app .selection-feedback p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 7px 0 0;
+  line-height: 1.5;
+}
+.app .selection-feedback svg {
+  flex-shrink: 0;
+}
+.app .selection-ready {
+  background: #e9f2e8;
+  border-color: #8cba99;
+  color: #21563d;
+}
+.app .selection-warning {
+  background: #fff1db;
+  border-color: #cd9a4e;
+  color: #774819;
+}
+.app .selection-meter {
+  height: 5px;
+  margin-top: 9px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #24232312;
+}
+.app .selection-meter i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #32855c;
+  transition: width 160ms ease;
+}
+.app .selection-warning .selection-meter i {
+  background: #ae6a20;
+}
+.app .feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app .table-feedback .feedback-actions button {
+  min-height: 36px;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.app .feedback-actions button:hover {
+  text-decoration: underline;
+}
+.app .card-availability {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #615548;
+}
+.app .round-recap {
+  position: relative;
+}
+.app .round-recap > .close-modal {
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  color: #292727;
+}
+.app .round-recap h2 {
+  min-height: 0;
+  margin-bottom: 22px;
+}
+.app .round-recap .round-score-list > div {
+  animation: none;
+}
+.app .recap-footer {
+  margin-top: 22px;
+  padding-top: 15px;
+  border-top: 1px dashed #bcb3a1;
+}
+.app .recap-footer p {
+  color: #e9dfcf;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.app .recap-footer .primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  background: #fffdf3;
+  color: #292727;
+}
+.app .catalog-empty {
+  padding: 56px 20px;
+  text-align: center;
+  color: #615548;
+}
+.app .catalog-empty > svg {
+  width: 32px;
+  height: 32px;
+}
+.app .catalog-empty h3 {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 30px;
+  margin: 12px 0 8px;
+}
+.app .catalog-empty p {
+  margin-bottom: 20px;
+}
+.app summary:focus-visible,
+.app [role="dialog"]:focus-visible {
+  outline: 3px solid #2c9fda;
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .app .table-feedback {
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+  .app .table-feedback > span:nth-child(2) {
+    min-width: 90px;
+  }
+  .app .table-feedback .feedback-actions {
+    margin-left: auto;
+    gap: 14px;
+  }
+  .app .table-feedback .feedback-actions button {
+    min-height: 44px;
+  }
+  .app .selection-feedback {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .app .recap-footer .primary {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .selection-meter i {
+    transition: none;
+  }
+}
+.app[data-reduced-motion="true"] .selection-meter i {
+  transition: none;
+}

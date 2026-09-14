@@ -7,6 +7,8 @@ import type { Action, Game, PlannedChoice, Prompt } from "./types";
 // was previewed is left for the player to answer at the table.
 export type PromptView = Omit<Prompt, "task">;
 export interface Preview {
+  revision: number;
+  choicesKey: string;
   card: string;
   grant: string;
   applied: number;
@@ -97,6 +99,8 @@ export function previewPlay(
       ? game.prompt
       : undefined;
   return {
+    revision: g.revision,
+    choicesKey: JSON.stringify(choices),
     card,
     grant,
     applied,

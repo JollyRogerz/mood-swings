@@ -41,3 +41,44 @@ test("table comfort settings persist and support keyboard and mobile use", async
   await dialog.getByRole("button", { name: "Close settings" }).click();
   expect(errors).toEqual([]);
 });
+
+test("catalog keyboard navigation restores nested focus and recovers an empty search", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const trigger = page.getByRole("button", { name: "The cards", exact: true });
+  await trigger.click();
+  const catalog = page.getByRole("dialog", {
+    name: "Card catalog",
+    exact: true,
+  });
+  const close = catalog.getByRole("button", { name: "Close catalog" });
+  await expect(close).toBeFocused();
+  await page.getByLabel("Search cards").fill("Love");
+  const card = catalog.locator(".catalog-grid > button");
+  await close.focus();
+  await page.keyboard.press("Shift+Tab");
+  await expect(card).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
+  await card.focus();
+  await page.keyboard.press("Enter");
+  const details = page.getByRole("dialog", { name: "Love card details" });
+  await expect(
+    details.getByRole("button", { name: "Close card", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(details).toHaveCount(0);
+  await expect(card).toBeFocused();
+  await expect(catalog).toBeVisible();
+  await page.getByLabel("Search cards").fill("no-such-mood-123");
+  await expect(
+    catalog.getByRole("heading", { name: "No moods found." }),
+  ).toBeVisible();
+  await catalog.getByRole("button", { name: "Show all cards" }).click();
+  await expect(catalog.locator(".catalog-grid > button")).toHaveCount(133);
+  await expect(page.getByLabel("Search cards")).toHaveValue("");
+  await page.keyboard.press("Escape");
+  await expect(catalog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});

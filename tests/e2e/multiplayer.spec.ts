@@ -262,6 +262,22 @@ test("four friends finish a match and return to a rematch lobby", async ({
         results.getByText("FIRST NEXT ROUND", { exact: true }),
       ).toBeVisible();
       await page.screenshot({ path: "output/playwright/round-results.png" });
+      await expect(results).toHaveCount(0, { timeout: 15000 });
+      const review = page.getByRole("button", { name: "Review last round" });
+      await review.click();
+      const recap = page.getByRole("dialog", { name: "Round 1 recap" });
+      await expect(recap.locator(".round-score-list > div")).toHaveCount(4);
+      await expect(
+        recap.getByText("HURT FEELINGS", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        recap.getByText("FIRST NEXT ROUND", { exact: true }),
+      ).toBeVisible();
+      await expect(recap.locator(".round-progress")).toHaveCount(0);
+      await page.screenshot({ path: "output/playwright/round-recap.png" });
+      await page.keyboard.press("Escape");
+      await expect(recap).toHaveCount(0);
+      await expect(review).toBeFocused();
     }
   }
   await expect(page.locator(".winner-modal")).toBeVisible({ timeout: 20000 });
