@@ -154,7 +154,7 @@ function App() {
     document.title =
       mine && view.prompt
         ? "Your choice · Mood Swings"
-        : mine && view.active === view.you
+        : mine && view.active === view.you && !view.waitingFor && !view.scoring
           ? "Your turn · Mood Swings"
           : "Mood Swings — A table for every feeling";
     return () => {
@@ -163,6 +163,7 @@ function App() {
   }, [
     view?.active,
     view?.waitingFor,
+    view?.scoring,
     view?.status,
     connected,
     interactionPaused,
