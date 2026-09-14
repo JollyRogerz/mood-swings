@@ -1406,6 +1406,51 @@ function CardZoom() {
     </div>
   ) : null;
 }
+// Values one to six show as die pips, like the corners of the printed cards.
+const PIPS: Record<number, [number, number][]> = {
+  1: [[50, 50]],
+  2: [
+    [28, 28],
+    [72, 72],
+  ],
+  3: [
+    [28, 28],
+    [50, 50],
+    [72, 72],
+  ],
+  4: [
+    [28, 28],
+    [72, 28],
+    [28, 72],
+    [72, 72],
+  ],
+  5: [
+    [28, 28],
+    [72, 28],
+    [50, 50],
+    [28, 72],
+    [72, 72],
+  ],
+  6: [
+    [28, 26],
+    [72, 26],
+    [28, 50],
+    [72, 50],
+    [28, 74],
+    [72, 74],
+  ],
+};
+function Die({ value }: { value: number }) {
+  const pips = PIPS[value];
+  if (!pips) return <>{value}</>;
+  return (
+    <svg className="die" viewBox="0 0 100 100" aria-hidden="true">
+      {pips.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="11" />
+      ))}
+    </svg>
+  );
+}
 function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
   const printed = catalog.find(
     (entry) => entry.id === (c.copy ?? c.def),
@@ -1424,7 +1469,9 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
       aria-label={`Inspect ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : secondary ? ", bottom-left value" : ""}`}
     >
       <img src={c.image} alt={c.name} />
-      <span className="value-badge">{c.value}</span>
+      <span className="value-badge">
+        <Die value={c.value} />
+      </span>
       {c.suppressed && <span className="suppressed-label">SUPPRESSED</span>}
     </button>
   );

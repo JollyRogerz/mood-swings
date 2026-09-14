@@ -98,11 +98,11 @@ There are source inconsistencies worth making visible. Curiosity's printed image
 
 ## Visual design
 
-The interface uses warm cream paper, deep green felt, serif headings, muted coral accents, and gently tilted cards. The aim is a comfortable tabletop atmosphere with room to read decisions clearly.
+The interface takes its cues from the game's own look, which its art director describes as cut-up, rough, loose, and zine-like: a kraft-paper desk, graph-paper sheets with torn edges, strips of tape, black boxes with hard offset shadows, big dice, condensed all-caps headings, and the card back's five-color rainbow as a recurring band. Everything tilts a degree or two. Card values one to six show as die pips, as on the printed corners. The aim is the feel of the physical box on a table, with room to read decisions clearly.
 
 The cards use the **actual official card graphics** archived from the published gallery. The digital table, controls, layout, and interaction code are this adaptation's interface. Card images retain their original visual identity and artist credits. The catalog contains 133 distinct moods; the image archive also includes the alternate Love headliner and the Hurt Feelings helper, for 135 gallery images total.
 
-The interface uses DM Sans and Libre Caslon through Google Fonts with fallback fonts. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
+The interface uses Anton, Barlow Semi Condensed, and Libre Caslon Text through Google Fonts with fallback fonts; the official site's Gotham Narrow and Rama Gothic are not freely licensed, so these stand in for them. The Mood Swings logo, card back, and Dice Friend are not reproduced; the wordmark and card back on the table are this adaptation's own. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
 
 ## Architecture
 
