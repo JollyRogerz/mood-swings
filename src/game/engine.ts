@@ -292,6 +292,10 @@ function move(g: Game, m: Mood, zone: Mood["zone"], owner = m.owner) {
       g.grants = g.grants.filter((gr) => gr.sourceMood !== m.uid);
     if (zone !== "play") {
       g.suppressions = g.suppressions.filter((s) => s.target !== m.uid);
+      // A chosen mood ceases to exist when it leaves play, even if this physical
+      // card is played again later. Transfers between players preserve the link.
+      for (const other of g.cards)
+        if (other.target === m.uid) delete other.target;
       const returns = g.transfers.filter((t) => t.source === m.uid);
       g.transfers = g.transfers.filter(
         (t) => t.source !== m.uid && t.target !== m.uid,
@@ -1662,7 +1666,7 @@ function resolveEffect(g: Game, t: Task) {
       const colors = chosen().map((c) => color(g, c));
       batchMove(
         g,
-        all().filter((c) => colors.includes(color(g, c))),
+        other().filter((c) => colors.includes(color(g, c))),
         "discard",
       );
       return;
@@ -1823,25 +1827,33 @@ function resolveEffect(g: Game, t: Task) {
         return;
       }
       if (s === 1) {
-        putFirst(g, next(2, { players: sel, index: 0 }));
+        putFirst(g, next(2, { players: sel, index: 0, picks: [] }));
         return;
       }
       let index = d.index as number;
+      let picks: string[] = d.picks ?? [];
       if (s === 3) {
-        batchMove(g, chosen(), "discard");
+        picks = [...picks, ...sel];
         index++;
       }
       if (index < d.players.length) {
         const who = d.players[index];
         ask(
           g,
-          next(3, { index }, who),
+          next(3, { index, picks }, who),
           "Suspicion · Choose a card to discard",
           moodOptions(g, hand(g, who)),
           1,
         );
         return;
       }
+      // Keep each private choice in the continuation until everyone has chosen.
+      // Earlier picks must not become public information for later players.
+      batchMove(
+        g,
+        picks.map((uid) => card(g, uid)),
+        "discard",
+      );
       return;
     }
     case "zeal":
@@ -2045,8 +2057,11 @@ function finishRound(g: Game) {
     }
     first = who;
   } else {
-    g.lastRound = { round: g.round, scores: {} };
-    log(g, `Round ${g.round} ended without scoring.`);
+    g.lastRound = { round: g.round, scores: {}, skippedBy: "awe" };
+    log(
+      g,
+      `Round ${g.round} ended without scoring because of Awe: no winner, loser draws, or Hurt Feelings.`,
+    );
   }
   const honor = inPlay(g)
     .filter((c) => definition(c).id === "honor" && c.chosenPlayer)

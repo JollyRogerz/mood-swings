@@ -200,16 +200,17 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **445 passing engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
+The current automated suite contains **528 engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven. The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `tests/engine.test.ts`          | Setup, values, costs, permissions, scoring, privacy, interactions, and traversal of all 133 card handlers                      |
 | `tests/regressions.test.ts`     | Concrete card outcomes, copy and source lifetimes, delayed effects, and file persistence                                       |
+| `tests/rules-audit.test.ts` | Awe and all delayed-effect families, card values and targeting boundaries, costs, suppression, transfers, simultaneous hidden choices, and preview privacy |
 | `tests/simulation.test.ts`      | 60 seeded complete games with two to four players and card-conservation invariants                                             |
 | `tests/bot.test.ts`             | Difficulty behavior, hidden-information independence, card-choice paths, and complete bot matches                              |
 | `tests/fly.test.ts`             | Connectome circuit integrity, feature wiring, sparse codes, legal fly decisions, and a win-rate check against Easy             |
-| `tests/plan.test.ts`            | Previewing a play from the hand, replaying planned answers, mismatch fallback, and re-seeded randomness                        |
+| `tests/plan.test.ts`            | Previewing a play from the hand, complete planned selections, malformed-input rejection, and mismatch fallback                        |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
 | `tests/e2e/polish.spec.ts` | Sound and motion preferences, keyboard controls, and persistence |
 | `tests/e2e/portable.spec.ts` | Touch selection and shared play, small-screen dialogs and scroll restoration, opponent navigation, reactions, phone rotation, tablet layout, round results, and home-screen assets in Chromium and WebKit |

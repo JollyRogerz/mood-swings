@@ -41,6 +41,17 @@ Cards that leave play and return are new incarnations for delayed effects.
 Copies retain printed copied characteristics only while in play. Suppression
 keeps the mood and its abilities present, while setting its value to zero.
 
+Encouragement's link ends when the chosen mood leaves play. A later play of
+that physical card is a fresh mood. Transfers between players retain the link.
+Suspicion collects every private discard choice before revealing or moving any
+of those cards. Malice excludes itself, following its specific card notes.
+
+The [September 2026 audit](rules-audit-2026-09-14.md) records conflicting
+after-scoring transfer examples in the published notes and the unresolved
+Awe/Honor precedence. The implementation follows the extended rules' current
+holder ordering for Bashfulness and ongoing Recklessness cleanup. Honor's ongoing
+first-player instruction takes precedence over Awe's selection.
+
 ## Network and persistence behavior
 
 The server validates every action and commits a JSON snapshot before broadcasting.
@@ -70,8 +81,10 @@ code, round, and relevant cards so they can become new regression fixtures.
 Players may answer a card's decisions before playing it. The interface previews
 the play on a copy of the game and shows the same prompts the engine would raise,
 in order; the answers travel with the play and are replayed into the live
-prompts only when the prompt's title matches. The engine's timing is unchanged:
+prompts only when the prompt's title matches. Selections and decision sequences
+are not truncated. The engine's timing is unchanged:
 costs are still paid before entry, values are still read when each effect step
-asks, and a preview is re-seeded so it never reveals a random outcome. A prompt
-that depends on such an outcome, or on another player's decision, is asked at
-the table exactly as before.
+asks. Planning stops when randomness or movement of an initially hidden card
+occurs, so future draws cannot appear in a later preview prompt. A prompt that
+depends on such an outcome, or on another player's decision, is asked at the
+table after the real play.

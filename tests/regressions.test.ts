@@ -223,7 +223,7 @@ describe("additional card outcomes", () => {
     g = choose(g, [x, y]);
     expect(find(g, "apathy").zone).toBe("discard");
     expect(find(g, "boredom").zone).toBe("discard");
-    expect(find(g, "malice").zone).toBe("discard");
+    expect(find(g, "malice").zone).toBe("play");
     expect(find(g, "sloth").zone).toBe("play");
   });
   it("Instability permits giving back the mood just taken", () => {

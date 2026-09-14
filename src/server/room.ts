@@ -9,26 +9,16 @@ import {
   startGame,
 } from "../game/engine";
 import { botAction } from "../game/bot";
-import { playPlanned, previewPlay } from "../game/plan";
+import { parsePlannedChoices, playPlanned, previewPlay } from "../game/plan";
 import {
   PRESENCES,
   REACTIONS,
   type Action,
   type Difficulty,
   type Game,
-  type PlannedChoice,
   type Presence,
   type PublicRoom,
 } from "../game/types";
-const plannedChoices = (raw: unknown): PlannedChoice[] =>
-  Array.isArray(raw)
-    ? raw.slice(0, 12).map((c) => ({
-        title: String(c?.title ?? ""),
-        selected: Array.isArray(c?.selected)
-          ? c.selected.slice(0, 12).map(String)
-          : [],
-      }))
-    : [];
 import { store } from "./store";
 import { acknowledgeReveal, isPace, pacing } from "../game/pacing";
 export const serverKey = randomBytes(32).toString("hex");
@@ -134,7 +124,7 @@ export class MoodRoom extends Room {
           );
         const action = message.action as Action;
         if (action?.type === "play")
-          action.choices = plannedChoices(action.choices);
+          action.choices = parsePlannedChoices(action.choices);
         const next = playPlanned(this.game, actor, action);
         await this.commit(next);
         if (this.activity.delete(actor)) this.broadcastPresence();
@@ -159,7 +149,7 @@ export class MoodRoom extends Room {
             actor,
             String(message?.card ?? ""),
             String(message?.grant ?? ""),
-            plannedChoices(message?.choices),
+            parsePlannedChoices(message?.choices),
           ),
         );
       } catch (error) {

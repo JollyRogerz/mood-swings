@@ -1358,10 +1358,14 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
           {stage === 0
             ? result.winner
               ? "Counting the points…"
-              : "A quiet round."
+              : result.skippedBy === "awe"
+                ? "Awe changed the round."
+                : "A quiet round."
             : result.winner
               ? `${name(result.winner)} wins the round!`
-              : "No scoring this round."}
+              : result.skippedBy === "awe"
+                ? "Awe skipped scoring."
+                : "No scoring this round."}
         </h2>
         {result.winner ? (
           <div className="round-score-list">
@@ -1413,7 +1417,12 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
             })}
           </div>
         ) : (
-          <p>Scoring was skipped. No round win or Hurt Feelings is awarded.</p>
+          <p>
+            {result.skippedBy === "awe"
+              ? "Awe cancels this round’s scoring and after-scoring effects. "
+              : "Scoring was skipped. "}
+            No winner, loser draws, or Hurt Feelings this round.
+          </p>
         )}
         <p
           className="round-tie-note"
@@ -1470,7 +1479,10 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
           </div>
         </div>
         <div className="round-stage-track" aria-label="Round result progress">
-          {["Points", "Winner", "Feelings", "Next round"].map((label, i) => (
+          {(result.winner
+            ? ["Points", "Winner", "Feelings", "Next round"]
+            : ["Awe", "No scoring", "Feelings", "Next round"]
+          ).map((label, i) => (
             <span
               key={label}
               className={stage >= i ? "revealed" : ""}

@@ -148,6 +148,7 @@ export interface Game {
   lastRound?: {
     round: number;
     scores: Record<string, number>;
+    skippedBy?: "awe";
     winner?: string;
     hurtFeelings?: string;
     nextFirst?: string;

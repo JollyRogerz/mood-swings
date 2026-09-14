@@ -1,8 +1,43 @@
 import { describe, expect, it } from "vitest";
 import { act, publicView } from "../src/game/engine";
-import { applyChoices, playPlanned, previewPlay } from "../src/game/plan";
+import {
+  applyChoices,
+  parsePlannedChoices,
+  playPlanned,
+  previewPlay,
+} from "../src/game/plan";
 import { add, find, table } from "./helpers";
 describe("deciding a card's effects from the hand", () => {
+  it("preserves every selected card in an any-number planned cost", () => {
+    const g = table();
+    const targets = Array.from({ length: 20 }, () => add(g, "apathy"));
+    const card = add(g, "self-loathing", "hand");
+    const preview = previewPlay(g, "a", card, "base", []);
+    const choices = parsePlannedChoices([
+      { title: preview.prompt!.title, selected: targets },
+    ]);
+    const played = playPlanned(g, "a", {
+      type: "play",
+      card,
+      grant: "base",
+      choices,
+    });
+    expect(played.discard).toEqual(targets);
+    expect(played.prompt).toBeUndefined();
+    expect(find(played, "self-loathing").zone).toBe("play");
+  });
+  it("does not truncate long sequences of repeated effects", () => {
+    const choices = Array.from({ length: 20 }, () => ({
+      title: "Repeat",
+      selected: ["yes"],
+    }));
+    expect(parsePlannedChoices(choices)).toEqual(choices);
+  });
+  it.each([null, {}, [null], [{ title: "Cost", selected: [42] }]])(
+    "rejects malformed planned decisions instead of changing their meaning: %j",
+    (raw) =>
+      expect(() => parsePlannedChoices(raw)).toThrow("Invalid planned choices"),
+  );
   it("previews the decision a play would ask without changing the game", () => {
     const g = table();
     const target = add(g, "apathy", "play", "b");

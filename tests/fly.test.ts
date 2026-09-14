@@ -21,8 +21,15 @@ import {
   TURN_PLAY_LIMIT,
 } from "../src/game/fly";
 import type { Difficulty } from "../src/game/types";
-import { add, play, table } from "./helpers";
+import { add, choose, pass, play, table } from "./helpers";
 describe("fruit fly mushroom body", () => {
+  it("resets its per-turn play limit after an Awe round", () => {
+    let g = play(table(), "awe");
+    g = choose(g, ["a"]);
+    expect(playsThisTurn(publicView(g, "a"))).toBe(1);
+    g = pass(pass(g));
+    expect(playsThisTurn(publicView(g, "a"))).toBe(0);
+  });
   it("the extracted circuit is internally consistent", () => {
     const { counts, inputs, kc, mbon, pnToKc, kcToMbon } = circuit;
     expect(inputs.length).toBe(counts.inputs);

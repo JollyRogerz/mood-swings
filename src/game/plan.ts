@@ -13,6 +13,22 @@ export interface Preview {
   prompt?: PromptView;
   done: boolean;
 }
+// The transport already bounds message size. Do not silently shorten a legal
+// "any number" selection or a sequence of repeated card effects.
+export function parsePlannedChoices(raw: unknown): PlannedChoice[] {
+  if (raw === undefined) return [];
+  if (!Array.isArray(raw)) throw new RuleError("Invalid planned choices.");
+  return raw.map((choice) => {
+    if (
+      !choice ||
+      typeof choice.title !== "string" ||
+      !Array.isArray(choice.selected) ||
+      !choice.selected.every((id: unknown) => typeof id === "string")
+    )
+      throw new RuleError("Invalid planned choices.");
+    return { title: choice.title, selected: [...choice.selected] };
+  });
+}
 const strip = (p: Prompt): PromptView => {
   const { task, ...q } = p;
   void task;
@@ -43,8 +59,9 @@ export function applyChoices(
   }
   return { game: g, applied };
 }
-// Simulate the play without touching the live game. Randomness is re-seeded so
-// a preview never reveals what a random effect will actually do.
+// Stop planning when an outcome requires randomness or hidden cards. Merely
+// changing the RNG seed is insufficient: drawing from the deck can otherwise
+// expose a real hidden card in a subsequent prompt (for example, repeated Zeal).
 export function previewPlay(
   g: Game,
   actor: string,
@@ -52,13 +69,33 @@ export function previewPlay(
   grant: string,
   choices: PlannedChoice[],
 ): Preview {
-  const simulated = act({ ...g, rng: (g.rng ^ 0x9e3779b9) >>> 0 }, actor, {
+  const seed = (g.rng ^ 0x9e3779b9) >>> 0;
+  const hidden = g.cards.filter(
+    (c) => c.zone === "deck" || (c.zone === "hand" && c.owner !== actor),
+  );
+  const crossedBoundary = (game: Game) =>
+    game.rng !== seed ||
+    hidden.some((before) => {
+      const after = game.cards.find((c) => c.uid === before.uid)!;
+      return after.zone !== before.zone || after.owner !== before.owner;
+    });
+  let game = act({ ...g, rng: seed }, actor, {
     type: "play",
     card,
     grant,
   });
-  const { game, applied } = applyChoices(simulated, actor, choices);
-  const mine = game.prompt?.actor === actor ? game.prompt : undefined;
+  let applied = 0;
+  for (const choice of choices) {
+    if (crossedBoundary(game)) break;
+    const result = applyChoices(game, actor, [choice]);
+    if (!result.applied) break;
+    game = result.game;
+    applied++;
+  }
+  const mine =
+    !crossedBoundary(game) && game.prompt?.actor === actor
+      ? game.prompt
+      : undefined;
   return {
     card,
     grant,
