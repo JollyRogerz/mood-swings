@@ -218,7 +218,9 @@ railway up --service mood-swings
 
 Use **one app replica**. Active room ownership lives in one process; shared coordination for horizontal scaling is not implemented. PostgreSQL persists state, but it does not by itself coordinate two active owners of the same room. The file-store fallback is for local development, not an ephemeral production filesystem.
 
-A deploy restarts the app. Browsers reconnect and request restoration from saved state. Keep database backups appropriate to how much game history you want to preserve. Future changes to the persisted state schema may require migrations; this first release does not implement a general schema migration system. The current service is deployable with the CLI; automatic deployment from GitHub is not required by this repository.
+A deploy restarts the app. Browsers reconnect and request restoration from saved state. Keep database backups appropriate to how much game history you want to preserve. Future changes to the persisted state schema may require migrations; this first release does not implement a general schema migration system. Production is connected to `JollyRogerz/mood-swings`, branch `main`, with Railway GitHub autodeploys and **Wait for CI** enabled. Pushing or merging into `main` automatically queues a deployment; Railway waits for the GitHub Actions check suites before deploying. Feature-branch pushes and unmerged pull requests do not update production. The existing Dockerfile and PostgreSQL configuration remain in use.
+
+For normal releases, push the reviewed changes to `main` and check GitHub Actions and Railway’s deployment status; no separate `railway up` is needed. The CLI command above remains a manual fallback and deploys the local checkout, so use it only intentionally.
 
 ## Source collection and provenance
 
