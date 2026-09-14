@@ -9,7 +9,15 @@ import {
   startGame,
 } from "../game/engine";
 import { botAction } from "../game/bot";
-import type { Action, Difficulty, Game, PublicRoom } from "../game/types";
+import {
+  PRESENCES,
+  REACTIONS,
+  type Action,
+  type Difficulty,
+  type Game,
+  type Presence,
+  type PublicRoom,
+} from "../game/types";
 import { store } from "./store";
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
@@ -35,6 +43,9 @@ export class MoodRoom extends Room {
   private chain: Promise<unknown> = Promise.resolve();
   private actors = new Map<string, string>();
   private rates = new Map<string, { time: number; count: number }>();
+  // What each seated human is doing right now. Never persisted or scored.
+  private activity = new Map<string, Presence>();
+  private reactionSerial = 0;
   async onCreate(options: { key: string; code: string; snapshot: Game }) {
     if (options.key !== serverKey)
       throw new ServerError(403, "Create a table from the home screen.");
@@ -79,6 +90,32 @@ export class MoodRoom extends Room {
           );
         const next = act(this.game, actor, message.action as Action);
         await this.commit(next);
+        if (this.activity.delete(actor)) this.broadcastPresence();
+      }, client),
+    );
+    this.onMessage("react", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const player = this.actor(client);
+        if (!REACTIONS.includes(message?.emoji)) return;
+        this.broadcast("reaction", {
+          id: ++this.reactionSerial,
+          player,
+          emoji: message.emoji,
+        });
+      }, client),
+    );
+    this.onMessage("presence", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const player = this.actor(client),
+          state: Presence = PRESENCES.includes(message?.state)
+            ? message.state
+            : "idle";
+        const before = this.activity.get(player);
+        if (state === "idle") this.activity.delete(player);
+        else this.activity.set(player, state);
+        if (before !== this.activity.get(player)) this.broadcastPresence();
       }, client),
     );
     this.onMessage("start", (client, message) =>
@@ -98,13 +135,19 @@ export class MoodRoom extends Room {
           this.game.status !== "lobby"
         )
           throw new RuleError("Only the host can add bots before the game.");
-        const difficulty: Difficulty = ["easy", "normal", "hard"].includes(
-          message?.difficulty,
-        )
+        const difficulty: Difficulty = [
+          "easy",
+          "normal",
+          "hard",
+          "fly",
+        ].includes(message?.difficulty)
           ? message.difficulty
           : "normal";
         const next = structuredClone(this.game),
-          names = ["Fern", "Ember", "Sage"];
+          names =
+            difficulty === "fly"
+              ? ["Drosophila", "Fern", "Ember", "Sage"]
+              : ["Fern", "Ember", "Sage"];
         const name =
           names.find((n) => !next.players.some((p) => p.name === n)) ?? "Bot";
         const id = "bot-" + randomBytes(8).toString("hex");
@@ -193,6 +236,7 @@ export class MoodRoom extends Room {
     this.actors.delete(client.sessionId);
     this.rates.delete(client.sessionId);
     if (!id) return;
+    if (this.activity.delete(id)) this.broadcastPresence();
     await this.enqueue(async () => {
       const next = structuredClone(this.game);
       const p = next.players.find((p) => p.id === id);
@@ -312,11 +356,15 @@ export class MoodRoom extends Room {
       ),
     );
   }
+  private broadcastPresence() {
+    this.broadcast("presence", Object.fromEntries(this.activity));
+  }
   private sendView(client: Client) {
     const id = this.actors.get(client.sessionId);
     if (id)
       client.send("view", {
         ...publicView(this.game, id),
+        presence: Object.fromEntries(this.activity),
         visibility: this.game.visibility ?? "private",
         playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
         roundPauseMs: Math.max(

@@ -28,6 +28,12 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { catalog } from "../game/catalog";
+import {
+  PRESENCES,
+  REACTIONS,
+  type Presence,
+  type Reaction,
+} from "../game/types";
 import type {
   Action,
   Difficulty,
@@ -36,6 +42,8 @@ import type {
   View,
 } from "../game/types";
 import "./style.css";
+const botLabel = (d: Difficulty) =>
+  d === "fly" ? "fly brain bot" : `${d} bot`;
 const colorNames: Record<string, string> = {
   white: "Clarity",
   blue: "Thought",
@@ -76,6 +84,12 @@ function App() {
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
   const [visibility, setVisibility] = useState<"private" | "public">("private");
+  const [reactions, setReactions] = useState<
+    { id: number; player: string; emoji: Reaction }[]
+  >([]);
+  const [presence, setPresence] = useState<Record<string, Presence>>({});
+  const [holding, setHolding] = useState(false);
+  const [hidden, setHidden] = useState(document.hidden);
   const [roundDeadline, setRoundDeadline] = useState(0);
   const [playDeadline, setPlayDeadline] = useState(0);
   const [clockNow, setClockNow] = useState(Date.now());
@@ -105,6 +119,7 @@ function App() {
     joined.reconnection.enabled = false;
     joined.onMessage("view", (v: View) => {
       setView(v);
+      if (v.presence) setPresence(v.presence);
       setClockNow(Date.now());
       setRoundDeadline(v.roundPauseMs ? Date.now() + v.roundPauseMs : 0);
       setPlayDeadline(v.playPauseMs ? Date.now() + v.playPauseMs : 0);
@@ -117,6 +132,19 @@ function App() {
       setError(message);
       setBusy(false);
     });
+    joined.onMessage(
+      "reaction",
+      (r: { id: number; player: string; emoji: Reaction }) => {
+        setReactions((old) => [...old.slice(-11), r]);
+        setTimeout(
+          () => setReactions((old) => old.filter((x) => x.id !== r.id)),
+          3200,
+        );
+      },
+    );
+    joined.onMessage("presence", (p: Record<string, Presence>) =>
+      setPresence(p),
+    );
     joined.onError((_code, message) =>
       setError(message ?? "Connection interrupted."),
     );
@@ -180,6 +208,28 @@ function App() {
       room.current?.leave();
     };
   }, []);
+  useEffect(() => {
+    const onVisibility = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+  // Tell the table what you are up to while others wait. Purely cosmetic.
+  const myPresence: Presence = hidden
+    ? "away"
+    : inspect
+      ? "reading"
+      : catalogOpen || help
+        ? "rules"
+        : holding
+          ? "holding"
+          : "idle";
+  useEffect(() => {
+    if (connected && view?.status === "playing")
+      room.current?.send("presence", { state: myPresence });
+  }, [myPresence, connected, view?.status]);
+  function react(emoji: Reaction) {
+    if (connected) room.current?.send("react", { emoji });
+  }
   function send(action: Action) {
     if (!connected || !viewRef.current || busy || interactionPaused) return;
     setBusy(true);
@@ -496,7 +546,7 @@ function App() {
                       </strong>
                       <small>
                         {p.bot
-                          ? `${p.bot} bot`
+                          ? botLabel(p.bot)
                           : p.id === view.host
                             ? "Host"
                             : "Ready to play"}
@@ -541,6 +591,7 @@ function App() {
                   <option value="easy">Easy bot</option>
                   <option value="normal">Normal bot</option>
                   <option value="hard">Hard bot</option>
+                  <option value="fly">Fly brain bot</option>
                 </select>
                 <button
                   onClick={() =>
@@ -555,7 +606,7 @@ function App() {
             )}
             {view.you === view.host ? (
               <button
-                className="primary"
+                className={`primary ${view.players.length >= 2 && !busy && connected ? "attention" : ""}`}
                 disabled={view.players.length < 2 || busy || !connected}
                 onClick={() => {
                   setBusy(true);
@@ -616,6 +667,16 @@ function App() {
                     moods={view.moods.filter((c) => c.owner === p.id)}
                     active={view.active === p.id}
                     inspect={setInspect}
+                    doing={describeActivity(
+                      p,
+                      view,
+                      presence,
+                      playPaused,
+                      roundPaused,
+                    )}
+                    reactions={reactions
+                      .filter((r) => r.player === p.id)
+                      .map((r) => ({ id: r.id, emoji: r.emoji }))}
                   />
                 ))}
             </div>
@@ -684,6 +745,9 @@ function App() {
                 <Avatar
                   name={view.players.find((p) => p.id === view.you)?.name ?? ""}
                   index={view.players.findIndex((p) => p.id === view.you)}
+                  reactions={reactions
+                    .filter((r) => r.player === view.you)
+                    .map((r) => ({ id: r.id, emoji: r.emoji }))}
                 />
                 <div>
                   <strong>
@@ -713,8 +777,30 @@ function App() {
                           ? "Your turn. How are you feeling?"
                           : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
               </div>
+              <div className="reaction-bar" aria-label="Send a reaction">
+                {REACTIONS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => react(emoji)}
+                    disabled={!connected}
+                    aria-label={`React ${emoji}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
               <button
-                className="end-turn"
+                className={`end-turn ${
+                  view.active === view.you &&
+                  !view.waitingFor &&
+                  !view.scoring &&
+                  !interactionPaused &&
+                  !busy &&
+                  connected &&
+                  (!view.grants.length || !Object.keys(view.playable).length)
+                    ? "attention"
+                    : ""
+                }`}
                 disabled={
                   view.active !== view.you ||
                   !!view.waitingFor ||
@@ -734,6 +820,7 @@ function App() {
               send={send}
               inspect={setInspect}
               disabled={busy || !connected || interactionPaused}
+              onHold={setHolding}
             />
           </section>
           {view.prompt && !interactionPaused && (
@@ -803,7 +890,7 @@ function App() {
                 </div>
                 {view.you === view.host ? (
                   <button
-                    className="primary"
+                    className="primary attention"
                     onClick={() => room.current?.send("rematch")}
                   >
                     Another round of feelings <RotateCcw size={17} />
@@ -918,12 +1005,50 @@ function App() {
     </div>
   );
 }
-function Avatar({ name, index }: { name: string; index: number }) {
+function Avatar({
+  name,
+  index,
+  reactions = [],
+}: {
+  name: string;
+  index: number;
+  reactions?: { id: number; emoji: Reaction }[];
+}) {
   return (
     <span className={`avatar avatar-${index}`}>
       {name.slice(0, 1).toUpperCase()}
+      {reactions.map((r) => (
+        <span className="reaction-bubble" key={r.id} role="img">
+          {r.emoji}
+        </span>
+      ))}
     </span>
   );
+}
+// A line about what an opponent is doing while you wait for them.
+function describeActivity(
+  p: View["players"][number],
+  view: View,
+  presence: Record<string, Presence>,
+  playPaused: boolean,
+  roundPaused: boolean,
+): string | undefined {
+  if (!p.connected) return "Away from the table";
+  if (roundPaused || view.status !== "playing") return undefined;
+  if (playPaused) return "Reading the played mood";
+  const doing = presence[p.id];
+  if (doing === "away") return "Stepped away for a moment";
+  if (view.waitingFor === p.id) return "Deciding on a card effect…";
+  if (doing === "reading") return "Reading a card";
+  if (doing === "rules") return "Checking the rules";
+  if (doing === "holding") return "Holding a card…";
+  if (view.active === p.id && !view.scoring)
+    return p.bot
+      ? p.bot === "fly"
+        ? "Sniffing the table…"
+        : "Thinking…"
+      : "Choosing a mood…";
+  return undefined;
 }
 function WinDots({ wins }: { wins: number }) {
   return (
@@ -937,9 +1062,9 @@ function WinDots({ wins }: { wins: number }) {
     </span>
   );
 }
-function CardBack() {
+function CardBack({ mini = false }: { mini?: boolean }) {
   return (
-    <span className="card-back">
+    <span className={`card-back ${mini ? "mini" : ""}`}>
       <span className="back-frame">
         <span className="back-flower">✳</span>
         <span>
@@ -1281,34 +1406,60 @@ function PlayerZone({
   moods,
   active,
   inspect,
+  doing,
+  reactions,
 }: {
   player: View["players"][number];
   index: number;
   moods: PublicCard[];
   active: boolean;
   inspect: (id: string) => void;
+  doing?: string;
+  reactions: { id: number; emoji: Reaction }[];
 }) {
   return (
     <div className={`player-zone ${active ? "active-player" : ""}`}>
       <div className="player-head">
-        <Avatar name={player.name} index={index} />
+        <Avatar name={player.name} index={index} reactions={reactions} />
         <div>
           <strong>
             {player.name}
             {player.bot && (
-              <small className="bot-label"> · {player.bot} bot</small>
+              <small className="bot-label"> · {botLabel(player.bot)}</small>
             )}
             {!player.connected && <small className="away"> · away</small>}
           </strong>
           <WinDots wins={player.wins} />
+          {doing && (
+            <span className="player-doing" aria-live="polite">
+              {doing.endsWith("…") ? (
+                <>
+                  {doing.slice(0, -1)}
+                  <span className="ellipsis">
+                    <i>.</i>
+                    <i>.</i>
+                    <i>.</i>
+                  </span>
+                </>
+              ) : (
+                doing
+              )}
+            </span>
+          )}
         </div>
         <div className="opponent-score">
           <strong>{player.score}</strong>
           <small>POINTS</small>
         </div>
-        <span className="hand-count">
-          <Layers size={14} />
-          {player.handCount}
+        <span
+          className="hand-fan"
+          aria-label={`${player.handCount} cards in hand`}
+          title={`${player.handCount} cards in hand`}
+        >
+          {Array.from({ length: Math.min(player.handCount, 8) }, (_, i) => (
+            <CardBack key={i} mini />
+          ))}
+          <b>{player.handCount}</b>
         </span>
       </div>
       <div className="mood-row">
@@ -1331,15 +1482,18 @@ function Hand({
   send,
   inspect,
   disabled,
+  onHold,
 }: {
   view: View;
   send: (a: Action) => void;
   inspect: (id: string) => void;
   disabled: boolean;
+  onHold: (holding: boolean) => void;
 }) {
   const [selected, setSelected] = useState<string>(),
     [grant, setGrant] = useState("");
   const card = [...view.hand, ...view.discard].find((c) => c.uid === selected);
+  useEffect(() => onHold(!!card), [!!card, onHold]);
   const options = card
     ? (view.playable[card.uid] ?? []).map((id) =>
         view.grants.find((g) => g.id === id)!,
@@ -1424,7 +1578,7 @@ function Hand({
             </select>
           )}
           <button
-            className="primary"
+            className={`primary ${!disabled && options.length ? "attention" : ""}`}
             disabled={disabled || !options.length}
             onClick={() =>
               send({
@@ -1470,6 +1624,12 @@ function ChoicePanel({
             : old,
     );
   }
+  const confirmable =
+    !disabled &&
+    selected.length >= q.min &&
+    selected.length <= q.max &&
+    (!q.constraints?.allowedCounts ||
+      q.constraints.allowedCounts.includes(selected.length));
   return (
     <aside
       className="choice-panel"
@@ -1510,7 +1670,7 @@ function ChoicePanel({
       <div className="choice-actions">
         {q.min === 0 && (
           <button
-            className="text-button"
+            className={`text-button ${!disabled && !selected.length ? "attention" : ""}`}
             disabled={disabled}
             onClick={() => send({ type: "choose", prompt: q.id, selected: [] })}
           >
@@ -1518,14 +1678,8 @@ function ChoicePanel({
           </button>
         )}
         <button
-          className="primary"
-          disabled={
-            disabled ||
-            selected.length < q.min ||
-            selected.length > q.max ||
-            (!!q.constraints?.allowedCounts &&
-              !q.constraints.allowedCounts.includes(selected.length))
-          }
+          className={`primary ${confirmable && selected.length ? "attention" : ""}`}
+          disabled={!confirmable}
           onClick={() => send({ type: "choose", prompt: q.id, selected })}
         >
           Confirm{selected.length ? ` (${selected.length})` : ""}

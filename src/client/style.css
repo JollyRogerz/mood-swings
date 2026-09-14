@@ -2961,3 +2961,155 @@ footer a {
     padding: 20px;
   }
 }
+/* Guidance glow: the one control that moves the game along. */
+.attention:not(:disabled) {
+  animation: attention-pulse 1.8s ease-in-out infinite;
+  box-shadow:
+    0 0 0 3px #cf654c33,
+    0 0 22px #cf654c66;
+}
+.attention.end-turn:not(:disabled) {
+  border-color: #cf654c;
+  color: #5a2a1f;
+}
+@keyframes attention-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px #cf654c22,
+      0 0 14px #cf654c44;
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px #cf654c44,
+      0 0 30px #cf654c99;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .attention:not(:disabled) {
+    animation: none;
+  }
+}
+/* Reactions */
+.reaction-bar {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.reaction-bar button {
+  font-size: 17px;
+  line-height: 1;
+  padding: 5px 6px;
+  border-radius: 999px;
+  transition: transform 0.15s ease;
+}
+.reaction-bar button:hover:not(:disabled) {
+  transform: scale(1.3) rotate(-6deg);
+  background: #e6eadb;
+}
+.avatar {
+  position: relative;
+}
+.reaction-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 70%;
+  font-size: 26px;
+  line-height: 1;
+  pointer-events: none;
+  animation: reaction-float 3.2s ease-out forwards;
+  filter: drop-shadow(0 2px 4px #0006);
+  z-index: 5;
+}
+@keyframes reaction-float {
+  0% {
+    transform: translate(-50%, 8px) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, -6px) scale(1.25);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(-50%, -34px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -56px) scale(0.9);
+    opacity: 0;
+  }
+}
+/* Opponent hands as card backs */
+.hand-fan {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  padding-left: 4px;
+  color: #b2c0a9;
+  font-size: 10px;
+}
+.hand-fan .card-back.mini {
+  width: 17px;
+  height: 24px;
+  padding: 1.5px;
+  border-radius: 2px;
+  margin-left: -9px;
+  box-shadow:
+    1px 1px #c4bfa8,
+    0 0 0 0.5px #78806a;
+  transform: rotate(var(--fan, 0deg));
+}
+.hand-fan .card-back.mini:first-child {
+  margin-left: 0;
+}
+.hand-fan .card-back.mini .back-frame {
+  font-size: 0;
+  gap: 0;
+  border-width: 0.5px;
+}
+.hand-fan .card-back.mini .back-flower {
+  font-size: 9px;
+}
+.hand-fan b {
+  margin-left: 7px;
+  font-weight: 500;
+}
+/* What an opponent is doing */
+.player-doing {
+  display: block;
+  margin-top: 4px;
+  font-size: 9.5px;
+  font-style: italic;
+  color: #c9d7bf;
+  letter-spacing: 0.2px;
+}
+.ellipsis i {
+  font-style: normal;
+  animation: ellipsis-blink 1.4s infinite;
+}
+.ellipsis i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.ellipsis i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes ellipsis-blink {
+  0%,
+  60%,
+  100% {
+    opacity: 0.2;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+@media (max-width: 700px) {
+  .reaction-bar {
+    order: 3;
+    width: 100%;
+  }
+  .hand-fan .card-back.mini:nth-child(n + 5) {
+    display: none;
+  }
+}
