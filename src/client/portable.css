@@ -1,0 +1,929 @@
+.portable-opponents,
+.portable-hand-hint,
+.portable-your-score,
+.portable-reaction-toggle {
+  display: none;
+}
+button,
+a,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+.app button {
+  touch-action: manipulation;
+}
+.app img {
+  -webkit-user-drag: none;
+}
+@media (max-width: 1100px), (pointer: coarse) {
+  .app button:not(.hero-card),
+  .app select,
+  .app input:not([type="checkbox"]):not([type="range"]) {
+    min-height: 44px;
+  }
+  .app input,
+  .app select {
+    font-size: 16px;
+  }
+  .app .close-modal,
+  .app .remove-bot,
+  .app .panel-heading > button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .app .inspect-modal p,
+  .app .inspect-modal details,
+  .app .help-modal li {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .app .site-header {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top: env(safe-area-inset-top);
+  }
+  .app .modal-backdrop {
+    top: var(--visible-top, 0px);
+    bottom: auto;
+    height: var(--visible-height, 100dvh);
+    padding: max(12px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+  .app .inspect-modal,
+  .app .help-modal,
+  .app .winner-modal,
+  .app .preferences-panel,
+  .app .round-results {
+    max-height: calc(
+      var(--visible-height, 100dvh) - 32px - env(safe-area-inset-top) -
+        env(safe-area-inset-bottom)
+    );
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+  .app .choice-options > button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .app .choice-actions > button {
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .app .choice-panel > p,
+  .app .plan-step > p {
+    font-size: 13px;
+  }
+  .app .catalog-overlay {
+    top: var(--visible-top, 0px);
+    bottom: auto;
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    height: var(--visible-height, 100dvh);
+  }
+  .app .catalog-toolbar {
+    gap: 12px;
+  }
+  .app .catalog-toolbar > label {
+    min-width: min(240px, 100%);
+  }
+  .app .catalog-toolbar > div > button {
+    font-size: 12px;
+    padding: 8px;
+  }
+  .app .card-action-row > div:first-child > span {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .app .card-action-row > button {
+    font-size: 14px;
+  }
+}
+@media (max-width: 1100px) {
+  .app .table-layout {
+    padding: 12px max(12px, env(safe-area-inset-right)) 20px
+      max(12px, env(safe-area-inset-left));
+  }
+  .app .site-header {
+    height: calc(66px + env(safe-area-inset-top));
+  }
+  .app .board {
+    min-height: 0;
+    padding: 12px 10px 10px;
+    overflow: visible;
+  }
+  .app .turn-message {
+    flex: 1;
+    min-width: 0;
+  }
+  .app .portable-your-score {
+    display: inline-flex;
+    position: relative;
+    align-items: baseline;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #292727;
+    color: #fffdf5;
+    margin-left: auto;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .app .portable-your-score strong {
+    font: 800 26px/1 var(--serif);
+  }
+  .app .portable-your-score small {
+    font-size: 9px;
+  }
+  .app .portable-opponents {
+    display: block;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .app .portable-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: #665d50;
+    margin-bottom: 8px;
+  }
+  .app .portable-caption > span:first-child {
+    font-weight: 800;
+  }
+  .app .opponent-overview {
+    display: flex;
+    gap: 7px;
+  }
+  .app .opponent-overview button {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 3px 5px;
+    padding: 7px 9px;
+    background: #fffdf5;
+    border: 1px solid #aaa08d;
+    color: #292727;
+    text-align: left;
+  }
+  .app .opponent-overview button > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 750;
+  }
+  .app .opponent-overview button strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    font: 800 28px/1 var(--serif);
+  }
+  .app .opponent-overview button small {
+    font-size: 9px;
+    color: #655b50;
+  }
+  .app .opponent-overview .seat-active {
+    border: 2px solid #157597;
+    background: #e5f1f3;
+    padding: 6px 8px;
+  }
+  .app .opponent-overview .seat-active small {
+    color: #126581;
+    font-weight: 800;
+  }
+  .app .opponent-row {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    gap: 12px;
+    padding: 6px 5px 10px;
+    margin-inline: -5px;
+    scroll-padding-inline: 5px;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+  .app .opponent-row > .player-zone {
+    flex: 0 0 calc(50% - 12px);
+    min-width: 0;
+    max-width: none;
+    min-height: 155px;
+    padding: 10px 12px;
+    scroll-snap-align: start;
+  }
+  .app .players-2 .opponent-row > .player-zone {
+    flex-basis: 100%;
+  }
+  .app .player-head {
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-bottom: 7px;
+  }
+  .app .player-head > div:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+  }
+  .app .player-head strong {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+  .app .player-head .bot-label {
+    display: block;
+    font-size: 9px;
+  }
+  .app .opponent-score > strong {
+    font-size: 30px;
+  }
+  .app .player-doing {
+    font-size: 10px;
+  }
+  .app .mood-row {
+    min-height: 98px;
+    padding-top: 12px;
+    gap: 14px;
+  }
+  .app .mood-card {
+    --mood-width: 65px;
+  }
+  .app .empty-zone {
+    font-size: 17px;
+  }
+  .app .table-center {
+    padding: 7px 4px;
+  }
+  .app .round-marker {
+    min-width: 58px;
+    padding: 3px 8px;
+  }
+  .app .round-marker > strong {
+    font-size: 26px;
+  }
+  .app .deck-stack > .card-back,
+  .app .empty-discard {
+    width: 34px;
+    height: 48px;
+  }
+  .app .discard-stack img {
+    height: 48px;
+  }
+  .app .your-moods {
+    margin-top: 8px;
+    padding: 8px 10px;
+    min-width: 0;
+  }
+  .app .your-moods > .zone-label {
+    padding-bottom: 6px;
+    min-height: 0;
+    gap: 10px;
+  }
+  .app .your-score {
+    padding: 5px 10px;
+  }
+  .app .your-score > strong {
+    font-size: 30px;
+  }
+  .app .your-moods .mood-row {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    min-height: 108px;
+    padding: 12px 8px 8px;
+    margin-inline: -6px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .app .hand-section {
+    background: #fffdf5;
+    margin-top: 12px;
+    padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+    min-width: 0;
+  }
+  .app .portable-hand-hint {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 9px;
+    color: #655b50;
+  }
+  .app .portable-hand-hint > span:first-child {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .app .hand-cards {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 14px;
+    min-height: 0;
+    padding: 15px 10px 12px;
+    margin-inline: -8px;
+    scroll-padding-inline: 10px;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .app .hand-card {
+    width: 104px;
+    min-width: 104px;
+    flex: 0 0 104px;
+    scroll-snap-align: start;
+    transform: none;
+  }
+  .app .hand-card.selected {
+    transform: translateY(-5px);
+  }
+  .app .card-action {
+    background: #fffdf5;
+  }
+  .app .hand-cards .empty-hand {
+    padding-block: 12px;
+  }
+}
+@media (min-width: 651px) and (max-width: 1100px) and (min-height: 551px) {
+  .app .hand-heading {
+    flex-wrap: wrap;
+  }
+  .app .turn-status {
+    order: 1;
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 650px) {
+  .app .site-header,
+  .app.game-app .site-header {
+    height: calc(62px + env(safe-area-inset-top));
+    gap: 8px;
+    padding-inline: max(12px, env(safe-area-inset-left))
+      max(12px, env(safe-area-inset-right));
+  }
+  .app .brand {
+    font-size: 18px;
+    gap: 7px;
+  }
+  .app .brand-symbol {
+    width: 30px;
+    height: 34px;
+    font-size: 23px;
+  }
+  .app .brand-small {
+    font-size: 5px;
+    letter-spacing: 0.8px;
+  }
+  .app .site-header nav {
+    gap: 2px;
+  }
+  .app .site-header nav > button {
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 0;
+  }
+  .app .site-header nav > button > span,
+  .app .site-header .connection {
+    display: none;
+  }
+  .app .table-topline {
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .app .table-title .eyebrow {
+    display: none;
+  }
+  .app .table-title h2 {
+    font-size: 22px;
+    margin: 0;
+  }
+  .app .table-tools > button {
+    min-width: 44px;
+    padding: 8px;
+  }
+  .app .table-tools .room-code {
+    display: none;
+  }
+  .app .table-feedback {
+    margin-bottom: 10px;
+    font-size: 11px;
+    min-height: 36px;
+    padding: 6px 9px;
+    align-items: center;
+  }
+  .app .table-feedback > span:nth-child(2) {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .app .opponent-row > .player-zone {
+    flex-basis: calc(100% - 20px);
+  }
+  .app .players-4 .player-zone:last-child {
+    flex-basis: calc(100% - 20px);
+  }
+  .app .player-head .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 19px;
+  }
+  .app .hand-fan {
+    margin-left: 4px;
+  }
+  .app .hand-fan .card-back.mini:nth-child(n + 4) {
+    display: none;
+  }
+  .app .hand-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 15;
+    box-shadow: 0 -5px 16px #29272724;
+  }
+  .app .hand-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px auto;
+    position: relative;
+    gap: 5px 8px;
+    margin-bottom: 0;
+  }
+  .app .you-label {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .app .you-label > div {
+    min-width: 0;
+  }
+  .app .you-label strong {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .app .you-label .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+  .app .you-label .win-dots {
+    gap: 3px;
+  }
+  .app .turn-status {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: auto;
+    justify-content: flex-start;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .app .portable-reaction-toggle {
+    display: grid;
+    place-items: center;
+    grid-row: 1;
+    grid-column: 2;
+    width: 44px;
+    border: 1px solid #c2b69d;
+    border-radius: 5px;
+    font: 24px sans-serif;
+    color: #493c30;
+  }
+  .app .reaction-bar {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 8px;
+    gap: 3px;
+    background: #fffdf5;
+    border: 2px solid #292727;
+    box-shadow: 3px 3px #9c6ab6;
+    overflow-x: auto;
+  }
+  .app .reaction-bar[data-open="true"] {
+    display: flex;
+  }
+  .app .reaction-bar button {
+    min-width: 40px;
+    flex-shrink: 0;
+  }
+  .app .end-turn {
+    grid-column: 3;
+    grid-row: 1;
+    font-size: 13px;
+    padding: 10px 13px;
+    margin: 0;
+  }
+  .app .hand-card {
+    width: 94px;
+    min-width: 94px;
+    flex-basis: 94px;
+  }
+  .app .hand-cards {
+    padding-block: 13px 9px;
+  }
+  .app .card-action,
+  .app .choice-panel {
+    position: fixed;
+    inset: auto 0 var(--visible-bottom, 0px);
+    width: auto;
+    max-height: calc(var(--visible-height, 100dvh) * 0.7);
+    margin: 0;
+    padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+    border: 2px solid #292727;
+    border-top: 5px solid #9b68b6;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 28px #29272740;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    z-index: 30;
+  }
+  .app .card-action:before,
+  .app .choice-panel:before {
+    content: "";
+    display: block;
+    width: 38px;
+    height: 4px;
+    margin: -7px auto 12px;
+    background: #b4a48b;
+    border-radius: 2px;
+  }
+  .app .card-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 44px;
+    gap: 10px;
+    align-items: start;
+  }
+  .app .card-action-row > div:first-child {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .app .card-action-row strong {
+    font-size: 25px;
+  }
+  .app .card-action-row > div:first-child > span {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .app .card-action-row .primary {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 10px;
+  }
+  .app .card-action-row > select {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+  }
+  .app .card-plan {
+    margin-top: 16px;
+  }
+  .app .plan-step h4 {
+    font-size: 18px;
+    line-height: 1.35;
+  }
+  .app .choice-options {
+    max-height: min(30dvh, 240px);
+  }
+  .app .choice-panel h3 {
+    margin-top: 10px;
+    font-size: 27px;
+  }
+  .app .choice-actions {
+    position: sticky;
+    bottom: -1px;
+    padding: 10px 0 0;
+    background: #fffdf5;
+    z-index: 1;
+  }
+  .app .modal-backdrop {
+    padding: max(8px, env(safe-area-inset-top)) 8px
+      max(8px, env(safe-area-inset-bottom));
+  }
+  .app .inspect-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 10px 16px 20px;
+  }
+  .app .inspect-modal > .close-modal,
+  .app .help-modal > .close-modal {
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+    border: 1px solid #c6bba7;
+  }
+  .app .inspect-modal > img {
+    width: min(100%, 350px);
+    margin: 0 auto;
+  }
+  .app .inspect-modal h2 {
+    margin: 0 0 10px;
+    font-size: 34px;
+  }
+  .app .inspect-modal details {
+    margin-top: 12px;
+  }
+  .app .help-modal {
+    padding: 12px 20px 24px;
+  }
+  .app .help-modal h2 {
+    font-size: 35px;
+  }
+  .app .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+  }
+  .app .catalog-grid strong {
+    font-size: 14px;
+  }
+  .app .catalog-grid span {
+    font-size: 11px;
+  }
+  .app .catalog-toolbar {
+    padding: 10px;
+  }
+  .app .catalog-toolbar > label {
+    width: 100%;
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .app .catalog-toolbar > div {
+    gap: 4px;
+  }
+  .app .catalog-toolbar > div > button {
+    flex: 1;
+  }
+  .app .catalog-overlay > header > button {
+    min-width: 44px;
+  }
+  .app .played-card-reveal {
+    max-height: calc(var(--visible-height, 100dvh) - 20px);
+    padding: 10px;
+  }
+  .app .played-card-art {
+    max-height: min(53dvh, calc(var(--visible-height, 100dvh) - 210px));
+    max-width: 90vw;
+  }
+  .app .played-card-reveal h2 {
+    font-size: 27px;
+  }
+  .app .played-card-timer {
+    margin: 12px auto 5px;
+  }
+  .app .reveal-ready {
+    margin-top: 8px;
+    min-height: 44px;
+  }
+  .app .round-results {
+    padding: 18px 16px;
+    width: 100%;
+  }
+  .app .round-results h2 {
+    font-size: 32px;
+  }
+  .app .round-player-name {
+    font-size: 13px;
+  }
+  .app .round-awards p {
+    font-size: 11px;
+  }
+  .app .activity-panel {
+    inset: max(12px, env(safe-area-inset-top)) 8px
+      max(12px, env(safe-area-inset-bottom));
+    max-width: none;
+    width: auto;
+    z-index: 40;
+    font-size: 14px;
+  }
+  .app .activity-panel ol,
+  .app .discard-list button {
+    font-size: 14px;
+  }
+  .app .lobby {
+    padding: 24px 16px;
+    margin-inline: 12px;
+  }
+  .app .lobby h1 {
+    font-size: 43px;
+  }
+  .app .lobby .invite-code {
+    max-width: 100%;
+    padding-inline: 20px;
+    font-size: 23px;
+  }
+  .app .lobby-seats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .app .lobby-seat {
+    min-width: 0;
+  }
+  .app .lobby-seat strong {
+    overflow-wrap: anywhere;
+  }
+  .app .visibility-choice select,
+  .app .bot-controls select {
+    max-width: 100%;
+  }
+  .app .bot-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .app .entry-panel {
+    margin-top: 22px;
+  }
+  .app .hero {
+    padding-top: 26px;
+  }
+  .app .hero-art {
+    height: 380px;
+  }
+  .app .hero h1 {
+    font-size: clamp(47px, 13vw, 72px);
+  }
+  .app .legal-footer {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+@media (max-height: 550px) and (max-width: 1100px) and (orientation: landscape) {
+  .app:has(.table-layout) .site-header {
+    height: calc(48px + env(safe-area-inset-top));
+  }
+  .app .table-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 8px 12px;
+    align-items: start;
+  }
+  .app .table-topline,
+  .app .table-feedback,
+  .app .board {
+    grid-column: 1;
+    margin-bottom: 0;
+  }
+  .app .table-title h2 {
+    font-size: 23px;
+  }
+  .app .table-title .eyebrow {
+    display: none;
+  }
+  .app .hand-section {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    position: sticky;
+    z-index: 15;
+    top: 8px;
+    margin: 0;
+    max-height: calc(var(--visible-height, 100dvh) - 70px);
+    overflow-y: auto;
+    padding: 10px;
+  }
+  .app .brand {
+    font-size: 20px;
+  }
+  .app .brand-symbol {
+    width: 30px;
+    height: 32px;
+  }
+  .app .brand-small {
+    font-size: 5px;
+  }
+  .app .hand-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+    position: relative;
+  }
+  .app .portable-reaction-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    font: 24px sans-serif;
+    border: 1px solid #c2b69d;
+  }
+  .app .reaction-bar {
+    display: none;
+    position: static;
+    flex-basis: 100%;
+    overflow-x: auto;
+    padding: 5px 0;
+  }
+  .app .reaction-bar[data-open="true"] {
+    display: flex;
+  }
+  .app .reaction-bar button {
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+  .app .turn-status {
+    flex-basis: 100%;
+    font-size: 11px;
+  }
+  .app .hand-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px 5px;
+    margin: 0;
+    overflow: visible;
+  }
+  .app .hand-card {
+    min-width: 0;
+    width: 100%;
+    transform: none;
+  }
+  .app .portable-hand-hint > span:last-child {
+    display: none;
+  }
+  .app .opponent-row > .player-zone,
+  .app .players-4 .player-zone:last-child {
+    flex-basis: calc(100% - 18px);
+  }
+  .app .card-action,
+  .app .choice-panel {
+    position: fixed;
+    inset: calc(8px + var(--visible-top, 0px))
+      max(8px, env(safe-area-inset-right))
+      calc(8px + var(--visible-bottom, 0px)) auto;
+    width: 350px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(var(--visible-height, 100dvh) - 16px);
+    overflow: auto;
+    z-index: 30;
+    padding: 14px;
+    margin: 0;
+  }
+  .app .card-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .app .card-action-row > div:first-child {
+    flex: 1 0 100%;
+  }
+  .app .inspect-modal {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.8fr) 1fr;
+    max-width: 900px;
+    gap: 20px;
+    padding: 18px 55px 18px 18px;
+  }
+  .app .inspect-modal > img {
+    width: 100%;
+    max-height: calc(var(--visible-height, 100dvh) - 60px);
+    object-fit: contain;
+  }
+  .app .inspect-modal > .close-modal {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    margin: 0;
+  }
+  .app .played-card-reveal {
+    display: grid;
+    grid-template-columns: minmax(130px, 1fr) 1fr;
+    align-items: center;
+    gap: 6px 20px;
+    width: min(600px, 100%);
+    max-height: calc(var(--visible-height, 100dvh) - 16px);
+    padding: 8px;
+  }
+  .app .played-card-art {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    max-height: calc(var(--visible-height, 100dvh) - 36px);
+    max-width: 100%;
+  }
+  .app .played-card-reveal > :not(.played-card-art) {
+    grid-column: 2;
+    margin: 0;
+  }
+  .app .played-card-reveal h2 {
+    font-size: 27px;
+  }
+  .app .played-card-timer {
+    width: 100%;
+  }
+  .app .reveal-ready {
+    justify-content: center;
+  }
+}
+@media (hover: none) {
+  .app .hand-card:hover,
+  .app .mood-card:hover {
+    transform: none;
+  }
+  .app .hand-card.selected {
+    transform: translateY(-5px);
+  }
+  .app .card-zoom {
+    display: none;
+  }
+}

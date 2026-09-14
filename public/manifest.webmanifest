@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "Mood Swings \u2014 Online Table",
+  "short_name": "Mood Swings",
+  "description": "An unofficial online table for Mood Swings. Play with friends or bots. Internet connection required.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#eee9db",
+  "theme_color": "#242323",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

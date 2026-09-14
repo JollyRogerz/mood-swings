@@ -52,6 +52,12 @@ import type {
 import "./style.css";
 import "./scrapbook.css";
 import "./polish.css";
+import "./portable.css";
+import {
+  OpponentOverview,
+  useOverlayScrollLock,
+  usePortableViewport,
+} from "./portable";
 import { PACING, pacing } from "../game/pacing";
 import {
   Score,
@@ -92,8 +98,10 @@ async function post(url: string, body: unknown) {
 const startingCode =
   location.pathname.match(/^\/room\/([A-Z2-9]{8})$/i)?.[1].toUpperCase() ?? "";
 function App() {
+  usePortableViewport();
   const { preferences, update, reduced } = usePreferences();
   const [targets, setTargets] = useState<Targets>();
+  const [reactionsOpen, setReactionsOpen] = useState(false);
   const [name, setName] = useState(localStorage.getItem("mood-name") ?? ""),
     [code, setCode] = useState(startingCode),
     [roomCode, setRoomCode] = useState(startingCode),
@@ -120,6 +128,16 @@ function App() {
   const playPaused = playDeadline > clockNow;
   const roundPaused = roundDeadline > clockNow && !playPaused;
   const interactionPaused = roundPaused || playPaused;
+  useOverlayScrollLock(
+    !!inspect ||
+      help ||
+      catalogOpen ||
+      interactionPaused ||
+      view?.status === "finished",
+  );
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [view?.status]);
   const table = usePresentedTable(view, playPaused && !roundPaused, connected);
   useTableMotion(table, reduced, connected);
   useTurnSound(view, interactionPaused, connected);
@@ -256,6 +274,7 @@ function App() {
       room.current?.send("presence", { state: myPresence });
   }, [myPresence, connected, view?.status]);
   function react(emoji: Reaction) {
+    setReactionsOpen(false);
     if (connected) room.current?.send("react", { emoji });
   }
   const requestPlan = useCallback(
@@ -331,16 +350,20 @@ function App() {
         </button>
         <nav>
           <TableSettings preferences={preferences} update={update} />
-          <button onClick={() => setCatalogOpen(true)}>
+          <button aria-label="The cards" onClick={() => setCatalogOpen(true)}>
             <Layers size={16} />
             <span>The cards</span>
           </button>
-          <button onClick={() => setHelp(true)}>
+          <button aria-label="How to play" onClick={() => setHelp(true)}>
             <BookOpen size={16} />
             <span>How to play</span>
           </button>
           {view ? (
-            <span className={`connection ${connected ? "" : "offline"}`}>
+            <span
+              role="status"
+              aria-label={connected ? "Connected" : "Reconnecting"}
+              className={`connection ${connected ? "" : "offline"}`}
+            >
               {connected ? <Wifi size={14} /> : <WifiOff size={14} />}
               <span>{connected ? "Connected" : "Reconnecting"}</span>
             </span>
@@ -712,7 +735,7 @@ function App() {
               <h2>Make yourself felt.</h2>
             </div>
             <div className="table-tools">
-              <button onClick={invite}>
+              <button onClick={invite} aria-label="Copy room invite">
                 <span className="room-code">{roomCode}</span>
                 {copied ? <Check size={15} /> : <Copy size={15} />}
               </button>
@@ -747,6 +770,7 @@ function App() {
             )}
           </div>
           <section className={`board players-${view.players.length}`}>
+            <OpponentOverview view={table!} reduced={reduced} />
             <div className="board-watermark">
               mood swings<span>EVERY CARD CHANGES THE FEELING</span>
             </div>
@@ -835,7 +859,7 @@ function App() {
               </div>
             </div>
           </section>
-          <section className="hand-section">
+          <section className="hand-section" aria-label="Your hand">
             <div className="hand-heading">
               <div className="you-label">
                 <Avatar
@@ -861,21 +885,45 @@ function App() {
                 className={`turn-status ${view.active === view.you ? "your-turn" : ""}`}
               >
                 <span className="status-dot" />
-                {playPaused
-                  ? "Reading the played mood"
-                  : roundPaused
-                    ? "Round results"
-                    : view.scoring
-                      ? "Scoring the round"
-                      : view.waitingFor
-                        ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
-                        : view.active === view.you
-                          ? outOfPlays
-                            ? "Nothing left to play. Moving on…"
-                            : "Your turn. How are you feeling?"
-                          : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
+                <span className="turn-message">
+                  {!connected
+                    ? "Reconnecting to the table…"
+                    : playPaused
+                      ? "Reading the played mood"
+                      : roundPaused
+                        ? "Round results"
+                        : view.scoring
+                          ? "Scoring the round"
+                          : view.waitingFor
+                            ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
+                            : view.active === view.you
+                              ? outOfPlays
+                                ? "Nothing left to play. Moving on…"
+                                : "Your turn. How are you feeling?"
+                              : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
+                </span>
+                <span className="portable-your-score" aria-label="Your points">
+                  <Score
+                    value={
+                      table?.players.find((p) => p.id === view.you)?.score ?? 0
+                    }
+                  />
+                  <small>PTS</small>
+                </span>
               </div>
-              <div className="reaction-bar" aria-label="Send a reaction">
+              <button
+                className="portable-reaction-toggle"
+                aria-label="Show reactions"
+                aria-expanded={reactionsOpen}
+                onClick={() => setReactionsOpen(!reactionsOpen)}
+              >
+                ☺
+              </button>
+              <div
+                className="reaction-bar"
+                data-open={reactionsOpen}
+                aria-label="Send a reaction"
+              >
                 {REACTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -984,7 +1032,7 @@ function App() {
           {roundPaused && view.lastRound && (
             <RoundResults view={view} remaining={roundDeadline - clockNow} />
           )}
-          {view.status === "finished" && !roundPaused && (
+          {view.status === "finished" && !interactionPaused && (
             <div className="modal-backdrop">
               <div className="winner-modal">
                 <span className="winner-flower">✳</span>
@@ -1027,7 +1075,13 @@ function App() {
       )}
       {inspected && (
         <div className="modal-backdrop" onClick={() => setInspect(undefined)}>
-          <div className="inspect-modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="inspect-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${inspected.name} card details`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="close-modal"
               onClick={() => setInspect(undefined)}
@@ -1060,7 +1114,13 @@ function App() {
       )}
       {help && (
         <div className="modal-backdrop" onClick={() => setHelp(false)}>
-          <div className="help-modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="help-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="How to play"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="close-modal"
               onClick={() => setHelp(false)}
@@ -1437,6 +1497,7 @@ function CardZoom() {
   }>();
   useEffect(() => {
     let hovered: HTMLElement | null = null;
+    let touchInput = false;
     const card = (target: EventTarget | null) =>
       target instanceof Element
         ? target.closest<HTMLElement>("[data-card-image]")
@@ -1463,25 +1524,37 @@ function CardZoom() {
     };
     const over = (e: PointerEvent) => {
       if (e.pointerType === "touch") return;
+      touchInput = false;
       const el = card(e.target);
       if (el === hovered) return;
       hovered = el;
       show(el);
     };
     const out = (e: PointerEvent) => {
+      if (touchInput || e.pointerType === "touch") return;
       if (card(e.relatedTarget) === hovered) return;
       hovered = null;
       show(card(document.activeElement));
     };
-    const focus = (e: FocusEvent) => show(card(e.target));
-    const blur = () => show(hovered);
+    const focus = (e: FocusEvent) => {
+      if (!touchInput) show(card(e.target));
+    };
+    const blur = () => {
+      if (!touchInput) show(hovered);
+    };
     const clear = () => {
       hovered = null;
       setPreview(undefined);
     };
     const key = (e: KeyboardEvent) => {
+      if (e.key === "Tab") touchInput = false;
       if (e.key === "Escape") clear();
     };
+    const down = (e: PointerEvent) => {
+      touchInput = e.pointerType === "touch";
+      if (touchInput) clear();
+    };
+    document.addEventListener("pointerdown", down, true);
     document.addEventListener("pointerover", over);
     document.addEventListener("pointerout", out);
     document.addEventListener("focusin", focus);
@@ -1490,6 +1563,7 @@ function CardZoom() {
     window.addEventListener("scroll", clear, true);
     window.addEventListener("resize", clear);
     return () => {
+      document.removeEventListener("pointerdown", down, true);
       document.removeEventListener("pointerover", over);
       document.removeEventListener("pointerout", out);
       document.removeEventListener("focusin", focus);
@@ -1556,7 +1630,10 @@ function PlayerZone({
   reactions: { id: number; emoji: Reaction }[];
 }) {
   return (
-    <div className={`player-zone ${active ? "active-player" : ""}`}>
+    <div
+      id={`seat-${player.id}`}
+      className={`player-zone ${active ? "active-player" : ""}`}
+    >
       <div className="player-head">
         <Avatar name={player.name} index={index} reactions={reactions} />
         <div>
@@ -1690,7 +1767,11 @@ function Hand({
   const playableDiscard = view.discard.filter((c) => view.playable[c.uid]);
   return (
     <>
-      <div className="hand-cards">
+      <div className="portable-hand-hint">
+        <span>YOUR HAND · {view.hand.length} CARDS</span>
+        <span>Swipe · tap a card to read & play</span>
+      </div>
+      <div className="hand-cards" aria-label="Cards in your hand">
         {view.hand.map((c, i) => (
           <button
             key={c.uid}
@@ -1745,7 +1826,11 @@ function Hand({
         </div>
       )}
       {card && (
-        <div className="card-action">
+        <div
+          className="card-action"
+          role="region"
+          aria-label={`Selected card: ${card.name}`}
+        >
           <div className="card-action-row">
             <div>
               <strong>{card.name}</strong>

@@ -17,7 +17,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - name: Start production server and test browser flows
         shell: bash
         run: |

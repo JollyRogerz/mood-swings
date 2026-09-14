@@ -16,11 +16,11 @@ Mood Swings, its original rules, card text, illustrations, branding, and other o
 
 ## What you can play
 
-Mood Swings Online implements the traditional shared-deck game for **two to four players**, directly in a laptop browser. Friends join through an invite link. You can also play alone against bots or mix human players and bots at the same table.
+Mood Swings Online implements the traditional shared-deck game for **two to four players**, directly in a laptop, phone, or tablet browser. Friends join through an invite link. You can also play alone against bots or mix human players and bots at the same table.
 
 | Feature            | Current behavior                                                    |
 | ------------------ | ------------------------------------------------------------------- |
-| Online multiplayer | Private invite tables for 2–4 players                               |
+| Online multiplayer | Public or private tables for 2–4 players                               |
 | Solo play          | Add one to three bots before starting                               |
 | Difficulty         | Easy, Normal, Hard, or a real fruit-fly brain circuit, per bot      |
 | Cards              | 133 unique moods with implemented card handlers                     |
@@ -34,7 +34,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Guidance           | The one control that moves the game along glows                     |
 | Decide first       | A card's decisions are previewed and answered from the hand before it is played |
 | Auto-advance       | A turn with no legal play left ends by itself                       |
-| Device support     | Browser interface with responsive layouts; no installer required    |
+| Device support     | Touch layouts for phones and tablets, portrait and landscape; no installer required    |
 
 This release does not include Duel, drafting, team variants, custom deck construction, spectators, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
@@ -56,6 +56,16 @@ Selecting a card asks the server to preview the play: it simulates the play on a
 Every completed card play gets a shared six-second full-size reveal, showing who played it. Humans and bots wait while everyone reads; copied cards identify both the original mood and the copied identity. Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
 An invite is intended for the people you share it with. Rooms are private by default. Hosts can choose Public at creation or in the lobby to appear on the home-page directory. Only waiting tables with an online host and fewer than four occupied seats are listed. The directory exposes the room code, host nickname, seat count and bot count, never session credentials or hands. Listings refresh every 15 seconds and are rebuilt as hosts reconnect after a server restart. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
+
+## Play on a phone or tablet
+
+Open the same game link on your device; phone, tablet, and laptop players can share a table. Portrait mode puts your hand in a horizontal strip within thumb reach. Swipe through the cards, then tap a card to read its rules and choose **Inspect** or **Play mood**. Tapping selects a card without triggering the desktop hover preview. Decisions and play controls open in a scrollable panel at the bottom of a phone screen.
+
+Every opponent has a score button above the board. Tap a name to bring that seat into view, or swipe between seats. Your current points also stay beside the turn message in your hand area. The smile button opens reactions. Tablets show larger areas for two opposing seats at a time; short landscape screens move the hand to a scrollable column beside the board. Card inspection, shared reveals, choices, and round results adapt to the available screen height. Safe-area spacing accommodates screen cutouts and home indicators, and text inputs avoid the small-font zoom on mobile browsers.
+
+The app includes a web manifest and home-screen icons. Use your browser's **Add to Home Screen** or installation option where available. It is still the same online game: **an internet connection is required**, including for bot games, because the server validates every move. There is no offline cache or service worker. Browser and installed-app storage can differ, so start and return to a match using the same browser or home-screen app. Backgrounding a phone can interrupt its connection; returning to that same session uses the existing reconnection flow.
+
+Mobile verification uses Chromium and WebKit with touch-enabled browser contexts, including 320 × 568 and 390 × 844 phones, 844 × 390 landscape, and 768 × 1024 and 1024 × 768 tablets. This covers browser behavior and layout; it is not a claim of testing on every physical device or operating-system version.
 
 ## Play against bots
 
@@ -190,7 +200,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **440 passing engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
+The current automated suite contains **445 passing engine, regression, simulation, bot, fly-circuit, planning, and restart tests**. Separate Playwright scenarios exercise the actual browser application. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -201,13 +211,15 @@ The current automated suite contains **440 passing engine, regression, simulatio
 | `tests/fly.test.ts`             | Connectome circuit integrity, feature wiring, sparse codes, legal fly decisions, and a win-rate check against Easy             |
 | `tests/plan.test.ts`            | Previewing a play from the hand, replaying planned answers, mismatch fallback, and re-seeded randomness                        |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
+| `tests/e2e/polish.spec.ts` | Sound and motion preferences, keyboard controls, and persistence |
+| `tests/e2e/portable.spec.ts` | Touch selection and shared play, small-screen dialogs and scroll restoration, opponent navigation, reactions, phone rotation, tablet layout, round results, and home-screen assets in Chromium and WebKit |
 | `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation address, and mobile layout |
 | `tests/e2e/multiplayer.spec.ts` | Two-browser play/reconnect, card catalog/help/mobile layout, four-player match/rematch, and solo play against a selectable bot |
 
 ```sh
 npm test
 npm run build
-npx playwright install chromium
+npx playwright install chromium webkit
 npm start
 ```
 
@@ -223,7 +235,7 @@ To verify a deployment:
 TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 ```
 
-Browser tests create real rooms and matches on their target. Screenshots and retained failure traces go to ignored `output/playwright/`. The GitHub Actions workflow installs dependencies, builds, runs the automated rules suite, starts the built server, and runs Chromium scenarios.
+Browser tests create real rooms and matches on their target. Screenshots and retained failure traces go to ignored `output/playwright/`. The GitHub Actions workflow installs dependencies, builds, runs the automated rules suite, starts the built server, and runs all Chromium scenarios plus the portable-device scenarios in WebKit.
 
 The handler traversal tests alone do not prove every card's semantics; targeted outcome tests and seeded games complement them. New reported interactions should become focused regression fixtures before being fixed.
 

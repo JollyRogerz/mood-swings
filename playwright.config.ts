@@ -10,6 +10,14 @@ export default defineConfig({
     viewport: { width: 1440, height: 1000 },
     trace: "retain-on-failure",
   },
+  projects: [
+    { name: "chromium", use: { browserName: "chromium" } },
+    {
+      name: "webkit-touch",
+      testMatch: "**/portable.spec.ts",
+      use: { browserName: "webkit" },
+    },
+  ],
   reporter: "list",
   outputDir: "output/playwright/test-results",
 });

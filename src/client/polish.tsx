@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Settings2, Volume2, VolumeX, X } from "lucide-react";
 import type { View } from "../game/types";
+import { useOverlayScrollLock } from "./portable";
 
 export interface Preferences {
   sound: boolean;
@@ -123,6 +124,7 @@ export function TableSettings({
   update: (p: Preferences) => void;
 }) {
   const [open, setOpen] = useState(false);
+  useOverlayScrollLock(open);
   const trigger = useRef<HTMLButtonElement>(null),
     panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
