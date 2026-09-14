@@ -1688,7 +1688,6 @@ function PublicTables({
 }
 const donationAddress = "0x5e61495C929fC93355f245e5D6A31Bf142e73E69";
 function DonationPanel() {
-  const [network, setNetwork] = useState("Base");
   const [notice, setNotice] = useState("");
   return (
     <details className="donation-panel">
@@ -1697,24 +1696,7 @@ function DonationPanel() {
         Optional USDC donations go directly to JollyRogerz. Every card, bot and
         game stays free. Donations are not payments to Wizards of the Coast.
       </p>
-      <label>
-        USDC network{" "}
-        <select
-          aria-label="USDC network"
-          value={network}
-          onChange={(e) => {
-            setNetwork(e.target.value);
-            setNotice("");
-          }}
-        >
-          {["Base", "Ethereum", "Polygon", "Arbitrum"].map((n) => (
-            <option key={n}>{n}</option>
-          ))}
-        </select>
-      </label>
-      <p>
-        Send native USDC on <strong>{network}</strong> to:
-      </p>
+      <p>USDC donation address:</p>
       <code>{donationAddress}</code>
       <button
         onClick={async () => {
@@ -1729,10 +1711,7 @@ function DonationPanel() {
         <Copy size={15} /> Copy address
       </button>
       <p role="status">{notice}</p>
-      <small>
-        Match the network in your wallet before sending. Use native USDC, not
-        bridged USDC.e. No wallet connection is required.
-      </small>
+      <small>No wallet connection is required.</small>
     </details>
   );
 }

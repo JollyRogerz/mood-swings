@@ -40,10 +40,6 @@ test("public tables are discoverable and donations remain optional", async ({
     await expect(guest.locator(".donation-panel code")).toHaveText(
       "0x5e61495C929fC93355f245e5D6A31Bf142e73E69",
     );
-    for (const network of ["Base", "Ethereum", "Polygon", "Arbitrum"]) {
-      await guest.getByLabel("USDC network").selectOption(network);
-      await expect(guest.locator(".donation-panel strong")).toHaveText(network);
-    }
     await guest.screenshot({
       path: "output/playwright/community-desktop.png",
       fullPage: true,

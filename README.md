@@ -178,7 +178,7 @@ The current automated suite contains **426 passing engine, regression, simulatio
 | `tests/simulation.test.ts`      | 60 seeded complete games with two to four players and card-conservation invariants                                             |
 | `tests/bot.test.ts`             | Difficulty behavior, hidden-information independence, card-choice paths, and complete bot matches                              |
 | `tests/server-restart.test.ts`  | Launch a real server, play, terminate it, relaunch, and recover the room                                                       |
-| `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation networks, and mobile layout |
+| `tests/e2e/community.spec.ts` | Public/private room discovery and joining, host visibility controls, donation address, and mobile layout |
 | `tests/e2e/multiplayer.spec.ts` | Two-browser play/reconnect, card catalog/help/mobile layout, four-player match/rematch, and solo play against a selectable bot |
 
 ```sh
@@ -284,4 +284,4 @@ Mark's [history of Mood Swings](https://magic.wizards.com/en/news/making-magic/t
 
 ## Optional maintainer donations
 
-The home-page support panel offers native USDC donations on Base, Ethereum, Polygon, or Arbitrum to `0x5e61495C929fC93355f245e5D6A31Bf142e73E69`, as supplied and confirmed by the maintainer. The panel only displays and copies the address; it never connects a wallet or initiates a transfer. Select the same network in your wallet and use native USDC, not bridged USDC.e. Donations go to JollyRogerz, not Wizards of the Coast, and grant no features or rewards. This does not establish rights-holder permission for the adaptation or its funding model.
+The home-page support panel displays the USDC donation address `0x5e61495C929fC93355f245e5D6A31Bf142e73E69`, as supplied and confirmed by the maintainer. The panel only displays and copies the address; it never connects a wallet or initiates a transfer. Donations go to JollyRogerz, not Wizards of the Coast, and grant no features or rewards. This does not establish rights-holder permission for the adaptation or its funding model.

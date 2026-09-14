@@ -2884,8 +2884,7 @@ footer a {
   margin: 14px 0;
   font-size: 13px;
 }
-.visibility-choice select,
-.donation-panel select {
+.visibility-choice select {
   padding: 10px;
   border: 1px solid #aeb6a4;
   border-radius: 8px;
