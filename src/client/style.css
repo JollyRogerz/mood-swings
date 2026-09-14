@@ -821,7 +821,8 @@ footer a {
 .mood-card {
   position: relative;
   padding: 0;
-  width: 65px;
+  --mood-width: 65px;
+  width: var(--mood-width);
   flex-shrink: 0;
   border-radius: 5px;
   box-shadow: 0 4px 7px #07191150;
@@ -851,7 +852,16 @@ footer a {
   font-weight: 700;
   box-shadow: 0 2px 3px #0003;
 }
-.suppressed img {
+.mood-card.suppressed {
+  width: calc(var(--mood-width) * 1.4);
+  height: var(--mood-width);
+}
+.mood-card.suppressed img {
+  position: absolute;
+  width: var(--mood-width);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
   filter: grayscale(1);
   opacity: 0.6;
 }
@@ -1597,7 +1607,7 @@ footer a {
     min-height: 430px;
   }
   .mood-card {
-    width: 73px;
+    --mood-width: 73px;
   }
   .hand-card {
     width: 110px;
@@ -1664,7 +1674,7 @@ footer a {
     padding: 10px;
   }
   .mood-card {
-    width: 56px;
+    --mood-width: 56px;
   }
   .hand-card {
     width: 90px;
@@ -1903,7 +1913,7 @@ footer a {
     gap: 7px;
   }
   .mood-card {
-    width: 48px;
+    --mood-width: 48px;
   }
   .value-badge {
     width: 19px;

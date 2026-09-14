@@ -965,7 +965,7 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
       onClick={onClick}
       data-card-image={c.image}
       data-card-name={c.name}
-      aria-label={`Inspect ${c.name}, value ${c.value}`}
+      aria-label={`Inspect ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : ""}`}
     >
       <img src={c.image} alt={c.name} />
       <span className="value-badge">{c.value}</span>
