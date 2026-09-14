@@ -98,11 +98,11 @@ There are source inconsistencies worth making visible. Curiosity's printed image
 
 ## Visual design
 
-The interface uses warm cream paper, deep green felt, serif headings, muted coral accents, and gently tilted cards. The aim is a comfortable tabletop atmosphere with room to read decisions clearly.
+The interface takes inspiration from the official Mood Swings product page: textured cream paper, graph-paper grids, bold black headlines, handwritten lettering, and blue, green, purple, and coral accents. Cut-paper labels, offset shadows, a card collage, and colorful lobby seats carry that style from the home page into the game. The table keeps large point totals, readable card previews, and staged round results, with layouts that adapt to laptop and phone screens.
 
 The cards use the **actual official card graphics** archived from the published gallery. The digital table, controls, layout, and interaction code are this adaptation's interface. Card images retain their original visual identity and artist credits. The catalog contains 133 distinct moods; the image archive also includes the alternate Love headliner and the Hurt Feelings helper, for 135 gallery images total.
 
-The interface uses DM Sans and Libre Caslon through Google Fonts with fallback fonts. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
+The interface uses DM Sans, Barlow Condensed, and Permanent Marker through Google Fonts with fallback fonts. The base stylesheet also retains its Libre Caslon fallback theme. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
 
 ## Architecture
 

@@ -44,6 +44,7 @@ import type {
   View,
 } from "../game/types";
 import "./style.css";
+import "./scrapbook.css";
 const botLabel = (d: Difficulty) =>
   d === "fly" ? "fly brain bot" : `${d} bot`;
 const colorNames: Record<string, string> = {
@@ -297,7 +298,8 @@ function App() {
             m<span>✳</span>
           </span>
           <span>
-            mood swings<span className="brand-small">THE ONLINE TABLE</span>
+            mood swings
+            <span className="brand-small">THE UNOFFICIAL ONLINE TABLE</span>
           </span>
         </button>
         <nav>
@@ -416,13 +418,17 @@ function App() {
               </div>
             </div>
             <div className="hero-art" aria-label="Mood Swings card collection">
-              <div className="orbit orbit-one" />
-              <div className="orbit orbit-two" />
-              <span className="art-caption">
-                A HAND FULL
+              <div className="collage-paper" aria-hidden="true" />
+              <div className="collage-title" aria-hidden="true">
+                <span>MOOD</span>
+                <span>SWINGS</span>
+              </div>
+              <div className="collage-sticker" aria-hidden="true">
+                REAL CARDS.
                 <br />
-                OF POSSIBILITIES.
-              </span>
+                BIG FEELINGS.
+              </div>
+              <span className="art-caption">THE WHOLE TABLE IS A MOOD.</span>
               <div className="art-star">✳</div>
               <img
                 className="hero-card card-left"
@@ -448,11 +454,10 @@ function App() {
                 </span>
               </div>
               <span className="art-coordinate">
-                133 MOODS / ENDLESS POSSIBILITIES
+                133 CARDS. EVERY FEELING INCLUDED.
               </span>
             </div>
           </section>
-          <PublicTables busy={busy} onJoin={(target) => enter(false, target)} />
           <section className="color-strip">
             {Object.entries(colorNames).map(([c, n]) => (
               <div key={c}>
@@ -464,6 +469,7 @@ function App() {
               Meet all 133 moods <ArrowUpRight size={17} />
             </button>
           </section>
+          <PublicTables busy={busy} onJoin={(target) => enter(false, target)} />
           <section className="intro">
             <div>
               <span className="eyebrow">SIMPLE TO START. HARD TO PREDICT.</span>
@@ -522,7 +528,7 @@ function App() {
             <br />
             is on its way.
           </h1>
-          <p>Invite a friend or three. The feelings can wait.</p>
+          <p>Pull up a chair. Pick your company. Bring all your feelings.</p>
           <button className="invite-code" onClick={invite}>
             <span>
               <small>
