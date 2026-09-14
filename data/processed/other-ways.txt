@@ -1,0 +1,107 @@
+News
+/
+Feature
+Click the following to learn more about
+Mood Swings
+:
+Introducing
+Mood Swings
+Mood Swings
+Extended Rules
+Mood Swings
+Card Notes
+Mood Swings
+Card Image Gallery
+One of the advantages of a trading card game is its flexibility, as its components can be used in vastly different ways. The core gameplay stays the same (play a card each turn, have the highest score, and win three turns), but a lot of other elements can change. Below, I refer to the normal way to play
+Mood Swings
+as "traditional play" and list of some of the variants you might want to try. They are broken up into three categories: Duel, Draft, and Team. See each section for details about these alternate play experiences and what they can offer.
+Duel Play
+Duel play is when each player brings their own deck to the game. This format allows players to have a hand in crafting their own experience. This is the closest to a traditional trading card game.
+Here are the core ways it's different from traditional play:
+Each player has their own deck.
+In traditional
+Mood Swings
+, only the owner of the game can fine tune the contents of the deck. In duel play, each player brings their own deck. This means that there are two decks to draw from. You always draw from your deck. Cards that get put on the bottom of the deck always get put on the bottom of their owner's deck.
+Each player has their own discard pile.
+To help differentiate whose cards are whose, your cards are put into a discard pile just for you. The game treats both discard piles as if they are one large discard pile, meaning you count everything in both piles for cards that care (such as
+Misery
+or
+Sadness
+) and whenever you can play a card from the discard pile (for cards such as
+Harmony
+or
+Melancholy
+), it can be played from either discard pile.
+Whenever a card goes to another player's side or hand, it needs to be marked.
+Duel play doesn't alter a card's ability to change players, including going into another player's hand, but you do need to mark who owns each card to ensure that players get the cards they own back at the end of the game. (At the end of every duel game, cards go back to their owner for the next game.) The easiest way to do this is to use two different colors of opaque sleeves for cards in each deck. If you can't do that, I suggest putting a counter, coin, or die on a card when it is on another player's side. Cards that would go to hand are marked and placed in front of the player (as they are known by both players). Duel formats are designed for two players. If you play these formats with more than two players, each player is going to need different card sleeves. There's no way to track cards moving hands without players learning of cards that they aren't supposed to have knowledge of.
+If you are unable to draw a card, you don't draw a card.
+This is not going to happen very often, but it's possible in duel play (it isn't in traditional play). Each card that draws a card puts the card on the bottom of the deck first, so in traditional play, it's impossible to run out of cards. There are two cards (
+Hate
+and
+Paranoia
+) that allow a player to draw off their own deck while the card goes to the bottom of the opponent's deck. In all formats, you begin with more cards than you will play in the game, so this is unlikely to happen, but it's possible in the duel format.
+Structure Duel
+Number of players
+: 2
+Deck minimum
+: 45 cards
+If you want to play your
+Mood Swings
+deck out of the box against another player playing their deck out of the box, this is the format for you. For this format, I recommend the following rarity mix (23 common, 14 uncommon, 6 rare, and 2 mythic rare cards). This is what you get when you buy the game. You can have different card mixes if you wish, but I suggest both players follow the same deck-construction rules.
+Power Duel
+Editor's Note: This format has been updated to better align with community feedback.
+Number of players
+: 2
+Deck minimum
+: 15 cards
+Deck restriction
+: Only 1 of each card and 1 mythic rare total
+This is the most competitive way to play. It allows each player to craft their own streamlined deck. In any one game, you can only draw a maximum of seven cards, so each game will play out differently. For balance reasons, this format limits your deck to one of each card and one mythic rare.
+Draft Play
+Draft play formats are where players start without any cards and draft cards from a random mix of cards to determine what they're playing. Draft formats are played as duel play, meaning each player has their own deck.
+Quick Draft
+Number of players
+: 2
+Total number of cards drafted
+: 48 (see below for playing with a standard deck)
+Deck minimum
+: 12 cards
+For this format, start with a random deck of cards. Each player draws six cards off the top of the deck. Each player then chooses two of the cards to keep and passes the other four cards to their opponent. Each player then chooses two more cards to keep from the four cards passed to them and discards the remaining two cards face down. You do this four times total, drafting sixteen cards. This draft allows you some knowledge of what your opponent might be playing but not full knowledge. If you're playing out of a normal deck, you will need to shuffle three random discarded cards from the first three draft picks before drawing the last twelve cards, as you need 48 cards for the whole draft and decks have 45 cards.
+You may then remove up to four cards from your deck. Each deck must be a minimum of twelve cards but can be more. You will play three games with these cards. You're allowed to "sideboard" (or change cards in your deck for cards not in your deck; you must have at least twelve cards in your deck before starting each game). Whoever wins the best of three games wins the draft.
+Winston Draft
+Number of players
+: 2
+Total number of cards drafted
+: 45
+Deck minimum
+: 12 cards
+Start with a randomized deck of 45 cards (it could be a normal deck). Draw off the top of the deck and make three piles face down of one card each in front of the deck. These are Pile 1, Pile 2, and Pile 3. Choose a player to go first. That player looks at Pile 1. They may choose to draft all the cards in that pile. If they do, they take the cards in it and stop. Regardless of what they choose, put another card from the deck face down on top of Pile 1 if able. Once a player has chosen to draft the cards in a pile, the draft goes to the other player. If they didn't choose to take the cards from Pile 1, they look at Pile 2. Again, they can choose to take all the cards in that pile. Regardless of what they choose, put another card from the deck face down on top of that pile if able.
+If the player didn't take the cards from Pile 2, they look at Pile 3. Again, they can choose to take the cards from that pile. Regardless, put another card from the deck face down on that pile if able. If the player didn't draft from Pile 3, they take the top card from the deck. During all this drafting, the cards are only revealed to the player looking at the pile. Any card drawn off the top of the deck is only seen by the person drawing it. This draft continues until all the cards are taken. When the deck runs out, you stop putting cards on piles but you keep going until every card has been drafted by one of the two players.
+Once players are done drafting, they're allowed to remove cards from their deck, but each player must have a minimum of twelve cards. If you don't have twelve cards, you will automatically lose any game, so make sure you draft at least twelve cards. You will play three games with these cards. You're allowed to sideboard. Whoever wins the best of three games wins the draft.
+Team Play
+These are four-player formats where players play in teams of two. Hurt Feelings is not used in team games.
+Open Team
+Number of players
+: 4
+Deck minimum
+: 45 cards
+Seating
+: You sit next to your partner
+Starting hand
+: 5 cards
+In this team format, you sit next to your teammate and have open information with them (meaning you can look at their hand and vice versa). You still have your own hand of cards and area of play, but you will be adding your scores together while scoring and will win or lose each round as a team.
+Players begin this format by each drawing five cards. Randomize who goes first. The way open team works is that a member of the team going first takes their turn. The two players of that team get to decide which player it is. Then play passes to the other team. A member of that team, chosen by the two players, takes their turn. Play then goes back to the first team and the player that didn't play yet takes their turn. The final turn is taken by the player from the second team that hasn't played yet this round.
+At scoring, you and your teammate will add your scores together. If your team has the higher score, your team wins the round and will go first next round. The team to get three round wins first is the winner of the game. The losing team only gets to draw one card, but the team can look at it and decide which player gets it. If there's a tie, whichever team played first will win the tie.
+Closed Team
+Number of players
+: 4
+Deck minimum
+: 45 cards
+Seating
+: You sit across from your partner
+Starting hand
+: 5 cards
+In this team format, you sit across from your teammate (meaning players will alternate between teams) and information is not open (meaning you can't look at your teammate's hand or share information about it). You still have your own hand of cards and area of play, but you will add your scores together during scoring and win or lose each round as a team.
+Players begin this format by each drawing five cards. You then must pass two cards to your teammate. They are passed face down so your opponents don't get to see what the cards are. You have to pass your cards before looking at what your teammate passed. This is the only information about your hand that you can share with your teammate.
+Randomize who goes first. The winning team each round gets to choose which player of the team goes first for that round. Play will go in a clockwise direction. The play will alternate between teams.
+At scoring, you and your teammate will add your scores together. If your team has the higher score, your team wins the round. The team to first get three round wins is the winner of the game. The losing team only gets to draw one card, but the team can choose who gets it. The team does not get to look at it though before deciding which player it goes to. If there's a tie, whichever team played first will win the tie.

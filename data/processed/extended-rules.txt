@@ -1,0 +1,218 @@
+News
+/
+Feature
+Click the following to learn more about
+Mood Swings
+:
+Introducing
+Mood Swings
+Other Ways to Play
+Mood Swings
+Mood Swings
+Card Notes
+Mood Swings
+Card Image Gallery
+Anatomy of a Card
+1. Name
+This is what the card is called. Each card is named after an emotion or mental state.
+2. Frame
+Each card is one of five colors: white, blue, black, red, and green. Each color has its own frame.
+3. Reminder Icon
+The exclamation point represents that this card has an ability that affects the game while it's in play (other than the card changing its value—see the next entry). Cards that have an ability only for the turn they are played don't get the icon.
+4. Value
+This is what the card is worth when you score it. If the die is white, the value will never change. If the die is black, the value can change, so you need to check it whenever you add up your score.
+5. Art
+This is a picture of the mood to help you recognize it in your hand and in play. In this version of the game, each card features an early sketch of art from a published
+Magic: The Gathering
+card.
+6. Rules Text
+This is the text that explains what the card does in the game. Any text in italics and parentheses is what we call reminder text. It helps define terms in the game or clarifies specifics about what that card can or can't do. See more details about how rules text works below.
+7. Secondary Value
+Some cards can change in value. If there are only two possible values, the second value is put here. You can rotate the card 180 degrees to indicate this secondary value is now the current value. For example,
+Patience
+has a value of [5], but it has a value of [1] the turn it is played. You can rotate the card for the first turn to show it is only worth [1]. The secondary value will sometimes show two dice. You add those dice together to get the value. A [6] and a [1] is a value of 7 (appearing as [6][1]).
+8. First Edition Symbol
+This symbol represents that this card is part of the first printing of the game.
+9. Collector Number
+Each card in the set has a number 1 through 134. The collector numbers go by color (white, blue, black, red, green) then by letter alphabetically within each color. Card 134 is the headliner card (a foil version of Love with art I drew and signed). There are only 500 copies of the headliner card.
+10. Color
+The color of each card is written out for players unable to tell the color from the card's frame.
+11. Artist
+The name of the artist who illustrated the art/sketch is written out here.
+12. Rarity
+This lists the rarity of the card. There are four rarities: (from most frequent to least frequent) common, uncommon, rare, and mythic rare.
+The Deck
+The game comes with 45 different cards (23 commons, 14 uncommons, 6 rares, and 2 mythic rares). Your cards are a randomized selection from a larger 133-card set (48 commons, 40 uncommons, 30 rares, and 15 mythic rares), making each deck its own unique mix. When you play with your friend's copy of the game, you'll get to experience cards that aren't in your copy of the game.
+You're allowed to customize your deck by adding and/or removing cards. For a two-player game you need a minimum of 15 cards. For more than two, you have to add 15 cards for each additional player. That is 30 for three-player and 45 for four-player. You can play with more than four players, but you will need more cards than come in a single deck. We recommend that you play with a minimum of 45 cards in two-player, three-player, and four-player games.
+The game does not come with duplicates but can work with them if you choose to add them. The more unique cards you have in the deck, the higher the variance (meaning different things will happen more often from game to game, which we believe will make games more fun). The rarity mix in the deck is designed for the optimal first experience. The more high-rarity cards you add, the wilder the game will play, as the higher-rarity cards tend to have bigger effects that have a stronger impact on the game.
+Setup
+All players share the same deck and discard pile. Shuffle the deck, then each player draws five cards. Reveal the bottom card of the deck. The player who most recently felt that emotion gets to choose which player starts the first round. You may also choose to randomly decide who plays first if you wish. If you're playing multiple games, you can have the losing player from the last game choose who goes first. They should look at their hand before making this decision.
+There are two things you will need to keep track of—the ongoing score and how many rounds each player has won. For the ongoing score, I would recommend using pencil and paper or a score-tracking app. This will keep players from having to constantly add up the scores. To track the rounds, you merely need a small object of which you have two for each player. In the office, I often used sugar packets, but dice will work fine as well. If you have the
+Magic: The Gathering Companion
+app
+, there's a format called "Custom" which will allow you to track all information you need to play
+Mood Swings
+.
+Round Structure
+Each round, the first player takes their turn, then each other player takes a turn in clockwise order. During any one player's turn, they are the only one taking actions. However, the mood(s) a player plays might affect your cards. They could be sent somewhere else (the discard pile, your hand, or the deck), someone else could take them, their score could change, or other things might happen to them, but you will never play cards from your hand during another player's turn. After everyone has taken a turn, proceed to scoring. Note there are some effects that happen after scoring.
+Taking a Turn
+On your turn, you may play one card or pass the turn. To play a card, put it into play face up. It becomes one of your moods. Moods refer to cards in play. Cards in your hand, discard pile, or deck are referred to as "cards." Most moods have special effects, some of which can even affect the rules of the game, so read them carefully. Your moods stay in play unless an effect puts them elsewhere.
+There are three types of card effects (each of these types is in bold in the rules text):
+To play this card
+– This ability tells you what is required to play the card. If you are unable to fulfil the requirement, you can't play the card. Here are the three most common requirements: discard a card from your hand, put one or more of your moods (a card in play) into the discard pile, or put one or more of your moods into your hand.
+While in play
+– This ability tells you what the card does while it is in play. It might change the value of the card or change the rules about how the game functions.
+After playing this mood
+– This ability tells you what happens after you have put this card into play. Most of these effects will happen and be resolved by the end of the turn, but there are some effects that will continue as long as the card is in play. The latter will have an exclamation point next to the die in the top right corner to remind you that there's a continuing effect as long as this card is in play.
+All cards (except
+Creativity
+and the common cycle of cards with no text) have at least one of these three abilities (and
+Creativity
+copies a card, so it will gain them).
+When you play a mood, these things happen in the following order. First, you must pay any costs required by the "To play this card" effect. For example, if you wish to play
+Self-Loathing
+, you must first put one or more of your moods into the discard pile. If you don't have any moods in play, you can't play
+Self-Loathing
+. These costs are paid before you play the mood.
+You then play the mood. Next, all "While in play" effects are applied. For example, if you play
+Patience
+, the card's value is [1] as you played it this turn. Let's say there's another white mood in play. Your opponent's
+Disgust
+would drop from [6] to [3].
+Then the "After playing this mood" effects happen. For example, let's say you play
+Rage
+. You would put it into play, apply all "While in play" effects, then resolve
+Rage
+'s "After playing this mood" effect by putting all cards with a score of [3] or less into the discard pile. Imagine, your opponent has three cards in play, including
+Superiority
+. If
+Rage
+was your third card,
+Superiority
+'s "While in play" effect would reduce it from [6][1] to [3], so when
+Rage
+'s "After playing this mood" effect happens, it would destroy your opponent's
+Superiority
+.
+Once you have resolved any "After playing this mood" effects, if any cards have left or entered play, there is another round of applying "While in play" effects. If somehow that causes another card to leave play or enter play, you keep applying "While in play" effects until you have stable values.
+There are two cards (
+Worry
+and
+Hostility
+) that have two "After playing this mood" effects where the first effect can move cards between play, the hand, and the discard pile and the second effect cares about the value of moods in play. When that happens, there is an opportunity for "While in play" effects to change, so you have to adjust those before doing the second "After playing this mood" effect.
+For instance, you have two moods in play and your opponent has three moods in play including
+Superiority
+(which is worth [6][1] because they have more moods in play). You then play
+Hostility
+. The "While in play" ability will reduce
+Superiority
+to [3] because you both have three moods in play. You then choose to do
+Hostility
+'s first ability, putting one of your black moods into the discard pile. Before you can do the second "After playing this mood" effect, you need to allow "While in play" effects to happen. Because you have two moods in play and your opponent has three,
+Superiority
+returns to a value of [6][1], which means you can't put it into the discard pile with
+Hostility
+'s second effect because it can only affect moods with a value of [3] or less.
+Scoring
+Each card has a value determined by the die in its top right corner. Certain effects can change that value. Each player scores by adding up the values of each of their moods. The player with the highest total value wins the round. If there's a tie, whoever played the earliest turn wins the round. In a game with three or more players, it's the one who made the earliest play of the round, not necessarily the player who went first.
+The score of a card is represented by a die or dice, usually in the top right corner. If the die is white, the result of that die won't change once it is played; use that number when scoring. If the die is black, the value of the die can be changed; check the card's text to make sure you know its current value.
+There are numerous cards that have one of two values. Those cards all have their secondary value in the lower left corner. The secondary value can sometimes use two dice. Simply add those dice together to get the value. If a card changes to its secondary value, rotate the card 180 degrees so that the secondary number is in the top right corner. Some cards with white dice will have a secondary value that you might choose when you are playing the card. If you do, rotate that card 180 degrees in play. That value will not change (without outside cards affecting it).
+There are rare and mythic rare cards with black dice where the value of the card is a variable that will change as the game progresses. You can use a physical die on that card if you wish to show the current value.
+After Scoring
+If a player has won three rounds, they win the game. Otherwise, each player who lost the round draws a card. That means multiple players will draw a card in games with three or more players. In games with three or more players, the player with the lowest score this round gets the Hurt Feelings card, which allows them to play an additional mood during their next turn. If there is a tie for the lowest score, the player who played latest during the last turn wins the tie. Start a new round with the player who won this round going first.
+If there are multiple "after scoring" effects, resolve them in the order that the players took their turn. If one player has multiple cards with "after scoring" effects, they can choose the order of those effects. For example, let's say you play
+Recklessness
+(which allows you to steal a mood for the turn), take an opponent's
+Bashfulness
+, and win the round. After scoring, you must return
+Bashfulness
+to its original player, put
+Bashfulness
+on the bottom of the deck, and draw a card. You can choose the order of those effects, meaning you can choose to put
+Bashfulness
+on the bottom of the deck first. This will allow you to draw a card without giving
+Bashfulness
+back to the other player because it's no longer in play.
+If for some reason not all cards' "after scoring" effects have happened (because cards have changed owners), you keep going around the players in turn order until they all happen. Note that all "after scoring" effects need to be resolved before any losing player draws a card, as there is one card (
+Sneakiness
+) that can change who won for the turn.
+Vocabulary
+[0],
+[1], [2], [3], [4], [5], [6]
+– The dice symbols represent values from 0 to 12. Any number from 7 to 12 will be depicted as two dice next to each other.
+Additional Mood
+– Normally, you only get to play one mood a turn. Some cards will allow you to play an extra mood.
+After scoring
+– Some cards have an effect that happens at the end of the round after you have added up the value of the cards but before the round has ended.
+Becomes yours
+– You gain a mood (card). It is now considered your mood for the rest of the game. If it gets returned to a hand, it goes to your hand.
+Card
+– This refers to any card in your hand, the discard pile, or the deck. Cards in play are referred to as moods.
+Choose any number of players
+– You may choose any number from zero to the number of people playing. You may choose yourself.
+Choose up to two players
+– You may select zero, one, or two players for this card's effect. You may be one of those players.
+Copy
+– Your mood takes on all attributes of another mood, including dice, color, and abilities. Just treat it as if it were the chosen mood. If that mood goes to a hand or discard pile, it stops being a copy.
+Deal
+– Give each player a card or cards from a pile of cards (where those cards come from will be explained by the card). For example, Chaos has you pick up all the moods, shuffle them, then deal them out to the players.
+Deck
+– This is the randomized stack of cards you draw from.
+Dice
+– The icon in the top right or lower left corner representing the primary or secondary value of a card.
+Discard/Discarded
+– Putting a card from a player's hand into the discard pile. Cards that have been put into the discard pile from a hand are discarded cards.
+Discard Pile
+– This is a shared pile that cards can go to when they leave play or a player's hand.
+Even Value
+– Mostly cards with a value of 0, 2, 4, 6, 8, 10, or 12. (There are some rare and mythic rare moods that can have even higher values, so any number that's a whole number when divisible by two.)
+Give card/mood
+– You choose a card/mood of yours and permanently make it another player's. If the card then gets put into a player's hand, it will go to their hand, not yours.
+Give the mood back
+– Return a mood (card in play) to the player you originally took it from.
+Have the same value
+– If the current value of two cards is the same number, they have the same value.
+Hurt Feelings
+– In games with three or more players, a special ability gained by the player with the lowest score (with the tie-breaker of playing the latest that turn) that allows them to play an additional card on their next turn.
+Lose
+– Not having the highest score for a turn. Losing a round allows you to draw a card. In a game with three or more players, there will be multiple players losing the round, the lowest scoring of which gains Hurt Feelings.
+Lower Left Corner
+– This is referring to the die which is the secondary value of the card.
+May
+– This ability is something you can choose to do or not do.
+Mood
+– A mood is any card in play. Cards in your hand, the discard pile, or the deck are not moods.
+Moodiest
+– The player with the most moods (cards in play).
+Most common color
+– This is a color that has the most representation of the moods (cards) in play. If a color with the greatest number is shared between two things, both are considered the most common. For example, if there are two white, three blue, three black, one red, and two green cards in play, blue and black are both the most common color.
+Odd value
+– Mostly cards with a value of 1, 3, 5, 7, 9, or 11. (There are some rare and mythic rare moods that can have even higher values, so any number that's not a whole number when divisible by two.)
+Play a mood
+– Put a card from your hand into play.
+Play a mood from the discard pile
+– You may play a mood, but instead of playing it from your hand, you can play it from the discard pile. Everything about how the card plays stays the same.
+Random
+– This decision is made without the player getting a conscious choice. For example, Altruism gives the player a random card from the discard pile. You would turn the cards in the discard pile face down and shuffle them before drawing a card.
+Round
+– The period during which each player gets the opportunity to play a card. The end of the round is when you score the cards and get a winner and loser(s) of that round.
+Score
+– A noun: the combined value of all your cards. And a verb: the act of counting a card's value to figure out how many points you have for the round.
+Scoring
+– The period at the end of the turn when you add up the value of all your cards.
+Share a color/value
+– If the card in question is the same color as another card, it shares a color with that card. If they have the same value, they share a value.
+Suppress/Suppressed
+– When a card is suppressed, its value drops to [0] for as long as the card is suppressed. This does apply to cards that gain value due to elements in the game. For instance, Sadness is worth [2] for each card in your discard pile. If suppressed, its value is [0] regardless of how many cards are in the discard pile. Some cards are suppressed for the turn, while some are suppressed for as long as the card that suppressed them remains in play on your side. (If that mood goes to another player, the suppressing will stop.) When a card is suppressed, you turn it sideways to remind you that it is suppressed. Suppressed cards are still in play and still count for cards that care about certain qualities existing. For example, a card that cares about blue cards in play will still count a suppressed blue card.
+Top Right Corner
+– This is referring to the die which is the main value of the card.
+Total value [number]
+– This is the combined value of any number of cards that are equal to or less than the stated number. For example, Anger puts any number of cards with a total value of [5] into the discard pile. Four cards with the values of [2], [2], [1], and [0] have a total value of [5].
+Turn
+– The period during which one person plays cards. Each player gets one turn each round.
+Turn Order
+– The order at which players would take their turn in a round, basically going in clockwise order.
+Value
+– This is how much a card is worth when you count its score. Cards only have a value while in play.
+Win/Won a Round
+– The player with the highest score. If two players are tied, the player who played earlier that round.

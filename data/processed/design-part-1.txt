@@ -1,0 +1,195 @@
+News
+/
+Making Magic
+Last week, I shared the 28-year history of getting
+Mood Swings
+, my new accessible trading card game (TCG), officially released. Over my next two articles, I'm going to walk through how I designed the game. This is a design column, after all. Let's get into the crunchy bits of how
+Mood Swings
+was created.
+Let's go back to 1998 with my initial goal of designing
+Mood Swings
+. I wanted to make a trading card game that captured everything I loved about the genre but in the simplest, most accessible form. To do that, I had to start by understanding what I believed was the essence of a trading card game.
+A game that's "bigger than the box"
+: This was coined by Richard Garfield, the creator of
+Magic
+and, many would say, trading card games as a genre of gaming. Most games come with all the pieces you need to play it. Trading card games are designed so that you don't need all the pieces. They're structured such that the game is playable with just some of the pieces. When you buy a trading card game, what you get is randomized, meaning each person's experience with the game is different. As you start playing with others, you get to experience pieces you don't own and have possibly never seen or played with before. Part of playing a trading card game is discovering new things.
+Combinatoric pieces
+: Richard was a math professor who studied combinatorics, the branch of mathematics focused on counting, arranging, and analyzing finite structures. The key to making a trading card game work is creating open-ended pieces work with one another to make a large number of unique interactions. For example,
+Mood Swings
+has 133 cards. The number of different interactions is roughly 2
+133
+. That's 10,889,010,041,615,086,000,000,000,000,000,000,000. (Math is not my area of expertise, so I might be off a few 0s.) What this means from a game design standpoint is that trading card games can constantly create game interactions that you've never experienced, providing a consistent supply of fresh gameplay.
+Game customizability
+: Because a trading card game has to be designed with such modularity, it lends itself well to allowing the players to adapt it and find new ways to play. I wrote an entire article about
+other ways to play
+Mood Swings
+, such as limited play and team play. That article is far from exhaustive. I'm excited to see the fans create new ways to play
+Mood Swings
+.
+Breaking the rules
+: When designing
+Magic
+, Richard was very influenced by the game
+Cosmic Encounter
+. He enjoyed how the game had base rules, but then individual cards let you break those rules. That seemed optimal for a trading card game. You would have your basic rules, but the cards stretched the game into new places. This ended up becoming a core tenet in trading card games: individual cards can override the game system.
+Trading and collecting
+: Trading card games, at their core, are something to collect. There are many different pieces to these games, and the players that enjoy collecting things can collect them. A system where different players have different components also lends itself to trading.
+An invested community
+: Trading card games can change as you play with others. Individuals can customize them. There's trading. By their very nature, TCGs help encourage the creation of game communities.
+This, of course, led to the next question: what elements of
+Magic
+aren't essential to a trading card game?
+Complex rules
+:
+Magic
+'s comprehensive rules are extensive, but that's because there are a lot of elements to gameplay. That wasn't essential for a trading card game.
+Length of games
+: Compared to most games,
+Magic
+'s play time is pretty quick, but I realized a trading card game could be quicker to play.
+Deck building
+: This was my big takeaway. Deck building is core to
+Magic
+, but was it essential to trading card games? I didn't think it was. Yes, I wanted the option for players to build decks if they chose to, but the mere act of buying a product where you have to make a deck before you can play the game seemed to be one of the biggest reasons
+Magic
+had a "barrier to entry" (things you need to learn to go from knowing nothing to knowing enough to play the game). Could I model a TCG after a traditional card game where you buy it off the shelf and can immediately play it? The key to it being a trading card game was that each deck would come with a different set of cards. I often compare
+Mood Swings
+to a
+Magic
+cube. The person who owns a cube has the freedom to adapt it however they like, but when anyone else sits down to play it, they just play with what the builder of the cube created.
+Now that I knew what I did and didn't need, I could start creating the game. When I began, I was just thinking of
+Mood Swings
+as a two-player game. I started with a simple goal. What was the least amount of things someone could do on their turn? How about playing a card? That seemed like the smallest game action. Okay, I play a card, then my opponent plays a card. What next? What if there was some way to determine who won? The easiest way to do that was for the cards to have a point value on them that you could score.
+I play my card, my opponent plays their card, and one of us wins based on who has the higher score. The game needed to last longer than one turn. Let's just do the same action again for the next round. We each play a card and add up the scores. Having the cards from the first turn stick around allowed for greater card design and strategy. Maybe you did something on a turn to win future turns but at the cost of the current turn. You keep having rounds until someone wins a certain number of them. Five turns felt like the right number, and apparently it was, as it stuck all the way through 28 years of fine tuning.
+How do you determine what cards you can play? In my very first iteration of the game, I tried a system where each card had a number on it from 1 to 5. You couldn't play that card until that turn. A card with a 1 could be played on any turn, while a card with a 5 on it couldn't be played until the fifth turn. It only took one playtest to see the problem with this model. If I drew an opening hand and didn't have any cards with a 1, I couldn't play anything on the first turn. Cards would get stuck in your hand.
+So, I asked the obvious question. Do we need a "casting" system? What if I just let you play any card? That was far simpler, and I felt I could balance around it. That system played great and never went away.
+Then, I needed a way to decide who went first each turn. You could randomly decide on turn one, but I felt like the game had to tell you what to do after that. Also, I needed to include a catch-up feature. Yes, any player could win 3-0, but I wanted players to win 3-2 as often as possible.
+It didn't take much playtesting to realize that going second was stronger than going first. The first player has to guess what the second player is going to do, but the second player gets to play their card with full knowledge of how it would impact the game. This meant I wanted the winner of the last round to go first on the next round, allowing the player who lost to be in the stronger position.
+There was one other problem to solve. What happens in the event of a tie? Someone had to win. Well, I was giving the loser the advantage of going first. I would give the person going first the advantage of winning ties. That gave each player something and felt good.
+I had my basic game loop. One player plays a card. Their opponent then plays a card. The cards are added up. The winner wins the round and goes first the next round, which allows them to win ties. The loser gets to go second and reacts to the winner on the next turn. That basic game loop for my first set of cards (which were handwritten in marker on blank playtest cards) stuck all the way to print.
+Now that I had my game loop, I had four things to figure out:
+How does the balance of scoring work?
+What is the design space for the cards?
+How do I apply my color pie?
+How do I match the flavor of emotions?
+Card Balance
+Around the time that I started working on
+Mood Swings
+, I was reading an article about dice. They are one of the earliest game components that humans have record of. The article talked about why dice traditionally have pips (or dots) rather than numbers. Your brain has two halves. The left side specializes in language, logic, and analytical tasks. The right side specializes in spatial awareness, creativity, and pattern recognition. It turns out the brain processes patterns faster than it processes language (and numerals are essentially language for the point of this discussion). I had wanted to have scores on the cards, and I knew you would need to add a bunch of them up each turn, so I became fascinated by the idea of using dice to show score values. This idea goes back to my earliest playtest cards.
+With dice, you're limited to scores of [1] to [6]. (
+Mood Swings
+'s dice values are denoted with brackets.) I felt like that was enough to work with. I would soon realize that I needed cards with a value of [0], as some effects were so strong I didn't want them to be worth any points. I knew from the beginning that I wanted a cycle of vanilla cards (or cards that just give you a score and don't do anything). I started by making my vanillas have a value of [3]. The idea was that I would have two types of cards: cards worth [2] or less that did something useful but contributed less to your score and cards worth [4] or more that had additional costs to play them. Playtesting eventually showed me that the vanillas wanted to have a value of [4], as I needed more space for the former category than the latter.
+Another thing I knew from the beginning was that some cards should have a score that changes over time. I wanted cards to be dynamic, so impacting cards already in play seemed important. Generally, cards that go up over time have to start below vanillas, and those that go down over time can start higher than vanillas.
+I also figured out pretty early that I could have alternative values. That is, a card could start with a certain value, but I could state a condition where it had another value, and that value wasn't restricted to [6]. It would take me a little time to realize that for cards with more than one value, I could also include a secondary die value on the card.
+Because I had no resource system (you could play any one card), I knew I wanted to have cards that required you to pay some additional cost. The three obvious costs were discarding a card, putting a card in play into the discard pile (similar to sacrificing in
+Magic
+), and returning one of your cards from play to your hand (similar to self-bounce effects in
+Magic
+). I kept these costs in mind as I started designing individual cards.
+The last point on balance: I was primarily designing this game to have all the players use the same deck. This balances power level because all players have access to all the cards. When each player has their own deck, there's more responsibility to have cards be of an equal power level. When everyone has access to all the cards, there can be more variance between them. Generally, the higher the rarity of a card, the more variance I allowed it. I wanted the game to have some swingy moments, but I needed to limit how often those happened.
+Card Design
+I started by just designing a lot of individual cards to see where my mind took me. In the end, I had four categories:
+Vanillas
+: Cards that don't do anything other than have a value.
+Value Changers
+: Cards that don't do anything other than have a score, but the score can change based on conditions.
+Play effects
+: Cards that have an effect when you play them.
+Static effects
+: Cards that impact how the game functions while in play. Often, they allow you to do things you normally can't.
+All the categories, save the vanilla cards, seemed deep. I could only have as many vanillas as I had colors. When I first started designing
+Mood Swings
+, it had just three colors: red, green, and blue. In general, I didn't combine value changers with play effects or static effects, but I occasionally did mix play effects with static effects, although they usually had to be connected thematically.
+Here are the areas that I found most fruitful:
+Play an additional card
+: The core game loop restricts you to one card per turn, but as I explained above, trading card games are about breaking the rules. Extra card play is super fun, so this effect is one with the highest as-fan in the game.
+Put a card into the discard pile
+: Cards don't leave play unless another card forces them to leave. Because the gameplay is restricted to caring about cards in play, there needed to be a wide range of ways to interact with those cards. As I said above, this effect could also be used as a cost by putting your own cards into the discard pile.
+Return a card to its player's hand
+: I learned quickly that
+Mood Swings
+emphasizes tempo play, so returning cards to hand played well. It was a little weaker aggressively and less of a cost when it was an effect you were doing to yourself as you could play the card on future turns.
+Force a player to discard a card
+: This could be used offensively on the opponent or as an additional cost for yourself. I made a lot more cards of the latter.
+Interact with the discard pile
+: There were three major ways to do this: return cards to hand from the discard pile, play cards from the discard pile, or care about what cards were in the discard pile.
+Value changes based on game conditions
+: These cards fell into two categories. First, there were cards that, under a certain condition, changed to a secondary value. These conditions were normally on or off. An example of this might be whether there are three cards of the same color in play (
+Determination
+). Second, there were cards that kept changing based on conditions that were fluid. These conditions continually changed and had a spectrum. An example of this would be a card that has a value for each card in the discard pile (
+Sadness
+).
+Color Pie
+I should explain why I even felt a need to include colors in the first place. Richard had originally created the color pie to encourage variety in deck building, adding strengths and weaknesses to each deck. That wasn't something I needed to care about. But I did like how color added emotional weight to
+Magic
+. I'm big on resonance and liked how the colors gave cards a special feeling.
+In addition, I knew I wanted to use colors in
+Mood Swings
+as a marker. I had to make a lot of cards, so I wanted to slice up the way cards interacted with one another, and color was an easy, flavorful way to do that. Color allowed me to make more versions of the same effect (vanillas being a fine example). I loosely followed what red, green, and blue did in
+Magic
+, folding in white and black
+Magic
+effects into those colors. I thought about whether I wanted cards that weren't any color and decided it made more sense to add another color than to have to explain the lack of a color.
+I flavored each of the three colors in my initial design of the game. Red was the color of aggressive emotions, that is, emotions that encouraged action, like anger and passion. Blue was the color of passive emotions, emotions that encouraged inaction, like fear and anxiety. Green was the color of labile emotions, emotions where you reacted to the world around you, like happiness and sadness.
+Matching Emotions
+As I explained last week, I've always been fascinated with psychology, particularly emotions. The game always had the cards as emotions and was called
+Mood Swings
+. When I started, the majority of my designs were bottom-up cards, meaning I came up with a card that mechanically made sense and figured out what emotion felt right. As I continued, I found myself creating more and more top-down designs. Finding fun emotions and figuring out what mechanically I would have to do to capture their feeling.
+Card Draw
+Originally, you started the game by drawing seven cards. Once the game began, you never drew any more cards. Why? Because there was another driving force that dictated a lot of my early game design decisions. Like
+Magic
+was back in 1998, I assumed when you first bought
+Mood Swings
+, you would buy the equivalent of a
+Magic
+Starter Deck. I assumed that would be 60 cards, as that was the size of a
+Magic
+Starter Deck. Then, when you wanted to buy more cards, there would be fifteen-card boosters (again, like
+Magic
+).
+Limited was an important part of
+Magic
+, so from the very beginning, I wanted it build limited play into the game. I realized that if each player only drew seven cards, you only needed fourteen cards to play a single game. That meant you could play a full game out of a booster. That was very exciting to me. So, to make sure that was true, I never had you draw cards.
+Interestingly, the published version of
+Mood Swings
+still keeps the fourteen-card limit to a two-player game. We're not selling boosters currently through the
+Secret Lair
+storefront, but that aspect of
+Mood Swings
+is still in the game in case we ever decide to. I did find some ways to bring card draw into the game, but that's a story for next week.
+Only 28 Years to Go
+This was where I began back in 1998. Interestingly, a lot of what I'm talking about today stayed all the way through to print, but there were a lot of changes, which I'll be talking about next week.
+If, by the way, today's article has interested you in purchasing
+Mood Swings
+, it releases on June 1, 2026, only on
+MagicSecretLair.com
+. The
+Mood Swings
+page on the
+Secret Lair
+site has more information, including links to the
+extended rules
+,
+card notes
+, a list of
+other ways to play
+, and the
+card image gallery
+.
+I always love feedback, but if there was ever a topic that I'm more excited for feedback on than normal, it's
+Mood Swings
+. If you have thoughts on today's article, any of the game aspects I talked about, or on the game itself, you can
+email me
+or talk to me through social media (
+Bluesky
+,
+Tumblr
+,
+Instagram
+,
+TikTok
+, and
+Twitter
+).
+Join me next week for part two.
+Until then, may you find a way to make your dream project come true.

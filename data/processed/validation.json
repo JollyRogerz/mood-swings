@@ -1,0 +1,26 @@
+{
+  "unique_cards": 133,
+  "card_records": 133,
+  "gallery_images": 135,
+  "downloaded_card_images": 135,
+  "colors": {
+    "white": 26,
+    "black": 27,
+    "blue": 26,
+    "red": 27,
+    "green": 27
+  },
+  "rarities": {
+    "rare": 30,
+    "common": 48,
+    "uncommon": 40,
+    "mythic rare": 15
+  },
+  "missing_gallery_cards": [],
+  "missing_card_notes": [],
+  "cards_without_rulings": [],
+  "unparsed_dice": [],
+  "rulings": 497,
+  "supporting_images": 38,
+  "source_failures": []
+}

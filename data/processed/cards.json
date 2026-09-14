@@ -1,0 +1,4134 @@
+[
+  {
+    "id": "altruism",
+    "name": "Altruism",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[3]/[6][1]",
+    "printed_values": [
+      3,
+      7
+    ],
+    "normalized_dice": "[3]/[6][1]",
+    "rules_text": "After playing this mood — If the discard pile has at least one card in it, this mood's value becomes [6][1]. Then starting with the next player in turn order, each player takes a random card from the discard pile and puts it into their hand. Put the rest of the discard pile onto the bottom of the deck in a random order.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the discard pile is empty, Altruism is a card with a value of [3] that doesn't do anything.",
+      "If there are less cards than there are players, not every player will get a card. As long as at least one player gets a card, Altruism is worth [6][1].",
+      "Turn order is clockwise, and the next player is the one to your left.",
+      "All cards that aren't given to a player will end up on the bottom of the deck, meaning after this card is played, the discard pile will be empty."
+    ],
+    "images": [
+      {
+        "name": "Altruism",
+        "variant": "standard",
+        "gallery_position": 1,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1bc40321f2.webp",
+        "path": "assets/cards/altruism.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "ambition",
+    "name": "Ambition",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may discard a card from your hand. If you do, you may play an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Ambition. You may first play the additional card for Hurt Feelings before you play the additional card for Ambition."
+    ],
+    "images": [
+      {
+        "name": "Ambition",
+        "variant": "standard",
+        "gallery_position": 53,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5f8ab4747e.webp",
+        "path": "assets/cards/ambition.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "ambivalence",
+    "name": "Ambivalence",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[6]/[3]",
+    "printed_values": [
+      6,
+      3
+    ],
+    "normalized_dice": "[6]/[3]",
+    "rules_text": "While in play — This mood's value is [3] if there are two or more red and/or green moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Ambivalence is worth [3] if there are two red moods, two green moods, or a red mood and a green mood in play."
+    ],
+    "images": [
+      {
+        "name": "Ambivalence",
+        "variant": "standard",
+        "gallery_position": 27,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9f66939e52.webp",
+        "path": "assets/cards/ambivalence.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "anger",
+    "name": "Anger",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may put any number of moods with total value [5] or less into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "The total value of cards put into the discard pile can be less than [5].",
+      "You may choose some of your own moods.",
+      "You can include [0] value cards. Essentially, you can destroy any number of [0]-value moods.",
+      "A suppressed card has a value of [0].",
+      "You have to choose all the moods you are affecting at the same time, so you can't put one card in the discard pile to lower the value of another card and affect that card with its lower value. Say your opponent has Disgust and two white moods, Charity and Complacency, in play (which are the only green or white moods in play). If you choose to put Charity into the discard pile with Anger, Disgust's value will drop from [6] to [3], but you can no longer choose cards to put into the discard pile with Anger.",
+      "Because moods are all put into the discard pile at the same time, things that change value due to factors in the discard pile are also not applied when choosing moods to affect. For instance, the discard pile is empty. Your opponent has Sadness which gets an additional [2] value for every card in the discard pile. Since there are no cards when you select it, it has a value of [0].",
+      "Copying an Anger with Duplicity (the effect happens twice) does not allow you to put a card with over a [5] value into the discard pile. For example, if your opponent has Boredom, worth [4], and Generosity, worth [6], you can't put them both into the discard pile. Each instance of Anger has to be applied separately."
+    ],
+    "images": [
+      {
+        "name": "Anger",
+        "variant": "standard",
+        "gallery_position": 80,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2bc0509610.webp",
+        "path": "assets/cards/anger.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "animosity",
+    "name": "Animosity",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "While in play — This mood's value is [5] if any opponent has three or more cards in hand.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "In a team game (see Other Ways to Play ), this card does not care about the number of cards in a teammate's hand.",
+      "In a game with three or more players, only one opponent needs to have three or more cards for Animosity to have a value of [5]."
+    ],
+    "images": [
+      {
+        "name": "Animosity",
+        "variant": "standard",
+        "gallery_position": 81,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_87967089d9.webp",
+        "path": "assets/cards/animosity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "angst",
+    "name": "Angst",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may put one of your blue or red moods into the discard pile. If you do, you may play an additional mood this turn from the discard pile. (You can play the card you just put into the discard pile if you want.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Playing a card from the discard pile that lets you play an additional card only lets you play the additional card from your hand (unless another card like Melancholy lets you play them from the discard pile).",
+      "Cards in the discard pile are the color they are and are not affected by Imagination (which changes the color of all moods in play) until after you play them. For example, Benevolence (a white card) only allows you to play a color you do not have in play. Say you have Boredom (a red card) in the discard pile and Imagination in play making everything white. You can play Boredom because when you play it, it is still red. Once it's in play, it will become white.",
+      "If Imagination changes your moods to a color other than blue or red, you may not use them for this card.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Angst, choosing to put a card in the discard pile. You may first play the additional card for Hurt Feelings before you play the additional card for Angst."
+    ],
+    "images": [
+      {
+        "name": "Angst",
+        "variant": "standard",
+        "gallery_position": 54,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f8d9de643e.webp",
+        "path": "assets/cards/angst.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "anxiety",
+    "name": "Anxiety",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, put one of their moods with an odd value into their hand.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you.",
+      "[0] is even."
+    ],
+    "images": [
+      {
+        "name": "Anxiety",
+        "variant": "standard",
+        "gallery_position": 28,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_00bf0769bc.webp",
+        "path": "assets/cards/anxiety.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "apathy",
+    "name": "Apathy",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "",
+    "ability_types": [],
+    "rulings": [
+      "There are five blank cards (all with a value of [4]), one in each color. These five cards and Creativity are the only cards without one of the three main abilities (\"To play this card,\" \"While in play,\" and \"After playing this mood\")."
+    ],
+    "images": [
+      {
+        "name": "Apathy",
+        "variant": "standard",
+        "gallery_position": 55,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_214a4fbfb6.webp",
+        "path": "assets/cards/apathy.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "arrogance",
+    "name": "Arrogance",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose an opponent. If you do, they choose one of their white or blue moods and it becomes yours. After this mood is no longer in play, give the mood you took back to them (if you still have it) .",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "When a mood moves from one player to another all qualities of that card remain the same. This includes its value and whether it's suppressed.",
+      "Moods moving players does not make \"After playing this mood\" effects happen.",
+      "A mood changing color after you've taken it doesn't matter. For example, you use Arrogance to steal a Curiosity worth [6]. Another player plays an Imagination making your Curiosity black. It stays with you as long as you have Arrogance in play.",
+      "If Arrogance moves to another player, you still keep the card taken by it. But if it leaves play, even if another player has it, the card goes back to its original owner.",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Arrogance",
+        "variant": "standard",
+        "gallery_position": 82,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2c0da1316e.webp",
+        "path": "assets/cards/arrogance.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "avoidance",
+    "name": "Avoidance",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose left or right. Each player chooses one of their moods and gives it to the next player in the chosen direction. (Moods are cards in play.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If a player has no moods, they do not pass one.",
+      "Players should make their decision before moving any moods so that the cards being moved are revealed at the same time.",
+      "When a mood moves from one player to another, all qualities of that card remain the same. This includes its value and whether it's suppressed.",
+      "Moods moving players does not make \"After playing this mood\" effects happen.",
+      "Avoidance can be chosen as the card you choose to move.",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Avoidance",
+        "variant": "standard",
+        "gallery_position": 29,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6dd47f31dd.webp",
+        "path": "assets/cards/avoidance.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "awe",
+    "name": "Awe",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "After playing this mood — There is no scoring this round. No one wins or loses this round. You choose which player goes first next round. (This round, no one will draw a card or get Hurt Feelings, and \"after scoring\" effects won't happen.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "This card prevents scoring. Without a new score, there are no winners or losers for the round. No losers means no one draws a card or gets Hurt Feelings in a multiplayer game.",
+      "The player who plays Awe gets to decide who plays first the next round. This does not change how ties work for the next turn. You win ties by going first, not for having won the last round.",
+      "There are six cards that have an \"after scoring\" effect (Bashfulness, Betrayal, Gluttony, Insecurity, Recklessness, and Sneakiness). Because all of them have an \"After playing this mood\" effect, all of them only happen the turn you play the card, so with Awe, none of the \"after scoring\" effects will happen. If we ever make an \"after scoring\" effect that is part of a \"While in play\" ability (none currently exist), that would happen the next time there is a scoring.",
+      "Cards that score additional times (Bliss, Enthusiasm, Exhilaration, and Passion) do not score, as there is no scoring."
+    ],
+    "images": [
+      {
+        "name": "Awe",
+        "variant": "standard",
+        "gallery_position": 107,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6922ed810f.webp",
+        "path": "assets/cards/awe.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "bashfulness",
+    "name": "Bashfulness",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[6]",
+    "printed_values": [
+      6
+    ],
+    "normalized_dice": "[6]",
+    "rules_text": "After playing this mood — After scoring this round, if you won the round, put this mood on the bottom of the deck and draw a card.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the deck is empty, the player will draw the card they just put on the bottom.",
+      "You only draw a card if Bashfulness goes to the bottom of the deck.",
+      "Bashfulness only goes to the bottom of the deck if you win the turn you play Bashfulness. If you win a later turn, Bashfulness does not go to the bottom of the deck.",
+      "If someone takes Bashfulness (with Arrogance or Guile) the turn it is played and wins that turn, Bashfulness will go to the bottom of the deck and that player will draw a card.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say your opponent played Generosity (it allows an opponent to play an extra card on their next turn) on the previous turn and you play Bashfulness and Betrayal, giving Bashfulness to an opponent. After scoring, you would choose which \"after scoring\" effect you want to happen first. If Betrayal happens first, you will get the Bashfulness card, and if you won the turn, it would go to the bottom of the deck and you would draw a card. If you choose to have the Bashfulness \"after scoring\" effect happen first, the player who has Bashfulness would put it on the bottom of the deck and draw the card (assuming they won this turn)."
+    ],
+    "images": [
+      {
+        "name": "Bashfulness",
+        "variant": "standard",
+        "gallery_position": 30,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2a40ab595f.webp",
+        "path": "assets/cards/bashfulness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "benevolence",
+    "name": "Benevolence",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn if it doesn't share a color with any of your moods.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Benevolence. You may first play the additional card for Hurt Feelings before you play the additional card for Benevolence.",
+      "If Imagination is in play, you won't be able to play any card in your hand or the discard pile that is the color named with Imagination. The card in your hand doesn't become the color named by Imagination until it is in play."
+    ],
+    "images": [
+      {
+        "name": "Benevolence",
+        "variant": "standard",
+        "gallery_position": 2,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_39aeab52de.webp",
+        "path": "assets/cards/benevolence.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "betrayal",
+    "name": "Betrayal",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[6]",
+    "printed_values": [
+      6
+    ],
+    "normalized_dice": "[6]",
+    "rules_text": "After playing this mood — Give one of your moods to another player. After scoring, that mood becomes yours again (if it's still in play) .",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If you give a suppressed card to another player, that card is still suppressed.",
+      "When a mood moves from one player to another, all qualities of that card remain the same. This includes its value and whether it's suppressed.",
+      "Moods moving players does not make \"After playing this mood\" effects happen.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say your opponent played Generosity (it allows an opponent to play an extra card on their next turn) on the previous turn and you play Recklessness and Betrayal, giving Recklessness to an opponent. After scoring, you would choose which \"after scoring\" effect you want to happen first. If Betrayal happens first, you will get the Relentless card before it goes to the bottom of the deck and draw the card. If you choose to have the Recklessness \"after scoring\" effect happen first, the player who has Recklessness would put it on the bottom of the deck and they would draw the card.",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Betrayal",
+        "variant": "standard",
+        "gallery_position": 56,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2cf642f7d2.webp",
+        "path": "assets/cards/betrayal.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "bitterness",
+    "name": "Bitterness",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — Calculate the most common color or colors among all moods. Put all other moods that share one of those colors into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If two or more colors are tied for the most, they are all put into the discard pile.",
+      "Bitterness counts itself toward the number of black moods in play, but Bitterness never puts itself in the discard pile even if black is the most common color.",
+      "If Imagination has turned all cards one color, Bitterness will put all cards other than Bitterness in the discard pile.",
+      "A Bitterness can be put into the discard pile by a different Bitterness (this could be done with Creativity or a second Bitterness if you added one to the deck).",
+      "You should count suppressed cards when calculating the most common color."
+    ],
+    "images": [
+      {
+        "name": "Bitterness",
+        "variant": "standard",
+        "gallery_position": 57,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fedf3406e2.webp",
+        "path": "assets/cards/bitterness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "bliss",
+    "name": "Bliss",
+    "color": "green",
+    "rarity": "mythic rare",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "To play this card — Discard a card from your hand. (If you can't do that, you can't play this card.) While in play — Score each of your moods that share a color with the discarded card two extra times.",
+    "ability_types": [
+      "To play this card",
+      "While in play"
+    ],
+    "rulings": [
+      "You can't play Bliss if you don't have another card in hand.",
+      "Bliss always has a value of [2]. It's allowing you to score your other cards twice. It does not itself gain any value.",
+      "If Bliss is set to green, you will score Bliss two extra times.",
+      "The extra scoring is mandatory. You can't choose not to do it.",
+      "If you have two Blisses in play (say you copied it with Creativity), you would score each card four extra times. Bliss will stack with other cards that score extra times (Enthusiasm, Exhilaration, and Passion), meaning you get to add all the extra combined scores together.",
+      "Bliss remembers the color of the card discarded. The card doesn't need to be in the discard pile for the effect to happen."
+    ],
+    "images": [
+      {
+        "name": "Bliss",
+        "variant": "standard",
+        "gallery_position": 108,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f11ac0d4cd.webp",
+        "path": "assets/cards/bliss.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "boredom",
+    "name": "Boredom",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "",
+    "ability_types": [],
+    "rulings": [
+      "There are five blank cards (all with a value of [4]), one in each color. These five cards and Creativity are the only cards without one of the three main abilities (\"To play this card,\" \"While in play,\" and \"After playing this mood\")."
+    ],
+    "images": [
+      {
+        "name": "Boredom",
+        "variant": "standard",
+        "gallery_position": 83,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c5a5f851.webp",
+        "path": "assets/cards/boredom.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "bravado",
+    "name": "Bravado",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may put one of your other moods into the discard pile (moods are cards in play) . If you do, you may play an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Bravado. You may first play the additional card for Hurt Feelings before you play the additional card for Bravado."
+    ],
+    "images": [
+      {
+        "name": "Bravado",
+        "variant": "standard",
+        "gallery_position": 84,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_10a2381e9e.webp",
+        "path": "assets/cards/bravado.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "celebration",
+    "name": "Celebration",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]/[6][1]",
+    "printed_values": [
+      3,
+      7
+    ],
+    "normalized_dice": "[3]/[6][1]",
+    "rules_text": "While in play — This mood's value is [6][1] if there are more colors among your moods than among each other player's moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "If you are tied for the most colors in play with another player, this card is worth [3]. You must have more colors in play for it to be worth [6][1].",
+      "The only way for Celebration to be worth [6][1] with Imagination in play is for you to have both cards and your opponents have no cards (as you would then have one color to their zero colors)."
+    ],
+    "images": [
+      {
+        "name": "Celebration",
+        "variant": "standard",
+        "gallery_position": 109,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a73f42f958.webp",
+        "path": "assets/cards/celebration.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "chaos",
+    "name": "Chaos",
+    "color": "red",
+    "rarity": "mythic rare",
+    "printed_dice": "[6]",
+    "printed_values": [
+      6
+    ],
+    "normalized_dice": "[6]",
+    "rules_text": "After playing this mood — Shuffle all moods together. Starting with you and going in turn order, deal those moods out one at a time to each player. (Moods may change players but \"After playing this mood\" effects won't happen again.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Any qualities of the cards, including their value and suppressed status, stay the same. For example, if Cheer is worth [5] because the person who played it discarded a card, the card still has a value of [5] after being moved around by Chaos. The same would be true of a card suppressed by Pacifism. It stays suppressed after moving as long as Pacifism remains with the player who initially played. If the Pacifism gets moved to another player, the suppressing would stop.",
+      "Once Chaos is played, the cards in front of a player are now their cards. If a card is returned to a player's hand, it goes to their hand and not the player who originally played the card.",
+      "If Chaos is the first card played in a game, it will essentially stay in play for that player. (It is technically shuffled and dealt out starting with that player.)",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Chaos",
+        "variant": "standard",
+        "gallery_position": 85,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_33c8513101.webp",
+        "path": "assets/cards/chaos.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "charity",
+    "name": "Charity",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Charity. You may first play the additional card for Hurt Feelings before you play the additional card for Charity."
+    ],
+    "images": [
+      {
+        "name": "Charity",
+        "variant": "standard",
+        "gallery_position": 3,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_056ea8dd92.webp",
+        "path": "assets/cards/charity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "cheer",
+    "name": "Cheer",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "After playing this mood — You may discard a card from your hand with a [0], [2], [4], or [6] in its top right corner. If you do, this mood's value becomes [5].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its base score and not do its effect.",
+      "Cards in your hand always look at the top right corner when caring about die numbers and never the lower left corner.",
+      "If you discard what is asked and the card has multiple values, in play it will always be the lower left value (with the card arranged vertically). We recommend turning the card 180 degrees so that the current score is represented in the top right corner.",
+      "Without another card (Encouragement or Idealism) telling you otherwise, you will always use the value determined when you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5]."
+    ],
+    "images": [
+      {
+        "name": "Cheer",
+        "variant": "standard",
+        "gallery_position": 110,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a84ef2f73e.webp",
+        "path": "assets/cards/cheer.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "chivalry",
+    "name": "Chivalry",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "While in play — This mood's value is [5] if you didn't go first this round.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card is worth [5] in games with three or more players as long as someone else went first.",
+      "In a team game (see Other Ways to Play ), this card is worth [5] even if your teammate went first."
+    ],
+    "images": [
+      {
+        "name": "Chivalry",
+        "variant": "standard",
+        "gallery_position": 4,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_17ad03c3fd.webp",
+        "path": "assets/cards/chivalry.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "complacency",
+    "name": "Complacency",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "",
+    "ability_types": [],
+    "rulings": [
+      "There are five blank cards (all with a value of [4]), one in each color. These five cards and Creativity are the only cards without one of the three main abilities (\"To play this card,\" \"While in play,\" and \"After playing this mood\")."
+    ],
+    "images": [
+      {
+        "name": "Complacency",
+        "variant": "standard",
+        "gallery_position": 5,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_28fdace6de.webp",
+        "path": "assets/cards/complacency.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "compulsion",
+    "name": "Compulsion",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose another player. That player chooses a card from their hand and gives it to you.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If that player has no cards in hand, they do not give you a card.",
+      "This is not an optional effect (it doesn't say \"may\"). You must choose another player and they must give you a card, if able. You can choose a player without a card and not receive one.",
+      "In a team game (see Other Ways to Play ), you may choose your teammate to give you a card.",
+      "If you have the ability to play an additional card (say with Hurt Feelings), you may then play the card you just received with Compulsion."
+    ],
+    "images": [
+      {
+        "name": "Compulsion",
+        "variant": "standard",
+        "gallery_position": 86,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f709a579c6.webp",
+        "path": "assets/cards/compulsion.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "condescension",
+    "name": "Condescension",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "After playing this mood — You may give a card from your hand to another player. If you do, this mood's value becomes [6].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "To get a value of [6], you must give a card to another player. If you don't have another card in hand, you can't get [6].",
+      "In a team game (see Other Ways to Play ), you can give the extra card to a teammate."
+    ],
+    "images": [
+      {
+        "name": "Condescension",
+        "variant": "standard",
+        "gallery_position": 58,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0c52b2ac0d.webp",
+        "path": "assets/cards/condescension.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "confusion",
+    "name": "Confusion",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "After playing this mood — Choose left or right. Each player chooses a card from their hand and gives it to the next player in the chosen direction.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Confusion's effect is mandatory. All players must pass a card if able.",
+      "If a player does not have a card, they do not pass one.",
+      "Selected cards should be passed face down (so they aren't known), and no player should look at their card until all the cards have been passed."
+    ],
+    "images": [
+      {
+        "name": "Confusion",
+        "variant": "standard",
+        "gallery_position": 31,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e5a6b38f7.webp",
+        "path": "assets/cards/confusion.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "contempt",
+    "name": "Contempt",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may choose one: • Put a green or white mood into the discard pile. • Put all green and white moods into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect, meaning you choose to do neither effect.",
+      "If you choose the first option, you can put a green or white card of yours into the discard pile.",
+      "If you choose the second option, all green and white cards, including yours, are put into the discard pile.",
+      "If Imagination makes Contempt green or white, it will be put into the discard pile."
+    ],
+    "images": [
+      {
+        "name": "Contempt",
+        "variant": "standard",
+        "gallery_position": 59,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6465486329.webp",
+        "path": "assets/cards/contempt.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "conviction",
+    "name": "Conviction",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Choose a mood. Its player puts it on the bottom of the deck and draws a card.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the deck is empty, the player will draw the card they just put on the bottom.",
+      "You can choose any player's mood, including your own. That mood's player is the one who draws the card."
+    ],
+    "images": [
+      {
+        "name": "Conviction",
+        "variant": "standard",
+        "gallery_position": 6,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e2d644bb36.webp",
+        "path": "assets/cards/conviction.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "corruption",
+    "name": "Corruption",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose one: • Put up to two cards from the discard pile on the bottom of the deck, then draw that many cards. • The winner of the current round wins two rounds instead of one. (Each losing player still draws only one card.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the deck is empty, the player will draw the card(s) they just put on the bottom.",
+      "Whoever wins this turn gets two wins for the round. That can include other players.",
+      "If the winner of this round has one or more wins and gets two wins this round, they will win the game. They still win the game with four wins. It's just bragging rights.",
+      "If someone plays Corruption then Awe (no one scores this round), the winner will not win two rounds. They have to win one round to get two won rounds."
+    ],
+    "images": [
+      {
+        "name": "Corruption",
+        "variant": "standard",
+        "gallery_position": 60,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_493c0b60a1.webp",
+        "path": "assets/cards/corruption.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "courage",
+    "name": "Courage",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, put one of their moods with a value of [5] or more into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you.",
+      "You do not choose what card you are affecting until after \"While in play\" effects happen, meaning if there is a card with a variable value, as long as that card's value is [5] or greater once the \"While in play\" effects have happened, Courage will be able to affect it. For example, your opponent has Obsession in play ([6] if there are two white and/or black cards in play) and Courage is the second white card in play. Courage being played will change Obsession to [6] when the \"While in play\" effects happen, and Courage can choose Obsession to be put into the discard pile."
+    ],
+    "images": [
+      {
+        "name": "Courage",
+        "variant": "standard",
+        "gallery_position": 7,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d8ff36909.webp",
+        "path": "assets/cards/courage.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "creativity",
+    "name": "Creativity",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "You may play this card as a copy of any mood. (Treat this mood as if it were an exact copy of that printed card, including dice, color, and abilities. The copied traits last for as long as this mood is in play.)",
+    "ability_types": [],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect. If you do not, this card is a blue card with a value of [0].",
+      "You may copy a mood of another player.",
+      "You don't copy anything but the base version of the card. For example, if you copy Patience (\"This mood's value is [1] if you played it this round\"), your copy will have a value of [1] the turn you copy it even if the card you're copying now has a value of [5].",
+      "This is the only card in the game (other than the cycle of common blank cards) without a \"To play this card,\" \"When in play,\" or \"After playing this mood\" ability. However, if you copy another card it will gain one or more.",
+      "If this ever leaves play, it returns to its base card, meaning if a card cares about what color it is in the discard pile, the answer is blue.",
+      "The card stays as a copy even if the original later leaves play.",
+      "If you use Creativity to copy a Creativity in play, you copy whatever that Creativity is a copy of and not Creativity itself.",
+      "If Doubt prevents a blue card from being played, you will not be able to play Creativity as it is blue in your hand.",
+      "Creativity's copying effect happens first, before \"To play this card\" effects happen, so if a card has to pay a cost, the person playing Creativity will still have to pay it. For example, if you copy a Self-Loathing you will still need to put one of your moods in play into the discard pile.",
+      "Creativity's copying will also happen before \"While in play\" effects that care about a card getting played occur (Duplicity, Scorn, and Validation), so they will respond to the card as the copied version. For example, if you play Creativity, you will only get to play another card with Validation if the card you copy has a [0] or [1] in the top right corner."
+    ],
+    "images": [
+      {
+        "name": "Creativity",
+        "variant": "standard",
+        "gallery_position": 32,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_96bb086d3d.webp",
+        "path": "assets/cards/creativity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "cruelty",
+    "name": "Cruelty",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose any number of opponents who each have two or more moods. Each chosen opponent puts a random one of their moods into the discard pile. (Moods are cards in play.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You can't choose an opponent with one or zero moods.",
+      "You may not choose yourself to be affected as you are not an opponent. In a team game (see Other Ways to Play ), you can't affect a teammate's cards.",
+      "You can choose zero opponents.",
+      "Players can choose their preferred randomization method. Shuffling the cards and having another player choose one is the default method.",
+      "As long as that player has a mood, it can be randomly chosen, even if it is just temporarily theirs (through something like Recklessness)."
+    ],
+    "images": [
+      {
+        "name": "Cruelty",
+        "variant": "standard",
+        "gallery_position": 61,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_72e6fb2349.webp",
+        "path": "assets/cards/cruelty.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "curiosity",
+    "name": "Curiosity",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "After playing this mood — You may choose a player. If you do, that player reveals a random card from their hand. If the revealed card shares a color with any mood, this mood's value becomes [6].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You may choose yourself.",
+      "The revealed card is seen by all players and not just the person playing Curiosity.",
+      "If Imagination (\"All moods are the chosen color\") is in play, cards in hand are the color they actually are and are not the color all moods have been changed to by Imagination. Let's say Imagination is set to white. To have a Curiosity with a value of [6], you will need to reveal a card that's actually white from the chosen player's hand."
+    ],
+    "images": [
+      {
+        "name": "Curiosity",
+        "variant": "standard",
+        "gallery_position": 33,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4189ffd6b0.webp",
+        "path": "assets/cards/curiosity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "cynicism",
+    "name": "Cynicism",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "After playing this mood — You may put a card from the discard pile into an opponent's hand. If you do, this mood's value becomes [6].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may not choose yourself to be affected as you are not an opponent. In a team game (see Other Ways to Play ), you can't affect a teammate's cards.",
+      "If there are no cards in the discard pile, Cynicism can't have a value of [6].",
+      "You get to choose which card to give to your opponent."
+    ],
+    "images": [
+      {
+        "name": "Cynicism",
+        "variant": "standard",
+        "gallery_position": 62,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3e5cc80185.webp",
+        "path": "assets/cards/cynicism.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "delight",
+    "name": "Delight",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "After playing this mood — You may discard a card from your hand with a [1], [3], or [5] in its top right corner. If you do, this mood's value becomes [5].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its base score and not do its effect.",
+      "Cards in your hand always look at the top right corner when caring about die numbers and never the lower left corner.",
+      "If you discard what is asked and the card has multiple values, in play it will always be the lower left value (with the card arranged vertically). We recommend turning the card 180 degrees so that the current score is represented in the top right corner.",
+      "Without another card (Encouragement or Idealism) telling you otherwise, you will always use the value determined when you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5]."
+    ],
+    "images": [
+      {
+        "name": "Delight",
+        "variant": "standard",
+        "gallery_position": 111,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a3502598f.webp",
+        "path": "assets/cards/delight.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "denial",
+    "name": "Denial",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may choose two other moods. If the two chosen moods share a color or have the same value, put them into their players' hands.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "The moods do not have to be the same player's. For example, you may choose one of your moods and another player's mood.",
+      "\"Value\" means the current score of the card. This may not be the number on the die in the top right corner. (Black dice inform you that the score can change.)",
+      "You can put a mood that was another player's mood originally into your hand. For example, you steal Love from another player with Guile. If you then play Denial choosing Love as one of your two cards, Love would go into your hand."
+    ],
+    "images": [
+      {
+        "name": "Denial",
+        "variant": "standard",
+        "gallery_position": 34,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a9c5980f4.webp",
+        "path": "assets/cards/denial.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "determination",
+    "name": "Determination",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are three or more moods that share a color. (Moods are cards in play.)",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Determination counts all moods in play, not just yours.",
+      "Determination counts itself, so if there are two other green cards in play, Determination has a value of [6].",
+      "Determination merely cares that there are three cards of any one color. Which color doesn't matter, and Determination can stay at [6] even if the three cards that share the same color change."
+    ],
+    "images": [
+      {
+        "name": "Determination",
+        "variant": "standard",
+        "gallery_position": 112,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f6a797b668.webp",
+        "path": "assets/cards/determination.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "dignity",
+    "name": "Dignity",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "After playing this mood — You may discard a card from your hand with a [0], [1], [2], or [3] in its top right corner. If you do, this mood's value becomes [5].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its base score and not do its effect.",
+      "Cards in your hand always look at the top right corner when caring about die numbers and never the lower left corner.",
+      "If you discard what is asked and the card has multiple values, in play it will always be the lower left value (with the card arranged vertically). We recommend turning the card 180 degrees so that the current score is represented in the top right corner.",
+      "Without another card (Encouragement or Idealism) telling you otherwise, you will always use the value determined when you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5]."
+    ],
+    "images": [
+      {
+        "name": "Dignity",
+        "variant": "standard",
+        "gallery_position": 8,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c71c6fe5a6.webp",
+        "path": "assets/cards/dignity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "discipline",
+    "name": "Discipline",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[6]/[3]",
+    "printed_values": [
+      6,
+      3
+    ],
+    "normalized_dice": "[6]/[3]",
+    "rules_text": "While in play — This mood's value is [3] if there are two or more black and/or red moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Discipline is worth [3] if there are two black moods, two red moods, or a black mood and a red mood in play."
+    ],
+    "images": [
+      {
+        "name": "Discipline",
+        "variant": "standard",
+        "gallery_position": 9,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_599c19a67e.webp",
+        "path": "assets/cards/discipline.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "disgust",
+    "name": "Disgust",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[6]/[3]",
+    "printed_values": [
+      6,
+      3
+    ],
+    "normalized_dice": "[6]/[3]",
+    "rules_text": "While in play — This mood's value is [3] if there are two or more green and/or white moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Disgust is worth [3] if there are two green moods, two white moods, or a green mood and a white mood in play."
+    ],
+    "images": [
+      {
+        "name": "Disgust",
+        "variant": "standard",
+        "gallery_position": 63,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_449e96eaa5.webp",
+        "path": "assets/cards/disgust.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "disillusionment",
+    "name": "Disillusionment",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Starting with the next player in turn order, each player may choose a color. Put each other mood that shares one of those colors into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Turn order is clockwise, so the person to your left names the first color (if they choose to).",
+      "Players may choose not to name a color.",
+      "All colors are named before any cards are put into the discard pile.",
+      "Because all colors go away at the same time, color-changing effects happening due to cards leaving (Imagination) won't impact this effect. For example, Imagination is in play naming blue. One of the players names blue for Imagination. All the cards, including Imagination, are put into the discard pile at the same time, so Imagination leaving and causing the cards to return to their normal color happens too late to save the cards from Disillusionment's effect.",
+      "Disillusionment never puts itself into the discard pile.",
+      "A second Disillusionment (say you copy it with Creativity) can destroy the first Disillusionment."
+    ],
+    "images": [
+      {
+        "name": "Disillusionment",
+        "variant": "standard",
+        "gallery_position": 10,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88d0a39121.webp",
+        "path": "assets/cards/disillusionment.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "disorientation",
+    "name": "Disorientation",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may choose a number. If you do, put all other moods with the chosen value into their players' hands.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You may choose any whole number, even one that doesn't have a card with that value in play.",
+      "\"Value\" means the current score of the card. This may not be the number on the die in the top right corner. (Black dice inform you that the score can change.)",
+      "Disorientation does not affect itself, so if you choose [0], it will stay in play.",
+      "Suppressed cards have a value of [0] while suppressed, so if you name [0], all suppressed cards will go to their players' hands.",
+      "A second Disorientation (say you copy it with Creativity) can return the first Disorientation to its player's hand if [0] is named."
+    ],
+    "images": [
+      {
+        "name": "Disorientation",
+        "variant": "standard",
+        "gallery_position": 35,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5accb283ed.webp",
+        "path": "assets/cards/disorientation.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "disregard",
+    "name": "Disregard",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[6]/[3]",
+    "printed_values": [
+      6,
+      3
+    ],
+    "normalized_dice": "[6]/[3]",
+    "rules_text": "While in play — This mood's value is [3] if there are two or more blue and/or black moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Disregard is worth [3] if there are two blue moods, two black moods, or a blue mood and a black mood in play."
+    ],
+    "images": [
+      {
+        "name": "Disregard",
+        "variant": "standard",
+        "gallery_position": 113,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6147c110a1.webp",
+        "path": "assets/cards/disregard.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "doubt",
+    "name": "Doubt",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may reveal any number of cards from your hand and put them on the bottom of the deck, then draw that many cards. During the next round, players can't play moods that share a color with any of the revealed cards.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "If the deck is empty, the player will draw the card(s) they just put on the bottom.",
+      "A revealed card is seen by all players.",
+      "The effect of Doubt doesn't happen until the next round. If players have their turn after you before the round ends, they are unaffected by it.",
+      "You will need to make note of what colors can't be played on the next turn.",
+      "This effect also affects you, the player who played Doubt, but not until your next turn."
+    ],
+    "images": [
+      {
+        "name": "Doubt",
+        "variant": "standard",
+        "gallery_position": 36,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd66017000.webp",
+        "path": "assets/cards/doubt.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "duplicity",
+    "name": "Duplicity",
+    "color": "blue",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn. While in play — Each time you play another mood, you may have that mood's \"After playing this mood\" effect happen an additional time. (If that effect involves a choice, different choices can be made each time.)",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Duplicity and play Eagerness (which allows you to play an additional card of a color you have in play). You may first play the additional card for Duplicity before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Duplicity.",
+      "Duplicity allows you to have \"After playing this mood\" effects happen a second time. This is optional. You are not forced to have an effect happen again.",
+      "If an \"After playing this mood\" effect happens, you may make new decisions for that second effect. For example, you play Panic and return Generosity to another player's hand. With the second copy of an effect, you may now choose a new card to return to a player's hand.",
+      "You let the first effect happen. Allow \"While in play\" effects to adjust the cards in play (often changing their value). You then will have the second effect happen. For example, you play Courage to destroy Laziness. When Laziness goes away, Ambivalence changes from [3] to [6], as there now aren't two red and/or green cards in play. You may now choose to hit Ambivalence with the second effect of Courage."
+    ],
+    "images": [
+      {
+        "name": "Duplicity",
+        "variant": "standard",
+        "gallery_position": 37,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1364393674.webp",
+        "path": "assets/cards/duplicity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "eagerness",
+    "name": "Eagerness",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn if it shares a color with one of your moods.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Eagerness. You may first play the additional card for Hurt Feelings before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Hurt Feelings.",
+      "If Imagination is in play, it only affects the cards in play (i.e., the moods) and not the cards in your hand. This would mean you could only play an additional card with Eagerness that is the color in your hand that was named by the person who played Imagination."
+    ],
+    "images": [
+      {
+        "name": "Eagerness",
+        "variant": "standard",
+        "gallery_position": 114,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_638fd1b331.webp",
+        "path": "assets/cards/eagerness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "embarrassment",
+    "name": "Embarrassment",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "After playing this mood — You may discard a card from your hand with a [4], [5], or [6] in its top right corner. If you do, this mood's value becomes [5].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Cards in your hand always look at the top right corner when caring about die numbers and never the lower left corner.",
+      "If you discard what is asked and the card has multiple values, in play it will always be the lower left value (with the card arranged vertically). We recommend turning the card 180 degrees so that the current score is represented in the top right corner."
+    ],
+    "images": [
+      {
+        "name": "Embarrassment",
+        "variant": "standard",
+        "gallery_position": 87,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f96a43ef62.webp",
+        "path": "assets/cards/embarrassment.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "encouragement",
+    "name": "Encouragement",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may choose a mood with dice in its lower left corner. While in play — The chosen mood uses the dice total in its top right corner or lower left corner, whichever is higher, to determine its value.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You do not have the ability to choose which total to count. It is always the highest value. For example, you are close to being last this round and wish to have the lowest score to get Hurt Feelings. Encouragement does not allow you to count the lower value on the card.",
+      "If Encouragement leaves play, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the card (from when you played it) that previous choice returns."
+    ],
+    "images": [
+      {
+        "name": "Encouragement",
+        "variant": "standard",
+        "gallery_position": 11,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c2c92dce.webp",
+        "path": "assets/cards/encouragement.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "enjoyment",
+    "name": "Enjoyment",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are two or more red and/or white moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Enjoyment is worth [6] if there are two red moods, two white moods, or a red mood and a white mood in play."
+    ],
+    "images": [
+      {
+        "name": "Enjoyment",
+        "variant": "standard",
+        "gallery_position": 115,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3f91566414.webp",
+        "path": "assets/cards/enjoyment.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "enthusiasm",
+    "name": "Enthusiasm",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — While scoring, you may score one of your moods an extra time.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Scoring the extra card is optional. You don't have to do it.",
+      "You may choose which of your cards to score. It does not need to be the highest scoring card.",
+      "Enthusiasm always has a value of [0]. It's allowing you to score another card twice. It does not itself gain any value.",
+      "If you have two Enthusiasms in play (say you copied it with Creativity), you can score one mood twice or two different moods once. Enthusiasm will stack with other cards that score extra times (Bliss, Exhilaration, and Passion), meaning you get to add all the extra combined scores together."
+    ],
+    "images": [
+      {
+        "name": "Enthusiasm",
+        "variant": "standard",
+        "gallery_position": 116,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_37c8ff6ac3.webp",
+        "path": "assets/cards/enthusiasm.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "envy",
+    "name": "Envy",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "To play this card — Put one of your moods into the discard pile. (If you can't do that, you can't play this card. Moods are cards in play.) While in play — This mood's value increases by [2] for each mood your moodiest opponent has.",
+    "ability_types": [
+      "To play this card",
+      "While in play"
+    ],
+    "rulings": [
+      "The \"moodiest\" opponent is whichever opponent has the most moods in play.",
+      "The moodiest opponent can change from round to round.",
+      "If two opponents have the same number of cards, either can be the \"moodiest,\" but don't count both.",
+      "You and any teammate, in a team variant (see Other Ways to Play ), aren't opponents and thus can't be the \"moodiest opponent.\"",
+      "Moods are cards in play, so you can't discard a card in your hand to satisfy the \"To play this card\" requirement.",
+      "If this card is suppressed, it has a value of [0] regardless of how many moods the moodiest opponent has."
+    ],
+    "images": [
+      {
+        "name": "Envy",
+        "variant": "standard",
+        "gallery_position": 64,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_41c30f829d.webp",
+        "path": "assets/cards/envy.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "euphoria",
+    "name": "Euphoria",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — This mood's value increases by [1] for each mood (including itself and other players' moods) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "When a card is played, Euphoria will adjust its value before that card's \"After playing this mood\" effect happens. For instance, let's say there are four cards in play including Euphoria. Your opponent plays Courage (which puts a card with value [5] or more into the discard pile). Euphoria will get a value of [5] (as there are now five cards in play) before Courage's effect happens, so Euphoria could be destroyed by Courage.",
+      "If this card is suppressed, it has a value of [0] regardless of how many moods are in play."
+    ],
+    "images": [
+      {
+        "name": "Euphoria",
+        "variant": "standard",
+        "gallery_position": 117,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_944642a216.webp",
+        "path": "assets/cards/euphoria.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "excitement",
+    "name": "Excitement",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are two or more black and/or green moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Excitement is worth [6] if there are two black moods, two green moods, or a black mood and a green mood in play."
+    ],
+    "images": [
+      {
+        "name": "Excitement",
+        "variant": "standard",
+        "gallery_position": 88,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_091025d24d.webp",
+        "path": "assets/cards/excitement.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "exhilaration",
+    "name": "Exhilaration",
+    "color": "red",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "To play this card — Put one of your moods into the discard pile. (If you can't do that, you can't play this card. Moods are cards in play.) While in play — Score your moods an extra time.",
+    "ability_types": [
+      "To play this card",
+      "While in play"
+    ],
+    "rulings": [
+      "Exhilaration always has a value of [0]. It's allowing you to score your other cards twice. It does not itself gain any value.",
+      "The extra scoring is mandatory. You can't choose not to do it.",
+      "If you have two Exhilarations in play (say you copied it with Creativity), you would score each card two extra times. Exhilaration will stack with other cards that score extra times (Bliss, Enthusiasm, and Passion), meaning you get to add all the extra combined scores together.",
+      "Moods are cards in play, so you can't discard a card in your hand to satisfy the \"To play this card\" requirement."
+    ],
+    "images": [
+      {
+        "name": "Exhilaration",
+        "variant": "standard",
+        "gallery_position": 89,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_32e19d377b.webp",
+        "path": "assets/cards/exhilaration.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "faith",
+    "name": "Faith",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may discard a green or blue card from your hand. If you do, suppress any mood. It remains suppressed for as long as you have this mood. (While suppressed, that mood has a value of [0]. Turn it sideways to keep track.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If the mood is suppressed for \"as long as you have this mood,\" the mood stays suppressed as long as that mood remains in play on your side. If that mood leaves play or goes to another player, the suppressed mood is no longer suppressed. If the suppressing mood leaves play or goes to another player, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the mood (from when you played it) that previous choice returns.",
+      "If this mood moves to another player, the suppressed card(s) stop being suppressed.",
+      "If you do not have a green or blue card in your hand to discard, you may not suppress a card.",
+      "If Imagination is in play, it only changes the color of the moods in play and not the cards in your hand."
+    ],
+    "images": [
+      {
+        "name": "Faith",
+        "variant": "standard",
+        "gallery_position": 12,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_51ab7c95dd.webp",
+        "path": "assets/cards/faith.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "fascination",
+    "name": "Fascination",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[3]/[6][1]",
+    "printed_values": [
+      3,
+      7
+    ],
+    "normalized_dice": "[3]/[6][1]",
+    "rules_text": "After playing this mood — You may reveal a blue or black card from your hand and give it to another player. If you do, this mood's value becomes [6][1].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "To get a value of [6][1], you must give a blue or black card to another player. If you don't have a blue or black card in hand, you can't get a value of [6][1].",
+      "In a team game (see Other Ways to Play ), you can give the extra card to a teammate."
+    ],
+    "images": [
+      {
+        "name": "Fascination",
+        "variant": "standard",
+        "gallery_position": 118,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cf54facc33.webp",
+        "path": "assets/cards/fascination.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "fear",
+    "name": "Fear",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may put another one of your moods into your hand. You may play an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means both effects are optional. You may do one without doing the other. For example, you may play an additional card without returning a mood to your hand.",
+      "You may play the mood you return to your hand as the additional mood, but you may instead play a different mood from your hand.",
+      "If you choose to return a mood to your hand and play an additional card, you have to return the card first. Items on a card have to be done in the order they are written.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Fear. You may first play the additional card for Hurt Feelings before you play the additional card for Fear."
+    ],
+    "images": [
+      {
+        "name": "Fear",
+        "variant": "standard",
+        "gallery_position": 38,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_906b1bb1d6.webp",
+        "path": "assets/cards/fear.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "fickleness",
+    "name": "Fickleness",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — Calculate the most common color or colors among all moods. Put all moods other than this one that share one of those colors into their players' hands.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If two or more colors have the same number of moods in play more than any other color, they are all considered the \"most common color\" and are all returned.",
+      "Fickleness will never put itself back into your hand if blue is the most common color.",
+      "A second Fickleness (say you copy it with Creativity) can return the first Fickleness to its player's hand if blue is the most common color.",
+      "Each card goes into the hand of the player who currently has it in play. It doesn't matter if another player played it."
+    ],
+    "images": [
+      {
+        "name": "Fickleness",
+        "variant": "standard",
+        "gallery_position": 39,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_7b2399c941.webp",
+        "path": "assets/cards/fickleness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "fondness",
+    "name": "Fondness",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[0]/[6][1]",
+    "printed_values": [
+      0,
+      7
+    ],
+    "normalized_dice": "[0]/[6][1]",
+    "rules_text": "While in play — This mood's value is [6][1] if each player has three or more moods. (Moods are cards in play.)",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Every player in the game must have three moods in play for you to get this bonus. In a game with three or more players, just you and one other player having three cards will not count.",
+      "Fondness counts itself toward how many moods you have in play."
+    ],
+    "images": [
+      {
+        "name": "Fondness",
+        "variant": "standard",
+        "gallery_position": 119,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d5d19db135.webp",
+        "path": "assets/cards/fondness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "friendliness",
+    "name": "Friendliness",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn if it has a [0], [2], [4], or [6] in its top right corner.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Friendliness. You may first play the additional card for Hurt Feelings before you play the additional card for Friendliness."
+    ],
+    "images": [
+      {
+        "name": "Friendliness",
+        "variant": "standard",
+        "gallery_position": 13,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8ef71c708a.webp",
+        "path": "assets/cards/friendliness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "frustration",
+    "name": "Frustration",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[6]/[3]",
+    "printed_values": [
+      6,
+      3
+    ],
+    "normalized_dice": "[6]/[3]",
+    "rules_text": "While in play — This mood's value is [3] if there are two or more white and/or blue moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Frustration is worth [3] if there are two white moods, two blue moods, or a white mood and a blue mood in play."
+    ],
+    "images": [
+      {
+        "name": "Frustration",
+        "variant": "standard",
+        "gallery_position": 90,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_78e5406896.webp",
+        "path": "assets/cards/frustration.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "fury",
+    "name": "Fury",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "After playing this mood — Each player chooses one of their highest value moods and puts it into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Fury will put itself into a discard pile if it is your highest value mood.",
+      "If a player has two or more cards with the same value, that player chooses which of the cards to put into the discard pile.",
+      "All the cards go into the discard pile at the same time, so one of them leaving and causing value changes won't affect the choice of other cards."
+    ],
+    "images": [
+      {
+        "name": "Fury",
+        "variant": "standard",
+        "gallery_position": 91,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4001d05e4a.webp",
+        "path": "assets/cards/fury.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "generosity",
+    "name": "Generosity",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[6]",
+    "printed_values": [
+      6
+    ],
+    "normalized_dice": "[6]",
+    "rules_text": "After playing this mood — Choose an opponent. They may play an additional mood on their next turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "The opponent gets to play their additional card on their next turn. That will be the same round if they haven't played yet. It will be next round if they have.",
+      "The additional card is optional. They do not have to play an additional card.",
+      "You can't choose a teammate in a team game (see Other Ways to Play ) as they are not an opponent.",
+      "Your opponent is allowed to play that additional card any time during their turn. If multiple cards grant them additional cards, those can be played in any order. For example, let's say they have the additional card from Generosity and play Eagerness (which allows you to play an additional card of a color you have in play). They may first play the additional card for Generosity before they play the additional card for Eagerness, which would allow them to play an additional card in the color of the card you played for Generosity."
+    ],
+    "images": [
+      {
+        "name": "Generosity",
+        "variant": "standard",
+        "gallery_position": 120,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b5b6235248.webp",
+        "path": "assets/cards/generosity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "glee",
+    "name": "Glee",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[0]/[6]",
+    "printed_values": [
+      0,
+      6
+    ],
+    "normalized_dice": "[0]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if you played it this round.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card counts as playing a [0] card. For instance, you will get to play an extra card with Validation (which lets you play an additional card whenever you play a card with a [0] or [1] in its top right corner)."
+    ],
+    "images": [
+      {
+        "name": "Glee",
+        "variant": "standard",
+        "gallery_position": 92,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c8db74f963.webp",
+        "path": "assets/cards/glee.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "gluttony",
+    "name": "Gluttony",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn. If you do, after scoring, put that mood into the discard pile (if it's still in play) .",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the extra card has moved to another player, it is still put into the discard pile after scoring.",
+      "If the extra card lets you play more additional extra cards, those extra cards are not put into the discard pile after scoring, just the initial extra card.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Gluttony. You may first play the additional card for Hurt Feelings before you play the additional card for Gluttony.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say you play Gluttony which lets you play Bashfulness. After scoring, you would choose which \"after scoring\" effect you want to happen first. If you choose Bashfulness and you won the turn, you would put Bashfulness on the bottom of the deck and draw a card. It then wouldn't be there for Gluttony to put into the discard pile. If you choose for Gluttony to go first, Bashfulness would be put into the discard pile before its effect would happen."
+    ],
+    "images": [
+      {
+        "name": "Gluttony",
+        "variant": "standard",
+        "gallery_position": 93,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4e9904fa65.webp",
+        "path": "assets/cards/gluttony.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "grace",
+    "name": "Grace",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — During each of your turns (including the turn you play this mood) , you may play an additional mood from the discard pile if it shares a color with one of your moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Playing a card from the discard pile that lets you play an additional card only lets you play the additional card from your hand (unless another card like Melancholy lets you play them from the discard pile).",
+      "Cards in the discard pile are the color they are and are not affected by Imagination (which changes the color of all moods in play) until after you play them. For example, Benevolence (a white card) only allows you to play a color you do not have in play. Say you have Boredom (a red card) in the discard pile and Imagination in play making everything white. You can play Boredom because when you play it, it is still red. Once it's in play, it will become white.",
+      "Playing the additional mood is optional. You do not have to do it.",
+      "The additional card must be played from your discard pile and has to match a color of a card you have in play.",
+      "If the discard pile is empty or none of the cards in it are the color of a mood you have in play, you can't play an additional card.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Grace and play Eagerness (which allows you to play an additional card of a color you have in play) from your hand. You may first play the additional card for Grace before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Grace.",
+      "If there is an Imagination in play (which changes all the moods in play to a chosen color), you will only be able to play cards in the discard pile of the chosen color. The cards in the discard pile are not affected by Imagination and thus will be the color they naturally are.",
+      "In a team game (see Other Ways to Play ), you have to match the color of a mood you have in play and not your teammate."
+    ],
+    "images": [
+      {
+        "name": "Grace",
+        "variant": "standard",
+        "gallery_position": 121,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a4ac5b193b.webp",
+        "path": "assets/cards/grace.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "grief",
+    "name": "Grief",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may play up to two additional moods this turn from the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You can play zero, one, or two cards from your discard pile.",
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Playing a card from the discard pile that lets you play an additional card only lets you play the additional card from your hand (unless another card like Melancholy lets you play them from the discard pile).",
+      "Cards in the discard pile are the color they are and are not affected by Imagination (which changes the color of all moods in play) until after you play them. For example, Benevolence (a white card) only allows you to play a color you do not have in play. Say you have Boredom (a red card) in the discard pile and Imagination in play making everything white. You can play Boredom because when you play it, it is still red. Once it's in play, it will become white.",
+      "If the first card you play from the discard pile puts another card in the discard pile, you may play that card as your second card.",
+      "You can play those additional cards for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Grief and play Eagerness (which allows you to play an additional card of a color you have in play) from your hand. You may first play an additional card for Grief before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Grief."
+    ],
+    "images": [
+      {
+        "name": "Grief",
+        "variant": "standard",
+        "gallery_position": 65,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e4476b11a4.webp",
+        "path": "assets/cards/grief.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "guile",
+    "name": "Guile",
+    "color": "blue",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "To play this card — Discard two cards from your hand. (If you can't do that, you can't play this card.) After playing this mood — Choose one of your opponents' moods. It becomes yours.",
+    "ability_types": [
+      "To play this card",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If you have less than two cards in hand other than Guile, you will be unable to play Guile.",
+      "Taking a mood doesn't change its suppressed status.",
+      "You must take a mood from another player. If there is no other mood to take, you do not take anything.",
+      "You can't choose a teammate's mood in a team variant (see Other Ways to Play ).",
+      "When a mood moves from one player to another, all qualities of that card remain the same. This includes its value and whether it's suppressed.",
+      "Moods moving players does not make \"After playing this mood\" effects happen.",
+      "If Guile moves to another player, you still keep the card taken by it.",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Guile",
+        "variant": "standard",
+        "gallery_position": 40,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4c31ac573b.webp",
+        "path": "assets/cards/guile.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "guilt",
+    "name": "Guilt",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose one: • Suppress a black or red mood. It remains suppressed for as long as you have this mood. (While suppressed, that mood has a value of [0]. Turn it sideways to keep track.) • Suppress all black and red moods. Those moods remain suppressed for as long as you have this mood.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If the mood is suppressed for \"as long as you have this mood,\" the mood stays suppressed as long as that mood remains in play on your side. If that mood leaves play or goes to another player, the suppressed mood is no longer suppressed. If the suppressing mood leaves play or goes to another player, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the mood (from when you played it) that previous choice returns.",
+      "If this mood moves to another player, the suppressed card(s) stop being suppressed.",
+      "You may only choose one of the two effects, although if the mood returns to your hand and you play it again, you may make a different choice.",
+      "You may choose to suppress your own black or red mood."
+    ],
+    "images": [
+      {
+        "name": "Guilt",
+        "variant": "standard",
+        "gallery_position": 14,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cfb7aab4ca.webp",
+        "path": "assets/cards/guilt.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "happiness",
+    "name": "Happiness",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[2]/[6][2]",
+    "printed_values": [
+      2,
+      8
+    ],
+    "normalized_dice": "[2]/[6][2]",
+    "rules_text": "While in play — This mood's value is [6][2] if a player has both a red mood and a white mood.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "One player has to have both the red card and the white card for Happiness to get a value of [6][2].",
+      "It's fine if more than one player has both."
+    ],
+    "images": [
+      {
+        "name": "Happiness",
+        "variant": "standard",
+        "gallery_position": 122,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44522f15f3.webp",
+        "path": "assets/cards/happiness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "harmony",
+    "name": "Harmony",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn from the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Playing a card from the discard pile that lets you play an additional card only lets you play the additional card from your hand (unless another card like Melancholy lets you play them from the discard pile).",
+      "Cards in the discard pile are the color they are and are not affected by Imagination (which changes the color of all moods in play) until after you play them. For example, Benevolence (a white card) only allows you to play a color you do not have in play. Say you have Boredom (a red card) in the discard pile and Imagination in play making everything white. You can play Boredom because when you play it, it is still red. Once it's in play, it will become white.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Harmony. You may first play the additional card for Hurt Feelings before you play the additional card for Harmony."
+    ],
+    "images": [
+      {
+        "name": "Harmony",
+        "variant": "standard",
+        "gallery_position": 123,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1de68dc34c.webp",
+        "path": "assets/cards/harmony.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "hate",
+    "name": "Hate",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may put any mood on the bottom of the deck. If you do, draw a card. (Moods are cards in play.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the deck is empty, you will draw the card that was just put on the bottom.",
+      "You may put your own card on the bottom of the deck.",
+      "No matter whose card you put on the bottom of the deck, you draw the card."
+    ],
+    "images": [
+      {
+        "name": "Hate",
+        "variant": "standard",
+        "gallery_position": 66,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b423a5e0fc.webp",
+        "path": "assets/cards/hate.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "hesitation",
+    "name": "Hesitation",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose one: • Put a red or green mood into its player's hand. • Put all red and green moods into their players' hands.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect, meaning you choose to do neither effect.",
+      "If you choose the first option, you can put a red or green card of yours into your hand.",
+      "If you choose the second option, all red and green cards, including yours, return to your hand.",
+      "If Imagination makes Hesitation red or green, it will return itself to your hand."
+    ],
+    "images": [
+      {
+        "name": "Hesitation",
+        "variant": "standard",
+        "gallery_position": 41,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_95ca483374.webp",
+        "path": "assets/cards/hesitation.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "honor",
+    "name": "Honor",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose a player. While in play — The chosen player goes first each round regardless of who won the previous round. (This doesn't change who draws a card.)",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You only choose the player once. It doesn't change between rounds.",
+      "Play goes clockwise, so if you wish to go last, you will want to choose the player to your left to go first.",
+      "If there are two or more Honors in play (say one is Creativity copying it), whichever was the player chosen by the last Honor played is the person who goes first."
+    ],
+    "images": [
+      {
+        "name": "Honor",
+        "variant": "standard",
+        "gallery_position": 15,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fcb2539b1b.webp",
+        "path": "assets/cards/honor.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "hope",
+    "name": "Hope",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — You may play an additional mood during each of your turns (including the turn you play this mood) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "The additional card is optional. You do not have to play it.",
+      "If the first card you play causes Hope to leave play (going to your hand or discard pile) you will not get to play an additional card. It has to be in play for the \"While in play\" effect to work.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hope and play Eagerness (which allows you to play an additional card of a color you have in play). You may first play the additional card for Hope before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Hope."
+    ],
+    "images": [
+      {
+        "name": "Hope",
+        "variant": "standard",
+        "gallery_position": 124,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8569c6868b.webp",
+        "path": "assets/cards/hope.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "hostility",
+    "name": "Hostility",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may put one of your black or green moods into the discard pile. If you do, put up to two moods each with a value of [3] or less into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect, meaning you choose to do neither effect.",
+      "You may choose \"up to two moods\" to put into the discard pile, so you can choose to put zero, one, or two cards into the discard pile.",
+      "After putting the cards into the discard pile, the game will then apply their absence to the cards in play, readjusting their value before the second part of the effect is applied. For example, let's say you put Hate into the discard pile with Hostility. Your opponent has Discipline in play, and when Hate goes away, its value drops from [6] to [3] as there is now only one black card in play. Hostility would now be able to put Discipline into the discard pile.",
+      "You can't combine the [3] value between the two cards, meaning, for instance, that you couldn't put one card with a value of [6] into the discard pile."
+    ],
+    "images": [
+      {
+        "name": "Hostility",
+        "variant": "standard",
+        "gallery_position": 94,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_98adc285ea.webp",
+        "path": "assets/cards/hostility.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "idealism",
+    "name": "Idealism",
+    "color": "white",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn. While in play — For each of your moods with dice in its lower left corner, use the dice total in its top right corner or lower left corner, whichever is higher, to determine its value.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You do not need to play an additional card and will still get the \"While in play\" effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Idealism. You may first play the additional card for Hurt Feelings before you play the additional card for Idealism.",
+      "You do not have the ability to choose which total to count. It is always the highest value. For example, you are close to being last this round and wish to have the lowest score to get Hurt Feelings. Idealism does not allow you to count the lower value on the card.",
+      "If Idealism leaves play, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the card (from when you played it) that previous choice returns.",
+      "You cannot choose which cards Idealism affects. All your cards with two dice totals will have the higher value."
+    ],
+    "images": [
+      {
+        "name": "Idealism",
+        "variant": "standard",
+        "gallery_position": 16,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_65defcbada.webp",
+        "path": "assets/cards/idealism.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "imagination",
+    "name": "Imagination",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose a color. While in play — All moods are the chosen color and no other colors.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You must choose a color.",
+      "This card only affects moods, which are cards in play. Cards in hands and the discard pile do not have their color changed by Imagination.",
+      "If a second Imagination is played (say you copy it with Creativity), it will override the first Imagination. For example, your opponent plays Imagination and chooses red. All the moods are now red. You then play Creativity copying Imagination and choose green. All the moods are now green and no longer red."
+    ],
+    "images": [
+      {
+        "name": "Imagination",
+        "variant": "standard",
+        "gallery_position": 42,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3af00d3391.webp",
+        "path": "assets/cards/imagination.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "indecisiveness",
+    "name": "Indecisiveness",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose any number of opponents who each have two or more moods. Each chosen player puts a random one of their moods into their hand.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, two (in a three-player game), or three (in a four-player game) opponents. You do not have to choose all the opponents.",
+      "If a player has zero or one card, Indecisiveness will not affect them.",
+      "You may choose any method to randomize the cards. We suggest shuffling them face down and having an opponent pick one.",
+      "You may not choose yourself to be affected as you are not an opponent. In a team game (see Other Ways to Play ), you can't affect a teammate's cards."
+    ],
+    "images": [
+      {
+        "name": "Indecisiveness",
+        "variant": "standard",
+        "gallery_position": 43,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_50d6760556.webp",
+        "path": "assets/cards/indecisiveness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "indifference",
+    "name": "Indifference",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "",
+    "ability_types": [],
+    "rulings": [
+      "There are five blank cards (all with a value of [4]), one in each color. These five cards and Creativity are the only cards without one of the three main abilities (\"To play this card,\" \"While in play,\" and \"After playing this mood\")."
+    ],
+    "images": [
+      {
+        "name": "Indifference",
+        "variant": "standard",
+        "gallery_position": 44,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0950b77878.webp",
+        "path": "assets/cards/indifference.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "infatuation",
+    "name": "Infatuation",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[3]/[6][3]",
+    "printed_values": [
+      3,
+      9
+    ],
+    "normalized_dice": "[3]/[6][3]",
+    "rules_text": "After playing this mood — You may put two of your other moods into the discard pile (moods are cards in play) . If you do, this mood's value becomes [6][3].",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You do not need to play an additional card and will still get the \"While in play\" effect.",
+      "If you choose to put cards into the discard pile, you must choose two. You can't put one card into the discard pile.",
+      "If you do not have two other moods in play, you can't get the [6][3] value."
+    ],
+    "images": [
+      {
+        "name": "Infatuation",
+        "variant": "standard",
+        "gallery_position": 95,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2c4eb5919.webp",
+        "path": "assets/cards/infatuation.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "insecurity",
+    "name": "Insecurity",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn. If you do, after scoring, put that mood into your hand (if it's still in play) .",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "If another player has the mood you played with Insecurity after scoring, it will still return to your hand.",
+      "The extra card will still return to your hand after scoring even if Insecurity is no longer in play.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Insecurity. You can play the extra card for Hurt Feelings before you play the extra card for Insecurity. Note you have to be clear which extra card you are playing for Insecurity as you have to note it, so it can be returned after scoring.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say you play Insecurity which lets you play Bashfulness. After scoring, you would choose which \"after scoring\" effect you want to happen first. If you choose Bashfulness and you won the turn, you would put Bashfulness on the bottom of the deck and draw a card. It then wouldn't be there for Insecurity to put into your hand. If you choose for Insecurity to go first, Bashfulness would be put into your hand before its effect would happen."
+    ],
+    "images": [
+      {
+        "name": "Insecurity",
+        "variant": "standard",
+        "gallery_position": 45,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d74b605c8b.webp",
+        "path": "assets/cards/insecurity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "instability",
+    "name": "Instability",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose two moods from the same opponent. If you do, they choose one of those moods and gives it to you, then you give them one of your moods.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If no other player has two cards, nothing happens.",
+      "If a mood is the only one a player has, it can't be chosen by this card.",
+      "The player who has the two moods chooses which one you get.",
+      "You only give one of your cards to the opponent if you first get a card from them.",
+      "The card you give them can be Instability, but it doesn't have to be.",
+      "Instability's printed card text contains a small subject-verb agreement error that does not affect gameplay."
+    ],
+    "images": [
+      {
+        "name": "Instability",
+        "variant": "standard",
+        "gallery_position": 96,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_792f6c2f0a.webp",
+        "path": "assets/cards/instability.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "intimidation",
+    "name": "Intimidation",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may choose another player. If you do, that player reveals a card from their hand and puts it into your hand. You may play it as an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "A revealed card is seen by all players.",
+      "In a team game (see Other Ways to Play ), you can choose a teammate.",
+      "You are not required to play the card you take with Intimidation.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Intimidation. You may first play the additional card for Hurt Feelings before you play the additional card for Intimidation."
+    ],
+    "images": [
+      {
+        "name": "Intimidation",
+        "variant": "standard",
+        "gallery_position": 67,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_950df3062a.webp",
+        "path": "assets/cards/intimidation.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "joy",
+    "name": "Joy",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may play an additional mood on your next turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "Your \"next turn\" is defined as the turn you take during the next round.",
+      "You can play that additional card any time during your next turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you play Joy and on your next turn you play Eagerness (which allows you to play an additional card of a color you have in play). You may first play the additional card for Joy before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Joy."
+    ],
+    "images": [
+      {
+        "name": "Joy",
+        "variant": "standard",
+        "gallery_position": 125,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_58ef667397.webp",
+        "path": "assets/cards/joy.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "kindness",
+    "name": "Kindness",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn if it has a [1], [3], or [5] in its top right corner.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Kindness. You may first play the additional card for Hurt Feelings before you play the additional card for Kindness. You should be clear which additional card you are playing for which effect."
+    ],
+    "images": [
+      {
+        "name": "Kindness",
+        "variant": "standard",
+        "gallery_position": 17,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_900364d212.webp",
+        "path": "assets/cards/kindness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "laziness",
+    "name": "Laziness",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "",
+    "ability_types": [],
+    "rulings": [
+      "There are five blank cards (all with a value of [4]), one in each color. These five cards and Creativity are the only cards without one of the three main abilities (\"To play this card,\" \"While in play,\" and \"After playing this mood\")."
+    ],
+    "images": [
+      {
+        "name": "Laziness",
+        "variant": "standard",
+        "gallery_position": 126,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_66b6f7a960.webp",
+        "path": "assets/cards/laziness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "love",
+    "name": "Love",
+    "color": "green",
+    "rarity": "mythic rare",
+    "printed_dice": "[4]/[6][6]",
+    "printed_values": [
+      4,
+      12
+    ],
+    "normalized_dice": "[4]/[6][6]",
+    "rules_text": "While in play — This mood's value is [6][6] if there's a white mood, a blue mood, a black mood, a red mood, and a green mood (including this one) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Love looks at all moods in play. The five colors need not be the same player's moods.",
+      "Love counts itself.",
+      "Imagination (which turns all cards one color) will give Love a value of [4]."
+    ],
+    "images": [
+      {
+        "name": "Love",
+        "variant": "standard",
+        "gallery_position": 127,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9bcb67999e.webp",
+        "path": "assets/cards/love.webp"
+      },
+      {
+        "name": "Love",
+        "variant": "headliner",
+        "gallery_position": 134,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8674b312121.webp",
+        "path": "assets/cards/love-headliner.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "loyalty",
+    "name": "Loyalty",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are two or more green and/or blue moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Loyalty is worth [6] if there are two green moods, two blue moods, or a green mood and a blue mood in play."
+    ],
+    "images": [
+      {
+        "name": "Loyalty",
+        "variant": "standard",
+        "gallery_position": 18,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8c6dcb6580.webp",
+        "path": "assets/cards/loyalty.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "malice",
+    "name": "Malice",
+    "color": "black",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — Choose any player who has two or more moods (moods are cards in play) . That player chooses two of their moods. Put those moods and all other moods that share a color with either of them into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "The chosen player can only choose moods they have in play.",
+      "You can pick yourself or a teammate in a team game (see Other Ways to Play ). If you pick a teammate, they will choose the two cards.",
+      "The chosen player gets to pick which two moods are affected.",
+      "If both the chosen moods are the same color, only moods of that color will be put into the discard pile.",
+      "A player with zero or one mood can't be chosen. If no player has two or more moods, nothing happens.",
+      "If a black card is chosen, all black cards other than Malice are put into the discard pile.",
+      "If another Malice is played (such as with Creativity) and a black card is chosen, it can put the first Malice into the discard pile. Malice doesn't affect itself."
+    ],
+    "images": [
+      {
+        "name": "Malice",
+        "variant": "standard",
+        "gallery_position": 68,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_69ca7ade91.webp",
+        "path": "assets/cards/malice.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "meekness",
+    "name": "Meekness",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — Suppress all moods with a value of [5] or more. Those moods remain suppressed for as long as you have this mood. (While suppressed, those moods have a value of [0]. Turn them sideways to keep track.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If the mood is suppressed for \"as long as you have this mood,\" the mood stays suppressed as long as that mood remains in play on your side. If that mood leaves play or goes to another player, the suppressed mood is no longer suppressed. If the suppressing mood leaves play or goes to another player, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the mood (from when you played it) that previous choice returns.",
+      "If this mood moves to another player, the suppressed card(s) stop being suppressed.",
+      "Only the moods that have a value of [5] or more at the time of this mood's effects become suppressed. If a mood later goes up in value to [5] or above, it doesn't become suppressed. If a new mood enters play with a value [5] or above, it doesn't become suppressed.",
+      "Meekness affects your moods that have a value of [5] or more.",
+      "If Meekness leaves play, all moods suppressed by it stop being suppressed."
+    ],
+    "images": [
+      {
+        "name": "Meekness",
+        "variant": "standard",
+        "gallery_position": 19,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_53a2b5358c.webp",
+        "path": "assets/cards/meekness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "melancholy",
+    "name": "Melancholy",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "While in play — You may play moods from the discard pile as though they were in your hand.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Cards in the discard pile are the color they are and are not affected by Imagination (which changes the color of all moods in play) until after you play them. For example, Benevolence (a white card) only allows you to play a color you do not have in play. Say you have Boredom (a red card) in the discard pile and Imagination in play making everything white. You can play Boredom because when you play it, it is still red. Once it's in play, it will become white.",
+      "You are still allowed to play cards from your hand."
+    ],
+    "images": [
+      {
+        "name": "Melancholy",
+        "variant": "standard",
+        "gallery_position": 69,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b69d84c162.webp",
+        "path": "assets/cards/melancholy.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "misery",
+    "name": "Misery",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[2]/[6][2]",
+    "printed_values": [
+      2,
+      8
+    ],
+    "normalized_dice": "[2]/[6][2]",
+    "rules_text": "While in play — This mood's value is [6][2] if there are two or more cards in the discard pile that share a color.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Imagination's color-changing effect does not affect the discard pile."
+    ],
+    "images": [
+      {
+        "name": "Misery",
+        "variant": "standard",
+        "gallery_position": 70,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9861468165.webp",
+        "path": "assets/cards/misery.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "neurosis",
+    "name": "Neurosis",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[5]",
+    "printed_values": [
+      5
+    ],
+    "normalized_dice": "[5]",
+    "rules_text": "To play this card — Put one or more of your moods into your hand. (If you can't do that, you can't play this card.)",
+    "ability_types": [
+      "To play this card"
+    ],
+    "rulings": [
+      "You can put any number of your moods into your hand, but you have to put at least one in hand to play Neurosis.",
+      "You can't play Neurosis if you have no moods in play."
+    ],
+    "images": [
+      {
+        "name": "Neurosis",
+        "variant": "standard",
+        "gallery_position": 46,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_836f2df163.webp",
+        "path": "assets/cards/neurosis.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "nostalgia",
+    "name": "Nostalgia",
+    "color": "green",
+    "rarity": "common",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may put a card from the discard pile into your hand. You may play an additional mood this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means both effects are optional. You may do one without doing the other. For example, you may play an additional card without putting a card in the discard pile into your hand.",
+      "You may play the mood you put into your hand from the discard pile as the additional mood, but you also could play a different mood from your hand.",
+      "If you choose to put a card in the discard pile into your hand and play an additional card, you have to put the card from the discard pile into your hand first. Items on a card have to be done in the order they are written.",
+      "Moods played from the discard pile are played similarly to how they are played from the hand.",
+      "You may play any mood in the discard pile, even ones that originally were played by other players.",
+      "Playing a card from the discard pile that lets you play an additional card only lets you play the additional card from your hand (unless another card like Melancholy lets you play them from the discard pile).",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Nostalgia. You may first play the additional card for Hurt Feelings before you play the additional card for Nostalgia."
+    ],
+    "images": [
+      {
+        "name": "Nostalgia",
+        "variant": "standard",
+        "gallery_position": 128,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa2e8db989.webp",
+        "path": "assets/cards/nostalgia.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "obsession",
+    "name": "Obsession",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are two or more white and/or black moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Obsession is worth [6] if there are two white moods, two black moods, or a white mood and a black mood in play."
+    ],
+    "images": [
+      {
+        "name": "Obsession",
+        "variant": "standard",
+        "gallery_position": 47,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f9134e6286.webp",
+        "path": "assets/cards/obsession.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "pacifism",
+    "name": "Pacifism",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, suppress one of their moods. It remains suppressed for as long as you have this mood. (While suppressed, that mood has a value of [0]. Turn it sideways to keep track.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If the mood is suppressed for \"as long as you have this mood,\" the mood stays suppressed as long as that mood remains in play on your side. If that mood leaves play or goes to another player, the suppressed mood is no longer suppressed. If the suppressing mood leaves play or goes to another player, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the mood (from when you played it) that previous choice returns.",
+      "If this mood moves to another player, the suppressed card(s) stop being suppressed."
+    ],
+    "images": [
+      {
+        "name": "Pacifism",
+        "variant": "standard",
+        "gallery_position": 20,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e1d60e419b.webp",
+        "path": "assets/cards/pacifism.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "panic",
+    "name": "Panic",
+    "color": "blue",
+    "rarity": "common",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, put one of their moods into their hand. You can't put this mood into your hand this way.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you.",
+      "If you return a mood to its player's hand, it goes to that player even if a different player originally played it.",
+      "Panic can't return itself to your hand, but a second Panic (say you play Creativity) could return the first Panic. For example, you play Panic and return Self-Loathing to an opponent's hand. On your next turn, you may play Creativity copying Panic to return your first Panic to your hand."
+    ],
+    "images": [
+      {
+        "name": "Panic",
+        "variant": "standard",
+        "gallery_position": 48,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88c69dd9d3.webp",
+        "path": "assets/cards/panic.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "paranoia",
+    "name": "Paranoia",
+    "color": "black",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose a player with one or more cards in their hand. If you do, that player reveals a random card from their hand and puts it on the bottom of the deck, then you draw a card.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "The card is revealed to all players.",
+      "If the deck is empty, you will draw the card the player just put on the bottom.",
+      "Players can choose their preferred randomization method. Shuffling the cards in your hand and having another player choose one is the default method."
+    ],
+    "images": [
+      {
+        "name": "Paranoia",
+        "variant": "standard",
+        "gallery_position": 71,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_59818f9df2.webp",
+        "path": "assets/cards/paranoia.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "passion",
+    "name": "Passion",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — While scoring, you may score one of your opponents' moods as though it were yours. (They also still score it.)",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "You may choose which opponent's card to score. It does not need to be the highest scoring card.",
+      "Passion always has a value of [0]. It's allowing you to score another card twice. It does not itself gain any value.",
+      "If you have two Passions in play (say you copy it with Creativity), you can score one mood twice or two different moods once. Passion will stack with other cards that score extra times (Bliss, Enthusiasm, and Exhilaration), meaning you get to add all the extra combined scores together."
+    ],
+    "images": [
+      {
+        "name": "Passion",
+        "variant": "standard",
+        "gallery_position": 97,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cae948ae72.webp",
+        "path": "assets/cards/passion.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "patience",
+    "name": "Patience",
+    "color": "white",
+    "rarity": "common",
+    "printed_dice": "[5]/[1]",
+    "printed_values": [
+      5,
+      1
+    ],
+    "normalized_dice": "[5]/[1]",
+    "rules_text": "While in play — This mood's value is [1] if you played it this round.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Patience never has a value of [5] during the turn you play it."
+    ],
+    "images": [
+      {
+        "name": "Patience",
+        "variant": "standard",
+        "gallery_position": 21,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d106975fda.webp",
+        "path": "assets/cards/patience.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "pity",
+    "name": "Pity",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if there are two or more blue and/or red moods.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "This card cares about there being two cards of one of the two colors or if one of each is in play. For example, Pity is worth [6] if there are two blue moods, two red moods, or a blue mood and a red mood in play."
+    ],
+    "images": [
+      {
+        "name": "Pity",
+        "variant": "standard",
+        "gallery_position": 72,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44a3456b6c.webp",
+        "path": "assets/cards/pity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "pride",
+    "name": "Pride",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may choose a player with more moods than you (moods are cards in play) . If you do, you may keep playing additional moods this turn until you have as many moods as the chosen player.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Pride. You may first play the additional card for Hurt Feelings before you play the additional card(s) for Pride. You do want to make it clear which additional card is being played for each effect.",
+      "If no player has more moods than you, this card has no effect and has a value of [1].",
+      "You can keep playing extra cards until you have as many moods in play as the player who has the most. For example, if another player has three more moods than you, you may play Pride and two additional moods. Pride counts itself as a card for your mood total.",
+      "If you have other cards allowing you to play extra cards, you can play them after you play Pride's effect. For example, Let's say you play Pride and another player has three more cards than you. You could play Pride, then play Charity (\"Play an additional card\"), then play a third card, then play a fourth card from the extra play from Charity.",
+      "If cards you play reduce the number of moods of the chosen player, that will impact how many cards you can play. For example, if another player has three more cards than you and you play Pride followed by Hate (\"Put a card on the bottom of the deck\") on one of the chosen player's cards, you can no longer play more cards because you now have the same number. You can choose to play Hate third because, at that time, the chosen player had one more mood than you. After the third card resolves, they do not have the additional mood, but you already played Hate as your third card."
+    ],
+    "images": [
+      {
+        "name": "Pride",
+        "variant": "standard",
+        "gallery_position": 22,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0a4b823b72.webp",
+        "path": "assets/cards/pride.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "rage",
+    "name": "Rage",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may put all other moods with a value of [3] or less into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "This affects all other moods with a value of [3] or less, including your moods, although not itself.",
+      "This will put all suppressed cards into the discard pile.",
+      "A second Rage (say you copied it with Creativity) can destroy the first Rage."
+    ],
+    "images": [
+      {
+        "name": "Rage",
+        "variant": "standard",
+        "gallery_position": 98,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b4f2eea560.webp",
+        "path": "assets/cards/rage.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "rationalization",
+    "name": "Rationalization",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may choose one: • Put your hand on the bottom of the deck, then draw that many cards. • Choose left or right. Simultaneously, each player gives their hand to the next player in the chosen direction.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If the deck is empty, you will draw the card(s) you just put on the bottom.",
+      "You pass all the cards in your hand.",
+      "If a player's hand is empty, they do not pass anything. The passing of other players' hands still happens."
+    ],
+    "images": [
+      {
+        "name": "Rationalization",
+        "variant": "standard",
+        "gallery_position": 49,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d90751636e.webp",
+        "path": "assets/cards/rationalization.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "rebellion",
+    "name": "Rebellion",
+    "color": "red",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Choose [0], [1], [2], or [3]. Put all other moods with the chosen value into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You must choose [0], [1], [2], or [3]. However, there don't need to be any cards with that score in play.",
+      "If you choose [0], this will put all suppressed cards into the discard pile.",
+      "Rebellion does not put itself into the discard pile if you choose [2].",
+      "All cards with that score, other than Rebellion, are put into the discard pile. You don't get to choose which ones.",
+      "Another Rebellion (say you copy it with Creativity) can put the first Rebellion into the discard pile, just not itself."
+    ],
+    "images": [
+      {
+        "name": "Rebellion",
+        "variant": "standard",
+        "gallery_position": 99,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4bc31ec6ea.webp",
+        "path": "assets/cards/rebellion.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "recklessness",
+    "name": "Recklessness",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may take one of your opponents' moods. If you do, after scoring, give the mood you took back to them (if you still have it) . While in play — After scoring, put this mood on the bottom of the deck and draw a card.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "The player of Recklessness chooses which card gets taken.",
+      "If the deck is empty, the player will draw the card they just put on the bottom.",
+      "When a mood moves from one player to another, all qualities of that card remain the same. This includes its value and whether it's suppressed.",
+      "Moods moving players does not make \"After playing this mood\" effects happen.",
+      "If Recklessness moves to another player, you still keep the card taken by it.",
+      "If you no longer have the card you took with Recklessness after scoring, you don't give it back. If another player has it, they get to keep it. It can only be returned from you to them.",
+      "Whichever player has Recklessness after scoring is the one who puts it on the bottom of the deck and draws the card.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say your opponent played Generosity (it allows an opponent to play an extra card on their next turn) on the previous turn and you play Recklessness and Betrayal, giving Recklessness to an opponent. After scoring, you would choose which \"after scoring\" effect you want to happen first. If Betrayal happens first, you will get the Relentless card before it goes to the bottom of the deck then draw the card. If you choose to have the Recklessness \"after scoring\" effect happen first, the player who has Recklessness would put it on the bottom of the deck and they would draw the card.",
+      "If a card suppressing other cards moves to a different player, the suppressing stops. It does not turn back on if it returns to the original player."
+    ],
+    "images": [
+      {
+        "name": "Recklessness",
+        "variant": "standard",
+        "gallery_position": 100,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_436cf6c9e4.webp",
+        "path": "assets/cards/recklessness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "regret",
+    "name": "Regret",
+    "color": "blue",
+    "rarity": "rare",
+    "printed_dice": "[4]",
+    "printed_values": [
+      4
+    ],
+    "normalized_dice": "[4]",
+    "rules_text": "To play this card — Put two of your moods into your hand. (If you can't do that, you can't play this card.) After playing this mood — Put an opponent's mood into your hand.",
+    "ability_types": [
+      "To play this card",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "If you have less than two moods in play, you can't play this card.",
+      "You may not choose yourself to be affected as you are not an opponent. In a team game (see Other Ways to Play ), you can't return a teammate's card to your hand as they are not an opponent."
+    ],
+    "images": [
+      {
+        "name": "Regret",
+        "variant": "standard",
+        "gallery_position": 50,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d23a36570.webp",
+        "path": "assets/cards/regret.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "rejection",
+    "name": "Rejection",
+    "color": "black",
+    "rarity": "rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may choose two other moods. If the two chosen moods share a color or have the same value, put them into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "The moods do not have to be the same player's. For example, you may choose one of your moods and another player's mood.",
+      "\"Value\" means the current score of the card. This may not be the number on the die in the top right corner. (Black dice inform you that the score can change.)"
+    ],
+    "images": [
+      {
+        "name": "Rejection",
+        "variant": "standard",
+        "gallery_position": 73,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_334f16a788.webp",
+        "path": "assets/cards/rejection.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "repentance",
+    "name": "Repentance",
+    "color": "white",
+    "rarity": "uncommon",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — You may choose a number. If you do, suppress all other moods with the chosen value. They remain suppressed until the end of this round. (While suppressed, those moods have a value of [0]. Turn them sideways to keep track.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You do not have to choose a number.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If this mood moves to another player, the suppressed card(s) remains suppressed until the end of the round.",
+      "Repentance's suppress effect continues until the end of the round. After scoring, the cards are no longer suppressed.",
+      "Because values are only whole numbers, you may only choose a whole number. You can choose a number that doesn't have a mood in play with that value.",
+      "Repentance affects all moods in play with that value, including your cards."
+    ],
+    "images": [
+      {
+        "name": "Repentance",
+        "variant": "standard",
+        "gallery_position": 23,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a1a9edc565.webp",
+        "path": "assets/cards/repentance.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "sadness",
+    "name": "Sadness",
+    "color": "black",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — This mood's value increases by [2] for each card in the discard pile.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "It counts all cards in the discard pile regardless of who had them in play.",
+      "If this card is suppressed, it has a value of [0] regardless of how many cards are in the discard pile."
+    ],
+    "images": [
+      {
+        "name": "Sadness",
+        "variant": "standard",
+        "gallery_position": 74,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0cf6ff4201.webp",
+        "path": "assets/cards/sadness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "scorn",
+    "name": "Scorn",
+    "color": "white",
+    "rarity": "mythic rare",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Suppress any mood. It remains suppressed until the end of this round. (While suppressed, that mood has a value of [0]. Turn it sideways to keep track.) While in play — Each time you play another mood, you may suppress a mood that shares a color with the mood you played. It remains suppressed until the end of this round.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You do not have to suppress a mood.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "A suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If this mood moves to another player, the suppressed card(s) remains suppressed until the end of the round.",
+      "Suppressing a card is optional.",
+      "Scorn's suppress effect continues until the end of the round. After scoring, the card is no longer suppressed.",
+      "If Imagination (\"All moods are the chosen color\") is in play, the moods won't trigger until they are in play, so they are the color chosen by Imagination. Since Imagination has changed all moods to that color, you will be able to suppress any mood in play."
+    ],
+    "images": [
+      {
+        "name": "Scorn",
+        "variant": "standard",
+        "gallery_position": 24,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a9daebaf83.webp",
+        "path": "assets/cards/scorn.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "self-loathing",
+    "name": "Self-Loathing",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[6]",
+    "printed_values": [
+      6
+    ],
+    "normalized_dice": "[6]",
+    "rules_text": "To play this card — Put one or more of your moods into the discard pile. (If you can't do that, you can't play this card. Moods are cards in play.)",
+    "ability_types": [
+      "To play this card"
+    ],
+    "rulings": [
+      "You can put any number of your moods into the discard pile, but you have to put at least one into the discard pile to play Self-Loathing.",
+      "You can't play Self-Loathing if you have no moods in play."
+    ],
+    "images": [
+      {
+        "name": "Self-Loathing",
+        "variant": "standard",
+        "gallery_position": 75,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0236a11a6e.webp",
+        "path": "assets/cards/self-loathing.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "serenity",
+    "name": "Serenity",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if you have an even number of moods (including this one) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Serenity only counts the number of moods you have in play.",
+      "Serenity counts itself."
+    ],
+    "images": [
+      {
+        "name": "Serenity",
+        "variant": "standard",
+        "gallery_position": 129,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_26d579f073.webp",
+        "path": "assets/cards/serenity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "shame",
+    "name": "Shame",
+    "color": "white",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may discard a card from your hand. If you do, suppress all other moods that share a color with the discarded card. Those moods remain suppressed for as long as you have this mood. (While suppressed, those moods have a value of [0]. Turn them sideways to keep track.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "A card that is suppressed has a value of [0] for the purposes of scoring. This includes cards that start at [0] and gain value due to effects.",
+      "The suppressed mood is still in play and is counted for any effects that care. For example, your opponent suppresses your Sadness (worth [2] extra for every card in the discard pile). Sadness now has a value of [0], but it is still a black card in play that can help make your Excitement worth [6].",
+      "If the mood is suppressed for \"as long as you have this mood,\" the mood stays suppressed as long as that mood remains in play on your side. If that mood leaves play or goes to another player, the suppressed mood is no longer suppressed. If the suppressing mood leaves play or goes to another player, the card it is affecting will revert to the value it would naturally have based on the state of the game. If a choice had previously been made for the mood (from when you played it) that previous choice returns.",
+      "If this mood moves to another player, the suppressed card(s) stop being suppressed.",
+      "Discard is optional. If you don't discard a card, Shame has no effect and simply has a value of [3].",
+      "Only the moods that are the color of the discarded card at the time of this mood's effects become suppressed. If a mood later changes to that color, it doesn't become suppressed. If a new mood enters play of the discarded card's color, it doesn't become suppressed.",
+      "If a mood suppressed by Shame changes color, it stays suppressed. It only matters if it was that color at the time it was suppressed.",
+      "Shame affects your moods of the discarded card's color.",
+      "If Shame leaves play, all moods suppressed by it stop being suppressed.",
+      "If Imagination (\"All moods are the chosen color\") is in play, your cards in hand are the color they actually are and are not the color all moods have been changed to by Imagination. Let's say Imagination is set to white. If you want to suppress all the cards in play, you will need to discard a card that is actually white."
+    ],
+    "images": [
+      {
+        "name": "Shame",
+        "variant": "standard",
+        "gallery_position": 25,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_18a5fa19a1.webp",
+        "path": "assets/cards/shame.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "shock",
+    "name": "Shock",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[2]",
+    "printed_values": [
+      2
+    ],
+    "normalized_dice": "[2]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, put one of their moods with a value of [3] or less into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you.",
+      "The card has to currently have a value of [3] or less rather than the potential to have a score of [3] or less.",
+      "You can choose to put any suppressed card in the discard pile with Shock as suppressed cards have a value of [0]."
+    ],
+    "images": [
+      {
+        "name": "Shock",
+        "variant": "standard",
+        "gallery_position": 101,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa95cdf5a9.webp",
+        "path": "assets/cards/shock.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "sloth",
+    "name": "Sloth",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "While in play — This mood's value increases by [1] for each card in your hand.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Sloth's value is [3] plus the number of cards in your hand. On the first turn, assuming you only play Sloth, it will have a value of [6][1] ([3] plus [4] for the four cards in your hand).",
+      "In a team game (see Other Ways to Play ), Sloth will only look at your hand and not your teammate's.",
+      "If this card is suppressed, it has a value of [0] regardless of how many cards are in your hand."
+    ],
+    "images": [
+      {
+        "name": "Sloth",
+        "variant": "standard",
+        "gallery_position": 130,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_355c27037e.webp",
+        "path": "assets/cards/sloth.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "sneakiness",
+    "name": "Sneakiness",
+    "color": "blue",
+    "rarity": "mythic rare",
+    "printed_dice": "[5]",
+    "printed_values": [
+      5
+    ],
+    "normalized_dice": "[5]",
+    "rules_text": "After playing this mood — Choose an opponent. This round, after scoring, swap your score with that player before determining who wins the round.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may not choose yourself as you are not an opponent. In a team game (see Other Ways to Play ), you can't choose a teammate.",
+      "This change only happens for this round. The scores go back for all future rounds.",
+      "There are six cards that have an \"after scoring\" effect (Bashfulness, Betrayal, Gluttony, Insecurity, Recklessness, and Sneakiness). Because all of them have an \"After playing this mood\" effect, all of them only happen the turn you play the card, so with Awe, none of the \"after scoring\" effects will happen.",
+      "Sneakiness is the one \"after scoring\" effect that can change the outcome of the round. Until it happens, you assume the player that was winning is still winning. This matters specifically for Bashfulness, which goes to the bottom of the deck only if the player who played it this turn is winning.",
+      "Players should not draw cards for losing until after all the \"after scoring\" effects have happened as Sneakiness can change who wins.",
+      "If there are two or more \"after scoring\" effects, they happen in the order they were played this turn. If one player played them both, they get to choose the order in which the effects happen. For example, let's say your opponent played Generosity (it allows an opponent to play an extra card on their next turn) on the previous turn and you play Bashfulness and Sneakiness this turn. Assume that you are losing the round when scoring happens. If you do the \"after scoring\" effect of Bashfulness first, it will stay in play as you are not winning. If you do the Sneakiness \"after scoring\" effect first, you can win the turn, then Bashfulness would go to the bottom of the deck and you would draw a card. The order you choose will determine what happens."
+    ],
+    "images": [
+      {
+        "name": "Sneakiness",
+        "variant": "standard",
+        "gallery_position": 51,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c7ddf50edd.webp",
+        "path": "assets/cards/sneakiness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "spite",
+    "name": "Spite",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — Choose up to two players. For each chosen player, put one of their moods with an even value into the discard pile. ([0] is even.)",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose zero, one, or two players for this effect.",
+      "One of those players may be you."
+    ],
+    "images": [
+      {
+        "name": "Spite",
+        "variant": "standard",
+        "gallery_position": 76,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b795c10ecc.webp",
+        "path": "assets/cards/spite.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "stubbornness",
+    "name": "Stubbornness",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "While in play — At the start of each of your turns, if another player has more moods than you, you may play an additional mood this turn. (Moods are cards in play.)",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Stubbornness checks to see if your opponent has more cards than you at the start of your turn. Note that this is not the start of the round, unless you go first, so if you go second and your opponent played a card and thus has more cards than you, you get to play an additional card with Stubbornness.",
+      "Playing the additional card is optional.",
+      "In a team game (see Other Ways to Play ), if your teammate has more cards than you, you get to play an additional card.",
+      "As long as another player had more cards than you at the start of your turn, you get to play an additional card, even if you have more cards than any other player when it comes time to play the extra card.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Stubbornness and play Eagerness (which allows you to play an additional card of a color you have in play). You may first play the additional card for Stubbornness before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Stubbornness.",
+      "Stubbornness grants you the ability to play the extra card at the beginning of the turn, so if it leaves play later in the turn, you still get to play your extra card."
+    ],
+    "images": [
+      {
+        "name": "Stubbornness",
+        "variant": "standard",
+        "gallery_position": 102,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2efdc8008.webp",
+        "path": "assets/cards/stubbornness.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "superiority",
+    "name": "Superiority",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[3]/[6][1]",
+    "printed_values": [
+      3,
+      7
+    ],
+    "normalized_dice": "[3]/[6][1]",
+    "rules_text": "While in play — This mood's value is [6][1] if you have more moods than each other player. (Moods are cards in play.)",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "If you are tied for the most cards in play with another player, this card is worth [3]. You must have more cards in play to be worth [6][1]."
+    ],
+    "images": [
+      {
+        "name": "Superiority",
+        "variant": "standard",
+        "gallery_position": 77,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9e3954cd2f.webp",
+        "path": "assets/cards/superiority.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "suspicion",
+    "name": "Suspicion",
+    "color": "black",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — Choose any number of players. Each chosen player discards a card from their hand.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "You may choose yourself.",
+      "You may choose zero players.",
+      "Discarded cards are revealed to all players, but only after each player chooses a card to discard.",
+      "If multiple people are discarding cards, they are all revealed at the same time. No one gets information about what other players are discarding before they choose what to discard."
+    ],
+    "images": [
+      {
+        "name": "Suspicion",
+        "variant": "standard",
+        "gallery_position": 78,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a927be2da9.webp",
+        "path": "assets/cards/suspicion.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "thrill",
+    "name": "Thrill",
+    "color": "red",
+    "rarity": "mythic rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may put any number of your other moods into your hand. If you do, you may play that many additional moods this turn.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "Thrill can't affect itself.",
+      "If you create a second Thrill (say you copy it with Creativity), you can pick up the first Thrill. Yes, this is the one infinite combo in the game (that I've discovered at the time of writing this document).",
+      "You must put all the cards you are going to put into your hand before playing any cards. Once you start playing cards, you are no longer allowed to return other cards to your hand with Thrill.",
+      "Replaying the cards makes their \"After playing this mood\" effects happen again.",
+      "You are not required to play the cards you returned to your hand. You may play other cards instead if you want.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Thrill and play Eagerness (which allows you to play an additional card of a color you have in play). You may first play the additional card for Thrill before you play the additional card for Eagerness, which would allow you to play an additional card in the color of the card you played for Thrill."
+    ],
+    "images": [
+      {
+        "name": "Thrill",
+        "variant": "standard",
+        "gallery_position": 103,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_595de70539.webp",
+        "path": "assets/cards/thrill.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "tranquility",
+    "name": "Tranquility",
+    "color": "green",
+    "rarity": "uncommon",
+    "printed_dice": "[3]/[6]",
+    "printed_values": [
+      3,
+      6
+    ],
+    "normalized_dice": "[3]/[6]",
+    "rules_text": "While in play — This mood's value is [6] if you have an odd number of moods (including this one) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Tranquility only counts the number of moods you have in play.",
+      "Tranquility counts itself."
+    ],
+    "images": [
+      {
+        "name": "Tranquility",
+        "variant": "standard",
+        "gallery_position": 131,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_85da101a78.webp",
+        "path": "assets/cards/tranquility.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "triumph",
+    "name": "Triumph",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]/[5]",
+    "printed_values": [
+      3,
+      5
+    ],
+    "normalized_dice": "[3]/[5]",
+    "rules_text": "While in play — This mood's value is [5] if you went first this round.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "In a game with more than two players, \"first\" means that you played your cards before anyone else.",
+      "The value of the card is set at the beginning of the round. It doesn't change once the first person has taken their turn.",
+      "In a team game (see Other Ways to Play ), this card is not worth [5] if your teammate went first."
+    ],
+    "images": [
+      {
+        "name": "Triumph",
+        "variant": "standard",
+        "gallery_position": 104,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e6fc27df8.webp",
+        "path": "assets/cards/triumph.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "validation",
+    "name": "Validation",
+    "color": "white",
+    "rarity": "mythic rare",
+    "printed_dice": "[1]",
+    "printed_values": [
+      1
+    ],
+    "normalized_dice": "[1]",
+    "rules_text": "After playing this mood — You may play an additional mood this turn. While in play — Each time you play another mood with a [0] or [1] in its top right corner, you may play an additional mood this turn.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You do not have to play an additional card. You will still get the \"While in play\" effect.",
+      "You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be played in any order. For example, let's say you have Hurt Feelings and play Validation. You may first play the additional card for Hurt Feelings before you play the additional card for Validation. You do want to make it clear which additional card is being played for each effect.",
+      "There's no way to change the dice on the cards in your hand, so Validation will always care about the dice printed in the top right corner on the card.",
+      "If you have two or more Validations in play (say one is a Creativity), you will get to play that many additional cards for each mood with a [0] or [1] you play."
+    ],
+    "images": [
+      {
+        "name": "Validation",
+        "variant": "standard",
+        "gallery_position": 26,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd16eaf38e.webp",
+        "path": "assets/cards/validation.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "vanity",
+    "name": "Vanity",
+    "color": "black",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "While in play — This mood's value increases by [1] for each of your moods (including itself) . If there are no cards in your hand, this mood's value instead increases by [3] for each of your moods (including itself) .",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "You are required to draw cards.",
+      "If this card is suppressed, it has a value of [0] regardless of how many moods you have."
+    ],
+    "images": [
+      {
+        "name": "Vanity",
+        "variant": "standard",
+        "gallery_position": 79,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e75bca82b9.webp",
+        "path": "assets/cards/vanity.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "vulnerability",
+    "name": "Vulnerability",
+    "color": "green",
+    "rarity": "rare",
+    "printed_dice": "[1]/[6][1]",
+    "printed_values": [
+      1,
+      7
+    ],
+    "normalized_dice": "[1]/[6][1]",
+    "rules_text": "While in play — This mood's value is [6][1] if a card was put into the discard pile this round.",
+    "ability_types": [
+      "While in play"
+    ],
+    "rulings": [
+      "Vulnerability does not care where the card in the discard pile came from. It could have been put there from any player's hand or in play (or the deck, but no cards currently do that).",
+      "Vulnerability's score changes each turn and is based on whether a card was put into the discard pile that turn. It's not based on what happens on its first turn in play (other than determining its value for that first turn). This means Vulnerability will always start each round with a value of [1] and will change to [6][1] if a card gets put into the discard pile from anywhere that round."
+    ],
+    "images": [
+      {
+        "name": "Vulnerability",
+        "variant": "standard",
+        "gallery_position": 132,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2dbb36bbfd.webp",
+        "path": "assets/cards/vulnerability.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "wonder",
+    "name": "Wonder",
+    "color": "green",
+    "rarity": "mythic rare",
+    "printed_dice": "[0]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — Choose a color. While in play — This mood's value increases by [2] for each mood of the chosen color and each card in the discard pile of the chosen color.",
+    "ability_types": [
+      "While in play",
+      "After playing this mood"
+    ],
+    "rulings": [
+      "The color is chosen when you play Wonder and does not change (unless you return it to your hand and play it again). You will need to remember the color.",
+      "Wonder cares about all moods in play, not just yours.",
+      "Imagination (which changes the color of all moods) does not affect the color of cards in the discard pile.",
+      "If this card is suppressed, it has a value of [0] regardless of how many moods or cards in the discard pile are of the chosen color."
+    ],
+    "images": [
+      {
+        "name": "Wonder",
+        "variant": "standard",
+        "gallery_position": 133,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e844a24ace.webp",
+        "path": "assets/cards/wonder.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "worry",
+    "name": "Worry",
+    "color": "blue",
+    "rarity": "uncommon",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may put one of your white or black moods into your hand. If you do, put up to two moods other than this one each with a value of [3] or less into their players' hands.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional. You may just play the card for its score and not do its effect.",
+      "You may choose to only affect one mood.",
+      "Both moods can be from the same person.",
+      "You may choose a mood or moods that are yours.",
+      "When you return a white or black card to your hand, \"While in play\" effects will happen before you return a card with a value of [3] or less. For example, you might return Charity to your hand. If Charity was one of only two white cards, that would change the value of Disgust from [3] to [6]. Disgust now can't be returned to its player's hand by Worry."
+    ],
+    "images": [
+      {
+        "name": "Worry",
+        "variant": "standard",
+        "gallery_position": 52,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d0c87e3659.webp",
+        "path": "assets/cards/worry.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "wrath",
+    "name": "Wrath",
+    "color": "red",
+    "rarity": "rare",
+    "printed_dice": "[O]",
+    "printed_values": [
+      0
+    ],
+    "normalized_dice": "[0]",
+    "rules_text": "After playing this mood — You may put all other moods into the discard pile.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional.",
+      "If you choose to have the \"After playing this mood\" effect happen, it puts all other cards in the discard pile. You do not get to choose which cards.",
+      "Wrath does not put itself into the discard pile.",
+      "If you play a second Wrath (say you copy it with Creativity), the new Wrath will destroy the first Wrath."
+    ],
+    "images": [
+      {
+        "name": "Wrath",
+        "variant": "standard",
+        "gallery_position": 105,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3d371a224c.webp",
+        "path": "assets/cards/wrath.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  },
+  {
+    "id": "zeal",
+    "name": "Zeal",
+    "color": "red",
+    "rarity": "common",
+    "printed_dice": "[3]",
+    "printed_values": [
+      3
+    ],
+    "normalized_dice": "[3]",
+    "rules_text": "After playing this mood — You may put a card from your hand on the bottom of the deck. If you do, draw a card.",
+    "ability_types": [
+      "After playing this mood"
+    ],
+    "rulings": [
+      "\"May\" means this effect is optional.",
+      "If the deck is empty, the player will draw the card they just put on the bottom."
+    ],
+    "images": [
+      {
+        "name": "Zeal",
+        "variant": "standard",
+        "gallery_position": 106,
+        "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d29fbaa74.webp",
+        "path": "assets/cards/zeal.webp"
+      }
+    ],
+    "source": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes"
+  }
+]

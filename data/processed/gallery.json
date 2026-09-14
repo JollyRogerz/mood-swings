@@ -1,0 +1,947 @@
+[
+  {
+    "name": "Altruism",
+    "variant": "standard",
+    "gallery_position": 1,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1bc40321f2.webp",
+    "path": "assets/cards/altruism.webp"
+  },
+  {
+    "name": "Benevolence",
+    "variant": "standard",
+    "gallery_position": 2,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_39aeab52de.webp",
+    "path": "assets/cards/benevolence.webp"
+  },
+  {
+    "name": "Charity",
+    "variant": "standard",
+    "gallery_position": 3,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_056ea8dd92.webp",
+    "path": "assets/cards/charity.webp"
+  },
+  {
+    "name": "Chivalry",
+    "variant": "standard",
+    "gallery_position": 4,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_17ad03c3fd.webp",
+    "path": "assets/cards/chivalry.webp"
+  },
+  {
+    "name": "Complacency",
+    "variant": "standard",
+    "gallery_position": 5,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_28fdace6de.webp",
+    "path": "assets/cards/complacency.webp"
+  },
+  {
+    "name": "Conviction",
+    "variant": "standard",
+    "gallery_position": 6,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e2d644bb36.webp",
+    "path": "assets/cards/conviction.webp"
+  },
+  {
+    "name": "Courage",
+    "variant": "standard",
+    "gallery_position": 7,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d8ff36909.webp",
+    "path": "assets/cards/courage.webp"
+  },
+  {
+    "name": "Dignity",
+    "variant": "standard",
+    "gallery_position": 8,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c71c6fe5a6.webp",
+    "path": "assets/cards/dignity.webp"
+  },
+  {
+    "name": "Discipline",
+    "variant": "standard",
+    "gallery_position": 9,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_599c19a67e.webp",
+    "path": "assets/cards/discipline.webp"
+  },
+  {
+    "name": "Disillusionment",
+    "variant": "standard",
+    "gallery_position": 10,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88d0a39121.webp",
+    "path": "assets/cards/disillusionment.webp"
+  },
+  {
+    "name": "Encouragement",
+    "variant": "standard",
+    "gallery_position": 11,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c2c92dce.webp",
+    "path": "assets/cards/encouragement.webp"
+  },
+  {
+    "name": "Faith",
+    "variant": "standard",
+    "gallery_position": 12,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_51ab7c95dd.webp",
+    "path": "assets/cards/faith.webp"
+  },
+  {
+    "name": "Friendliness",
+    "variant": "standard",
+    "gallery_position": 13,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8ef71c708a.webp",
+    "path": "assets/cards/friendliness.webp"
+  },
+  {
+    "name": "Guilt",
+    "variant": "standard",
+    "gallery_position": 14,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cfb7aab4ca.webp",
+    "path": "assets/cards/guilt.webp"
+  },
+  {
+    "name": "Honor",
+    "variant": "standard",
+    "gallery_position": 15,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fcb2539b1b.webp",
+    "path": "assets/cards/honor.webp"
+  },
+  {
+    "name": "Idealism",
+    "variant": "standard",
+    "gallery_position": 16,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_65defcbada.webp",
+    "path": "assets/cards/idealism.webp"
+  },
+  {
+    "name": "Kindness",
+    "variant": "standard",
+    "gallery_position": 17,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_900364d212.webp",
+    "path": "assets/cards/kindness.webp"
+  },
+  {
+    "name": "Loyalty",
+    "variant": "standard",
+    "gallery_position": 18,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8c6dcb6580.webp",
+    "path": "assets/cards/loyalty.webp"
+  },
+  {
+    "name": "Meekness",
+    "variant": "standard",
+    "gallery_position": 19,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_53a2b5358c.webp",
+    "path": "assets/cards/meekness.webp"
+  },
+  {
+    "name": "Pacifism",
+    "variant": "standard",
+    "gallery_position": 20,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e1d60e419b.webp",
+    "path": "assets/cards/pacifism.webp"
+  },
+  {
+    "name": "Patience",
+    "variant": "standard",
+    "gallery_position": 21,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d106975fda.webp",
+    "path": "assets/cards/patience.webp"
+  },
+  {
+    "name": "Pride",
+    "variant": "standard",
+    "gallery_position": 22,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0a4b823b72.webp",
+    "path": "assets/cards/pride.webp"
+  },
+  {
+    "name": "Repentance",
+    "variant": "standard",
+    "gallery_position": 23,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a1a9edc565.webp",
+    "path": "assets/cards/repentance.webp"
+  },
+  {
+    "name": "Scorn",
+    "variant": "standard",
+    "gallery_position": 24,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a9daebaf83.webp",
+    "path": "assets/cards/scorn.webp"
+  },
+  {
+    "name": "Shame",
+    "variant": "standard",
+    "gallery_position": 25,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_18a5fa19a1.webp",
+    "path": "assets/cards/shame.webp"
+  },
+  {
+    "name": "Validation",
+    "variant": "standard",
+    "gallery_position": 26,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd16eaf38e.webp",
+    "path": "assets/cards/validation.webp"
+  },
+  {
+    "name": "Ambivalence",
+    "variant": "standard",
+    "gallery_position": 27,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9f66939e52.webp",
+    "path": "assets/cards/ambivalence.webp"
+  },
+  {
+    "name": "Anxiety",
+    "variant": "standard",
+    "gallery_position": 28,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_00bf0769bc.webp",
+    "path": "assets/cards/anxiety.webp"
+  },
+  {
+    "name": "Avoidance",
+    "variant": "standard",
+    "gallery_position": 29,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6dd47f31dd.webp",
+    "path": "assets/cards/avoidance.webp"
+  },
+  {
+    "name": "Bashfulness",
+    "variant": "standard",
+    "gallery_position": 30,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2a40ab595f.webp",
+    "path": "assets/cards/bashfulness.webp"
+  },
+  {
+    "name": "Confusion",
+    "variant": "standard",
+    "gallery_position": 31,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e5a6b38f7.webp",
+    "path": "assets/cards/confusion.webp"
+  },
+  {
+    "name": "Creativity",
+    "variant": "standard",
+    "gallery_position": 32,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_96bb086d3d.webp",
+    "path": "assets/cards/creativity.webp"
+  },
+  {
+    "name": "Curiosity",
+    "variant": "standard",
+    "gallery_position": 33,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4189ffd6b0.webp",
+    "path": "assets/cards/curiosity.webp"
+  },
+  {
+    "name": "Denial",
+    "variant": "standard",
+    "gallery_position": 34,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a9c5980f4.webp",
+    "path": "assets/cards/denial.webp"
+  },
+  {
+    "name": "Disorientation",
+    "variant": "standard",
+    "gallery_position": 35,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5accb283ed.webp",
+    "path": "assets/cards/disorientation.webp"
+  },
+  {
+    "name": "Doubt",
+    "variant": "standard",
+    "gallery_position": 36,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd66017000.webp",
+    "path": "assets/cards/doubt.webp"
+  },
+  {
+    "name": "Duplicity",
+    "variant": "standard",
+    "gallery_position": 37,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1364393674.webp",
+    "path": "assets/cards/duplicity.webp"
+  },
+  {
+    "name": "Fear",
+    "variant": "standard",
+    "gallery_position": 38,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_906b1bb1d6.webp",
+    "path": "assets/cards/fear.webp"
+  },
+  {
+    "name": "Fickleness",
+    "variant": "standard",
+    "gallery_position": 39,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_7b2399c941.webp",
+    "path": "assets/cards/fickleness.webp"
+  },
+  {
+    "name": "Guile",
+    "variant": "standard",
+    "gallery_position": 40,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4c31ac573b.webp",
+    "path": "assets/cards/guile.webp"
+  },
+  {
+    "name": "Hesitation",
+    "variant": "standard",
+    "gallery_position": 41,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_95ca483374.webp",
+    "path": "assets/cards/hesitation.webp"
+  },
+  {
+    "name": "Imagination",
+    "variant": "standard",
+    "gallery_position": 42,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3af00d3391.webp",
+    "path": "assets/cards/imagination.webp"
+  },
+  {
+    "name": "Indecisiveness",
+    "variant": "standard",
+    "gallery_position": 43,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_50d6760556.webp",
+    "path": "assets/cards/indecisiveness.webp"
+  },
+  {
+    "name": "Indifference",
+    "variant": "standard",
+    "gallery_position": 44,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0950b77878.webp",
+    "path": "assets/cards/indifference.webp"
+  },
+  {
+    "name": "Insecurity",
+    "variant": "standard",
+    "gallery_position": 45,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d74b605c8b.webp",
+    "path": "assets/cards/insecurity.webp"
+  },
+  {
+    "name": "Neurosis",
+    "variant": "standard",
+    "gallery_position": 46,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_836f2df163.webp",
+    "path": "assets/cards/neurosis.webp"
+  },
+  {
+    "name": "Obsession",
+    "variant": "standard",
+    "gallery_position": 47,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f9134e6286.webp",
+    "path": "assets/cards/obsession.webp"
+  },
+  {
+    "name": "Panic",
+    "variant": "standard",
+    "gallery_position": 48,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88c69dd9d3.webp",
+    "path": "assets/cards/panic.webp"
+  },
+  {
+    "name": "Rationalization",
+    "variant": "standard",
+    "gallery_position": 49,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d90751636e.webp",
+    "path": "assets/cards/rationalization.webp"
+  },
+  {
+    "name": "Regret",
+    "variant": "standard",
+    "gallery_position": 50,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d23a36570.webp",
+    "path": "assets/cards/regret.webp"
+  },
+  {
+    "name": "Sneakiness",
+    "variant": "standard",
+    "gallery_position": 51,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c7ddf50edd.webp",
+    "path": "assets/cards/sneakiness.webp"
+  },
+  {
+    "name": "Worry",
+    "variant": "standard",
+    "gallery_position": 52,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d0c87e3659.webp",
+    "path": "assets/cards/worry.webp"
+  },
+  {
+    "name": "Ambition",
+    "variant": "standard",
+    "gallery_position": 53,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5f8ab4747e.webp",
+    "path": "assets/cards/ambition.webp"
+  },
+  {
+    "name": "Angst",
+    "variant": "standard",
+    "gallery_position": 54,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f8d9de643e.webp",
+    "path": "assets/cards/angst.webp"
+  },
+  {
+    "name": "Apathy",
+    "variant": "standard",
+    "gallery_position": 55,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_214a4fbfb6.webp",
+    "path": "assets/cards/apathy.webp"
+  },
+  {
+    "name": "Betrayal",
+    "variant": "standard",
+    "gallery_position": 56,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2cf642f7d2.webp",
+    "path": "assets/cards/betrayal.webp"
+  },
+  {
+    "name": "Bitterness",
+    "variant": "standard",
+    "gallery_position": 57,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fedf3406e2.webp",
+    "path": "assets/cards/bitterness.webp"
+  },
+  {
+    "name": "Condescension",
+    "variant": "standard",
+    "gallery_position": 58,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0c52b2ac0d.webp",
+    "path": "assets/cards/condescension.webp"
+  },
+  {
+    "name": "Contempt",
+    "variant": "standard",
+    "gallery_position": 59,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6465486329.webp",
+    "path": "assets/cards/contempt.webp"
+  },
+  {
+    "name": "Corruption",
+    "variant": "standard",
+    "gallery_position": 60,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_493c0b60a1.webp",
+    "path": "assets/cards/corruption.webp"
+  },
+  {
+    "name": "Cruelty",
+    "variant": "standard",
+    "gallery_position": 61,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_72e6fb2349.webp",
+    "path": "assets/cards/cruelty.webp"
+  },
+  {
+    "name": "Cynicism",
+    "variant": "standard",
+    "gallery_position": 62,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3e5cc80185.webp",
+    "path": "assets/cards/cynicism.webp"
+  },
+  {
+    "name": "Disgust",
+    "variant": "standard",
+    "gallery_position": 63,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_449e96eaa5.webp",
+    "path": "assets/cards/disgust.webp"
+  },
+  {
+    "name": "Envy",
+    "variant": "standard",
+    "gallery_position": 64,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_41c30f829d.webp",
+    "path": "assets/cards/envy.webp"
+  },
+  {
+    "name": "Grief",
+    "variant": "standard",
+    "gallery_position": 65,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e4476b11a4.webp",
+    "path": "assets/cards/grief.webp"
+  },
+  {
+    "name": "Hate",
+    "variant": "standard",
+    "gallery_position": 66,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b423a5e0fc.webp",
+    "path": "assets/cards/hate.webp"
+  },
+  {
+    "name": "Intimidation",
+    "variant": "standard",
+    "gallery_position": 67,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_950df3062a.webp",
+    "path": "assets/cards/intimidation.webp"
+  },
+  {
+    "name": "Malice",
+    "variant": "standard",
+    "gallery_position": 68,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_69ca7ade91.webp",
+    "path": "assets/cards/malice.webp"
+  },
+  {
+    "name": "Melancholy",
+    "variant": "standard",
+    "gallery_position": 69,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b69d84c162.webp",
+    "path": "assets/cards/melancholy.webp"
+  },
+  {
+    "name": "Misery",
+    "variant": "standard",
+    "gallery_position": 70,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9861468165.webp",
+    "path": "assets/cards/misery.webp"
+  },
+  {
+    "name": "Paranoia",
+    "variant": "standard",
+    "gallery_position": 71,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_59818f9df2.webp",
+    "path": "assets/cards/paranoia.webp"
+  },
+  {
+    "name": "Pity",
+    "variant": "standard",
+    "gallery_position": 72,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44a3456b6c.webp",
+    "path": "assets/cards/pity.webp"
+  },
+  {
+    "name": "Rejection",
+    "variant": "standard",
+    "gallery_position": 73,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_334f16a788.webp",
+    "path": "assets/cards/rejection.webp"
+  },
+  {
+    "name": "Sadness",
+    "variant": "standard",
+    "gallery_position": 74,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0cf6ff4201.webp",
+    "path": "assets/cards/sadness.webp"
+  },
+  {
+    "name": "Self-Loathing",
+    "variant": "standard",
+    "gallery_position": 75,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0236a11a6e.webp",
+    "path": "assets/cards/self-loathing.webp"
+  },
+  {
+    "name": "Spite",
+    "variant": "standard",
+    "gallery_position": 76,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b795c10ecc.webp",
+    "path": "assets/cards/spite.webp"
+  },
+  {
+    "name": "Superiority",
+    "variant": "standard",
+    "gallery_position": 77,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9e3954cd2f.webp",
+    "path": "assets/cards/superiority.webp"
+  },
+  {
+    "name": "Suspicion",
+    "variant": "standard",
+    "gallery_position": 78,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a927be2da9.webp",
+    "path": "assets/cards/suspicion.webp"
+  },
+  {
+    "name": "Vanity",
+    "variant": "standard",
+    "gallery_position": 79,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e75bca82b9.webp",
+    "path": "assets/cards/vanity.webp"
+  },
+  {
+    "name": "Anger",
+    "variant": "standard",
+    "gallery_position": 80,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2bc0509610.webp",
+    "path": "assets/cards/anger.webp"
+  },
+  {
+    "name": "Animosity",
+    "variant": "standard",
+    "gallery_position": 81,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_87967089d9.webp",
+    "path": "assets/cards/animosity.webp"
+  },
+  {
+    "name": "Arrogance",
+    "variant": "standard",
+    "gallery_position": 82,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2c0da1316e.webp",
+    "path": "assets/cards/arrogance.webp"
+  },
+  {
+    "name": "Boredom",
+    "variant": "standard",
+    "gallery_position": 83,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c5a5f851.webp",
+    "path": "assets/cards/boredom.webp"
+  },
+  {
+    "name": "Bravado",
+    "variant": "standard",
+    "gallery_position": 84,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_10a2381e9e.webp",
+    "path": "assets/cards/bravado.webp"
+  },
+  {
+    "name": "Chaos",
+    "variant": "standard",
+    "gallery_position": 85,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_33c8513101.webp",
+    "path": "assets/cards/chaos.webp"
+  },
+  {
+    "name": "Compulsion",
+    "variant": "standard",
+    "gallery_position": 86,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f709a579c6.webp",
+    "path": "assets/cards/compulsion.webp"
+  },
+  {
+    "name": "Embarrassment",
+    "variant": "standard",
+    "gallery_position": 87,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f96a43ef62.webp",
+    "path": "assets/cards/embarrassment.webp"
+  },
+  {
+    "name": "Excitement",
+    "variant": "standard",
+    "gallery_position": 88,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_091025d24d.webp",
+    "path": "assets/cards/excitement.webp"
+  },
+  {
+    "name": "Exhilaration",
+    "variant": "standard",
+    "gallery_position": 89,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_32e19d377b.webp",
+    "path": "assets/cards/exhilaration.webp"
+  },
+  {
+    "name": "Frustration",
+    "variant": "standard",
+    "gallery_position": 90,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_78e5406896.webp",
+    "path": "assets/cards/frustration.webp"
+  },
+  {
+    "name": "Fury",
+    "variant": "standard",
+    "gallery_position": 91,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4001d05e4a.webp",
+    "path": "assets/cards/fury.webp"
+  },
+  {
+    "name": "Glee",
+    "variant": "standard",
+    "gallery_position": 92,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c8db74f963.webp",
+    "path": "assets/cards/glee.webp"
+  },
+  {
+    "name": "Gluttony",
+    "variant": "standard",
+    "gallery_position": 93,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4e9904fa65.webp",
+    "path": "assets/cards/gluttony.webp"
+  },
+  {
+    "name": "Hostility",
+    "variant": "standard",
+    "gallery_position": 94,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_98adc285ea.webp",
+    "path": "assets/cards/hostility.webp"
+  },
+  {
+    "name": "Infatuation",
+    "variant": "standard",
+    "gallery_position": 95,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2c4eb5919.webp",
+    "path": "assets/cards/infatuation.webp"
+  },
+  {
+    "name": "Instability",
+    "variant": "standard",
+    "gallery_position": 96,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_792f6c2f0a.webp",
+    "path": "assets/cards/instability.webp"
+  },
+  {
+    "name": "Passion",
+    "variant": "standard",
+    "gallery_position": 97,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cae948ae72.webp",
+    "path": "assets/cards/passion.webp"
+  },
+  {
+    "name": "Rage",
+    "variant": "standard",
+    "gallery_position": 98,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b4f2eea560.webp",
+    "path": "assets/cards/rage.webp"
+  },
+  {
+    "name": "Rebellion",
+    "variant": "standard",
+    "gallery_position": 99,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4bc31ec6ea.webp",
+    "path": "assets/cards/rebellion.webp"
+  },
+  {
+    "name": "Recklessness",
+    "variant": "standard",
+    "gallery_position": 100,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_436cf6c9e4.webp",
+    "path": "assets/cards/recklessness.webp"
+  },
+  {
+    "name": "Shock",
+    "variant": "standard",
+    "gallery_position": 101,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa95cdf5a9.webp",
+    "path": "assets/cards/shock.webp"
+  },
+  {
+    "name": "Stubbornness",
+    "variant": "standard",
+    "gallery_position": 102,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2efdc8008.webp",
+    "path": "assets/cards/stubbornness.webp"
+  },
+  {
+    "name": "Thrill",
+    "variant": "standard",
+    "gallery_position": 103,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_595de70539.webp",
+    "path": "assets/cards/thrill.webp"
+  },
+  {
+    "name": "Triumph",
+    "variant": "standard",
+    "gallery_position": 104,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e6fc27df8.webp",
+    "path": "assets/cards/triumph.webp"
+  },
+  {
+    "name": "Wrath",
+    "variant": "standard",
+    "gallery_position": 105,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3d371a224c.webp",
+    "path": "assets/cards/wrath.webp"
+  },
+  {
+    "name": "Zeal",
+    "variant": "standard",
+    "gallery_position": 106,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d29fbaa74.webp",
+    "path": "assets/cards/zeal.webp"
+  },
+  {
+    "name": "Awe",
+    "variant": "standard",
+    "gallery_position": 107,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6922ed810f.webp",
+    "path": "assets/cards/awe.webp"
+  },
+  {
+    "name": "Bliss",
+    "variant": "standard",
+    "gallery_position": 108,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f11ac0d4cd.webp",
+    "path": "assets/cards/bliss.webp"
+  },
+  {
+    "name": "Celebration",
+    "variant": "standard",
+    "gallery_position": 109,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a73f42f958.webp",
+    "path": "assets/cards/celebration.webp"
+  },
+  {
+    "name": "Cheer",
+    "variant": "standard",
+    "gallery_position": 110,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a84ef2f73e.webp",
+    "path": "assets/cards/cheer.webp"
+  },
+  {
+    "name": "Delight",
+    "variant": "standard",
+    "gallery_position": 111,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a3502598f.webp",
+    "path": "assets/cards/delight.webp"
+  },
+  {
+    "name": "Determination",
+    "variant": "standard",
+    "gallery_position": 112,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f6a797b668.webp",
+    "path": "assets/cards/determination.webp"
+  },
+  {
+    "name": "Disregard",
+    "variant": "standard",
+    "gallery_position": 113,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6147c110a1.webp",
+    "path": "assets/cards/disregard.webp"
+  },
+  {
+    "name": "Eagerness",
+    "variant": "standard",
+    "gallery_position": 114,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_638fd1b331.webp",
+    "path": "assets/cards/eagerness.webp"
+  },
+  {
+    "name": "Enjoyment",
+    "variant": "standard",
+    "gallery_position": 115,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3f91566414.webp",
+    "path": "assets/cards/enjoyment.webp"
+  },
+  {
+    "name": "Enthusiasm",
+    "variant": "standard",
+    "gallery_position": 116,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_37c8ff6ac3.webp",
+    "path": "assets/cards/enthusiasm.webp"
+  },
+  {
+    "name": "Euphoria",
+    "variant": "standard",
+    "gallery_position": 117,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_944642a216.webp",
+    "path": "assets/cards/euphoria.webp"
+  },
+  {
+    "name": "Fascination",
+    "variant": "standard",
+    "gallery_position": 118,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cf54facc33.webp",
+    "path": "assets/cards/fascination.webp"
+  },
+  {
+    "name": "Fondness",
+    "variant": "standard",
+    "gallery_position": 119,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d5d19db135.webp",
+    "path": "assets/cards/fondness.webp"
+  },
+  {
+    "name": "Generosity",
+    "variant": "standard",
+    "gallery_position": 120,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b5b6235248.webp",
+    "path": "assets/cards/generosity.webp"
+  },
+  {
+    "name": "Grace",
+    "variant": "standard",
+    "gallery_position": 121,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a4ac5b193b.webp",
+    "path": "assets/cards/grace.webp"
+  },
+  {
+    "name": "Happiness",
+    "variant": "standard",
+    "gallery_position": 122,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44522f15f3.webp",
+    "path": "assets/cards/happiness.webp"
+  },
+  {
+    "name": "Harmony",
+    "variant": "standard",
+    "gallery_position": 123,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1de68dc34c.webp",
+    "path": "assets/cards/harmony.webp"
+  },
+  {
+    "name": "Hope",
+    "variant": "standard",
+    "gallery_position": 124,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8569c6868b.webp",
+    "path": "assets/cards/hope.webp"
+  },
+  {
+    "name": "Joy",
+    "variant": "standard",
+    "gallery_position": 125,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_58ef667397.webp",
+    "path": "assets/cards/joy.webp"
+  },
+  {
+    "name": "Laziness",
+    "variant": "standard",
+    "gallery_position": 126,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_66b6f7a960.webp",
+    "path": "assets/cards/laziness.webp"
+  },
+  {
+    "name": "Love",
+    "variant": "standard",
+    "gallery_position": 127,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9bcb67999e.webp",
+    "path": "assets/cards/love.webp"
+  },
+  {
+    "name": "Nostalgia",
+    "variant": "standard",
+    "gallery_position": 128,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa2e8db989.webp",
+    "path": "assets/cards/nostalgia.webp"
+  },
+  {
+    "name": "Serenity",
+    "variant": "standard",
+    "gallery_position": 129,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_26d579f073.webp",
+    "path": "assets/cards/serenity.webp"
+  },
+  {
+    "name": "Sloth",
+    "variant": "standard",
+    "gallery_position": 130,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_355c27037e.webp",
+    "path": "assets/cards/sloth.webp"
+  },
+  {
+    "name": "Tranquility",
+    "variant": "standard",
+    "gallery_position": 131,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_85da101a78.webp",
+    "path": "assets/cards/tranquility.webp"
+  },
+  {
+    "name": "Vulnerability",
+    "variant": "standard",
+    "gallery_position": 132,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2dbb36bbfd.webp",
+    "path": "assets/cards/vulnerability.webp"
+  },
+  {
+    "name": "Wonder",
+    "variant": "standard",
+    "gallery_position": 133,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e844a24ace.webp",
+    "path": "assets/cards/wonder.webp"
+  },
+  {
+    "name": "Love",
+    "variant": "headliner",
+    "gallery_position": 134,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8674b312121.webp",
+    "path": "assets/cards/love-headliner.webp"
+  },
+  {
+    "name": "Hurt Feelings",
+    "variant": "standard",
+    "gallery_position": 135,
+    "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_SDbCBoXR0F.webp",
+    "path": "assets/cards/hurt-feelings.webp"
+  }
+]

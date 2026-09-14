@@ -1,0 +1,1286 @@
+{
+  "generated_at": "2026-09-13T21:06:35.888021+00:00",
+  "files": [
+    {
+      "url": "https://magic.wizards.com/en/news/feature/mood-swings-card-notes",
+      "path": "data/raw/card-notes.html",
+      "bytes": 572458,
+      "sha256": "52f1aeee590f860aa6085546ff7fdac60d62366ef9401cab7f413c7d1f214b92",
+      "file_timestamp_utc": "2026-09-13T21:00:41.950404+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/mood-swings-extended-rules",
+      "path": "data/raw/extended-rules.html",
+      "bytes": 225288,
+      "sha256": "afa07968597d516a2185e3a9a9f9b75d71f7a97f8da62c0c1eada3b450d7ff4f",
+      "file_timestamp_utc": "2026-09-13T21:00:42.259023+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/card-image-gallery/mood-swings",
+      "path": "data/raw/gallery.html",
+      "bytes": 222683,
+      "sha256": "3358597e03c102ca6e0cce289cd39d1b43c8802c2196afdfc215c5f2349ba943",
+      "file_timestamp_utc": "2026-09-13T21:00:42.863492+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/other-ways-to-play-mood-swings",
+      "path": "data/raw/other-ways.html",
+      "bytes": 188926,
+      "sha256": "8bef66f3e0764e4b8b1e84a96a5b35addd8dee37cedb4236bb0e4ddd7fff9bd3",
+      "file_timestamp_utc": "2026-09-13T21:00:43.465569+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/announcements/introducing-mood-swings",
+      "path": "data/raw/introduction.html",
+      "bytes": 169738,
+      "sha256": "93c699919dde094424337f88a99194096d1a8d87ef605876c8dfd491b8d592de",
+      "file_timestamp_utc": "2026-09-13T21:00:44.062353+00:00"
+    },
+    {
+      "url": "https://secretlair.wizards.com/eu/en/mood-swings",
+      "path": "data/raw/product.html",
+      "bytes": 343788,
+      "sha256": "278d739c658e2ff638a9a695450131cc5792c9168a9c8a7d8efad962f0390e63",
+      "file_timestamp_utc": "2026-09-13T21:05:55.958026+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/the-design-of-mood-swings-part-1",
+      "path": "data/raw/design-part-1.html",
+      "bytes": 210990,
+      "sha256": "9c7d0c8430d6e29c8585993b5ebf22ae2902539f3c2089ae963be4e86afe4a81",
+      "file_timestamp_utc": "2026-09-13T21:02:32.785682+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/the-design-of-mood-swings-part-2",
+      "path": "data/raw/design-part-2.html",
+      "bytes": 207434,
+      "sha256": "5d898d9b568246246187d8a22f9e6825d11fd647d26da73d1810798d4775b8eb",
+      "file_timestamp_utc": "2026-09-13T21:02:34.072916+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/crafting-the-visual-identity-of-mood-swings",
+      "path": "data/raw/visual-identity.html",
+      "bytes": 184703,
+      "sha256": "d1969daf9d2c94c034003e86563ecdf50d9c1869e61e0b1a95fd8bf115e529e4",
+      "file_timestamp_utc": "2026-09-13T21:02:35.639150+00:00"
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/the-history-of-mood-swings",
+      "path": "data/raw/history.html",
+      "bytes": 214572,
+      "sha256": "97f404f2bb5edecd7ee82b3be8e75150aa017900f2cde0c22f37bdee64eeda2b",
+      "file_timestamp_utc": "2026-09-13T21:02:37.004718+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1bc40321f2.webp",
+      "path": "assets/cards/altruism.webp",
+      "bytes": 76624,
+      "sha256": "d6c850deda245bbb88f77e81864ea5934d3ed68b085981930818adddb6d5a413",
+      "file_timestamp_utc": "2026-09-13T21:02:37.426426+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_39aeab52de.webp",
+      "path": "assets/cards/benevolence.webp",
+      "bytes": 55010,
+      "sha256": "89ebabcae6a5141158b5a6acbe0ee74ad1371d6fea727d7296fdf8fa3d852317",
+      "file_timestamp_utc": "2026-09-13T21:02:37.383216+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_056ea8dd92.webp",
+      "path": "assets/cards/charity.webp",
+      "bytes": 62120,
+      "sha256": "5e790eeb19903e99a74cadd945de1798915daa6bab80b260c9e285f330938bdc",
+      "file_timestamp_utc": "2026-09-13T21:02:37.378232+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_17ad03c3fd.webp",
+      "path": "assets/cards/chivalry.webp",
+      "bytes": 51016,
+      "sha256": "bf63bc3c382331ba5f8ed11c021866d97b2c3a683f9e96ea4161ac3099bd1f47",
+      "file_timestamp_utc": "2026-09-13T21:02:37.699508+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_28fdace6de.webp",
+      "path": "assets/cards/complacency.webp",
+      "bytes": 38050,
+      "sha256": "499fb5c7afe5e780bd9b0dbe1f43fe17604ccd6804a20fc1a424248144a4462a",
+      "file_timestamp_utc": "2026-09-13T21:02:38.039751+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e2d644bb36.webp",
+      "path": "assets/cards/conviction.webp",
+      "bytes": 53272,
+      "sha256": "e87e75eb905ce747ba1e136a9a13ea60374f698026470a6fc1f2a7ce4ad7f6ef",
+      "file_timestamp_utc": "2026-09-13T21:02:38.049424+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d8ff36909.webp",
+      "path": "assets/cards/courage.webp",
+      "bytes": 43416,
+      "sha256": "256ddf5da9e4063cb5f09c8891990c2154fdf9ddc793af85b7d0c80cf5ca560b",
+      "file_timestamp_utc": "2026-09-13T21:02:38.043257+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c71c6fe5a6.webp",
+      "path": "assets/cards/dignity.webp",
+      "bytes": 47322,
+      "sha256": "779597c8b356cc93b776111ef2e06c404a1ec9e48d22024abca74135af6aaf58",
+      "file_timestamp_utc": "2026-09-13T21:02:38.256770+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_599c19a67e.webp",
+      "path": "assets/cards/discipline.webp",
+      "bytes": 52564,
+      "sha256": "bfa7219d2416ab4cdb3b3dd32375256c5ae1c1e440246dd67733486a35463868",
+      "file_timestamp_utc": "2026-09-13T21:02:38.717811+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88d0a39121.webp",
+      "path": "assets/cards/disillusionment.webp",
+      "bytes": 71680,
+      "sha256": "56acfb57726df6f1159b46daca0fe9c51589f7ad1efcd9381609fc201762f778",
+      "file_timestamp_utc": "2026-09-13T21:02:38.820999+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c2c92dce.webp",
+      "path": "assets/cards/encouragement.webp",
+      "bytes": 64610,
+      "sha256": "1043d0876a4eb90793051720ab8289e6b18008a683eb7423242bc594d6bba38a",
+      "file_timestamp_utc": "2026-09-13T21:02:38.796178+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_51ab7c95dd.webp",
+      "path": "assets/cards/faith.webp",
+      "bytes": 61710,
+      "sha256": "9cef8f393c9a3a458c343943b195a9fb2b71f3a440de05a488af9b20a4b6d70d",
+      "file_timestamp_utc": "2026-09-13T21:02:38.839450+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8ef71c708a.webp",
+      "path": "assets/cards/friendliness.webp",
+      "bytes": 42574,
+      "sha256": "043dfa4eef1752a70f54d19719e8d4c7c932aeef1564a32c3cb0a984e1ec3761",
+      "file_timestamp_utc": "2026-09-13T21:02:39.289888+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cfb7aab4ca.webp",
+      "path": "assets/cards/guilt.webp",
+      "bytes": 51464,
+      "sha256": "5882745ed743f6a550ab2b1e28d8b4b0158d1f4429fe608663964dadd4cd7152",
+      "file_timestamp_utc": "2026-09-13T21:02:39.258398+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fcb2539b1b.webp",
+      "path": "assets/cards/honor.webp",
+      "bytes": 53532,
+      "sha256": "13ab59567068d828f5aab1c78be4e75bf7b0836b0dfb7069cb87a0ae91fec551",
+      "file_timestamp_utc": "2026-09-13T21:02:39.013064+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_65defcbada.webp",
+      "path": "assets/cards/idealism.webp",
+      "bytes": 53254,
+      "sha256": "7bec29a6edbacd783504deab7a21438b1a1c9348f06d79b1e49e28b57dabb3a9",
+      "file_timestamp_utc": "2026-09-13T21:02:39.190058+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_900364d212.webp",
+      "path": "assets/cards/kindness.webp",
+      "bytes": 70022,
+      "sha256": "a96e985198c6149a2e779b7352dc562e3795296dd575299bd15d228506b3288b",
+      "file_timestamp_utc": "2026-09-13T21:02:39.258355+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8c6dcb6580.webp",
+      "path": "assets/cards/loyalty.webp",
+      "bytes": 48412,
+      "sha256": "5b5623cdbfa49e0bf67ffac84835b7a5a91caa7cf5c27acdbf438c5f14177f0a",
+      "file_timestamp_utc": "2026-09-13T21:02:39.364406+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_53a2b5358c.webp",
+      "path": "assets/cards/meekness.webp",
+      "bytes": 68772,
+      "sha256": "f579e4199e05f21642be1b98e70efbf774117fa41191d845ba675ec512fe849a",
+      "file_timestamp_utc": "2026-09-13T21:02:39.434577+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e1d60e419b.webp",
+      "path": "assets/cards/pacifism.webp",
+      "bytes": 76276,
+      "sha256": "8b93f7768a5acadccc2fcca819c6a85fe3098443061e075a73b8d7d14666a8b6",
+      "file_timestamp_utc": "2026-09-13T21:02:39.461150+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d106975fda.webp",
+      "path": "assets/cards/patience.webp",
+      "bytes": 76400,
+      "sha256": "8f1c772456f9b391d0984a4686433e6fe26c71bc75f28077bed5a631ae6b8b62",
+      "file_timestamp_utc": "2026-09-13T21:02:39.499117+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0a4b823b72.webp",
+      "path": "assets/cards/pride.webp",
+      "bytes": 56152,
+      "sha256": "2c6d43633d77c04b53886754dda516e57e26828ae74ce3ffd9010ef91b2018ad",
+      "file_timestamp_utc": "2026-09-13T21:02:39.546902+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a1a9edc565.webp",
+      "path": "assets/cards/repentance.webp",
+      "bytes": 53212,
+      "sha256": "93158137d9ee667bd264e17f860ba27621d4cb2c5f1882945440a94b01599ec0",
+      "file_timestamp_utc": "2026-09-13T21:02:40.056879+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a9daebaf83.webp",
+      "path": "assets/cards/scorn.webp",
+      "bytes": 66136,
+      "sha256": "683fd791ef18ceff0138492e275fd7b21cd55faafa4ba971825f8fb41f232331",
+      "file_timestamp_utc": "2026-09-13T21:02:39.650456+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_18a5fa19a1.webp",
+      "path": "assets/cards/shame.webp",
+      "bytes": 66242,
+      "sha256": "84bfe2a07cc4fc9de71a36b45d919bbceef8fe0653b8b7cc13839b82481fefcc",
+      "file_timestamp_utc": "2026-09-13T21:02:39.970179+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd16eaf38e.webp",
+      "path": "assets/cards/validation.webp",
+      "bytes": 53430,
+      "sha256": "083a4e78d330c6618ac3d0e0f055a4a94416d5b38f909aa3e750e2ce295951f6",
+      "file_timestamp_utc": "2026-09-13T21:02:39.722281+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9f66939e52.webp",
+      "path": "assets/cards/ambivalence.webp",
+      "bytes": 70086,
+      "sha256": "25ab1c97d06b91b30f0e37b3277ed032d78ecaf73c896c32aef5a7f311e66017",
+      "file_timestamp_utc": "2026-09-13T21:02:39.866899+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_00bf0769bc.webp",
+      "path": "assets/cards/anxiety.webp",
+      "bytes": 53778,
+      "sha256": "d467d13c68dee97ee91fc921f2e119294ccc6e58519e052528b2ec8ac0d5a0d9",
+      "file_timestamp_utc": "2026-09-13T21:02:39.917751+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6dd47f31dd.webp",
+      "path": "assets/cards/avoidance.webp",
+      "bytes": 49520,
+      "sha256": "cd0c132b834220ac0e104eacb3938b13da7a70981c02c688263146a548d85bfa",
+      "file_timestamp_utc": "2026-09-13T21:02:40.048668+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2a40ab595f.webp",
+      "path": "assets/cards/bashfulness.webp",
+      "bytes": 45970,
+      "sha256": "e8978863397ef343b29eb8fa002259bdf3cc37563bf3adffcf8b70d97e930852",
+      "file_timestamp_utc": "2026-09-13T21:02:40.109244+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e5a6b38f7.webp",
+      "path": "assets/cards/confusion.webp",
+      "bytes": 68316,
+      "sha256": "5a9cd58d4f1a5d673c3d0d10f478969b37e482a7dc1fb3e69a4d6db0eef2034f",
+      "file_timestamp_utc": "2026-09-13T21:02:41.089977+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_96bb086d3d.webp",
+      "path": "assets/cards/creativity.webp",
+      "bytes": 62006,
+      "sha256": "465550d79520315a83bb0d368b37c15f91c570a0fbfae51b52005c01e8d8e514",
+      "file_timestamp_utc": "2026-09-13T21:02:40.637863+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4189ffd6b0.webp",
+      "path": "assets/cards/curiosity.webp",
+      "bytes": 74908,
+      "sha256": "61f84e3d572195eb386ef0c0024565f191350e1f33e690384e7325835e9beec2",
+      "file_timestamp_utc": "2026-09-13T21:02:40.690609+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a9c5980f4.webp",
+      "path": "assets/cards/denial.webp",
+      "bytes": 56956,
+      "sha256": "ae0201d45e0dfcdac57be155e18c79efc2f5182507f5ef929a1d04f99ff8be03",
+      "file_timestamp_utc": "2026-09-13T21:02:40.569530+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5accb283ed.webp",
+      "path": "assets/cards/disorientation.webp",
+      "bytes": 79260,
+      "sha256": "22359403de96674b71134b099629e5b675dbebe6b84ebee6264e319f63683dad",
+      "file_timestamp_utc": "2026-09-13T21:02:41.186133+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_dd66017000.webp",
+      "path": "assets/cards/doubt.webp",
+      "bytes": 70544,
+      "sha256": "1e1c2cbc1f54704b9db8f0eb0a954cc94f8e773b9362ad95f270dccc4705d95c",
+      "file_timestamp_utc": "2026-09-13T21:02:41.159321+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1364393674.webp",
+      "path": "assets/cards/duplicity.webp",
+      "bytes": 54104,
+      "sha256": "d6dd7d2b2bd6ffb235a90a14631a48515a7de57f000c0ffb966e772e44c8d6cf",
+      "file_timestamp_utc": "2026-09-13T21:02:41.481501+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_906b1bb1d6.webp",
+      "path": "assets/cards/fear.webp",
+      "bytes": 75124,
+      "sha256": "2b5a6b6b8a3d634805e95d1cdb8d30eef45ec2bcdab171d40883d9e0377f920f",
+      "file_timestamp_utc": "2026-09-13T21:02:41.886695+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_7b2399c941.webp",
+      "path": "assets/cards/fickleness.webp",
+      "bytes": 75184,
+      "sha256": "f45d222c2131c2816e48d4d84d87f18b4f2c6adc4ced473f535f3bfb971f6137",
+      "file_timestamp_utc": "2026-09-13T21:02:41.684360+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4c31ac573b.webp",
+      "path": "assets/cards/guile.webp",
+      "bytes": 56164,
+      "sha256": "65d7f294f5a0c0e5f1cba8bf9e4f64fefb341a59a52c113f311c06ccc5e0cba7",
+      "file_timestamp_utc": "2026-09-13T21:02:41.664925+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_95ca483374.webp",
+      "path": "assets/cards/hesitation.webp",
+      "bytes": 82100,
+      "sha256": "57357d249ab1eb1e2247e15142680f226fc17bb0f9784845f30f66989597f392",
+      "file_timestamp_utc": "2026-09-13T21:02:41.651501+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3af00d3391.webp",
+      "path": "assets/cards/imagination.webp",
+      "bytes": 55402,
+      "sha256": "15cce527c44cb6f12565224e900049550edd770585a506245f414e386f6d1d22",
+      "file_timestamp_utc": "2026-09-13T21:02:41.832248+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_50d6760556.webp",
+      "path": "assets/cards/indecisiveness.webp",
+      "bytes": 58556,
+      "sha256": "dff4df5dd6b7a9db1028cb78bcd6726f2f95541db1d38caabd1d2c06c679537c",
+      "file_timestamp_utc": "2026-09-13T21:02:41.939341+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0950b77878.webp",
+      "path": "assets/cards/indifference.webp",
+      "bytes": 37470,
+      "sha256": "8ef771c0316b992e50972b34c2c58fdf3f27a4471f8610eb24cd8e7c10135d99",
+      "file_timestamp_utc": "2026-09-13T21:02:42.103507+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d74b605c8b.webp",
+      "path": "assets/cards/insecurity.webp",
+      "bytes": 81796,
+      "sha256": "e789cbf3b7ddeedc0239758c551e99283349622f8468aba11512ea2db30aacbc",
+      "file_timestamp_utc": "2026-09-13T21:02:42.017200+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_836f2df163.webp",
+      "path": "assets/cards/neurosis.webp",
+      "bytes": 78220,
+      "sha256": "34b903551d55b9b010ef9c01d076ece45c7676b34d9094e3b2c3ebadf8057ab7",
+      "file_timestamp_utc": "2026-09-13T21:02:42.076111+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f9134e6286.webp",
+      "path": "assets/cards/obsession.webp",
+      "bytes": 51730,
+      "sha256": "eeec3f39ef7deab330135c1c4b80495f55adbc98c558be9f6e6e8f24f0a3b52e",
+      "file_timestamp_utc": "2026-09-13T21:02:42.094223+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_88c69dd9d3.webp",
+      "path": "assets/cards/panic.webp",
+      "bytes": 54936,
+      "sha256": "2e5caa96141560418b706637ea9053d8da1b7d8b14f172156a5057f52e2aa346",
+      "file_timestamp_utc": "2026-09-13T21:02:42.188405+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d90751636e.webp",
+      "path": "assets/cards/rationalization.webp",
+      "bytes": 70806,
+      "sha256": "98b8315d12ba86e3f3a13cc63ad1af2c1ceeb37469cabbb80fe6335cae7fc7e6",
+      "file_timestamp_utc": "2026-09-13T21:02:42.257128+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d23a36570.webp",
+      "path": "assets/cards/regret.webp",
+      "bytes": 55164,
+      "sha256": "3e33fa4a7a33a5cd052179286bd44134e941414aad88d588b159adf2837db07a",
+      "file_timestamp_utc": "2026-09-13T21:02:42.261172+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c7ddf50edd.webp",
+      "path": "assets/cards/sneakiness.webp",
+      "bytes": 53338,
+      "sha256": "699ca355e4138303e4cd689c6784f4e56958eea8c277bdf7165dc5572b3f23f9",
+      "file_timestamp_utc": "2026-09-13T21:02:42.299515+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d0c87e3659.webp",
+      "path": "assets/cards/worry.webp",
+      "bytes": 79070,
+      "sha256": "f2425aa6894bea9a3bf3d84d79ec7400f6a76fbf0787e8ecba66870fd3a820e1",
+      "file_timestamp_utc": "2026-09-13T21:02:42.412943+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_5f8ab4747e.webp",
+      "path": "assets/cards/ambition.webp",
+      "bytes": 59020,
+      "sha256": "5319284cac7e2b241656c094ac615b9c2449fab1e2adfa9dc582968024be5370",
+      "file_timestamp_utc": "2026-09-13T21:02:42.440151+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f8d9de643e.webp",
+      "path": "assets/cards/angst.webp",
+      "bytes": 78806,
+      "sha256": "cfabacd939a3bd9d1f53311f50f9fba5ebbbaf186b33efa81cdb148ee8cfff26",
+      "file_timestamp_utc": "2026-09-13T21:02:42.444113+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_214a4fbfb6.webp",
+      "path": "assets/cards/apathy.webp",
+      "bytes": 33440,
+      "sha256": "3a4bf7eb94f5e6800a8d74c795518faa0fe5d367d48fb7fe04372c238629bcbb",
+      "file_timestamp_utc": "2026-09-13T21:02:42.459031+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2cf642f7d2.webp",
+      "path": "assets/cards/betrayal.webp",
+      "bytes": 44780,
+      "sha256": "a7cfa60d03dfd3835abfcf1043fb33c74950547ca345026df0259bd0110f6b80",
+      "file_timestamp_utc": "2026-09-13T21:02:42.554420+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fedf3406e2.webp",
+      "path": "assets/cards/bitterness.webp",
+      "bytes": 41104,
+      "sha256": "fc55b1761cd98d6fa21e6a1fea2ec1940be9cbc5f0cfb16c0db7606e45a75b09",
+      "file_timestamp_utc": "2026-09-13T21:02:42.620964+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0c52b2ac0d.webp",
+      "path": "assets/cards/condescension.webp",
+      "bytes": 69134,
+      "sha256": "7a1b0e1c2e8f13ac73582bd62e773b62d6102ce20beea1073c017ea80f2a9152",
+      "file_timestamp_utc": "2026-09-13T21:02:43.017356+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6465486329.webp",
+      "path": "assets/cards/contempt.webp",
+      "bytes": 47790,
+      "sha256": "f49789b8305a8e80bd639553264c4893e3b6df474cba7db5fed9e5396b6266f9",
+      "file_timestamp_utc": "2026-09-13T21:02:42.962165+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_493c0b60a1.webp",
+      "path": "assets/cards/corruption.webp",
+      "bytes": 56200,
+      "sha256": "690c939845348ba65875fe0bf88c4d719821b49756b573d0bb350ec37e0672f9",
+      "file_timestamp_utc": "2026-09-13T21:02:43.050894+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_72e6fb2349.webp",
+      "path": "assets/cards/cruelty.webp",
+      "bytes": 87478,
+      "sha256": "14ffb7603b0291669fe05f22550e783af883d13a9231039f420408c4da0a58b1",
+      "file_timestamp_utc": "2026-09-13T21:02:43.110734+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3e5cc80185.webp",
+      "path": "assets/cards/cynicism.webp",
+      "bytes": 70646,
+      "sha256": "3292501c6ade852964bc81168a6fbaf4fe415af61fc43f140d89269ba1cbf234",
+      "file_timestamp_utc": "2026-09-13T21:02:43.565996+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_449e96eaa5.webp",
+      "path": "assets/cards/disgust.webp",
+      "bytes": 49728,
+      "sha256": "8e134e62df8a26439196c85e665548aea67e83e43e31c7d184094c1ef258f918",
+      "file_timestamp_utc": "2026-09-13T21:02:43.614151+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_41c30f829d.webp",
+      "path": "assets/cards/envy.webp",
+      "bytes": 59452,
+      "sha256": "5e4d8c182eed03d1884a0f5d46f6aeac7f2aa359607bcacfc327d23b1bbdd19b",
+      "file_timestamp_utc": "2026-09-13T21:02:43.644950+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e4476b11a4.webp",
+      "path": "assets/cards/grief.webp",
+      "bytes": 47400,
+      "sha256": "bae3936e9cfe6d0fd1c579a5a22e2fccb57658cdeb2fd8c7628164558dd2d89f",
+      "file_timestamp_utc": "2026-09-13T21:02:43.576056+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b423a5e0fc.webp",
+      "path": "assets/cards/hate.webp",
+      "bytes": 54380,
+      "sha256": "0d028acc6f4192561eea46f4e4f1a073c6f05c90fce42cca4e2c397ec47fc8ca",
+      "file_timestamp_utc": "2026-09-13T21:02:44.065354+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_950df3062a.webp",
+      "path": "assets/cards/intimidation.webp",
+      "bytes": 79574,
+      "sha256": "ca4a974e9c507529ff1684bc976d906c639682512ed1e8e6005b679ea8051af7",
+      "file_timestamp_utc": "2026-09-13T21:02:43.748428+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_69ca7ade91.webp",
+      "path": "assets/cards/malice.webp",
+      "bytes": 58384,
+      "sha256": "c4da62ceced00ca330355da0d411a05940dbb80fb98bb50565b030090c257932",
+      "file_timestamp_utc": "2026-09-13T21:02:43.797271+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b69d84c162.webp",
+      "path": "assets/cards/melancholy.webp",
+      "bytes": 50374,
+      "sha256": "033d9971d018d7eed71be0f3fe378ec632d89af997fb328b37bcdd29e07a5cf4",
+      "file_timestamp_utc": "2026-09-13T21:02:43.823158+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9861468165.webp",
+      "path": "assets/cards/misery.webp",
+      "bytes": 61464,
+      "sha256": "117299dd99680c6cf202bd128c69ed8696d7fe08d9a841de50d20d79a7cd1b07",
+      "file_timestamp_utc": "2026-09-13T21:02:43.913126+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_59818f9df2.webp",
+      "path": "assets/cards/paranoia.webp",
+      "bytes": 60818,
+      "sha256": "62053e8003b22fba2de4ddccc889b8636e0f615f800a3f5f363db59be3d72d6d",
+      "file_timestamp_utc": "2026-09-13T21:02:43.984992+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44a3456b6c.webp",
+      "path": "assets/cards/pity.webp",
+      "bytes": 54014,
+      "sha256": "66ad2128f2ae2609cde258b14b8a3d23313289d749cda91b6655b348876d4c59",
+      "file_timestamp_utc": "2026-09-13T21:02:43.980539+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_334f16a788.webp",
+      "path": "assets/cards/rejection.webp",
+      "bytes": 49774,
+      "sha256": "3824ff918d3a414e7ade39220da3b1e8217d8406b958204d0a48f93287c958ed",
+      "file_timestamp_utc": "2026-09-13T21:02:44.352826+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0cf6ff4201.webp",
+      "path": "assets/cards/sadness.webp",
+      "bytes": 43958,
+      "sha256": "8d2d03e01a3383b7e1eee37e2ab960524a69008e806a75e6948d571fa103af2f",
+      "file_timestamp_utc": "2026-09-13T21:02:44.129010+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_0236a11a6e.webp",
+      "path": "assets/cards/self-loathing.webp",
+      "bytes": 47840,
+      "sha256": "b3befe5e139b0f25632cc26fa2f6f53dc7e59a99ee31bb252d695c802fd2c65d",
+      "file_timestamp_utc": "2026-09-13T21:02:44.129283+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b795c10ecc.webp",
+      "path": "assets/cards/spite.webp",
+      "bytes": 73104,
+      "sha256": "81edcbf8fc12430cce5aa3197efad11b545d3806fb0dd0ed7c1c5b7b1f06aed1",
+      "file_timestamp_utc": "2026-09-13T21:02:44.261259+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9e3954cd2f.webp",
+      "path": "assets/cards/superiority.webp",
+      "bytes": 46530,
+      "sha256": "ca5424e61b3a6285ad824bd0aa102e86f68fc2ba7fd5e6cb24582a74016c4c41",
+      "file_timestamp_utc": "2026-09-13T21:02:44.713309+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a927be2da9.webp",
+      "path": "assets/cards/suspicion.webp",
+      "bytes": 55576,
+      "sha256": "6dabdb2f4964d59ab5521c6acc189ba9ee27540d64a196a9c21e8e289b66b522",
+      "file_timestamp_utc": "2026-09-13T21:02:44.714011+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e75bca82b9.webp",
+      "path": "assets/cards/vanity.webp",
+      "bytes": 55854,
+      "sha256": "3a6ed2a360bab33e5aed4b4ad53a0aa445efe54e9b54d2eeb9d860899c92e0af",
+      "file_timestamp_utc": "2026-09-13T21:02:44.467396+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2bc0509610.webp",
+      "path": "assets/cards/anger.webp",
+      "bytes": 57102,
+      "sha256": "b5fdb2618cd05c80e7a1320683eced4fdd9596a05bc875264023541a9779d575",
+      "file_timestamp_utc": "2026-09-13T21:02:44.494491+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_87967089d9.webp",
+      "path": "assets/cards/animosity.webp",
+      "bytes": 62308,
+      "sha256": "3c61c3ca5dc29133374f5a106506f7adcd876e7bb6cde7b8799ac16cb129bc0d",
+      "file_timestamp_utc": "2026-09-13T21:02:44.602621+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2c0da1316e.webp",
+      "path": "assets/cards/arrogance.webp",
+      "bytes": 54548,
+      "sha256": "e8f27c41d66bf7d571e28f039e355ea533ebc759587f7f1e1a389a1878096075",
+      "file_timestamp_utc": "2026-09-13T21:02:44.675403+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a5c5a5f851.webp",
+      "path": "assets/cards/boredom.webp",
+      "bytes": 40150,
+      "sha256": "4a5c327249c4ef5b13e9d03d5c7d24a5a67e3437ec307cf10107a60f5bd59734",
+      "file_timestamp_utc": "2026-09-13T21:02:44.743983+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_10a2381e9e.webp",
+      "path": "assets/cards/bravado.webp",
+      "bytes": 49194,
+      "sha256": "1cfeaca31f17f771731e85178d2ed3c44fc086a20bc4dfa8d595b508de583d27",
+      "file_timestamp_utc": "2026-09-13T21:02:45.114995+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_33c8513101.webp",
+      "path": "assets/cards/chaos.webp",
+      "bytes": 87032,
+      "sha256": "e413765c749c278fd940f9f36c9fe19ee3983d0c283b7860cbd79f37e22425e2",
+      "file_timestamp_utc": "2026-09-13T21:02:44.907896+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f709a579c6.webp",
+      "path": "assets/cards/compulsion.webp",
+      "bytes": 63784,
+      "sha256": "2618fcf8e78de6656607116896e65b22e2c3c0cdaf37aa7bdabee7044a5f4da4",
+      "file_timestamp_utc": "2026-09-13T21:02:45.232344+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f96a43ef62.webp",
+      "path": "assets/cards/embarrassment.webp",
+      "bytes": 51526,
+      "sha256": "ac8a024d9357b369bf6ff508f74376b6f56ae0c8c886f30f4da62ed9a4054abc",
+      "file_timestamp_utc": "2026-09-13T21:02:45.220336+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_091025d24d.webp",
+      "path": "assets/cards/excitement.webp",
+      "bytes": 51650,
+      "sha256": "2500e202062d45e8979d727ff5b8354b5b9e0da3f95f641886fc1ed74802a1d3",
+      "file_timestamp_utc": "2026-09-13T21:02:45.357916+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_32e19d377b.webp",
+      "path": "assets/cards/exhilaration.webp",
+      "bytes": 52920,
+      "sha256": "3d903a8fa3dca5fbda042c4d7d57fb3300972982dc28645487781d75d1a11b58",
+      "file_timestamp_utc": "2026-09-13T21:02:45.595098+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_78e5406896.webp",
+      "path": "assets/cards/frustration.webp",
+      "bytes": 76972,
+      "sha256": "ed17312f07705e992a90f8fefae304820ebe1314cea59ab3f1ba64b80e5e4e07",
+      "file_timestamp_utc": "2026-09-13T21:02:45.790740+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4001d05e4a.webp",
+      "path": "assets/cards/fury.webp",
+      "bytes": 72606,
+      "sha256": "7bb825cc09d48587f2e865dcb5a2eebedae98f8e59ea7cc96a0359500a304aa4",
+      "file_timestamp_utc": "2026-09-13T21:02:45.703454+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_c8db74f963.webp",
+      "path": "assets/cards/glee.webp",
+      "bytes": 53506,
+      "sha256": "aa111fa3bb9e0addb2737dd6e8106889093eac3f21b15c2f7102782efa6ae563",
+      "file_timestamp_utc": "2026-09-13T21:02:45.880303+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4e9904fa65.webp",
+      "path": "assets/cards/gluttony.webp",
+      "bytes": 86996,
+      "sha256": "2d947c3bcc51477301995e945909c9096849665e6f5519f55370f88b256dc9f7",
+      "file_timestamp_utc": "2026-09-13T21:02:45.887267+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_98adc285ea.webp",
+      "path": "assets/cards/hostility.webp",
+      "bytes": 87400,
+      "sha256": "cb07e4eec0bfcef3f7a7da21e8b857a969c2963320f607f9e9dd1415a7b19109",
+      "file_timestamp_utc": "2026-09-13T21:02:45.955890+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2c4eb5919.webp",
+      "path": "assets/cards/infatuation.webp",
+      "bytes": 64922,
+      "sha256": "6b19532a712a1f1919d1d960880381a45b54b2d567d3569f453f351aacdc5708",
+      "file_timestamp_utc": "2026-09-13T21:02:45.966819+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_792f6c2f0a.webp",
+      "path": "assets/cards/instability.webp",
+      "bytes": 53854,
+      "sha256": "6cce2438582343b6640c752128e0176f83768e32ead450f77ff0636638e799be",
+      "file_timestamp_utc": "2026-09-13T21:02:46.200670+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cae948ae72.webp",
+      "path": "assets/cards/passion.webp",
+      "bytes": 55698,
+      "sha256": "a42ed61c855673612820644c2b443e7034c84e247091f474d0fd613f81b8a3f9",
+      "file_timestamp_utc": "2026-09-13T21:02:46.219820+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b4f2eea560.webp",
+      "path": "assets/cards/rage.webp",
+      "bytes": 77380,
+      "sha256": "489fd15b5096351024b58396dd8b75918d18ef89e9c068f2d7ab2ebcb0ca2b08",
+      "file_timestamp_utc": "2026-09-13T21:02:46.247872+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_4bc31ec6ea.webp",
+      "path": "assets/cards/rebellion.webp",
+      "bytes": 67278,
+      "sha256": "4e3fff7f1aa11dd29e59ac2d6114d9558534220fa2c0e262f0dd07bdbe20c6a7",
+      "file_timestamp_utc": "2026-09-13T21:02:46.236496+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_436cf6c9e4.webp",
+      "path": "assets/cards/recklessness.webp",
+      "bytes": 58854,
+      "sha256": "932294d6eea9943f50e5d13b24a11b5a2e813646a446ce688d2f25609f145c0e",
+      "file_timestamp_utc": "2026-09-13T21:02:46.374161+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa95cdf5a9.webp",
+      "path": "assets/cards/shock.webp",
+      "bytes": 68088,
+      "sha256": "8d90ef545804964769ce2cc31daca6cfa683dc36dc86e9673d21ac71ed41579b",
+      "file_timestamp_utc": "2026-09-13T21:02:46.783224+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f2efdc8008.webp",
+      "path": "assets/cards/stubbornness.webp",
+      "bytes": 54518,
+      "sha256": "3a9722445c41f4a40e6ec15da6dacf2c2bbd6d7e2d407537c1b781f592029ddb",
+      "file_timestamp_utc": "2026-09-13T21:02:46.794186+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_595de70539.webp",
+      "path": "assets/cards/thrill.webp",
+      "bytes": 51358,
+      "sha256": "05c894dbadb4fd2d6e21b58e6379e79395f47ca3c1e70d9da3cfcb34f333bee2",
+      "file_timestamp_utc": "2026-09-13T21:02:46.421479+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2e6fc27df8.webp",
+      "path": "assets/cards/triumph.webp",
+      "bytes": 43500,
+      "sha256": "eb72ad1f7de52aea403e91b6be301ec12304161145d8918c9849d5fd9dca8e18",
+      "file_timestamp_utc": "2026-09-13T21:02:46.850110+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3d371a224c.webp",
+      "path": "assets/cards/wrath.webp",
+      "bytes": 61418,
+      "sha256": "6cdca0da255c3e31d2320875ba790db8345a51a82460a0e1994ca2b16ec2b195",
+      "file_timestamp_utc": "2026-09-13T21:02:46.882444+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8d29fbaa74.webp",
+      "path": "assets/cards/zeal.webp",
+      "bytes": 58156,
+      "sha256": "61b9da1fe812fb9d42efb8a2531530c268b5a4a1054b8a55866ad2e477ad7fa8",
+      "file_timestamp_utc": "2026-09-13T21:02:47.444603+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6922ed810f.webp",
+      "path": "assets/cards/awe.webp",
+      "bytes": 46526,
+      "sha256": "60829807c6300814b55ee353f79844fc48993dede74448611341055ea441405d",
+      "file_timestamp_utc": "2026-09-13T21:02:46.946397+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f11ac0d4cd.webp",
+      "path": "assets/cards/bliss.webp",
+      "bytes": 73648,
+      "sha256": "e1ca531025d6f3f9fed25a9faae25fc2dd59abb1faf7a398fada5dddf0a46874",
+      "file_timestamp_utc": "2026-09-13T21:02:47.001861+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a73f42f958.webp",
+      "path": "assets/cards/celebration.webp",
+      "bytes": 76596,
+      "sha256": "d646d9493383e1c52168c4507d78110ece3691eb9316bbde2c43827a1a15f940",
+      "file_timestamp_utc": "2026-09-13T21:02:47.504614+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a84ef2f73e.webp",
+      "path": "assets/cards/cheer.webp",
+      "bytes": 57938,
+      "sha256": "80431e19be8e89b457d7043685b432fce173fa684c155636704a0ae1e1d27cbd",
+      "file_timestamp_utc": "2026-09-13T21:02:47.419035+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8a3502598f.webp",
+      "path": "assets/cards/delight.webp",
+      "bytes": 71010,
+      "sha256": "d27c9d52d7b8553f06f994d414236e66ad76b7ee242f9f968f9c130953c2d745",
+      "file_timestamp_utc": "2026-09-13T21:02:47.467781+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_f6a797b668.webp",
+      "path": "assets/cards/determination.webp",
+      "bytes": 46936,
+      "sha256": "068005192403657b03bd4752db0735b8b08231b2f5d1f64ffeffc7586b96adc7",
+      "file_timestamp_utc": "2026-09-13T21:02:48.032879+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_6147c110a1.webp",
+      "path": "assets/cards/disregard.webp",
+      "bytes": 61614,
+      "sha256": "b2a216f75ce0aac7faba255172cff4b540617d5ea918ce68bbdeca1d861c62a1",
+      "file_timestamp_utc": "2026-09-13T21:02:48.038259+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_638fd1b331.webp",
+      "path": "assets/cards/eagerness.webp",
+      "bytes": 47490,
+      "sha256": "1a82b823e970aa1e59ac97c3b0504cbe5ed552256f4c26249f191efdb62bf696",
+      "file_timestamp_utc": "2026-09-13T21:02:48.038254+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_3f91566414.webp",
+      "path": "assets/cards/enjoyment.webp",
+      "bytes": 53582,
+      "sha256": "3a7ca6472114a590ecc72c982148843908e94bd28dbbb8b6f6130bb3bf853b04",
+      "file_timestamp_utc": "2026-09-13T21:02:48.032475+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_37c8ff6ac3.webp",
+      "path": "assets/cards/enthusiasm.webp",
+      "bytes": 51146,
+      "sha256": "76bc9ba657c4fbb1179cff028028be147fe92e0c077b694687ff7ca40272292c",
+      "file_timestamp_utc": "2026-09-13T21:02:48.488994+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_944642a216.webp",
+      "path": "assets/cards/euphoria.webp",
+      "bytes": 61110,
+      "sha256": "f943cd3653773013c9f04d2f552c228b9cee6bf91641a1b826681c14f3c9c4ce",
+      "file_timestamp_utc": "2026-09-13T21:02:48.655647+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_cf54facc33.webp",
+      "path": "assets/cards/fascination.webp",
+      "bytes": 58636,
+      "sha256": "8fc475c4c6be5a3c31ab514adc8f9f2b7720b95b7360e45b333f40021b137be3",
+      "file_timestamp_utc": "2026-09-13T21:02:48.516142+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_d5d19db135.webp",
+      "path": "assets/cards/fondness.webp",
+      "bytes": 63736,
+      "sha256": "5bc9883851c1fa13e3588bcc18dbb7dbf1e28039172cbecb6b900ac02133856c",
+      "file_timestamp_utc": "2026-09-13T21:02:48.683555+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_b5b6235248.webp",
+      "path": "assets/cards/generosity.webp",
+      "bytes": 47154,
+      "sha256": "ecf24bc2086867dd7e90ab85b899ecdbeeb56bc126ed1d0ee2b5cd93084b1a6b",
+      "file_timestamp_utc": "2026-09-13T21:02:48.976635+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_a4ac5b193b.webp",
+      "path": "assets/cards/grace.webp",
+      "bytes": 78084,
+      "sha256": "06ae44b4290362264784b74dcedfab018ee563166ddbbe8a3426706a2b901587",
+      "file_timestamp_utc": "2026-09-13T21:02:48.673024+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_44522f15f3.webp",
+      "path": "assets/cards/happiness.webp",
+      "bytes": 54698,
+      "sha256": "4f8889b0b1793e00be6b111189d25b3bdc17d678d9365772e09790765ced4b1f",
+      "file_timestamp_utc": "2026-09-13T21:02:49.146106+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_1de68dc34c.webp",
+      "path": "assets/cards/harmony.webp",
+      "bytes": 87372,
+      "sha256": "d6e2cb0a790430b18f1c576d917052765e75a399e679c00703f11d630c4be60f",
+      "file_timestamp_utc": "2026-09-13T21:02:49.155144+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8569c6868b.webp",
+      "path": "assets/cards/hope.webp",
+      "bytes": 45298,
+      "sha256": "baed225898356c33f2f70590f5287350174e2cccabb18bc82d87caaa3bf2422e",
+      "file_timestamp_utc": "2026-09-13T21:02:49.029358+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_58ef667397.webp",
+      "path": "assets/cards/joy.webp",
+      "bytes": 52036,
+      "sha256": "95c46061752338f1993455b16e589f0f262b070dd7ca82d77deda751057e8208",
+      "file_timestamp_utc": "2026-09-13T21:02:49.139023+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_66b6f7a960.webp",
+      "path": "assets/cards/laziness.webp",
+      "bytes": 30296,
+      "sha256": "a8f2ee184d26b93ff19886c3fb549ac341d1aa63e5f1e6b6dce38ce20e56cc96",
+      "file_timestamp_utc": "2026-09-13T21:02:49.167503+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_9bcb67999e.webp",
+      "path": "assets/cards/love.webp",
+      "bytes": 54784,
+      "sha256": "daa61c8495d8a865dcdbeba19b09d0a2774ab8172b0336737a409cdb9fb13aec",
+      "file_timestamp_utc": "2026-09-13T21:02:49.324437+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_fa2e8db989.webp",
+      "path": "assets/cards/nostalgia.webp",
+      "bytes": 61320,
+      "sha256": "38f064247f3df8a0854f18a3ad89c720f1e86986dbe56b135d0a87f4f5138ca7",
+      "file_timestamp_utc": "2026-09-13T21:02:49.321242+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_26d579f073.webp",
+      "path": "assets/cards/serenity.webp",
+      "bytes": 49928,
+      "sha256": "1f13d876d9866e0a341a2f40c7647e62a76426dd3d9ec2aee8d46849dae0145a",
+      "file_timestamp_utc": "2026-09-13T21:02:49.767076+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_355c27037e.webp",
+      "path": "assets/cards/sloth.webp",
+      "bytes": 55158,
+      "sha256": "2505e8c2cd31b1315fb0b28d9c37849e0dfd4cddba0dfbeee8a6f8766c852eb8",
+      "file_timestamp_utc": "2026-09-13T21:02:49.654681+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_85da101a78.webp",
+      "path": "assets/cards/tranquility.webp",
+      "bytes": 64184,
+      "sha256": "7e6630f971efcd8fb57cfa7033da6bc635eb86c47ca6f27a11942e056949d1b8",
+      "file_timestamp_utc": "2026-09-13T21:02:49.473647+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_2dbb36bbfd.webp",
+      "path": "assets/cards/vulnerability.webp",
+      "bytes": 70222,
+      "sha256": "0426b8b83167c85d18925d5361408e4fd470f1d2549d04f2654486b2e7ecc569",
+      "file_timestamp_utc": "2026-09-13T21:02:49.473141+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_e844a24ace.webp",
+      "path": "assets/cards/wonder.webp",
+      "bytes": 64706,
+      "sha256": "d18a40a3cfd2798dcd39c1d3d7621785258c1738f8cecfef9e617902a3620bac",
+      "file_timestamp_utc": "2026-09-13T21:02:49.685839+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_8674b312121.webp",
+      "path": "assets/cards/love-headliner.webp",
+      "bytes": 51488,
+      "sha256": "48facfd010f9a74aed562368c35662c568962612ba49253219bf92f2e4a36180",
+      "file_timestamp_utc": "2026-09-13T21:02:50.010781+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/xABg1Js9Np/en_SDbCBoXR0F.webp",
+      "path": "assets/cards/hurt-feelings.webp",
+      "bytes": 81320,
+      "sha256": "e2250132454ec7790d90404ad5772fbbd47dda272fa68c0de159c19ee9f50a40",
+      "file_timestamp_utc": "2026-09-13T21:02:50.441051+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_4189ffd6b0_2.png",
+      "path": "assets/reference/en_4189ffd6b0_2.png",
+      "bytes": 702861,
+      "sha256": "73ba1c83781074f3f1530334b7683782c0cfcac6a4fd95dee2c9be7e4721a950",
+      "file_timestamp_utc": "2026-09-13T21:05:40.007078+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_96bb086d3d.webp",
+      "path": "assets/reference/en_96bb086d3d.webp",
+      "bytes": 62006,
+      "sha256": "465550d79520315a83bb0d368b37c15f91c570a0fbfae51b52005c01e8d8e514",
+      "file_timestamp_utc": "2026-09-13T21:05:40.483494+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_0236a11a6e.webp",
+      "path": "assets/reference/en_0236a11a6e.webp",
+      "bytes": 47840,
+      "sha256": "b3befe5e139b0f25632cc26fa2f6f53dc7e59a99ee31bb252d695c802fd2c65d",
+      "file_timestamp_utc": "2026-09-13T21:05:41.744940+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_d106975fda.webp",
+      "path": "assets/reference/en_d106975fda.webp",
+      "bytes": 76400,
+      "sha256": "8f1c772456f9b391d0984a4686433e6fe26c71bc75f28077bed5a631ae6b8b62",
+      "file_timestamp_utc": "2026-09-13T21:05:42.327770+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_449e96eaa5.webp",
+      "path": "assets/reference/en_449e96eaa5.webp",
+      "bytes": 49728,
+      "sha256": "8e134e62df8a26439196c85e665548aea67e83e43e31c7d184094c1ef258f918",
+      "file_timestamp_utc": "2026-09-13T21:05:42.807929+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_9e3954cd2f.webp",
+      "path": "assets/reference/en_9e3954cd2f.webp",
+      "bytes": 46530,
+      "sha256": "ca5424e61b3a6285ad824bd0aa102e86f68fc2ba7fd5e6cb24582a74016c4c41",
+      "file_timestamp_utc": "2026-09-13T21:05:43.182594+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_b4f2eea560.webp",
+      "path": "assets/reference/en_b4f2eea560.webp",
+      "bytes": 77380,
+      "sha256": "489fd15b5096351024b58396dd8b75918d18ef89e9c068f2d7ab2ebcb0ca2b08",
+      "file_timestamp_utc": "2026-09-13T21:05:43.661959+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_d0c87e3659.webp",
+      "path": "assets/reference/en_d0c87e3659.webp",
+      "bytes": 79070,
+      "sha256": "f2425aa6894bea9a3bf3d84d79ec7400f6a76fbf0787e8ecba66870fd3a820e1",
+      "file_timestamp_utc": "2026-09-13T21:05:44.257035+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_98adc285ea.webp",
+      "path": "assets/reference/en_98adc285ea.webp",
+      "bytes": 87400,
+      "sha256": "cb07e4eec0bfcef3f7a7da21e8b857a969c2963320f607f9e9dd1415a7b19109",
+      "file_timestamp_utc": "2026-09-13T21:05:44.908808+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_2a40ab595f.webp",
+      "path": "assets/reference/en_2a40ab595f.webp",
+      "bytes": 45970,
+      "sha256": "e8978863397ef343b29eb8fa002259bdf3cc37563bf3adffcf8b70d97e930852",
+      "file_timestamp_utc": "2026-09-13T21:05:45.578154+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_436cf6c9e4.webp",
+      "path": "assets/reference/en_436cf6c9e4.webp",
+      "bytes": 58854,
+      "sha256": "932294d6eea9943f50e5d13b24a11b5a2e813646a446ce688d2f25609f145c0e",
+      "file_timestamp_utc": "2026-09-13T21:05:46.256356+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/msw/toQPit8Nob/en_c7ddf50edd.webp",
+      "path": "assets/reference/en_c7ddf50edd.webp",
+      "bytes": 53338,
+      "sha256": "699ca355e4138303e4cd689c6784f4e56958eea8c277bdf7165dc5572b3f23f9",
+      "file_timestamp_utc": "2026-09-13T21:05:46.803823+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/KbdRbMM3Lj.jpg",
+      "path": "assets/reference/KbdRbMM3Lj.jpg",
+      "bytes": 102473,
+      "sha256": "93dae66cdede82d601abd2f790d03f9c4c1df823fff6242ae0439e8d0790ad37",
+      "file_timestamp_utc": "2026-09-13T21:05:47.964484+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/Q4bxqGhikl.jpg",
+      "path": "assets/reference/Q4bxqGhikl.jpg",
+      "bytes": 257535,
+      "sha256": "cdca9098e2b6ac73a89e5df2539c3c099e1cec07077c13ee87d7a8296c9928e8",
+      "file_timestamp_utc": "2026-09-13T21:05:48.622532+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/6tEzgWaZA2.jpg",
+      "path": "assets/reference/6tEzgWaZA2.jpg",
+      "bytes": 195861,
+      "sha256": "9a37b93984d8d80de9efe6686d7a142695a9fa74cc9322db32eb48bca0f38347",
+      "file_timestamp_utc": "2026-09-13T21:05:48.935847+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/kKhXPnMkux.png",
+      "path": "assets/reference/kKhXPnMkux.png",
+      "bytes": 43813,
+      "sha256": "feeedb2dff8f5324a380c81dc215bb72cb75f9eaf71bcbc80654f1110a284d5e",
+      "file_timestamp_utc": "2026-09-13T21:05:49.546782+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/SoEIO3ajmX.jpg",
+      "path": "assets/reference/SoEIO3ajmX.jpg",
+      "bytes": 665683,
+      "sha256": "c4f2091071a95813d30e4a8d5cd12292077253dea48df0d1475ed534c0288050",
+      "file_timestamp_utc": "2026-09-13T21:05:50.362461+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/waeeEFsHAS.png",
+      "path": "assets/reference/waeeEFsHAS.png",
+      "bytes": 355720,
+      "sha256": "6b64f79a5e096612ef093e53a953e184e41a1639848aaf0d23bf080edb77f105",
+      "file_timestamp_utc": "2026-09-13T21:05:51.610505+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/O2ZE88KMy9.jpg",
+      "path": "assets/reference/O2ZE88KMy9.jpg",
+      "bytes": 461688,
+      "sha256": "d7f87cf41783fbcd6a6e04cd06fe25dde6092ad0d53045a53a2d028ac2635f8b",
+      "file_timestamp_utc": "2026-09-13T21:05:52.360593+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/YxKTm0dtBu.jpg",
+      "path": "assets/reference/YxKTm0dtBu.jpg",
+      "bytes": 364211,
+      "sha256": "accc67cd3b1977a21c8b92c49a9551f928ba06536f3457558a68b2cec749c419",
+      "file_timestamp_utc": "2026-09-13T21:05:53.012703+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/UY9NLwCpdN.jpg",
+      "path": "assets/reference/UY9NLwCpdN.jpg",
+      "bytes": 528166,
+      "sha256": "94c735926b366e63065b89757108e6b55a2ed5c0bb7a8c6f70bbe5325eb83408",
+      "file_timestamp_utc": "2026-09-13T21:05:53.999807+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/tYg1evDVVv/gPDxs3UrIL.jpg",
+      "path": "assets/reference/gPDxs3UrIL.jpg",
+      "bytes": 29331,
+      "sha256": "9f928237ad52d4d570988d3b1e254a1372b1f341cb4df63b79920507096a701a",
+      "file_timestamp_utc": "2026-09-13T21:05:54.674423+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/1998_8uT2DBbKLA.jpg",
+      "path": "assets/reference/1998_8uT2DBbKLA.jpg",
+      "bytes": 186778,
+      "sha256": "2be2c65662d9eb3f50772c1914f79fdcaae7d4be66fb284641090954fe6693ba",
+      "file_timestamp_utc": "2026-09-13T21:05:55.314704+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/1998b_8uT2DBbKLA.jpg",
+      "path": "assets/reference/1998b_8uT2DBbKLA.jpg",
+      "bytes": 216782,
+      "sha256": "ce590bed2523783d22ffcf70a4c79fb20daabbfbbe0384f172076c61bb3a9212",
+      "file_timestamp_utc": "2026-09-13T21:05:55.845089+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2002_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2002_8uT2DBbKLA.jpg",
+      "bytes": 170212,
+      "sha256": "95f2b873adc485a7533f8c9ccbd9e554446bbb841749f3bd57a168a4f0dcf66b",
+      "file_timestamp_utc": "2026-09-13T21:05:56.505612+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/nvXPnFXnSi.jpg",
+      "path": "assets/reference/nvXPnFXnSi.jpg",
+      "bytes": 167673,
+      "sha256": "0f7301f9cec2345f7b1917b8fbe1f8fec216b93ba5f15fd41432eef9b44c88e8",
+      "file_timestamp_utc": "2026-09-13T21:05:57.021694+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2005b_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2005b_8uT2DBbKLA.jpg",
+      "bytes": 175999,
+      "sha256": "00290bdd3d90d2abe46f5fae9cf1cb45027fa803b740be685375d8278306636e",
+      "file_timestamp_utc": "2026-09-13T21:05:57.602694+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2005_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2005_8uT2DBbKLA.jpg",
+      "bytes": 190352,
+      "sha256": "8f5a3287e7b205940dff44a61553d62c1bb9a86437b147edd8ba2f29ddc278ff",
+      "file_timestamp_utc": "2026-09-13T21:05:58.155260+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/XRZ4ce0gSv.jpg",
+      "path": "assets/reference/XRZ4ce0gSv.jpg",
+      "bytes": 46821,
+      "sha256": "8923c4b0028376d0633de125b8774dccf4b8fa3850619ccf349d40e0cdda5684",
+      "file_timestamp_utc": "2026-09-13T21:05:59.435328+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2007_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2007_8uT2DBbKLA.jpg",
+      "bytes": 185909,
+      "sha256": "c9aa478fb186f975e0497ce725df8dc2fae60f3af87b7508766817e0024ed538",
+      "file_timestamp_utc": "2026-09-13T21:06:00.162261+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2011_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2011_8uT2DBbKLA.jpg",
+      "bytes": 179404,
+      "sha256": "ca8f699328e6fd244c9e304dd6aa269d666e0fa9a589a5f4a52f888de48c2101",
+      "file_timestamp_utc": "2026-09-13T21:06:01.127166+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2013_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2013_8uT2DBbKLA.jpg",
+      "bytes": 188569,
+      "sha256": "31cebd187db5af59092186cde71aeedfdce858f79a4adef1ab9ce57a19f511c8",
+      "file_timestamp_utc": "2026-09-13T21:06:02.063583+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2014_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2014_8uT2DBbKLA.jpg",
+      "bytes": 179027,
+      "sha256": "643a16db0a953108c7cb7c358877569bc06e9b36fb003e6c8f82e86dfcda07f9",
+      "file_timestamp_utc": "2026-09-13T21:06:02.604193+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/uHzLWFilLa.jpg",
+      "path": "assets/reference/uHzLWFilLa.jpg",
+      "bytes": 147046,
+      "sha256": "69bd574acf5ad6e54acd3b563308c6bea76112590ed42cff08e96ff2a1f6ff95",
+      "file_timestamp_utc": "2026-09-13T21:06:03.108188+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/2017_8uT2DBbKLA.jpg",
+      "path": "assets/reference/2017_8uT2DBbKLA.jpg",
+      "bytes": 218026,
+      "sha256": "d8b826f6d196653c0fa67e45e44ab8dacdfa6abf709e65d0e3915c665f383b0c",
+      "file_timestamp_utc": "2026-09-13T21:06:04.193324+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/BQ6V1shF15.jpg",
+      "path": "assets/reference/BQ6V1shF15.jpg",
+      "bytes": 58613,
+      "sha256": "68249fa20bbdd61601ba119d3f31314d373936251dec629475cb798aa6959552",
+      "file_timestamp_utc": "2026-09-13T21:06:04.502645+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/LxB3JcUEii.jpg",
+      "path": "assets/reference/LxB3JcUEii.jpg",
+      "bytes": 53846,
+      "sha256": "004e1a6ad147829587a2ed1f5dc59eb38902cb69c960cf2de52fa27339bbad84",
+      "file_timestamp_utc": "2026-09-13T21:06:05.096282+00:00"
+    },
+    {
+      "url": "https://media.wizards.com/2026/images/daily/6XJUjB0zcs/zePqhnadKX.jpg",
+      "path": "assets/reference/zePqhnadKX.jpg",
+      "bytes": 126814,
+      "sha256": "895fd38788c7c291d9132eea12d718b1975c5a861bed3326262349a3d0e03158",
+      "file_timestamp_utc": "2026-09-13T21:06:05.654066+00:00"
+    }
+  ]
+}

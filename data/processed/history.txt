@@ -1,0 +1,307 @@
+News
+/
+Making Magic
+Starting on June 1,
+Secret Lair
+will release their very first new game,
+Mood Swings
+. Longtime readers might remember me talking about
+Mood Swings
+in past articles, because it's a game I've been trying to get published for 28 years. Yes, I've been working on
+Mood Swings
+since 1998. Today's article is about the game's long journey from creation to publication.
+1993
+Magic: The Gathering
+was released.
+1994
+I started doing freelance work for Wizards of the Coast.
+1995
+I was hired to work on
+Magic
+full time.
+1998
+Early in the year, we were having a talk in The Pit about game complexity. As regular readers know, I love spectrums and scales, so I pitched the idea of a complexity spectrum for games. On one end of the spectrum were complex games with a lot of rules and pieces. These games required true dedication to learn and play. You wouldn't truly understand them until you had played them numerous times.
+Axis & Allies
+would be an example of one of these games. On the other end of this spectrum were simple games, things that you could learn in a minute or two. Once you played a single time, you got how the game worked, like
+Jenga
+.
+As a thought exercise, I decided to put trading card games on the spectrum, and they mostly fell on the complex side. What would a less-complex trading card game look like? Before the day was over, I took a stab at the idea:
+Each player draws five cards. Each round, every player plays a card. Cards have a score. At the end of the round, you add up the scores and the person with the highest score wins the round. Win three rounds and win the game. The winner goes first the next round (and wins ties), the losers all draw a card. (The game is for two to four players.) Players use dice depicted in the top right corner of each card to score, and all the cards are flavored as moods and emotions.
+All of that was (mostly) in the very first incarnation of
+Mood Swings
+.
+I made a hand-drawn playtest deck with markers and, later that year in August, took it with me to Ropecon, the largest game convention in Finland, where I was the guest of honor. I playtested the game with the public for the very first time. Upon returning, I made a bunch of changes and put the game into our database so I could use our sticker printer to make playtest cards.
+Later that year, I made my first
+Mood Swings
+pitch to R&D management. I sold it as a mass market trading card game. They liked the game, but at the time we weren't really selling to mass market stores yet, so they passed on it.
+1999
+In May, Wizards of the Coast bought The Game Keeper, a chain of game stores (one of which I worked at when I first learned about
+Magic
+). As part of the sale, R&D was asked to come up with games that we could sell in their stores. I pitched
+Mood Swings
+. Because it was a trading card game, it was deemed too complex for the printer we were going to use for games at The Game Keeper.
+In September, Wizards of the Coast was purchased by Hasbro. Wizards of the Coast was assigned to be the subsidiary focused on the more advanced lifestyle games, or games with more depth that enfranchised players would be excited by. But Hasbro had their own R&D department, and we were told if we came up with any games not appropriate for Wizards, we could pitch them to Hasbro R&D.
+So, of course, I pitched
+Mood Swings
+. When Hasbro learned it was a trading card game, they told me that was Wizards's domain. When I explained that to upper management, they said that
+Mood Swings
+was a less-complicated game than they were interested in. It was too complex for Hasbro but not complex enough for Wizards.
+2000
+Wizards wasn't interested in making
+Mood Swings
+, but I knew it was a good game, so I kept fiddling with it. My biggest playtesting partner was my wife, Lora. At the time, she worked at Wizards (where we met), and we would go to lunch every day and play
+Mood Swings
+. Normally, we'd play best-of-five games.
+Lora and I got married in 1998, and Lora got pregnant in 1999. Our first child, Rachel, was due on April 1, 2000. Lora and I agreed on the name Rachel pretty quickly, but we were split on the middle name. She wanted Diana, and I wanted Emily. We each liked the other's choice but preferred our own. I realized that they both had five letters in their name, so I made a proposal. What if we played
+Mood Swings
+for it?
+Lora and I played every day at lunch and were evenly matched (the game has higher variance than
+Magic
+), so she agreed. At one point, Lora was up D-I-A-N to E-M, but I'm happy to say on April 6, Rachel Emily Rosewater was born.
+2001
+After two years of tuning the game, I pitched
+Mood Swings
+to Wizards again. This time, they were worried about the business model. The whole point of a trading card game is that players are encouraged to buy more cards. I was selling them a game that was complete out of the box. Once you bought a copy of
+Mood Swings
+, you never had to buy another card.
+I agreed that it was a different business model but not inherently a flawed one. Because it was simpler, it could reach a wider market than
+Magic
+could. We were
+the
+trading card game company after all. They said they liked the game and that the concept was intriguing, but at the time, they felt it was too risky.
+2002
+Mood Swings
+is a trading card game. It has modularity. I'd already created ways to do Limited play. (Next week, I'll talk about how
+Mood Swings
+was designed to be playable out of a booster.) Maybe if I could demonstrate that side of it, I could show that there was a more robust business model.
+I redesigned the game, this time designing a frame and putting art on the cards. I chose to use pop culture images because I thought it would add an extra element of fun to the cards. I then made boosters out of the cards.
+I started an internal R&D
+Mood Swings
+league. Each player got a single fifteen-card booster. When you sat down against an opponent, you shuffled your boosters together. You would play best-of-five games, then you would shuffle the cards again and give each player fifteen cards so that each player would leave with a different mix of cards than when they started. (By the way,
+Mood Swings
+comes with 45 cards, so you can make three "boosters" if you'd like to play your own "league.") Players recorded their wins and losses and there were prizes for the Top 8.
+My hope was that the league would demonstrate that
+Mood Swings
+being a trading card game would allow flexibility for players to opt in to experiences, like Limited, where they could choose to buy more cards. It did nothing to move the needle internally, although R&D had a good time.
+2005
+I kept working on
+Mood Swings
+in my spare time. I played around with the scoring system and created secondary scores. I fine-tuned the rarity of cards, making better choices about how to simplify the base game, like moving the larger effects to rare. I iterated on what effects were the most fun. While I continued playtesting with Lora, I also playtested with many members of R&D. I really thought the game was in a good place, so I went and pitched it again.
+Upper management could see how serious I was about the game. At this point,
+Mood Swings
+had gone through fifteen iterations. They said, "Okay, let's do some focus testing on it." This meant, for the first time, I would get some graphic design help. They designed a card back with a logo.
+For the front face of cards, there was some discussion about what would be better received, so we ended up trying two different things. First, we took the approach I'd done for the internal league and used pop culture images.
+Then we made a second version with photographs of actual people. To get these, we brought in a photographer and took pictures of Wizards employees and their relatives.
+Love was a photo of Lora and my youngest daughter, Sarah.
+I was on Anxiety (which would later become
+Envy
+, but there's also a card called
+Anxiety
+).
+The focus testing went well. Players generally liked the game. The pop culture version was, by far, the preferred version. The data helped us better understand the type of player that would most enjoy the game. The problem was it wasn't our normal audience, and the business exploration into making it led them to believe we weren't suited to reach that audience. Instead of a straight-up "No," I got "We don't feel we're equipped to make it at this time, but maybe one day," which was a rejection, but a slightly nicer one than I was used to.
+2007
+I went back to the sticker version of
+Mood Swings
+. This allowed me to iterate faster.
+I started seeking help from other departments. Editing helped me with templating. Development helped me with balance. I did more playtesting with R&D folks to get feedback on individual card changes. I didn't know where the opportunity would come for me to make the game, but I was determined to make it the best that it could be when that opportunity arose.
+2011
+It had been six years since the focus testing. I'd done a lot of work on
+Mood Swings
+. I was showing it off to anyone who I could get to play it. I felt it was time to make another pitch. The feedback I got this time was that they had heard nothing but positive responses from people internally about the gameplay. The reason we couldn't make it had nothing to do with the game. The company underwent a big philosophical shift. Instead of making new games, we were putting all our energy into enhancing the core games we already had. It just wasn't an appropriate time to make
+Mood Swings
+, but if I had a new game that was
+Magic
+adjacent, they were interested in hearing about it. That gave me an idea.
+Mood Swings
+was designed as an entry-level trading card game. What if I did more to help bridge that entry as a gateway to
+Magic
+specifically? I could make
+Mood Swings
+into something
+Magic
+adjacent.
+This required a few changes. First, when I originally created the game, it had three colors (blue, red, and green) as I was trying to simplify things. I changed the game to five colors, alligning with
+Magic
+'s five colors. Once I did that, I decided to apply
+Magic
+'s color pie to
+Mood Swings
+. If a card puts a card back into someone's hand, it would be blue. If it makes another player discard a card, it would be black. I aligned it with the mechanical color pie as best I could.
+Mood Swings
+has some effects that don't line up exactly with
+Magic
+, but I matched the color of cards to
+Magic
+to the best of my ability, applying the same color pie philosophy to
+Mood Swings
+'s effects.
+That wasn't just with game mechanics, though. I took a lot of time figuring out where each of the emotions and moods fit in the color pie. Obviously, I had to spread them evenly between colors, and there's some flexibility where the concepts could fall, but I spent a lot of time thinking it through. I also added an additional rarity (mythic rare) to align it with
+Magic
+. That was probably something I needed to do regardless (
+Magic
+only had three rarities when I first made
+Mood Swings
+), but this was when I did it.
+I did consider adopting
+Magic
+'s vocabulary but decided against it. I was trying to make
+Mood Swings
+as beginner friendly as possible, and introducing new words players didn't know didn't fit that goal. Also,
+Magic
+'s vocabulary exists to reinforce the game's flavor, and
+Mood Swings
+obviously had its own flavor. In
+Mood Swings
+, you don't "destroy" cards, you "put them in the discard pile." We would eventually create some unique vocabulary for
+Mood Swings
+, but that would come later.
+2013
+I spent a couple years adapting
+Mood Swings
+to be more
+Magic
+adjacent.
+Again, I did as much playtesting as I could with various members of R&D, constantly iterating on individual card designs. This is the period where I added card draw. Originally, you drew an opening hand of seven cards and never drew a card. I changed the game so that you drew an opening hand of five cards and drew another card when you lost a round.
+2014
+Eventually, I decided I was ready to try and make the cards look a little more real. I worked with Ethan Fleischer (who had won the second
+Great Designer Search
+and had graphic design skills) to create a frame, including incorporating the dice used for scores. I then chose
+Magic
+art for each of the cards.
+My goal was to match the flavor of the emotion and try to show off the full range of
+Magic
+'s flavor. I used a lot of famous characters (especially Planeswalkers) and iconic
+Magic
+art pieces.
+2016
+Graeme Hopkins was another
+Great Designer Search
+finalist working at Wizards. He came in 3rd place in the first
+Great Designer Search
+. He ended up getting a job working on digital
+Magic
+as he was a programmer. I would often put Graeme on
+Magic
+design teams and, as I did with many Wizards employees, play
+Mood Swings
+with him.
+I had talked with Graeme about how I thought
+Mood Swings
+would make a good digital game. Each game only used a handful of cards, so it didn't take up much screen real estate. The game was played quickly and was asynchronous. Graeme agreed and said he was willing to program it so we could show off its potential as a digital game.
+At the end of the year, R&D had a holiday party. At the party, I played
+Mood Swings
+with our newest employee, a man named Mark Heggen. Why? Because it's what I did. I played
+Mood Swings
+with anyone who would play with me. My theory was that the more people at Wizards who knew about it, the better. I point it out here because it turns out this would be the one time it mattered most.
+2017
+R&D decided to have a fair. Anyone who had any ideas for things to do with
+Magic
+could form a team and create a table for their presentation. I'd worked with Ethan Fleischer on
+Magic
+-adjacent games. I decided this fair would be a great time to present the basic idea we'd been working on. I called our project "Stepping Stone Games."
+The idea was simple. We're a game company. Our expertise is making games. Maybe the best path to getting people into
+Magic
+wasn't making a simpler version of
+Magic
+but creating new games. What if we made a suite of games that were standalone games that all used
+Magic
+flavor and secretly taught you things mechanically about
+Magic
+? "Rumble" was a tweak on the card game
+War
+, except each card represented an actual creature with power and toughness. The creatures fighting in the gametaught you how creature combat worked in
+Magic
+.
+"Mana Clash" was a tweak on
+Yahtzee
+, but the dice you rolled had mana symbols and you used that mana to cast spells from your hand. It taught you how the mana system and spells worked.
+Finally, we had
+Mood Swings
+. It was a trading card game, so players unfamiliar with them would learn the essence of how they work. It also introduced the color pie, mechanically and flavorfully.
+We tweaked the frame Ethan had made for me and built a deck specifically for demonstrating the game at the fair. R&D management liked the idea of "Stepping Stone Games" but chose to pursue other things at the fair.
+2018
+Graeme finally finished his
+Mood Swings
+digital prototype.
+Graeme and I played a lot with each other. I showed it off to a bunch of different people, including people on our digital side. They were interested, but getting a new digital game made was a big hill to climb.
+2019
+It turns out the digital team was aware that there were a lot of great designs being created by Wizards employees. So much so, they decided to have a contest to pick one to actually make into a game. All Wizards employees were eligible to apply. At this point, I'd been tuning
+Mood Swings
+for 21 years. I even had a digital prototype. Just one small problem.
+Magic
+was a bit hectic and I was working on a whole bunch of different designs. I found out about the contest the day after the deadline.
+This was also the year that Mark Heggen, and many other team members helping him, created
+Secret Lair
+.
+2020–2022
+While stuck at home, Lora and I played a lot of
+Mood Swings
+.
+2024
+Mark Heggen approached me one day and asked if I had time to talk. He explained that
+Secret Lair
+was doing well and they were interested in expanding the type of things they sold through the storefront. One of the ideas they came up with was selling a game. But not just any game, something that leaned into the ethos of
+Secret Lair
+, something that was a little off the beaten path, something that wasn't a game you could just buy at your local game store. He wanted a game that was trying something new.
+He said he remembered playing
+Mood Swings
+with me eight years earlier, and he felt that it would be the perfect game to try as
+Secret Lair
+'s first attempt in this space. Was it okay if they made
+Mood Swings
+? (It was.)
+2025
+Mood Swings
+wasn't a big project, so I was the entire design team. (I would later get Corey Bowen to help me with balance.) I had eight months of design time, during which I did a lot of reworking. Next week, I'll be walking through
+Mood Swings
+'s design and will get into all the details.
+2026
+In January, we first announced the [REDACTED] event at MagicCon: Las Vegas and said that
+Secret Lair
+would sell a game designed by me. There was much speculation that it would be
+Mood Swings
+, but we did not officially announce it until just before MagicCon began.
+At the event, I have a panel and a talk (covering much of what I wrote about today) about
+Mood Swings
+. We announced that
+Mood Swings
+would release on June 1, 2026, at
+MagicSecretLair.com
+.
+Before I wrap up today, I just want to thank a bunch of people:
+Matt Danner and Ari Zirulnik for helping find all of the art sketches for the cards, and Ari for playtesting with me more than any other person at Wizards.
+Jefferson Dunlap for de-archiving all the sketches not once, not twice, but three times, because we kept changing our minds in our quest to find the best art.
+Corey Bowen for being my Play Design team and pushing me to make cards stronger.
+Michael Zhang for being my editor and helping craft the right language for the cards.
+Colby Nichols for making the card back, card faces, and packaging look so cool.
+Megan Kenreck, Silvia Cortese, and Lisa Hanson for helping Colby.
+Christina Troup for overseeing all the many moving pieces.
+Zakeel Gordon for being my product architect and doing everything I asked for.
+Lucas Harrington for providing me all the playtest dice stickers and helping me with accessibility.
+Lynne Rosewater, my mom, for kindling my love of psychology and answering so many questions about how particular emotions work.
+Lora Rosewater for being my eternal playtest partner and listening to me complain about
+Mood Swings
+not getting made for 28 years.
+And finally, Mark Heggen for being the person to finally say yes to
+Mood Swings
+.
+What's Your Mood?
+And that brings me to the end of my tale. I hope you enjoyed this look back at my inability to let this project go. I'm always eager to hear feedback, but today even more so, as I have been waiting to hear people's thought on
+Mood Swings
+for almost three decades. You can
+email me
+or contact me through social media (
+Bluesky
+,
+Tumblr
+,
+Instagram
+,
+TikTok
+, and
+Twitter
+).
+Join me next week as I start walking through the design of
+Mood Swings
+.
+Until then, don't give up on your dreams. They can sometimes take a while.

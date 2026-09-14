@@ -1,0 +1,168 @@
+News
+/
+Making Magic
+Last week
+, I began the design story of
+Mood Swings
+, my take on a more accessible trading card game. I covered my initial design back in 1998. Today, I will talk about all the iterations that happened over the next 28 years.
+Lunch Epiphany
+My initial design was a 300-card set with three colors (blue, red, and green) and three rarities (common, uncommon, and rare; mythic rare didn't exist yet). As I explained two weeks ago, my initial pitch of the game didn't go all that well, so I was working on it on my own time. My sole playtesting partner was my wife, Lora. We would usually play best-of-five games at lunch.
+Most of my early design process involved coming up with new cards to explore the design space of the game. Lora and I would playtest new cards, and I would figure out whether I liked a design. If I did, it stayed in the game. If I didn't, I'd get rid of it. I realized that, if I wanted to improve the game, I had to do more than just make new cards, I had to improve the cards I already had. My first big epiphany in this area happened one day at lunch.
+Psychosis
+[5]
+Blue
+This card is worth [1] less for every red card.
+This was a playtest card I called "Psychosis." It was a common card. It had a score of [5], but its value dropped [1] for every red card in play. At first blush, it seems like a fine card. It has a score of [5], which is good early on, and the card's value goes down over time. But the more I played with it, the more I realized that it required a lot of mental tracking. Every turn, I had to count the number of red cards in play and subtract that number from the original score of [5]. That would be fine if that was the only card I had to track, but I had a number of cards like "Psychosis." There was just a lot of monitoring.
+I felt a little extra monitoring was fine, but if you had too many cards that did this, they would add up and create mental strain. One solution was to move cards like this up to rare. It would lessen the as-fan of cards that required additional tracking. But "Psychosis" just didn't feel like a rare card. Was there some way to lessen the mental load? That's when I realized that I could simplify how cards changed their score. What if they just changed to one of their other scores? They were either one score or another. Once they changed, they would mostly stay changed.
+Here was the fixed version of "Psychosis" that I came up with:
+Psychosis
+[5]
+Blue
+This card is worth [3] if there are two or more red cards in play.
+It captured the same basic feel (the card starts with a score and its value goes down over time), but it's much easier to track. I then decided to limit all the common and uncommon cards to two values. If a card had more values than that, it had to be a rare (or, once they were added, mythic rare) card.
+I would later realize that, when I just had two values, I could put the second value on the card as another die. If I put them in the lower left corner, it would allow you to rotate the card 180 degrees to show that it's the value you're scoring. I also realized that the lower left corner had space for a second die, which meant that I could have secondary values that went all the way up to 12. (I made use of this on the card
+Love
+.)
+I then figured out I could color the dice to help communicate whether its score was variable. A white die meant the score didn't change, so you knew it stayed the same. A black die meant the score could change, so you had pay attention to it. For a while, I had a third die color, a red die that meant the card had exactly two values, but I later realized that some red dice couldn't change, once you decided when to play it, and others could, so I just made dice white or black.
+The Magic Touch
+The next big change came about when I decided to affiliate the game more with
+Magic
+. The game went from three colors to five colors, from three rarities to four rarities, and adopted the
+Magic
+color pie. Many of the cards simply shifted color, but as I tried to capture the essence of the colors, I started pushing into a new space. The biggest new thing I discovered was suppressing. This is a mechanic that shows up on eight cards in
+Mood Swings
+.
+I was trying to find a way for white to have answers that were answerable, like white often does in
+Magic
+. I made the card
+Pacifism
+for
+Mood Swings
+. Originally, it removed a card in play from the game (exile in
+Magic
+) for as long as
+Pacifism
+was in play. That confused people, so I changed it to instead stop a card from working while it was in play. That caused some rules issues, so I next tried having the card affected by
+Pacifism
+not be scored. That worked a little better, but in the end I had it reduce the card's value to [0], as that was just cleaner and easier to understand. I liked the effect enough that I put it on a bunch of other white cards. (I chose to leave it just in white.)
+I also changed how the game interacted with colors. Rather than referring to a single color, I changed things around such that cards referred to either allies or enemies. Whenever a card referenced a color, it always referenced a second color. I made it so that allies usually help you and enemies often hurt you. I made cards that harm other cards based on their color to harm enemy colors. Then, I synced up the common ally and enemy cycles such that they all looked for the same thing: whether two of the named colors were on cards in play.
+The other big change that happened around this time was a change to how cards were drawn. As I explained last week, you began the game by drawing seven cards and didn't draw cards for the remainder of the game. While playtesting, I got into a good discussion with an R&D member named Tom LaPille about why I was having players draw all their cards at the beginning of the game. Tom's issues were twofold. One, it made it harder to make the first turn, as there were more cards to process. Two, there was no hope. If you drew a bad mix of cards, there was no chance of ever finding a way out. Having some card draw allowed players to dream.
+I still wanted to restrict two-player games to fourteen cards, so the solution was to let players draw five cards up front, then draw a card whenever they lost. Since a player could only lose two rounds (three rounds would be game), that meant they would have a maximum of seven cards per game. Having the loser or losers of each round draw also had another positive effect: it helped give the player who just lost a better chance at winning on the next turn.
+The Secret Life of Lairs
+When
+Mood Swings
+was put on the
+Secret Lair
+schedule and I realized we were actually going to release it, I spent eight months doing extensive work on the game. This led to a lot of key changes.
+The first big note I addressed was that a lot of players were getting cards stuck in their hand that they either couldn't cast or were just such bad plays that they didn't want to cast them. I found two solutions:
+A lot more "may" on cards
+: I went and looked at every card that generated an effect when you played it and whenever I could I changed it to an optional effect. This way, if you really need the points and don't want the effect, you were no longer obligated to generate the effect. This mostly happened on effects that were meant to be positive for you. Effects that were meant to cause you problems (usually because you got cards with higher scores) stayed mandatory.
+Optional costs
+: Another class of cards I looked at were cards with a required cost to play them. What if the cost was optional, meaning you could choose not to pay the cost and just play the card for its lower value? This is where all the cards with scores of [3] whose values become [5] if you discard the right card came about. Before this change, they were all only worth [5] and forced you to discard the card.
+Also, early in this stage of design, we had an open house so that anyone at Wizards who hadn't yet played
+Mood Swings
+could come and play it. Three of those people were on the
+Magic
+Rules team (Jess Dunks, Eliana Rabinowitz, and Eric Levine). After playing some two-person games, they asked if there was a multiplayer variant. I said yes. You could play three-player and four-player games, so we played a four-player game. They enjoyed that game the most and said that we should market
+Mood Swings
+as a multiplayer game.
+Up until this point,
+Mood Swings
+had always been a two-player game. It worked with three or more players, but the game wasn't optimized for it. I took this note to heart and did a number of things to make it play better with three and four players. First, I went to my product architect, Zakeel Gordon, and told him we needed to up the number of cards in each box of
+Mood Swings
+to 44 cards. Originally, we had planned for decks to have 40 cards. A two-player game requires 14 cards, a three-player game requires 27 cards, and a four-player game requires 44 cards. I didn't feel we could market it as a four-player game if you occasionally ran out of cards when playing with four players. Zakeel decided to change it from 40 cards to 45 cards.
+I then worked on a lot of individual card designs to improve their play in three-player and four-player games. One such design was
+Panic
+.
+Panic
+[1]
+Return a card in play to its player's hand.
+Panic was a good card in two-player games but pretty bad in three-player and four-player games. You would spend your turn hurting the person in the lead, but you didn't advance much. Usually, the person who had been in second place won. I then tried this version of
+Panic
+:
+Panic
+[1]
+Return a card from each opponent to their player's hand.
+The problem with this version was that, while it was better for you, it really punished the player in last place. I eventually ended up with the printed version:
+Panic
+[1]
+After playing this mood
+– Choose up to two players. For each chosen player, put one of their moods into their hand. You can't put this mood into your hand this way.
+This helped you deal with multiple players while not hurting the person in last place. The template also worked in a two-player game, because it allowed you to choose yourself as the second player. Perhaps you had a valuable card with a score of [0] (like
+Hate
+, which gets rid of a mood) that you wanted to play again.
+Templates like this helped, but there was still a core issue. It was just so hard to catch up when you were behind. One day when we were playtesting a four-player game, the player in last place played the card
+Hope
+(it has a score of [0] and lets you play two cards each turn while it's in play). The playtester went on to win that game. We played a second game, and they fell behind again. Frustrated, they said, "I really need to draw
+Hope
+again."
+That led to the idea of having a special feature just for three-player and four-player games. What if being in last basically allowed you to have
+Hope
+, at least for the next turn? I mocked up a card, called it
+Hurt Feelings
+, and we never looked back. The card played great and did exactly what we needed for games with three or more players.
+Along the way, Corey Bowen became my "play designer." Corey did a lot to help me realize that I was undercosting cards with additional costs. For example, I had
+Neurosis
+(which requires you to put one of your cards in play into your hand) with a score of [4], and
+Self-Loathing
+(which requires you to put one of your cards in play into the discard pile) with a score of [5]. Corey convinced me to change them to [5] and [6], respectively. Corey did a lot to get me to reduce additional costs. I had several cards that required other costs (like discarding cards) that we just removed.
+A different change came about from my friend Lucas Harrington. He was the one who had made special dice stickers that let me use my stickered cards with dice. I felt it was important to get the feel of how they played. Lucas and I spent a lot of time talking about accessibility concerns. One of the things Lucas brought up was that there was a lot to track. Were there things we could put on the cards that would help players track things? I had already color coded the dice to tell people when a card's values could change. Lucas suggested a symbol that told you when cards had an effect while in play. That's where the exclamation point on cards like Imagination came from. It's on every card that has an effect beyond the first turn it's played.
+The next big change came about because I solved a problem that I didn't think I could solve. As I mentioned earlier, I wanted to keep the game locked to fourteen cards for two-player games. Even though
+Secret Lair
+wouldn't be selling
+Mood Swings
+boosters, it was important to me that we kept that option open. My strategy was to assume
+Mood Swings
+would be a success and make the best long-term decisions for it. Ari Zirulnik was one of the people who chose the art for the cards. He and I did a lot of playtesting. Ari playtested most of the other ways to play
+Mood Swings
+with me.
+One day, Ari bemoaned that there were no effects that let you draw cards, and I explained why I wasn't doing it. But as I explained my reasoning to Ari, I realized there was a way. As long as you put a card on the bottom of the deck first, you wouldn't go up on cards if you drew a card. I then poured through the file finding spots where I could take advantage of this new technology. I ended up finding ten slots. It did a nice job of adding to card flow and was a positive addition.
+The last biggest change came about when I got an editor, Michael Zhang. Michael looked at the file and realized that there were basically three types of effects:
+Cards that required you do something before you could play them
+Cards that did something when you played them
+Cards that had an effect while they were in play
+The first category of cards got the "To play this card" template. The second set got the "After playing this mood" template. The third set got the "While in play" template. This did a great job of simplifying the set down to a few key concepts. It also made it easier to teach the game. You just have to go through the three kinds of cards. During this pass, Michael suggested keywording suppress (including using that exact word).
+The final big editing change was the very last thing to happen. We were looking for ways to simplify the templating, and Matt Tabak, another editor, suggested that if we gave a term to the cards in play, it would make for less wordy templates. We changed "cards in play" to "moods."
+In a Good Mood
+And that is the design story of
+Mood Swings
+. If today's article has interested you in purchasing
+Mood Swings
+, the game releases on
+MagicSecretLair.com
+on June 1. The
+Mood Swings
+page on the
+Secret Lair
+site has more information, including links to the
+extended rules
+,
+card notes
+, a list of
+other ways to play
+, and the
+card image gallery
+. I am also recording a number of podcasts on
+Mood Swings
+for those of you who listen to
+Drive to Work
+.
+I'm especially eager for any feedback on today's article or
+Mood Swings
+in general. You can
+email me
+or talk to me through social media (
+Bluesky
+,
+Tumblr
+,
+Instagram
+,
+TikTok
+, and
+Twitter
+).
+Join me next week for another installment of
+Making Magic
+.
+Until then, may you swing some moods.

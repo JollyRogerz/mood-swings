@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.DS_Store
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.runtime/
+playwright-report/
+test-results/
+output/playwright/test-results/
+output/
