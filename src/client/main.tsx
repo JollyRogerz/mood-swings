@@ -602,9 +602,16 @@ function App() {
             <div className="your-moods">
               <div className="zone-label">
                 <span>YOUR MOODS</span>
-                <span>
-                  {view.players.find((p) => p.id === view.you)?.score} points
-                </span>
+                <div
+                  className="your-score"
+                  aria-label="Your current points"
+                  aria-live="polite"
+                >
+                  <strong>
+                    {view.players.find((p) => p.id === view.you)?.score ?? 0}
+                  </strong>
+                  <span>YOUR POINTS</span>
+                </div>
               </div>
               <div className="mood-row">
                 {view.moods

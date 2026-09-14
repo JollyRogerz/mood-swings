@@ -2524,3 +2524,67 @@ footer a {
     min-height: 185px;
   }
 }
+
+/* Scores should be readable at a glance from either side of the table. */
+.your-moods > .zone-label {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px 12px;
+  border-bottom: 1px solid #bdccad20;
+}
+.your-moods > .zone-label > span {
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.your-score {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px 18px;
+  border: 1px solid #d7c18775;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #a28e4b26, #081f203b);
+  color: #fff5cf;
+  box-shadow: inset 0 1px 0 #fff4c914;
+}
+.your-score strong {
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.your-score > span {
+  max-width: 55px;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 1.3px;
+}
+.opponent-score > strong {
+  font-size: 40px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.opponent-score small {
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  color: #c5d2b9;
+}
+@media (max-width: 600px) {
+  .your-score {
+    padding: 8px 12px;
+    gap: 9px;
+  }
+  .your-score strong {
+    font-size: 36px;
+  }
+  .your-score > span {
+    font-size: 9px;
+  }
+  .opponent-score > strong {
+    font-size: 30px;
+  }
+  .opponent-score small {
+    font-size: 8px;
+  }
+}
