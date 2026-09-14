@@ -332,3 +332,38 @@ describe("round result announcements", () => {
     expect(g.lastRound!.hurtFeelings).toBeUndefined();
   });
 });
+
+describe("played-card reveals", () => {
+  it("records a completed play, without announcing an unpaid card", () => {
+    let g = table();
+    const payment = add(g, "apathy", "hand");
+    g = play(g, "bliss");
+    expect(g.lastPlayed).toBeUndefined();
+    g = choose(g, [payment]);
+    expect(g.lastPlayed).toMatchObject({
+      actor: "a",
+      def: "bliss",
+      originalDef: "bliss",
+    });
+  });
+  it("keeps the copied identity for the reveal", () => {
+    let g = table();
+    const target = add(g, "apathy", "play", "b");
+    g = play(g, "creativity");
+    g = choose(g, [target]);
+    expect(g.lastPlayed).toMatchObject({
+      def: "apathy",
+      originalDef: "creativity",
+    });
+  });
+  it("does not reannounce a mood merely transferred between players", () => {
+    let g = table();
+    const target = add(g, "love");
+    g = play(g, "betrayal");
+    const announcement = structuredClone(g.lastPlayed);
+    g = choose(g, [target]);
+    g = choose(g, ["b"]);
+    expect(g.lastPlayed).toEqual(announcement);
+    expect(g.lastPlayed!.def).toBe("betrayal");
+  });
+});

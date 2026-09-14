@@ -54,6 +54,10 @@ export class MoodRoom extends Room {
           throw new RuleError(
             "The round results are being shown. Play resumes shortly.",
           );
+        if ((this.game.playPauseUntil ?? 0) > Date.now())
+          throw new RuleError(
+            "A played card is being revealed. Play resumes shortly.",
+          );
         const next = act(this.game, actor, message.action as Action);
         await this.commit(next);
       }, client),
@@ -208,6 +212,8 @@ export class MoodRoom extends Room {
     return client ? this.chain : job;
   }
   private async commit(next: Game) {
+    if (next.lastPlayed && next.lastPlayed.id !== this.game.lastPlayed?.id)
+      next.playPauseUntil = Date.now() + 6000;
     if (next.lastRound && next.lastRound.round !== this.game.lastRound?.round)
       next.roundPauseUntil = Date.now() + 9000;
     await store.save(this.roomId, next);
@@ -253,7 +259,15 @@ export class MoodRoom extends Room {
           ),
         );
       },
-      Math.max(650, (this.game.roundPauseUntil ?? 0) - Date.now() + 100),
+      Math.max(
+        650,
+        Math.max(
+          this.game.roundPauseUntil ?? 0,
+          this.game.playPauseUntil ?? 0,
+        ) -
+          Date.now() +
+          100,
+      ),
     );
   }
   private sendView(client: Client) {
@@ -261,6 +275,7 @@ export class MoodRoom extends Room {
     if (id)
       client.send("view", {
         ...publicView(this.game, id),
+        playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
         roundPauseMs: Math.max(
           0,
           (this.game.roundPauseUntil ?? 0) - Date.now(),

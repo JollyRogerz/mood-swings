@@ -43,6 +43,7 @@ test("two friends create a table, play a mood, and reconnect", async ({
   const current = aliceActive ? page : friend;
   await current.locator(".hand-card.playable").first().click();
   await current.getByRole("button", { name: "Play mood", exact: true }).click();
+  let sawReveal = false;
   // Resolve mandatory decisions and skip optional effects from either player's browser.
   for (let i = 0; i < 30; i++) {
     const a = page.locator(".choice-panel"),
@@ -52,12 +53,34 @@ test("two friends create a table, play a mood, and reconnect", async ({
         async () =>
           (await a.count()) +
           (await b.count()) +
+          (await current.locator(".played-card-reveal").count()) +
           (await current
             .getByRole("button", { name: /^(End turn|Continue)$/ })
             .isEnabled()
             .then((x) => (x ? 1 : 0))),
       )
       .toBeGreaterThan(0);
+    const reveal = current.locator(".played-card-reveal");
+    if (await reveal.count()) {
+      sawReveal = true;
+      const id = await reveal.getAttribute("data-play-id");
+      await expect(page.locator(".played-card-reveal")).toBeVisible();
+      await expect(friend.locator(".played-card-reveal")).toBeVisible();
+      await expect(current.locator(".end-turn")).toBeDisabled();
+      const observer = current === page ? friend : page;
+      await expect(observer.locator(".played-card-reveal")).toHaveCSS(
+        "opacity",
+        "1",
+      );
+      await expect(
+        observer.locator(".played-card-reveal > .eyebrow"),
+      ).not.toHaveText("YOU PLAYED");
+      await observer.screenshot({ path: "output/playwright/played-card.png" });
+      await expect(
+        current.locator(`.played-card-reveal[data-play-id="${id}"]`),
+      ).toHaveCount(0);
+      continue;
+    }
     const chooser = (await a.count())
       ? page
       : (await b.count())
@@ -82,6 +105,7 @@ test("two friends create a table, play a mood, and reconnect", async ({
     ).toHaveCount(0);
     await expect(chooser.locator(".toast")).toHaveCount(0);
   }
+  expect(sawReveal).toBe(true);
   await current.getByRole("button", { name: /^(End turn|Continue)$/ }).click();
   await expect(page.locator(".mood-card")).toHaveCount(
     await friend.locator(".mood-card").count(),
@@ -215,7 +239,7 @@ test("four friends finish a match and return to a rematch lobby", async ({
 test("solo play adds a selectable bot that takes turns and completes the match", async ({
   page,
 }) => {
-  test.setTimeout(120000);
+  test.setTimeout(240000);
   await page.goto("/");
   await page.getByLabel("Your name at the table").fill("Solo player");
   await page.getByRole("button", { name: "Create a table" }).click();
@@ -237,12 +261,21 @@ test("solo play adds a selectable bot that takes turns and completes the match",
       .poll(
         async () =>
           (await page.locator(".winner-modal").count()) > 0 ||
+          (await page.locator(".played-card-reveal").count()) > 0 ||
           (await page.locator(".choice-panel").count()) > 0 ||
           (await page.locator(".end-turn").isEnabled()),
         { timeout: 20000 },
       )
       .toBe(true);
     if (await page.locator(".winner-modal").count()) break;
+    const reveal = page.locator(".played-card-reveal");
+    if (await reveal.count()) {
+      const id = await reveal.getAttribute("data-play-id");
+      await expect(
+        page.locator(`.played-card-reveal[data-play-id="${id}"]`),
+      ).toHaveCount(0);
+      continue;
+    }
     const panel = page.locator(".choice-panel");
     if (await panel.count()) {
       const promptId = await panel.getAttribute("data-prompt-id");

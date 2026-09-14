@@ -119,6 +119,8 @@ export interface Game {
   roundAward: number;
   discardedRound: number;
   scores: Record<string, number>;
+  playPauseUntil?: number;
+  lastPlayed?: { id: number; actor: string; def: string; originalDef: string };
   roundPauseUntil?: number;
   lastRound?: {
     round: number;
@@ -150,6 +152,8 @@ export interface PublicCard extends Mood {
 }
 export interface View {
   roundPauseMs?: number;
+  playPauseMs?: number;
+  lastPlayed?: Game["lastPlayed"];
   order: string[];
   suppressions: Suppression[];
   revision: number;

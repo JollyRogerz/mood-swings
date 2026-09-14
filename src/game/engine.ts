@@ -670,6 +670,12 @@ function playTask(g: Game, t: Task) {
   g.grants = g.grants.filter((x) => x.id !== gr.id);
   move(g, m, "play", t.actor);
   log(g, `${playerName(g, t.actor)} played ${definition(m).name}.`);
+  g.lastPlayed = {
+    id: ++g.serial,
+    actor: t.actor,
+    def: definition(m).id,
+    originalDef: m.def,
+  };
   if (gr.cleanup)
     g.delayed.push({
       id: `d${++g.serial}`,
@@ -2104,6 +2110,7 @@ export function publicView(g: Game, you: string): View {
     waitingFor: g.prompt?.actor,
     winner: g.winner,
     lastRound: g.lastRound,
+    lastPlayed: g.lastPlayed,
     log: g.log,
     scoring: g.scoring,
   };

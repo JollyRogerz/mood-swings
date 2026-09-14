@@ -70,13 +70,16 @@ function App() {
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
   const [roundDeadline, setRoundDeadline] = useState(0);
+  const [playDeadline, setPlayDeadline] = useState(0);
   const [clockNow, setClockNow] = useState(Date.now());
   const roundPaused = roundDeadline > clockNow;
+  const playPaused = playDeadline > clockNow;
+  const interactionPaused = roundPaused || playPaused;
   useEffect(() => {
-    if (!roundDeadline || !roundPaused) return;
+    if (!interactionPaused) return;
     const timer = setInterval(() => setClockNow(Date.now()), 100);
     return () => clearInterval(timer);
-  }, [roundDeadline, roundPaused]);
+  }, [interactionPaused]);
   const [botDifficulty, setBotDifficulty] = useState<Difficulty>("normal");
   const room = useRef<Room | null>(null),
     keepConnected = useRef(false),
@@ -97,6 +100,7 @@ function App() {
       setView(v);
       setClockNow(Date.now());
       setRoundDeadline(v.roundPauseMs ? Date.now() + v.roundPauseMs : 0);
+      setPlayDeadline(v.playPauseMs ? Date.now() + v.playPauseMs : 0);
       setError("");
       setBusy(false);
       setConnected(true);
@@ -170,7 +174,7 @@ function App() {
     };
   }, []);
   function send(action: Action) {
-    if (!connected || !viewRef.current || busy || roundPaused) return;
+    if (!connected || !viewRef.current || busy || interactionPaused) return;
     setBusy(true);
     setError("");
     room.current?.send("action", {
@@ -655,15 +659,17 @@ function App() {
                 className={`turn-status ${view.active === view.you ? "your-turn" : ""}`}
               >
                 <span className="status-dot" />
-                {roundPaused
-                  ? "Round results"
-                  : view.scoring
-                    ? "Scoring the round"
-                    : view.waitingFor
-                      ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
-                      : view.active === view.you
-                        ? "Your turn. How are you feeling?"
-                        : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
+                {playPaused
+                  ? "Reading the played mood"
+                  : roundPaused
+                    ? "Round results"
+                    : view.scoring
+                      ? "Scoring the round"
+                      : view.waitingFor
+                        ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
+                        : view.active === view.you
+                          ? "Your turn. How are you feeling?"
+                          : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
               </div>
               <button
                 className="end-turn"
@@ -671,7 +677,7 @@ function App() {
                   view.active !== view.you ||
                   !!view.waitingFor ||
                   view.scoring ||
-                  roundPaused ||
+                  interactionPaused ||
                   busy ||
                   !connected
                 }
@@ -685,15 +691,15 @@ function App() {
               view={view}
               send={send}
               inspect={setInspect}
-              disabled={busy || !connected || roundPaused}
+              disabled={busy || !connected || interactionPaused}
             />
           </section>
-          {view.prompt && !roundPaused && (
+          {view.prompt && !interactionPaused && (
             <ChoicePanel
               key={view.prompt.id}
               view={view}
               send={send}
-              disabled={busy || !connected || roundPaused}
+              disabled={busy || !connected || interactionPaused}
             />
           )}
           {activity && (
@@ -727,6 +733,9 @@ function App() {
                 ))}
               </ol>
             </aside>
+          )}
+          {playPaused && !roundPaused && view.lastPlayed && (
+            <PlayedCardReveal view={view} remaining={playDeadline - clockNow} />
           )}
           {roundPaused && view.lastRound && (
             <RoundResults view={view} remaining={roundDeadline - clockNow} />
@@ -898,6 +907,56 @@ function CardBack() {
         </span>
       </span>
     </span>
+  );
+}
+function PlayedCardReveal({
+  view,
+  remaining,
+}: {
+  view: View;
+  remaining: number;
+}) {
+  const played = view.lastPlayed!;
+  const card = catalog.find((c) => c.id === played.def)!;
+  const original = catalog.find((c) => c.id === played.originalDef)!;
+  const player =
+    view.players.find((p) => p.id === played.actor)?.name ?? "A player";
+  return (
+    <div className="modal-backdrop played-card-backdrop">
+      <section
+        className="played-card-reveal"
+        data-play-id={played.id}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${player} played ${card.name}`}
+      >
+        <span className="eyebrow">
+          {played.actor === view.you ? "YOU PLAYED" : `${player} PLAYED`}
+        </span>
+        <h2>{card.name}</h2>
+        {played.originalDef !== played.def && (
+          <p className="played-copy-note">
+            {original.name} copying {card.name}
+          </p>
+        )}
+        <img
+          className="played-card-art"
+          src={"/" + card.images[0].path}
+          alt={card.name}
+        />
+        <div className="played-card-timer">
+          <span
+            style={{
+              width: `${Math.max(0, Math.min(100, (6000 - remaining) / 60))}%`,
+            }}
+          />
+        </div>
+        <p className="played-card-countdown">
+          A moment to read · Play resumes in{" "}
+          {Math.max(1, Math.ceil(remaining / 1000))}s
+        </p>
+      </section>
+    </div>
   );
 }
 function RoundResults({ view, remaining }: { view: View; remaining: number }) {
