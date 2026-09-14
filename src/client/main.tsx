@@ -959,13 +959,21 @@ function CardZoom() {
   ) : null;
 }
 function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
+  const printed = catalog.find(
+    (entry) => entry.id === (c.copy ?? c.def),
+  )?.printed_values;
+  const secondary =
+    !c.suppressed &&
+    c.zone === "play" &&
+    printed?.length === 2 &&
+    c.value === printed[1];
   return (
     <button
-      className={`mood-card ${c.suppressed ? "suppressed" : ""}`}
+      className={`mood-card ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
       onClick={onClick}
       data-card-image={c.image}
       data-card-name={c.name}
-      aria-label={`Inspect ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : ""}`}
+      aria-label={`Inspect ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : secondary ? ", bottom-left value" : ""}`}
     >
       <img src={c.image} alt={c.name} />
       <span className="value-badge">{c.value}</span>

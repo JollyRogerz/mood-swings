@@ -2402,3 +2402,8 @@ footer a {
     margin-top: 15px;
   }
 }
+
+/* The active printed die determines the card's tabletop orientation. */
+.mood-card.secondary-value:not(.suppressed) img {
+  transform: rotate(180deg);
+}
