@@ -273,6 +273,14 @@ function App() {
     history.replaceState({}, "", "/");
   }
   const inspected = catalog.find((c) => c.id === inspect);
+  // The table ends a turn by itself once its player has no legal play left.
+  const outOfPlays =
+    !!view &&
+    view.status === "playing" &&
+    view.active === view.you &&
+    !view.prompt &&
+    !view.scoring &&
+    Object.keys(view.playable).length === 0;
   return (
     <div className={view ? "app game-app" : "app"}>
       <header className="site-header">
@@ -784,7 +792,9 @@ function App() {
                       : view.waitingFor
                         ? `${view.players.find((p) => p.id === view.waitingFor)?.name} is choosing`
                         : view.active === view.you
-                          ? "Your turn. How are you feeling?"
+                          ? outOfPlays
+                            ? "Nothing left to play. Moving on…"
+                            : "Your turn. How are you feeling?"
                           : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
               </div>
               <div className="reaction-bar" aria-label="Send a reaction">
@@ -807,7 +817,7 @@ function App() {
                   !interactionPaused &&
                   !busy &&
                   connected &&
-                  (!view.grants.length || !Object.keys(view.playable).length)
+                  !outOfPlays
                     ? "attention"
                     : ""
                 }`}
@@ -817,11 +827,16 @@ function App() {
                   view.scoring ||
                   interactionPaused ||
                   busy ||
-                  !connected
+                  !connected ||
+                  outOfPlays
                 }
                 onClick={() => send({ type: "pass" })}
               >
-                {view.grants.length ? "End turn" : "Continue"}
+                {outOfPlays
+                  ? "Moving on"
+                  : view.grants.length
+                    ? "End turn"
+                    : "Continue"}
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -1059,7 +1074,9 @@ function describeActivity(
       ? p.bot === "fly"
         ? "Sniffing the table…"
         : "Thinking…"
-      : "Choosing a mood…";
+      : !view.grants.length && !p.handCount
+        ? "Out of plays, moving on…"
+        : "Choosing a mood…";
   return undefined;
 }
 function WinDots({ wins }: { wins: number }) {

@@ -55,9 +55,15 @@ test("two friends create a table, play a mood, and reconnect", async ({
           (await b.count()) +
           (await current.locator(".played-card-reveal").count()) +
           (await current
-            .getByRole("button", { name: /^(End turn|Continue)$/ })
+            .getByRole("button", { name: /^(End turn|Continue|Moving on)$/ })
             .isEnabled()
-            .then((x) => (x ? 1 : 0))),
+            .then((x) => (x ? 1 : 0))) +
+          // The turn may already have ended by itself.
+          (/’s turn|Round results/.test(
+            await current.locator(".turn-status").innerText(),
+          )
+            ? 1
+            : 0),
       )
       .toBeGreaterThan(0);
     const reveal = current.locator(".played-card-reveal");
@@ -106,7 +112,17 @@ test("two friends create a table, play a mood, and reconnect", async ({
     await expect(chooser.locator(".toast")).toHaveCount(0);
   }
   expect(sawReveal).toBe(true);
-  await current.getByRole("button", { name: /^(End turn|Continue)$/ }).click();
+  // With nothing left to play, the turn ends by itself; otherwise end it.
+  const endTurn = current.getByRole("button", {
+    name: /^(End turn|Continue|Moving on)$/,
+  });
+  if (await endTurn.isEnabled()) await endTurn.click();
+  await expect(endTurn).toBeDisabled();
+  await expect
+    .poll(async () => await current.locator(".turn-status").innerText(), {
+      timeout: 15000,
+    })
+    .not.toMatch(/Your turn|Moving on/);
   await expect(page.locator(".mood-card")).toHaveCount(
     await friend.locator(".mood-card").count(),
   );

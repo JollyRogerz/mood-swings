@@ -33,6 +33,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Table chatter      | Emoji reactions, opponents' hands as card backs, and what each player is doing |
 | Guidance           | The one control that moves the game along glows                     |
 | Decide first       | A card's decisions are previewed and answered from the hand before it is played |
+| Auto-advance       | A turn with no legal play left ends by itself                       |
 | Device support     | Browser interface with responsive layouts; no installer required    |
 
 This release does not include Duel, drafting, team variants, custom deck construction, spectators, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
@@ -46,7 +47,7 @@ This release does not include Duel, drafting, team variants, custom deck constru
 5. Wait for everyone to join. The host can add bots to empty seats.
 6. With two to four players seated, the host selects **Start the game**.
 7. Select a card from your hand. If its effect needs a decision, the options appear right there under the card; choose them, then choose **Play mood**. Anything you leave undecided is asked at the table after the play.
-8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions.
+8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions. When you have no legal play left, the table ends your turn for you after the reveal.
 
 While you wait, each opponent's seat shows their hand as face-down card backs and a short line about what they are up to: choosing a mood, holding a card, reading a card, checking the rules, deciding on an effect, or away. Those lines come from the other browser's own interface state and never name a hidden card. Eight emoji reactions float over your avatar for everyone at the table; reactions and activity are broadcast live and are not part of the saved game. The control that moves the game along glows: Start the game, Play mood once a card is selected, Confirm or Skip on a decision, and Continue or End turn when there is nothing left to play.
 

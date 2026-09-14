@@ -351,6 +351,16 @@ export class MoodRoom extends Room {
       });
     } else publicRooms.delete(this.roomId);
   }
+  // A human with no legal play left has nothing to decide: their turn ends by
+  // itself once the table has finished reading.
+  private exhausted(id: string) {
+    return (
+      !this.game.prompt &&
+      !this.game.scoring &&
+      this.game.order[this.game.turnIndex] === id &&
+      Object.keys(publicView(this.game, id).playable).length === 0
+    );
+  }
   private scheduleBot() {
     this.botTimer?.clear();
     if (
@@ -360,13 +370,20 @@ export class MoodRoom extends Room {
       return;
     const id = this.game.prompt?.actor ?? this.game.order[this.game.turnIndex],
       player = this.game.players.find((p) => p.id === id);
-    if (!player?.bot) return;
+    if (!player) return;
+    if (!player.bot && !this.exhausted(id)) return;
+    const revision = this.game.revision;
     this.botTimer = this.clock.setTimeout(
       () => {
         void this.enqueue(async () => {
           const who =
             this.game.prompt?.actor ?? this.game.order[this.game.turnIndex];
           if (who !== id || this.game.status !== "playing") return;
+          if (!player.bot) {
+            if (this.game.revision !== revision || !this.exhausted(id)) return;
+            await this.commit(act(this.game, id, { type: "pass" }));
+            return;
+          }
           const view = publicView(this.game, id);
           let next: Game | undefined;
           for (let attempt = 0; attempt < 8 && !next; attempt++) {
@@ -384,13 +401,13 @@ export class MoodRoom extends Room {
           if (next) await this.commit(next);
         }).catch((error) =>
           console.error(
-            "Bot could not act",
+            player.bot ? "Bot could not act" : "Could not end the turn",
             error instanceof Error ? error.message : "Unknown error",
           ),
         );
       },
       Math.max(
-        650,
+        player.bot ? 650 : 1200,
         Math.max(
           this.game.roundPauseUntil ?? 0,
           this.game.playPauseUntil ?? 0,
