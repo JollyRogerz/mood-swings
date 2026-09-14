@@ -121,6 +121,12 @@ it("recovers a private multiplayer match after the server process restarts", asy
     returned.room.send("visibility", { visibility: "public" });
     await expect.poll(() => returned.view.visibility).toBe("public");
     a = returned;
+    denied = "";
+    b.room.send("pace", { pace: "quick" });
+    await expect.poll(() => denied).toContain("Only the host");
+    expect(a.view.pace).toBe("standard");
+    a.room.send("pace", { pace: "relaxed" });
+    await expect.poll(() => b.view.pace).toBe("relaxed");
     a.room.send("start", { mode: "retail" });
     await expect.poll(() => a.view.status).toBe("playing");
     await expect.poll(() => b.view.status).toBe("playing");
@@ -164,6 +170,7 @@ it("recovers a private multiplayer match after the server process restarts", asy
     await launch();
     const resumed = await join(code, tokenA, "Alice");
     expect(resumed.view.visibility).toBe("public");
+    expect(resumed.view.pace).toBe("relaxed");
     expect(await listing()).toEqual([]);
     expect(resumed.view.round).toBe(round);
     expect(resumed.view.hand.map((c) => c.def)).toEqual(original);

@@ -112,6 +112,8 @@ export interface Delayed {
   round: number;
 }
 export interface Game {
+  pace?: import("./pacing").Pace;
+  revealReady?: string[];
   visibility?: "private" | "public";
   version: 1;
   revision: number;
@@ -183,6 +185,8 @@ export interface PublicRoom {
   bots: number;
 }
 export interface View {
+  pace?: import("./pacing").Pace;
+  revealReady?: string[];
   visibility?: "private" | "public";
   presence?: Record<string, Presence>;
   roundPauseMs?: number;

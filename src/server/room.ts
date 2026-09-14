@@ -30,6 +30,7 @@ const plannedChoices = (raw: unknown): PlannedChoice[] =>
       }))
     : [];
 import { store } from "./store";
+import { acknowledgeReveal, isPace, pacing } from "../game/pacing";
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
   if (typeof token !== "string" || !/^[a-f0-9-]{36,128}$/i.test(token))
@@ -79,6 +80,38 @@ export class MoodRoom extends Room {
         const next = structuredClone(this.game);
         next.visibility = message.visibility;
         next.revision++;
+        await this.commit(next);
+      }, client),
+    );
+    this.onMessage("pace", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        if (
+          this.actor(client) !== this.game.host ||
+          this.game.status !== "lobby"
+        )
+          throw new RuleError("Only the host can change pacing in the lobby.");
+        if (!isPace(message?.pace)) throw new RuleError("Choose a table pace.");
+        const next = structuredClone(this.game);
+        next.pace = message.pace;
+        next.revision++;
+        await this.commit(next);
+      }, client),
+    );
+    this.onMessage("reveal-ready", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const next = structuredClone(this.game);
+        if (
+          !acknowledgeReveal(
+            next,
+            this.actor(client),
+            message?.playId,
+            Date.now(),
+          )
+        )
+          return;
+        // Readiness changes presentation only, so it must not invalidate a plan.
         await this.commit(next);
       }, client),
     );
@@ -229,6 +262,7 @@ export class MoodRoom extends Room {
           randomBytes(4).readUInt32LE(),
         );
         next.visibility = this.game.visibility;
+        next.pace = this.game.pace;
         for (const p of this.game.players.filter((p) => p.id !== actor)) {
           addPlayer(next, p.id, p.name);
           next.players.find((x) => x.id === p.id)!.bot = p.bot;
@@ -322,10 +356,14 @@ export class MoodRoom extends Room {
     return client ? this.chain : job;
   }
   private async commit(next: Game) {
-    if (next.lastPlayed && next.lastPlayed.id !== this.game.lastPlayed?.id)
-      next.playPauseUntil = Date.now() + 6000;
+    if (next.lastPlayed && next.lastPlayed.id !== this.game.lastPlayed?.id) {
+      next.playPauseUntil = Date.now() + pacing(next.pace).reveal;
+      next.revealReady = [];
+    }
     if (next.lastRound && next.lastRound.round !== this.game.lastRound?.round)
-      next.roundPauseUntil = Date.now() + 9000;
+      next.roundPauseUntil =
+        Math.max(Date.now(), next.playPauseUntil ?? 0) +
+        pacing(next.pace).results;
     await store.save(this.roomId, next);
     this.game = next;
     this.updateListing();
@@ -426,6 +464,8 @@ export class MoodRoom extends Room {
       client.send("view", {
         ...publicView(this.game, id),
         presence: Object.fromEntries(this.activity),
+        pace: this.game.pace ?? "standard",
+        revealReady: this.game.revealReady ?? [],
         visibility: this.game.visibility ?? "private",
         playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
         roundPauseMs: Math.max(

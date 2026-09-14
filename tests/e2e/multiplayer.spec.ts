@@ -27,6 +27,15 @@ test("two friends create a table, play a mood, and reconnect", async ({
   await friend.getByRole("button", { name: "Join", exact: true }).click();
   await expect(friend.getByText("Alice", { exact: true })).toBeVisible();
   await expect(page.getByText("Bob", { exact: true })).toBeVisible();
+  await expect(friend.getByLabel("Table pace", { exact: true })).toBeDisabled();
+  await page.getByLabel("Table pace", { exact: true }).selectOption("relaxed");
+  await expect(friend.getByLabel("Table pace", { exact: true })).toHaveValue(
+    "relaxed",
+  );
+  await page.getByLabel("Table pace", { exact: true }).selectOption("standard");
+  await expect(friend.getByLabel("Table pace", { exact: true })).toHaveValue(
+    "standard",
+  );
   await page.screenshot({
     path: "output/playwright/lobby.png",
     fullPage: true,
@@ -82,6 +91,17 @@ test("two friends create a table, play a mood, and reconnect", async ({
         observer.locator(".played-card-reveal > .eyebrow"),
       ).not.toHaveText("YOU PLAYED");
       await observer.screenshot({ path: "output/playwright/played-card.png" });
+      // One player cannot skip the other person's reading time.
+      await observer
+        .getByRole("button", { name: "I’m ready", exact: true })
+        .click();
+      await expect(
+        observer.getByRole("button", { name: "Ready · waiting for the table" }),
+      ).toBeDisabled();
+      await expect(current.locator(".end-turn")).toBeDisabled();
+      await current
+        .getByRole("button", { name: "I’m ready", exact: true })
+        .click();
       await expect(
         current.locator(`.played-card-reveal[data-play-id="${id}"]`),
       ).toHaveCount(0);

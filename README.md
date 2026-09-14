@@ -104,6 +104,16 @@ The cards use the **actual official card graphics** archived from the published 
 
 The interface uses DM Sans, Barlow Condensed, and Permanent Marker through Google Fonts with fallback fonts. The base stylesheet also retains its Libre Caslon fallback theme. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
 
+### How a turn feels
+
+Cards move between the visible hand, table, and discard pile, and remaining cards slide into their new positions. Suppression and the secondary printed value keep their sideways and upside-down orientations. During a played-card reveal, the previous table stays visible behind it; card positions and score changes appear when reading finishes. Reconnecting establishes the current table without replaying historical card movement. Only each player's permitted public view is used for these animations.
+
+The host chooses a pace in the lobby: **Relaxed** (9-second reveals / 12-second results), **Standard** (6 / 9), or **Quick** (3 / 6.5). Every connected human can press **I'm ready** to finish a reveal early; one player cannot dismiss it for everyone else, bots do not hold it open, and a minimum reveal still applies. If a card ends a round, its reveal precedes the full result sequence. Pacing survives reconnects, server restarts, and rematches.
+
+Card-effect choices highlight eligible moods on the table. Clicking a highlighted mood selects it for the existing confirmation flow; the choice panel remains available. The latest move and a **Last played** inspection shortcut stay alongside the board. Score changes have brief signed badges.
+
+**Table settings** offers optional synthesized sound cues, effect volume, and reduced motion. Sound starts off and requires a user gesture. Preferences stay in this browser; system reduced-motion preferences are respected. The settings dialog supports Escape, keyboard focus containment, and focus return. Motion never changes the server's rules or reveals another player's hand.
+
 ## Architecture
 
 The game is a browser application, so friends need a link rather than a Unity or Unreal installation. TypeScript is used across the interface, rules engine, bot policy, and server.

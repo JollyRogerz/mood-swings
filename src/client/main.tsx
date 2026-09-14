@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createRoot } from "react-dom/client";
 import { Client, type Room } from "@colyseus/sdk";
 import {
@@ -45,6 +51,18 @@ import type {
 } from "../game/types";
 import "./style.css";
 import "./scrapbook.css";
+import "./polish.css";
+import { PACING, pacing } from "../game/pacing";
+import {
+  Score,
+  TableSettings,
+  sound,
+  usePreferences,
+  usePresentedTable,
+  useTableMotion,
+  useTurnSound,
+} from "./polish";
+import { Targeting, TableFrame, type Targets } from "./targeting";
 const botLabel = (d: Difficulty) =>
   d === "fly" ? "fly brain bot" : `${d} bot`;
 const colorNames: Record<string, string> = {
@@ -74,6 +92,8 @@ async function post(url: string, body: unknown) {
 const startingCode =
   location.pathname.match(/^\/room\/([A-Z2-9]{8})$/i)?.[1].toUpperCase() ?? "";
 function App() {
+  const { preferences, update, reduced } = usePreferences();
+  const [targets, setTargets] = useState<Targets>();
   const [name, setName] = useState(localStorage.getItem("mood-name") ?? ""),
     [code, setCode] = useState(startingCode),
     [roomCode, setRoomCode] = useState(startingCode),
@@ -97,9 +117,12 @@ function App() {
   const [roundDeadline, setRoundDeadline] = useState(0);
   const [playDeadline, setPlayDeadline] = useState(0);
   const [clockNow, setClockNow] = useState(Date.now());
-  const roundPaused = roundDeadline > clockNow;
   const playPaused = playDeadline > clockNow;
+  const roundPaused = roundDeadline > clockNow && !playPaused;
   const interactionPaused = roundPaused || playPaused;
+  const table = usePresentedTable(view, playPaused && !roundPaused, connected);
+  useTableMotion(table, reduced, connected);
+  useTurnSound(view, interactionPaused, connected);
   useEffect(() => {
     if (!interactionPaused) return;
     const timer = setInterval(() => setClockNow(Date.now()), 100);
@@ -283,7 +306,11 @@ function App() {
     !view.scoring &&
     Object.keys(view.playable).length === 0;
   return (
-    <div className={view ? "app game-app" : "app"}>
+    <TableFrame
+      targets={targets}
+      className={view ? "app game-app" : "app"}
+      reduced={reduced}
+    >
       <header className="site-header">
         <button
           className="brand"
@@ -303,6 +330,7 @@ function App() {
           </span>
         </button>
         <nav>
+          <TableSettings preferences={preferences} update={update} />
           <button onClick={() => setCatalogOpen(true)}>
             <Layers size={16} />
             <span>The cards</span>
@@ -556,6 +584,27 @@ function App() {
               </select>
             </label>
           )}
+          <label className="pace-choice">
+            Table pace
+            <select
+              aria-label="Table pace"
+              value={view.pace ?? "standard"}
+              disabled={!connected || view.you !== view.host}
+              onChange={(e) =>
+                room.current?.send("pace", { pace: e.target.value })
+              }
+            >
+              {Object.entries(PACING).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value.label}
+                </option>
+              ))}
+            </select>
+            <small>
+              {pacing(view.pace).reveal / 1000}s to read each card · everyone
+              can ready up early
+            </small>
+          </label>
           <div className="lobby-seats">
             {[0, 1, 2, 3].map((i) => {
               const p = view.players[i];
@@ -619,7 +668,9 @@ function App() {
                 </select>
                 <button
                   onClick={() =>
-                    room.current?.send("add-bot", { difficulty: botDifficulty })
+                    room.current?.send("add-bot", {
+                      difficulty: botDifficulty,
+                    })
                   }
                   disabled={!connected}
                 >
@@ -676,19 +727,38 @@ function App() {
               </button>
             </div>
           </div>
+          <div className="table-feedback" role="status" aria-live="polite">
+            <span className="feedback-label">
+              {interactionPaused
+                ? "AT THE TABLE"
+                : view.waitingFor
+                  ? "CHOOSING"
+                  : "LATEST MOVE"}
+            </span>
+            <span>
+              {interactionPaused
+                ? "A moment for everyone to take it in."
+                : (view.log.at(-1)?.text ?? "Your table is ready.")}
+            </span>
+            {view.lastPlayed && (
+              <button onClick={() => setInspect(view.lastPlayed!.def)}>
+                Last played <ArrowUpRight size={14} />
+              </button>
+            )}
+          </div>
           <section className={`board players-${view.players.length}`}>
             <div className="board-watermark">
               mood swings<span>EVERY CARD CHANGES THE FEELING</span>
             </div>
             <div className="opponent-row">
-              {view.players
+              {table!.players
                 .filter((p) => p.id !== view.you)
                 .map((p) => (
                   <PlayerZone
                     key={p.id}
                     player={p}
                     index={view.players.findIndex((x) => x.id === p.id)}
-                    moods={view.moods.filter((c) => c.owner === p.id)}
+                    moods={table!.moods.filter((c) => c.owner === p.id)}
                     active={view.active === p.id}
                     inspect={setInspect}
                     doing={describeActivity(
@@ -707,7 +777,7 @@ function App() {
             <div className="table-center">
               <div className="deck-stack">
                 <CardBack />
-                <span>{view.deckCount} in deck</span>
+                <span>{table!.deckCount} in deck</span>
               </div>
               <div className="round-marker">
                 <span>ROUND</span>
@@ -718,9 +788,9 @@ function App() {
                 className="discard-stack"
                 onClick={() => setActivity(true)}
               >
-                {view.discard.length ? (
+                {table!.discard.length ? (
                   <img
-                    src={view.discard[view.discard.length - 1].image}
+                    src={table!.discard[table!.discard.length - 1].image}
                     alt="Top of discard pile"
                   />
                 ) : (
@@ -728,7 +798,7 @@ function App() {
                     <Layers size={24} />
                   </span>
                 )}
-                <span>{view.discard.length} discarded</span>
+                <span>{table!.discard.length} discarded</span>
               </button>
             </div>
             <div className="your-moods">
@@ -739,14 +809,16 @@ function App() {
                   aria-label="Your current points"
                   aria-live="polite"
                 >
-                  <strong>
-                    {view.players.find((p) => p.id === view.you)?.score ?? 0}
-                  </strong>
+                  <Score
+                    value={
+                      table!.players.find((p) => p.id === view.you)?.score ?? 0
+                    }
+                  />
                   <span>YOUR POINTS</span>
                 </div>
               </div>
               <div className="mood-row">
-                {view.moods
+                {table!.moods
                   .filter((c) => c.owner === view.you)
                   .map((c) => (
                     <MoodCard
@@ -755,7 +827,7 @@ function App() {
                       onClick={() => setInspect(c.copy ?? c.def)}
                     />
                   ))}
-                {!view.moods.some((c) => c.owner === view.you) && (
+                {!table!.moods.some((c) => c.owner === view.you) && (
                   <span className="empty-zone">
                     Every feeling starts somewhere. Play your first mood.
                   </span>
@@ -847,7 +919,8 @@ function App() {
               </button>
             </div>
             <Hand
-              view={view}
+              view={table!}
+              setTargets={setTargets}
               send={send}
               inspect={setInspect}
               disabled={busy || !connected || interactionPaused}
@@ -858,6 +931,7 @@ function App() {
           </section>
           {view.prompt && !interactionPaused && (
             <ChoicePanel
+              setTargets={setTargets}
               key={view.prompt.id}
               view={view}
               send={send}
@@ -897,7 +971,15 @@ function App() {
             </aside>
           )}
           {playPaused && !roundPaused && view.lastPlayed && (
-            <PlayedCardReveal view={view} remaining={playDeadline - clockNow} />
+            <PlayedCardReveal
+              view={view}
+              remaining={playDeadline - clockNow}
+              ready={() =>
+                room.current?.send("reveal-ready", {
+                  playId: view.lastPlayed!.id,
+                })
+              }
+            />
           )}
           {roundPaused && view.lastRound && (
             <RoundResults view={view} remaining={roundDeadline - clockNow} />
@@ -1035,7 +1117,7 @@ function App() {
           </div>
         </div>
       )}
-    </div>
+    </TableFrame>
   );
 }
 function Avatar({
@@ -1114,9 +1196,11 @@ function CardBack({ mini = false }: { mini?: boolean }) {
 function PlayedCardReveal({
   view,
   remaining,
+  ready,
 }: {
   view: View;
   remaining: number;
+  ready: () => void;
 }) {
   const played = view.lastPlayed!;
   const card = catalog.find((c) => c.id === played.def)!;
@@ -1149,10 +1233,20 @@ function PlayedCardReveal({
         <div className="played-card-timer">
           <span
             style={{
-              width: `${Math.max(0, Math.min(100, (6000 - remaining) / 60))}%`,
+              width: `${Math.max(0, Math.min(100, 100 * (1 - remaining / pacing(view.pace).reveal)))}%`,
             }}
           />
         </div>
+        <button
+          className="reveal-ready"
+          disabled={view.revealReady?.includes(view.you)}
+          onClick={ready}
+        >
+          {view.revealReady?.includes(view.you)
+            ? "Ready · waiting for the table"
+            : "I’m ready"}{" "}
+          <Check size={16} />
+        </button>
         <p className="played-card-countdown">
           A moment to read · Play resumes in{" "}
           {Math.max(1, Math.ceil(remaining / 1000))}s
@@ -1163,7 +1257,10 @@ function PlayedCardReveal({
 }
 function RoundResults({ view, remaining }: { view: View; remaining: number }) {
   const result = view.lastRound!;
-  const elapsed = Math.max(0, 9000 - remaining);
+  const elapsed = Math.max(
+    0,
+    9000 * (1 - remaining / pacing(view.pace).results),
+  );
   const [reducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
@@ -1413,6 +1510,9 @@ function CardZoom() {
   ) : null;
 }
 function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
+  const targets = useContext(Targeting);
+  const option = targets?.options.find((o) => o.card === c.uid);
+  const chosen = !!option && !!targets?.selected.includes(option.id);
   const printed = catalog.find(
     (entry) => entry.id === (c.copy ?? c.def),
   )?.printed_values;
@@ -1423,11 +1523,14 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
     c.value === printed[1];
   return (
     <button
-      className={`mood-card ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
-      onClick={onClick}
+      className={`mood-card ${option ? "target-eligible" : ""} ${chosen ? "target-selected" : ""} ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
+      onClick={() => (option ? targets!.toggle(option.id) : onClick())}
+      data-motion-card={c.uid}
+      data-motion-zone={`play:${c.owner}`}
+      aria-pressed={option ? chosen : undefined}
       data-card-image={c.image}
       data-card-name={c.name}
-      aria-label={`Inspect ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : secondary ? ", bottom-left value" : ""}`}
+      aria-label={`${option ? "Choose" : "Inspect"} ${c.name}, value ${c.value}${c.suppressed ? ", suppressed" : secondary ? ", bottom-left value" : ""}`}
     >
       <img src={c.image} alt={c.name} />
       <span className="value-badge">{c.value}</span>
@@ -1483,7 +1586,7 @@ function PlayerZone({
           )}
         </div>
         <div className="opponent-score">
-          <strong>{player.score}</strong>
+          <Score value={player.score} />
           <small>POINTS</small>
         </div>
         <span
@@ -1520,6 +1623,7 @@ function Hand({
   onHold,
   plan,
   requestPlan,
+  setTargets,
 }: {
   view: View;
   send: (a: Action) => void;
@@ -1528,6 +1632,7 @@ function Hand({
   onHold: (holding: boolean) => void;
   plan?: Preview;
   requestPlan: (card: string, grant: string, choices: PlannedChoice[]) => void;
+  setTargets: (targets: Targets | undefined) => void;
 }) {
   const [selected, setSelected] = useState<string>(),
     [grant, setGrant] = useState(""),
@@ -1560,6 +1665,17 @@ function Hand({
       setChoices(choices.slice(0, current.applied));
   }, [current?.applied]);
   const step = current?.prompt;
+  useEffect(() => {
+    if (!step || disabled) return;
+    setTargets({
+      options: step.options,
+      selected: picked,
+      toggle: (id) => setPicked((old) => togglePick(old, id, step)),
+    });
+    return () => setTargets(undefined);
+  }, [step, picked, disabled, setTargets]);
+  const targets = useContext(Targeting);
+
   const visible = [...view.hand, ...view.moods, ...view.discard];
   function decide(selectedIds: string[]) {
     if (step)
@@ -1578,13 +1694,21 @@ function Hand({
         {view.hand.map((c, i) => (
           <button
             key={c.uid}
-            className={`hand-card ${view.playable[c.uid] ? "playable" : ""} ${selected === c.uid ? "selected" : ""}`}
+            data-motion-card={c.uid}
+            data-motion-zone="hand"
+            className={`hand-card ${targets?.options.some((o) => o.card === c.uid) ? "target-eligible" : ""} ${targets?.options.some((o) => o.card === c.uid && targets.selected.includes(o.id)) ? "target-selected" : ""} ${view.playable[c.uid] ? "playable" : ""} ${selected === c.uid ? "selected" : ""}`}
             style={
               {
                 "--tilt": `${(i - (view.hand.length - 1) / 2) * 1.5}deg`,
               } as React.CSSProperties
             }
             onClick={() => {
+              const option = targets?.options.find((o) => o.card === c.uid);
+              if (option) {
+                targets!.toggle(option.id);
+                return;
+              }
+              sound("lift");
               setSelected(c.uid);
               setGrant(view.playable[c.uid]?.[0] ?? "");
             }}
@@ -1743,13 +1867,24 @@ function ChoicePanel({
   view,
   send,
   disabled,
+  setTargets,
 }: {
   view: View;
   send: (a: Action) => void;
   disabled: boolean;
+  setTargets: (targets: Targets | undefined) => void;
 }) {
   const q = view.prompt!;
   const [selected, setSelected] = useState<string[]>([]);
+  useEffect(() => {
+    if (disabled) return;
+    setTargets({
+      options: q.options,
+      selected,
+      toggle: (id) => setSelected((old) => togglePick(old, id, q)),
+    });
+    return () => setTargets(undefined);
+  }, [q, selected, disabled, setTargets]);
   const visible = [...view.hand, ...view.moods, ...view.discard];
   const confirmable =
     !disabled &&

@@ -1,0 +1,467 @@
+/* Motion and feedback are presentation only; the server owns every action. */
+.app .hand-card {
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 180ms,
+    border-color 180ms;
+}
+.app .mood-card img {
+  transition:
+    transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 240ms;
+}
+.travelling-card {
+  position: fixed;
+  pointer-events: none;
+  z-index: 95;
+  transform-origin: top left;
+  filter: drop-shadow(0 12px 14px #24232340);
+}
+.travelling-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+.app .target-eligible {
+  outline: 3px solid #2c9fda;
+  outline-offset: 5px;
+  box-shadow: 0 0 0 8px #2c9fda20;
+}
+.app .target-selected {
+  outline-color: #8651a2;
+  box-shadow: 0 0 0 8px #8651a233;
+}
+.app .target-selected:after {
+  content: "✓";
+  position: absolute;
+  left: -9px;
+  top: -9px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #71468c;
+  color: #fff;
+  border: 2px solid #fff;
+  font: bold 16px sans-serif;
+}
+.app .your-score,
+.app .opponent-score {
+  position: relative;
+}
+.app .score-number {
+  animation: score-settle 360ms ease-out;
+}
+.app .score-delta {
+  position: absolute;
+  right: -12px;
+  top: -20px;
+  padding: 4px 7px;
+  background: #176846;
+  color: white;
+  font:
+    800 15px "DM Sans",
+    sans-serif;
+  border-radius: 3px;
+  border: 2px solid #fffdf5;
+  box-shadow: 2px 2px #242323;
+  animation: score-rise 1.7s ease-out both;
+  z-index: 3;
+}
+.app .score-delta.loss {
+  background: #ad454d;
+}
+@keyframes score-settle {
+  from {
+    scale: 1.1;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes score-rise {
+  0% {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  15%,
+  75% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 -10px;
+  }
+}
+.app .pace-choice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  margin: 16px 0 28px;
+  font-weight: 700;
+}
+.app .pace-choice select {
+  padding: 10px 12px;
+  border: 1px solid #615d55;
+  background: #fffdf5;
+  color: #292727;
+  font: inherit;
+}
+.app .pace-choice small {
+  flex-basis: 100%;
+  color: #615d55;
+  font-size: 11px;
+  font-weight: 400;
+}
+.app .reveal-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #fffdf5;
+  color: #292727;
+  border: 2px solid #292727;
+  box-shadow: 3px 3px #a778c4;
+  font-weight: 700;
+}
+.app .reveal-ready:disabled {
+  opacity: 0.8;
+  color: #46403a;
+}
+.app .played-card-art {
+  max-height: min(56vh, 560px);
+  width: auto;
+  max-width: 75vw;
+  object-fit: contain;
+}
+.app .played-card-countdown {
+  margin-top: 12px;
+}
+.app .table-feedback {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  margin: -2px 0 12px;
+  padding: 8px 12px;
+  background: #fffdf6;
+  border-left: 4px solid #2c9fda;
+  color: #514940;
+  font-size: 12px;
+}
+.app .feedback-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 800;
+  color: #292727;
+  white-space: nowrap;
+}
+.app .table-feedback > span:nth-child(2) {
+  flex: 1;
+}
+.app .table-feedback button {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #50356b;
+  text-decoration: underline;
+}
+.app .preferences-backdrop {
+  z-index: 250;
+  cursor: default;
+}
+.app .preferences-panel {
+  position: relative;
+  width: min(440px, calc(100vw - 32px));
+  padding: 38px 30px 28px;
+  background: #fffdf5;
+  border: 2px solid #292727;
+  box-shadow: 7px 7px #9766b6;
+  color: #292727;
+  text-align: left;
+}
+.app .preferences-panel h2 {
+  font: 800 34px/0.95 var(--serif);
+  text-transform: uppercase;
+  margin: 16px 0 24px;
+}
+.app .preferences-panel label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+.app .preferences-panel input[type="range"] {
+  width: 100%;
+  accent-color: #71468c;
+}
+.app .preferences-panel input[type="checkbox"] {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  accent-color: #71468c;
+}
+.app .preferences-panel select {
+  width: 100%;
+  font: inherit;
+  padding: 10px;
+  background: #f4eedf;
+  border: 1px solid #615d55;
+  color: #292727;
+}
+.app .preferences-panel p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #615d55;
+  margin-top: 24px;
+}
+.app .preferences-panel .close-modal {
+  color: #292727;
+}
+@media (min-width: 1000px) {
+  .app:has(.table-layout) .site-header {
+    height: 64px;
+  }
+  .app .table-layout {
+    padding-top: 12px;
+  }
+  .app .table-topline {
+    margin-bottom: 12px;
+  }
+  .app .table-title h2 {
+    font-size: 29px;
+  }
+  .app .board {
+    padding: 16px 22px 14px;
+    min-height: 0;
+  }
+  .app .player-zone {
+    padding: 12px 14px;
+    min-height: 0;
+  }
+  .app .player-head {
+    padding-bottom: 8px;
+  }
+  .app .player-head .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+  .app .player-head strong {
+    font-size: 13px;
+  }
+  .app .opponent-score > strong {
+    font-size: 40px;
+  }
+  .app .mood-row {
+    min-height: clamp(116px, 16vh, 180px);
+    padding-top: 14px;
+    gap: 16px;
+  }
+  .app .mood-card {
+    --mood-width: clamp(70px, 9.5vh, 105px);
+  }
+  .app .table-center {
+    padding: 12px 22px;
+  }
+  .app .round-marker {
+    min-width: 65px;
+    padding: 6px 12px;
+  }
+  .app .round-marker > strong {
+    font-size: 30px;
+  }
+  .app .round-marker small {
+    font-size: 6px;
+  }
+  .app .your-moods {
+    padding: 8px 14px;
+  }
+  .app .your-moods .mood-row {
+    min-height: clamp(108px, 15vh, 170px);
+    padding-top: 8px;
+  }
+  .app .your-moods > .zone-label {
+    min-height: 0;
+    padding-bottom: 6px;
+  }
+  .app .your-score {
+    padding: 5px 12px;
+  }
+  .app .your-score > strong {
+    font-size: 40px;
+  }
+  .app .hand-section {
+    margin-top: 14px;
+    padding: 10px 18px 5px;
+  }
+  .app .hand-heading {
+    margin-bottom: 10px;
+  }
+  .app .hand-cards {
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+  .app .hand-card {
+    width: clamp(90px, 12vh, 134px);
+  }
+}
+@media (max-width: 650px) {
+  .app .table-feedback {
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .app .feedback-label {
+    display: none;
+  }
+  .app .played-card-art {
+    max-height: 49vh;
+  }
+  .app .played-card-reveal h2 {
+    font-size: 27px;
+  }
+  .app .pace-choice {
+    margin-bottom: 20px;
+  }
+  .app .preferences-panel {
+    padding: 30px 20px 20px;
+  }
+}
+.app[data-reduced-motion] *,
+.app[data-reduced-motion] *:before,
+.app[data-reduced-motion] *:after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .travelling-card {
+    display: none;
+  }
+  .app .mood-card img {
+    transition: none;
+  }
+}
+/* Keep a normal four-player hand and table together on laptop displays.
+   Crowded tables may grow; no cards or controls are clipped to force a fit. */
+@media (min-width: 1000px) and (max-height: 1000px) {
+  .app .mood-card {
+    --mood-width: clamp(62px, 8vh, 80px);
+  }
+  .app .mood-row {
+    min-height: 0;
+    padding-top: 10px;
+  }
+  .app .player-zone {
+    min-height: 175px;
+    padding: 10px 12px;
+  }
+  .app .player-head {
+    min-height: 48px;
+  }
+  .app .opponent-score > strong {
+    font-size: 34px;
+  }
+  .app .table-center {
+    padding: 8px 18px;
+  }
+  .app .deck-stack > .card-back,
+  .app .empty-discard {
+    width: 36px;
+    height: 50px;
+  }
+  .app .discard-stack img {
+    height: 50px;
+  }
+  .app .round-marker {
+    padding: 3px 10px;
+  }
+  .app .round-marker > strong {
+    font-size: 25px;
+  }
+  .app .your-moods {
+    min-height: 130px;
+  }
+  .app .your-moods > .zone-label {
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    bottom: 12px;
+    width: 130px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 0;
+  }
+  .app .your-moods .mood-row {
+    margin-left: 140px;
+    min-height: 100px;
+    padding-block: 8px;
+  }
+  .app .hand-cards {
+    min-height: 0;
+    padding-block: 10px;
+  }
+  .app .hand-card {
+    width: clamp(82px, 10vh, 100px);
+  }
+  .app .hand-heading {
+    margin-bottom: 5px;
+  }
+  .app .hand-section {
+    margin-top: 12px;
+  }
+  .app .table-layout {
+    padding-bottom: 18px;
+  }
+}
+@media (min-width: 1000px) and (max-height: 850px) {
+  .app:has(.table-layout) .site-header {
+    height: 52px;
+  }
+  .app .table-layout {
+    padding-top: 8px;
+  }
+  .app .table-title > .eyebrow {
+    display: none;
+  }
+  .app .table-title h2 {
+    font-size: 26px;
+    margin: 0;
+  }
+  .app .table-topline {
+    margin-bottom: 8px;
+  }
+  .app .table-feedback {
+    min-height: 32px;
+    margin-bottom: 9px;
+    padding-block: 6px;
+  }
+  .app .board {
+    padding-block: 12px;
+  }
+  .app .player-zone {
+    min-height: 160px;
+  }
+  .app .your-moods {
+    min-height: 118px;
+  }
+  .app .your-moods .mood-row {
+    min-height: 90px;
+  }
+}
