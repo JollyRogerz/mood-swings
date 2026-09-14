@@ -110,6 +110,17 @@ test("catalog search, card inspection, rules, and mobile layout", async ({
   await expect(page.locator(".catalog-grid>button")).toHaveCount(133);
   await page.getByLabel("Search cards").fill("Love");
   await expect(page.locator(".catalog-grid>button")).toHaveCount(1);
+  await page.locator(".catalog-grid>button").hover();
+  await expect(page.locator(".card-zoom img")).toHaveAttribute("alt", "Love");
+  const zoom = await page.locator(".card-zoom").boundingBox();
+  expect(zoom!.width).toBeGreaterThanOrEqual(350);
+  expect(zoom!.x + zoom!.width).toBeLessThanOrEqual(1440);
+  await page.screenshot({
+    path: "output/playwright/card-hover.png",
+    fullPage: false,
+  });
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".card-zoom")).toHaveCount(0);
   await page.locator(".catalog-grid>button").click();
   await expect(page.locator(".inspect-modal h2")).toHaveText("Love");
   await page.getByRole("button", { name: "Close card", exact: true }).click();

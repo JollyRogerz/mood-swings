@@ -744,6 +744,7 @@ function App() {
           )}
         </main>
       )}
+      <CardZoom />
       {catalogOpen && (
         <Catalog close={() => setCatalogOpen(false)} inspect={setInspect} />
       )}
@@ -875,11 +876,95 @@ function CardBack() {
     </span>
   );
 }
+function CardZoom() {
+  const [preview, setPreview] = useState<{
+    image: string;
+    name: string;
+    left: number;
+    top: number;
+    width: number;
+  }>();
+  useEffect(() => {
+    let hovered: HTMLElement | null = null;
+    const card = (target: EventTarget | null) =>
+      target instanceof Element
+        ? target.closest<HTMLElement>("[data-card-image]")
+        : null;
+    const show = (el: HTMLElement | null) => {
+      if (!el || el.closest("[inert]")) {
+        setPreview(undefined);
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      const width = Math.min(420, innerWidth - 24, (innerHeight - 32) * 0.715);
+      const height = width / 0.715;
+      const left =
+        rect.right + width + 16 <= innerWidth
+          ? rect.right + 12
+          : Math.max(12, rect.left - width - 12);
+      setPreview({
+        image: el.dataset.cardImage!,
+        name: el.dataset.cardName!,
+        width,
+        left,
+        top: Math.max(16, Math.min(rect.top, innerHeight - height - 16)),
+      });
+    };
+    const over = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      const el = card(e.target);
+      if (el === hovered) return;
+      hovered = el;
+      show(el);
+    };
+    const out = (e: PointerEvent) => {
+      if (card(e.relatedTarget) === hovered) return;
+      hovered = null;
+      show(card(document.activeElement));
+    };
+    const focus = (e: FocusEvent) => show(card(e.target));
+    const blur = () => show(hovered);
+    const clear = () => {
+      hovered = null;
+      setPreview(undefined);
+    };
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") clear();
+    };
+    document.addEventListener("pointerover", over);
+    document.addEventListener("pointerout", out);
+    document.addEventListener("focusin", focus);
+    document.addEventListener("focusout", blur);
+    document.addEventListener("keydown", key);
+    window.addEventListener("scroll", clear, true);
+    window.addEventListener("resize", clear);
+    return () => {
+      document.removeEventListener("pointerover", over);
+      document.removeEventListener("pointerout", out);
+      document.removeEventListener("focusin", focus);
+      document.removeEventListener("focusout", blur);
+      document.removeEventListener("keydown", key);
+      window.removeEventListener("scroll", clear, true);
+      window.removeEventListener("resize", clear);
+    };
+  }, []);
+  return preview ? (
+    <div
+      className="card-zoom"
+      aria-hidden="true"
+      style={{ left: preview.left, top: preview.top, width: preview.width }}
+    >
+      <img src={preview.image} alt={preview.name} />
+    </div>
+  ) : null;
+}
 function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
   return (
     <button
       className={`mood-card ${c.suppressed ? "suppressed" : ""}`}
       onClick={onClick}
+      data-card-image={c.image}
+      data-card-name={c.name}
       aria-label={`Inspect ${c.name}, value ${c.value}`}
     >
       <img src={c.image} alt={c.name} />
@@ -979,6 +1064,8 @@ function Hand({
               setSelected(c.uid);
               setGrant(view.playable[c.uid]?.[0] ?? "");
             }}
+            data-card-image={c.image}
+            data-card-name={c.name}
             aria-label={`Select ${c.name}`}
           >
             <img src={c.image} alt={c.name} />
@@ -1198,7 +1285,12 @@ function Catalog({
       </div>
       <div className="catalog-grid">
         {cards.map((c) => (
-          <button key={c.id} onClick={() => inspect(c.id)}>
+          <button
+            key={c.id}
+            onClick={() => inspect(c.id)}
+            data-card-image={"/" + c.images[0].path}
+            data-card-name={c.name}
+          >
             <img loading="lazy" src={"/" + c.images[0].path} alt={c.name} />
             <strong>{c.name}</strong>
             <span>
