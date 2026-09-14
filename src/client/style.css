@@ -2588,3 +2588,220 @@ footer a {
     font-size: 8px;
   }
 }
+
+/* Results unfold on a felt scorecard without moving its contents around. */
+.round-results-backdrop {
+  background: #031c245c;
+  backdrop-filter: blur(2px);
+}
+.round-results {
+  background:
+    radial-gradient(ellipse at top, #386b565c, transparent 65%),
+    linear-gradient(150deg, #234a3e, #112e29);
+  color: #f4f0da;
+  border: 1px solid #c5ac70;
+  box-shadow:
+    0 30px 85px #031a2377,
+    inset 0 0 0 6px #d2bd7e09;
+  padding: 25px 30px;
+  animation: scorecard-arrive 0.4s ease-out both;
+}
+.round-result-emblem {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  margin: 0 auto 12px;
+  border: 1px solid #b7a77466;
+  border-radius: 50%;
+  color: #e6ce8f;
+  background: #c2ad6720;
+}
+.round-results > .eyebrow {
+  color: #cec393;
+}
+.round-results h2 {
+  min-height: 92px;
+  display: grid;
+  place-items: center;
+  margin: 5px 0 12px;
+  font-size: clamp(28px, 3.5vw, 39px);
+  line-height: 1.13;
+}
+.round-score-list > div {
+  position: relative;
+  overflow: hidden;
+  background: #041d2333;
+  border-color: #d7ddb51c;
+  text-align: left;
+  padding: 11px 12px;
+  gap: 10px;
+  transition:
+    border-color 0.4s,
+    background 0.4s,
+    color 0.4s;
+}
+.round-score-list > div > :not(.round-score-fill) {
+  position: relative;
+  z-index: 1;
+}
+.round-score-fill {
+  position: absolute;
+  left: 0;
+  inset-block: 0;
+  background: linear-gradient(90deg, #8daa8330, #a7c8a018);
+  transition: width 0.1s linear;
+}
+.round-player-initial {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e0dfbe18;
+  font-family: var(--serif);
+  font-size: 22px;
+  color: #dbdfc0;
+}
+.round-player-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.round-score-list strong {
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: right;
+}
+.round-crown {
+  width: 19px;
+  flex-shrink: 0;
+  color: #f5d482;
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+}
+.round-score-list .round-score-winner {
+  border-color: #d9bd73;
+  background: #76623530;
+}
+.round-score-winner .round-score-fill {
+  background: linear-gradient(90deg, #bca26235, #dfc07120);
+}
+.round-tie-note {
+  min-height: 20px;
+  margin-top: 8px;
+  color: #b8c7aa;
+  font-size: 11px;
+}
+.round-awards {
+  min-height: 175px;
+  padding-top: 10px;
+  gap: 10px;
+}
+.round-awards .round-award {
+  animation: none;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1px solid #bccea228;
+  background: #ffffff04;
+  transition: opacity 0.5s ease;
+}
+.round-award > svg {
+  display: block;
+  margin: 0 auto 8px;
+  color: #cbbb7f;
+}
+.feelings-award > svg {
+  color: #e1a68e;
+}
+.round-awards span {
+  color: #c2c8a6;
+  font-size: 8px;
+}
+.round-awards strong {
+  color: #f8eed1;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+.round-awards p {
+  color: #b6c6b0;
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 0;
+}
+.round-stage-track {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+}
+.round-stage-track span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #8d9f90;
+}
+.round-stage-track i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #7c94804d;
+}
+.round-stage-track .revealed {
+  color: #dfd1a2;
+}
+.round-stage-track .revealed i {
+  background: #dac17a;
+  box-shadow: 0 0 8px #dcc47b30;
+}
+.round-progress {
+  background: #dcdcc91a;
+  height: 2px;
+  margin-top: 10px;
+}
+.round-results > small {
+  color: #bdc9ad;
+}
+@keyframes scorecard-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 600px) {
+  .round-results {
+    padding: 19px 16px;
+  }
+  .round-result-emblem {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 7px;
+  }
+  .round-results h2 {
+    min-height: 72px;
+  }
+  .round-awards {
+    min-height: 175px;
+  }
+  .round-stage-track span {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .round-results {
+    animation: none;
+  }
+  .round-score-fill,
+  .round-score-list > div,
+  .round-crown,
+  .round-awards .round-award {
+    transition: none;
+  }
+}

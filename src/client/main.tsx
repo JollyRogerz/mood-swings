@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Flag,
   HelpCircle,
+  HeartCrack,
   Layers,
   LoaderCircle,
   LogOut,
@@ -901,7 +902,11 @@ function CardBack() {
 }
 function RoundResults({ view, remaining }: { view: View; remaining: number }) {
   const result = view.lastRound!;
-  const elapsed = 9000 - remaining;
+  const elapsed = Math.max(0, 9000 - remaining);
+  const [reducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const maxScore = Math.max(1, ...Object.values(result.scores));
   const name = (id?: string) =>
     view.players.find((p) => p.id === id)?.name ?? "Nobody";
   const stage =
@@ -920,6 +925,9 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
         aria-modal="true"
         aria-label={`Round ${result.round} results`}
       >
+        <div className="round-result-emblem">
+          <Sparkles size={22} />
+        </div>
         <span className="eyebrow">
           ROUND {String(result.round).padStart(2, "0")} · RESULTS
         </span>
@@ -934,70 +942,121 @@ function RoundResults({ view, remaining }: { view: View; remaining: number }) {
         </h2>
         {result.winner ? (
           <div className="round-score-list">
-            {order.map((id, i) => (
-              <div
-                key={id}
-                className={
-                  stage > 0 && id === result.winner ? "round-score-winner" : ""
-                }
-                style={{ animationDelay: `${i * 180}ms` }}
-              >
-                <span>
-                  {name(id)}
-                  {id === view.you ? " (you)" : ""}
-                </span>
-                <strong>{result.scores[id] ?? 0}</strong>
-                {stage > 0 && id === result.winner && <Crown size={19} />}
-              </div>
-            ))}
+            {order.map((id, i) => {
+              const progress = reducedMotion
+                ? 1
+                : Math.min(1, Math.max(0, (elapsed - i * 120) / 1200));
+              const displayedScore = Math.round(
+                (result.scores[id] ?? 0) * (1 - Math.pow(1 - progress, 3)),
+              );
+              return (
+                <div
+                  key={id}
+                  className={
+                    stage > 0 && id === result.winner
+                      ? "round-score-winner"
+                      : ""
+                  }
+                  style={{ animationDelay: `${i * 180}ms` }}
+                >
+                  <span
+                    className="round-score-fill"
+                    aria-hidden="true"
+                    style={{
+                      width: `${(Math.max(0, displayedScore) / maxScore) * 100}%`,
+                    }}
+                  />
+                  <span className="round-player-initial" aria-hidden="true">
+                    {name(id).slice(0, 1)}
+                  </span>
+                  <span className="round-player-name">
+                    {name(id)}
+                    {id === view.you ? " (you)" : ""}
+                  </span>
+                  <strong aria-label={`${result.scores[id] ?? 0} points`}>
+                    {displayedScore}
+                  </strong>
+                  <span
+                    className="round-crown"
+                    aria-hidden="true"
+                    style={{
+                      opacity: stage > 0 && id === result.winner ? 1 : 0,
+                    }}
+                  >
+                    <Crown size={19} />
+                  </span>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <p>Scoring was skipped. No round win or Hurt Feelings is awarded.</p>
         )}
-        {stage >= 1 && tied && (
-          <p className="round-tie-note">
-            Tied on points — earlier turn order wins the tie.
-          </p>
-        )}
+        <p
+          className="round-tie-note"
+          style={{ visibility: stage >= 1 && tied ? "visible" : "hidden" }}
+        >
+          Tied on points — earlier turn order wins the tie.
+        </p>
         <div className="round-awards" aria-live="polite">
-          {stage >= 2 && (
-            <div>
-              <span>HURT FEELINGS</span>
-              <strong>
-                {result.hurtFeelings
-                  ? name(result.hurtFeelings)
-                  : "Not awarded"}
-              </strong>
-              <p>
-                {result.hurtFeelings
-                  ? "One extra play on their next turn. Lowest score; later turn order breaks ties."
-                  : view.status === "finished"
-                    ? "This was the final round."
-                    : view.players.length < 3
-                      ? "Used in games with three or more players."
-                      : "No scoring this round."}
-              </p>
-            </div>
-          )}
-          {stage >= 3 && (
-            <div>
-              <span>
-                {view.status === "finished"
-                  ? "MATCH COMPLETE"
-                  : "FIRST NEXT ROUND"}
-              </span>
-              <strong>
-                {view.status === "finished"
-                  ? `${name(view.winner)} takes the table`
-                  : name(result.nextFirst)}
-              </strong>
-              <p>
-                {view.status === "finished"
-                  ? "The final results are coming up."
-                  : "The next round follows this player in table order."}
-              </p>
-            </div>
-          )}
+          <div
+            className="round-award feelings-award"
+            style={{
+              visibility: stage >= 2 ? "visible" : "hidden",
+              opacity: stage >= 2 ? 1 : 0,
+            }}
+          >
+            <HeartCrack size={21} aria-hidden="true" />
+            <span>HURT FEELINGS</span>
+            <strong>
+              {result.hurtFeelings ? name(result.hurtFeelings) : "Not awarded"}
+            </strong>
+            <p>
+              {result.hurtFeelings
+                ? "One extra play on their next turn. Lowest score; later turn order breaks ties."
+                : view.status === "finished"
+                  ? "This was the final round."
+                  : view.players.length < 3
+                    ? "Used in games with three or more players."
+                    : "No scoring this round."}
+            </p>
+          </div>
+          <div
+            className="round-award"
+            style={{
+              visibility: stage >= 3 ? "visible" : "hidden",
+              opacity: stage >= 3 ? 1 : 0,
+            }}
+          >
+            <ArrowRight size={21} aria-hidden="true" />
+            <span>
+              {view.status === "finished"
+                ? "MATCH COMPLETE"
+                : "FIRST NEXT ROUND"}
+            </span>
+            <strong>
+              {view.status === "finished"
+                ? `${name(view.winner)} takes the table`
+                : name(result.nextFirst)}
+            </strong>
+            <p>
+              {view.status === "finished"
+                ? "The final results are coming up."
+                : "The next round follows this player in table order."}
+            </p>
+          </div>
+        </div>
+        <div className="round-stage-track" aria-label="Round result progress">
+          {["Points", "Winner", "Feelings", "Next round"].map((label, i) => (
+            <span
+              key={label}
+              className={stage >= i ? "revealed" : ""}
+              aria-current={stage === i ? "step" : undefined}
+            >
+              <i />
+              {label}
+            </span>
+          ))}
         </div>
         <div className="round-progress">
           <span style={{ width: `${Math.min(100, elapsed / 90)}%` }} />
