@@ -324,6 +324,11 @@ describe("round result announcements", () => {
     expect(g.lastRound).toEqual({
       round: 1,
       scores: { a: 0, b: 0, c: 0 },
+      scoreDetails: {
+        a: { total: 0, lines: [] },
+        b: { total: 0, lines: [] },
+        c: { total: 0, lines: [] },
+      },
       winner: "a",
       hurtFeelings: "c",
       nextFirst: "a",

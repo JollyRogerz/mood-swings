@@ -1,4 +1,5 @@
 import React, { createContext, type ReactNode } from "react";
+import { EffectContext, type EffectChange } from "./effects";
 import type { Option } from "../game/types";
 export interface Targets {
   options: Option[];
@@ -12,15 +13,19 @@ export function TableFrame({
   targets,
   className,
   reduced,
+  effects = [],
 }: {
   children: ReactNode;
   targets?: Targets;
   className: string;
   reduced: boolean;
+  effects?: EffectChange[];
 }) {
   return (
     <div className={className} data-reduced-motion={reduced || undefined}>
-      <Targeting.Provider value={targets}>{children}</Targeting.Provider>
+      <EffectContext.Provider value={effects}>
+        <Targeting.Provider value={targets}>{children}</Targeting.Provider>
+      </EffectContext.Provider>
     </div>
   );
 }

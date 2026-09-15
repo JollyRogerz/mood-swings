@@ -1,4 +1,6 @@
 import React, {
+  lazy,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
@@ -33,6 +35,7 @@ import {
   WifiOff,
   MessageSquare,
   History,
+  Share2,
   AlertCircle,
 } from "lucide-react";
 import { catalog } from "../game/catalog";
@@ -56,6 +59,11 @@ import "./scrapbook.css";
 import "./polish.css";
 import "./portable.css";
 import "./clarity.css";
+import "./features.css";
+import { EffectContext, EffectNotice, useEffectFeedback } from "./effects";
+import { ScoreDetails, type ScoreSheet } from "./score-details";
+import { InviteDialog } from "./invite";
+const Tutorial = lazy(() => import("./tutorial"));
 import { choiceHint, selectionFeedback } from "./selection";
 import { useModalNavigation } from "./dialogs";
 import {
@@ -127,6 +135,12 @@ function App() {
   const [presence, setPresence] = useState<Record<string, Presence>>({});
   const [holding, setHolding] = useState(false);
   const [plan, setPlan] = useState<Preview>();
+  const [scoreSheet, setScoreSheet] = useState<ScoreSheet>();
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [tutorial, setTutorial] = useState(false);
+  const [learned, setLearned] = useState(
+    () => localStorage.getItem("mood-learned") === "1",
+  );
   const [recap, setRecap] = useState<RoundResultView>();
   const [hidden, setHidden] = useState(document.hidden);
   const [roundDeadline, setRoundDeadline] = useState(0);
@@ -136,7 +150,10 @@ function App() {
   const roundPaused = roundDeadline > clockNow && !playPaused;
   const interactionPaused = roundPaused || playPaused;
   useOverlayScrollLock(
-    !!inspect ||
+    !!scoreSheet ||
+      inviteOpen ||
+      tutorial ||
+      !!inspect ||
       help ||
       catalogOpen ||
       !!recap ||
@@ -148,6 +165,45 @@ function App() {
   }, [view?.status]);
   const table = usePresentedTable(view, playPaused && !roundPaused, connected);
   useTableMotion(table, reduced, connected);
+  const effects = useEffectFeedback(table, connected);
+  function showScore(player: string, result?: RoundResultView) {
+    const source = result ?? table;
+    if (!source) return;
+    const round = result?.lastRound;
+    setScoreSheet({
+      selected: player,
+      players: source.players,
+      details: round ? round.scoreDetails : table?.scoreDetails,
+      totals: round
+        ? round.scores
+        : Object.fromEntries(source.players.map((p) => [p.id, p.score])),
+      round: round?.round ?? table!.round,
+      phase:
+        round || table?.status === "finished"
+          ? "final"
+          : table?.scoring
+            ? "scoring"
+            : "live",
+    });
+  }
+  useEffect(() => {
+    setScoreSheet(undefined);
+    setInviteOpen(false);
+  }, [roomCode, view?.status]);
+  useEffect(() => {
+    setScoreSheet((current) => {
+      if (!current || current.phase === "final" || !table || interactionPaused)
+        return current;
+      return {
+        ...current,
+        players: table.players,
+        details: table.scoreDetails,
+        totals: Object.fromEntries(table.players.map((p) => [p.id, p.score])),
+        round: table.round,
+        phase: table.scoring ? "scoring" : "live",
+      };
+    });
+  }, [table?.revision, table?.scoreDetails, interactionPaused]);
   useTurnSound(view, interactionPaused, connected);
   useEffect(() => {
     const mine = view?.status === "playing" && connected && !interactionPaused;
@@ -169,7 +225,12 @@ function App() {
     interactionPaused,
   ]);
   useEffect(() => {
-    if (interactionPaused) setRecap(undefined);
+    if (interactionPaused) {
+      setRecap(undefined);
+      setScoreSheet(undefined);
+      setInviteOpen(false);
+      setInspect(undefined);
+    }
   }, [interactionPaused]);
   useEffect(() => {
     if (!interactionPaused) return;
@@ -357,6 +418,7 @@ function App() {
     Object.keys(view.playable).length === 0;
   return (
     <TableFrame
+      effects={effects.changes}
       targets={targets}
       className={view ? "app game-app" : "app"}
       reduced={reduced}
@@ -487,6 +549,18 @@ function App() {
                   </div>
                 </div>
               </div>
+              <button className="learn-entry" onClick={() => setTutorial(true)}>
+                <BookOpen size={18} />
+                <span>
+                  {learned
+                    ? "Revisit the practice table"
+                    : "New here? Learn by playing."}
+                  <small>
+                    A guided game with two practice bots · no signup
+                  </small>
+                </span>
+                <ArrowRight size={18} />
+              </button>
               <div className="game-facts">
                 <span>
                   <Users size={16} /> 2–4 friends
@@ -619,6 +693,9 @@ function App() {
               {roomCode}
             </span>
             {copied ? <Check /> : <Copy />}
+          </button>
+          <button className="invite-more" onClick={() => setInviteOpen(true)}>
+            <Share2 size={17} /> Share invite & QR code
           </button>
           {view.you === view.host && (
             <label className="visibility-choice">
@@ -771,6 +848,12 @@ function App() {
                 {copied ? <Check size={15} /> : <Copy size={15} />}
               </button>
               <button
+                onClick={() => setInviteOpen(true)}
+                aria-label="Invite friends"
+              >
+                <Share2 size={18} />
+              </button>
+              <button
                 onClick={() => setActivity(!activity)}
                 aria-label="Game activity"
               >
@@ -820,6 +903,7 @@ function App() {
               )}
             </div>
           </div>
+          <EffectNotice changes={effects.changes} dismiss={effects.dismiss} />
           <section className={`board players-${view.players.length}`}>
             <OpponentOverview view={table!} reduced={reduced} />
             <div className="board-watermark">
@@ -832,6 +916,7 @@ function App() {
                   <PlayerZone
                     key={p.id}
                     player={p}
+                    showScore={() => showScore(p.id)}
                     index={view.players.findIndex((x) => x.id === p.id)}
                     moods={table!.moods.filter((c) => c.owner === p.id)}
                     active={view.active === p.id}
@@ -879,8 +964,9 @@ function App() {
             <div className="your-moods">
               <div className="zone-label">
                 <span>YOUR MOODS</span>
-                <div
-                  className="your-score"
+                <button
+                  onClick={() => showScore(view.you)}
+                  className="your-score score-open"
                   aria-label="Your current points"
                   aria-live="polite"
                 >
@@ -889,8 +975,8 @@ function App() {
                       table!.players.find((p) => p.id === view.you)?.score ?? 0
                     }
                   />
-                  <span>YOUR POINTS</span>
-                </div>
+                  <span>YOUR POINTS · DETAILS</span>
+                </button>
               </div>
               <div className="mood-row">
                 {table!.moods
@@ -955,14 +1041,18 @@ function App() {
                                 : "Your turn. How are you feeling?"
                               : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
                 </span>
-                <span className="portable-your-score" aria-label="Your points">
+                <button
+                  className="portable-your-score score-open"
+                  aria-label="Your points"
+                  onClick={() => showScore(view.you)}
+                >
                   <Score
                     value={
                       table?.players.find((p) => p.id === view.you)?.score ?? 0
                     }
                   />
-                  <small>PTS</small>
-                </span>
+                  <small>PTS ↗</small>
+                </button>
               </div>
               <button
                 className="portable-reaction-toggle"
@@ -1069,6 +1159,17 @@ function App() {
                 {!view.discard.length && <p>No discarded cards yet.</p>}
               </div>
               <h4>RECENT ACTIVITY</h4>
+              {!view && (
+                <button
+                  className="primary"
+                  onClick={() => {
+                    setHelp(false);
+                    setTutorial(true);
+                  }}
+                >
+                  Learn by playing <ArrowRight size={16} />
+                </button>
+              )}
               <ol>
                 {[...view.log].reverse().map((e) => (
                   <li key={e.id}>{e.text}</li>
@@ -1088,10 +1189,18 @@ function App() {
             />
           )}
           {roundPaused && view.lastRound && (
-            <RoundResults view={view} remaining={roundDeadline - clockNow} />
+            <RoundResults
+              view={view}
+              remaining={roundDeadline - clockNow}
+              showScore={(id) => showScore(id, view)}
+            />
           )}
           {recap && !interactionPaused && (
-            <RoundResults view={recap} onClose={() => setRecap(undefined)} />
+            <RoundResults
+              view={recap}
+              onClose={() => setRecap(undefined)}
+              showScore={(id) => showScore(id, recap)}
+            />
           )}
           {view.status === "finished" && !interactionPaused && (
             <div className="modal-backdrop">
@@ -1135,12 +1244,53 @@ function App() {
           )}
         </main>
       )}
+      {scoreSheet && (
+        <ScoreDetails
+          sheet={scoreSheet}
+          close={() => setScoreSheet(undefined)}
+          inspect={setInspect}
+        />
+      )}
+      {inviteOpen && view && (
+        <InviteDialog code={roomCode} close={() => setInviteOpen(false)} />
+      )}
+      {tutorial && (
+        <Suspense
+          fallback={
+            <div className="modal-backdrop">
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Loading practice game"
+              >
+                <button data-dialog-close onClick={() => setTutorial(false)}>
+                  Close practice
+                </button>
+                <p>Setting your practice table…</p>
+              </div>
+            </div>
+          }
+        >
+          <Tutorial
+            reading={!!inspect}
+            close={() => setTutorial(false)}
+            inspect={setInspect}
+            complete={() => {
+              localStorage.setItem("mood-learned", "1");
+              setLearned(true);
+            }}
+          />
+        </Suspense>
+      )}
       <CardZoom />
       {catalogOpen && (
         <Catalog close={() => setCatalogOpen(false)} inspect={setInspect} />
       )}
       {inspected && (
-        <div className="modal-backdrop" onClick={() => setInspect(undefined)}>
+        <div
+          className="modal-backdrop inspect-backdrop"
+          onClick={() => setInspect(undefined)}
+        >
           <div
             className="inspect-modal"
             role="dialog"
@@ -1391,8 +1541,10 @@ function RoundResults({
   view,
   remaining = 0,
   onClose,
+  showScore,
 }: {
   view: RoundResultView;
+  showScore?: (id: string) => void;
   remaining?: number;
   onClose?: () => void;
 }) {
@@ -1487,9 +1639,22 @@ function RoundResults({
                     {name(id)}
                     {id === view.you ? " (you)" : ""}
                   </span>
-                  <strong aria-label={`${result.scores[id] ?? 0} points`}>
-                    {displayedScore}
-                  </strong>
+                  {showScore ? (
+                    <button
+                      className="round-score-open"
+                      aria-label={`Explain ${name(id)}’s score`}
+                      onClick={() => showScore(id)}
+                    >
+                      <strong aria-label={`${result.scores[id] ?? 0} points`}>
+                        {displayedScore}
+                      </strong>
+                      <small>DETAILS ↗</small>
+                    </button>
+                  ) : (
+                    <strong aria-label={`${result.scores[id] ?? 0} points`}>
+                      {displayedScore}
+                    </strong>
+                  )}
                   <span
                     className="round-crown"
                     aria-hidden="true"
@@ -1704,6 +1869,7 @@ function CardZoom() {
 }
 function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
   const targets = useContext(Targeting);
+  const effect = useContext(EffectContext).find((e) => e.card === c.uid);
   const option = targets?.options.find((o) => o.card === c.uid);
   const chosen = !!option && !!targets?.selected.includes(option.id);
   const printed = catalog.find(
@@ -1716,7 +1882,7 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
     c.value === printed[1];
   return (
     <button
-      className={`mood-card ${option ? "target-eligible" : ""} ${chosen ? "target-selected" : ""} ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
+      className={`mood-card ${effect ? "effect-changed" : ""} ${option ? "target-eligible" : ""} ${chosen ? "target-selected" : ""} ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
       onClick={() => (option ? targets!.toggle(option.id) : onClick())}
       data-motion-card={c.uid}
       data-motion-zone={`play:${c.owner}`}
@@ -1728,10 +1894,16 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
       <img src={c.image} alt={c.name} />
       <span className="value-badge">{c.value}</span>
       {c.suppressed && <span className="suppressed-label">SUPPRESSED</span>}
+      {effect && (
+        <span className="effect-badge" aria-hidden="true">
+          {effect.badge}
+        </span>
+      )}
     </button>
   );
 }
 function PlayerZone({
+  showScore,
   player,
   index,
   moods,
@@ -1740,6 +1912,7 @@ function PlayerZone({
   doing,
   reactions,
 }: {
+  showScore: () => void;
   player: View["players"][number];
   index: number;
   moods: PublicCard[];
@@ -1781,10 +1954,14 @@ function PlayerZone({
             </span>
           )}
         </div>
-        <div className="opponent-score">
+        <button
+          className="opponent-score score-open"
+          onClick={showScore}
+          aria-label={`Explain ${player.name}’s score`}
+        >
           <Score value={player.score} />
-          <small>POINTS</small>
-        </div>
+          <small>POINTS ↗</small>
+        </button>
         <span
           className="hand-fan"
           aria-label={`${player.handCount} cards in hand`}

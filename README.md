@@ -43,7 +43,7 @@ This release does not include Duel, drafting, team variants, custom deck constru
 1. Open the [live game](https://mood-swings-production.up.railway.app).
 2. Enter the name you want people at the table to see.
 3. Select **Create a table**.
-4. Copy the invite link and share it with your friends. They can also enter the room code on the home screen.
+4. Use **Share invite & QR code** to open your phone’s native share menu (where supported), copy the link, or let a friend scan the QR code. They can also enter the room code on the home screen.
 5. Wait for everyone to join. The host can add bots to empty seats.
 6. With two to four players seated, the host selects **Start the game**.
 7. Select a card from your hand. If its effect needs a decision, the options appear right there under the card; choose them, then choose **Play mood**. Anything you leave undecided is asked at the table after the play.
@@ -70,6 +70,12 @@ Every opponent has a score button above the board. Tap a name to bring that seat
 The app includes a web manifest and home-screen icons. Use your browser's **Add to Home Screen** or installation option where available. It is still the same online game: **an internet connection is required**, including for bot games, because the server validates every move. There is no offline cache or service worker. Browser and installed-app storage can differ, so start and return to a match using the same browser or home-screen app. Backgrounding a phone can interrupt its connection; returning to that same session uses the existing reconnection flow.
 
 Mobile verification uses Chromium and WebKit with touch-enabled browser contexts, including 320 × 568 and 390 × 844 phones, 844 × 390 landscape, and 768 × 1024 and 1024 × 768 tablets. This covers browser behavior and layout; it is not a claim of testing on every physical device or operating-system version.
+
+## Learn by playing
+
+Choose **New here? Learn by playing.** on the home page for an optional guided practice game. A curated, unique 45-card deal and two scripted practice bots teach playing a mood, ending turns, changing values, choosing Anger’s targets, counting scores, Hurt Feelings, and winning three rounds. Every move uses the real rules engine. The bots deliberately pass to leave room for learning; their choices are instructional, not an example of the competitive bot policies.
+
+The lesson runs locally once loaded and creates no online room. It can be closed or restarted at any point. Completion is remembered only on that browser and changes the entry to **Revisit the practice table**. Other tables continue normally while a player reads rules or score explanations. Online round results always advance on their timer; there is no next-round readiness vote.
 
 ## Play against bots
 
@@ -117,6 +123,14 @@ The interface takes inspiration from the official Mood Swings product page: text
 The cards use the **actual official card graphics** archived from the published gallery. The digital table, controls, layout, and interaction code are this adaptation's interface. Card images retain their original visual identity and artist credits. The catalog contains 133 distinct moods; the image archive also includes the alternate Love headliner and the Hurt Feelings helper, for 135 gallery images total.
 
 The interface uses DM Sans, Barlow Condensed, and Permanent Marker through Google Fonts with fallback fonts. The base stylesheet also retains its Libre Caslon fallback theme. These font requests are separate from the game's own server. No generated substitute illustrations are presented as the original card artwork.
+
+### Understand each point and effect
+
+Tap your point total or an opponent’s points to open **Score breakdown**. Player tabs let you compare everyone’s public scores. The server uses the same calculation for totals and explanations: each mood’s current contribution, suppression and value conditions, additive Exhilaration/Bliss bonuses, selected Enthusiasm/Passion bonuses during scoring, and Sneakiness score swaps. Cards in the list open the full inspector. The live panel updates with the visible table.
+
+Round results and **Last round** also have tappable scores. Recorded contributions remain fixed when after-scoring effects move cards; score swaps are explicit adjustments. Older saved rounds still display their recorded totals and explain when a breakdown is unavailable. Awe’s skipped rounds do not show fabricated score records. No opponent hand contents or deck order are included.
+
+Affected moods briefly glow with a change badge, while a **Feel the shift** summary identifies discards, transfers, suppression/restoration, color or copy changes, and point differences. It appears after the shared reveal releases the visible table, works with reduced motion, and can be dismissed or expanded for larger effects. Hidden card destinations are never guessed. Invitations contain only the room URL; QR generation happens in the browser without a third-party QR service. Unsupported sharing and blocked clipboard access retain a selectable link.
 
 ### How a turn feels
 
@@ -204,7 +218,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-The current automated suite contains **541 engine, regression, simulation, bot, fly-circuit, planning, selection, and restart tests**. **15 Playwright scenarios** exercise the actual browser application across Chromium and WebKit. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven. The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
+The current automated suite contains **553 engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, and restart tests**. **19 Playwright scenarios** exercise the actual browser application across Chromium and WebKit. Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven. The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 | Suite                           | What it checks                                                                                                                 |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |

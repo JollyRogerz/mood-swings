@@ -109,6 +109,17 @@ test("populated decisions fit phones and preserve selected targets when played",
     }, tokens[0]);
     await page.goto(base + "/room/UXTESTAB");
     await expect(page).toHaveTitle("Your turn · Mood Swings");
+    await page
+      .getByRole("button", { name: "Your current points", exact: true })
+      .tap();
+    const scores = page.getByRole("dialog", { name: "Score breakdown" });
+    await expect(scores.locator(".score-lines")).toContainText("Serenity");
+    await expect(scores.locator(".score-details-total strong")).toHaveText(
+      "9POINTS",
+    );
+    await scores.getByRole("button", { name: "Ember", exact: true }).tap();
+    await expect(scores.locator(".score-lines")).toContainText("Tranquility");
+    await scores.getByRole("button", { name: "Close score breakdown" }).tap();
     await page.getByRole("button", { name: "Select Anger", exact: true }).tap();
     const panel = page.locator(".card-action");
     await expect(panel.locator(".plan-step")).toBeVisible();
@@ -177,6 +188,7 @@ test("populated decisions fit phones and preserve selected targets when played",
     await expect(page.locator(".board [data-card-name='Apathy']")).toHaveCount(
       1,
     );
+    await expect(page.locator(".effect-notice")).toContainText("Discarded");
     await expect(page.locator(".choice-panel")).toHaveCount(0);
     await expect(page.locator(".card-action")).toHaveCount(0);
     await page.getByRole("button", { name: "Review last round" }).tap();
@@ -194,6 +206,12 @@ test("populated decisions fit phones and preserve selected targets when played",
       path: info.outputPath("recap-phone.png"),
       animations: "disabled",
     });
+    await recap.getByRole("button", { name: "Explain Ember’s score" }).tap();
+    await expect(scores).toContainText("no detailed breakdown");
+    await expect(scores.locator(".score-details-total strong")).toHaveText(
+      "12POINTS",
+    );
+    await scores.getByRole("button", { name: "Close score breakdown" }).tap();
     await recap.getByRole("button", { name: "Back to table" }).tap();
     await expect(recap).toHaveCount(0);
     expect(errors).toEqual([]);

@@ -8,6 +8,8 @@ import type {
   Option,
   Prompt,
   PublicCard,
+  ScoreBreakdown,
+  ScoreLine,
   Task,
   View,
 } from "./types";
@@ -246,23 +248,115 @@ export function value(g: Game, m: Mood): number {
     v = Math.max(...d.printed_values);
   return v;
 }
-export function baseScores(g: Game) {
+function explainValue(g: Game, m: Mood, points: number) {
+  const d = definition(m);
+  if (suppressed(g, m))
+    return "Suppressed: worth 0 points. Its card text still applies.";
+  const sources = inPlay(g).filter(
+    (c) =>
+      (c.owner === m.owner && definition(c).id === "idealism") ||
+      (definition(c).id === "encouragement" && c.target === m.uid),
+  );
+  if (d.printed_values.length > 1 && sources.length)
+    return `${sources.map((c) => definition(c).name).join(" and ")} sets this mood to its higher printed value: ${points}.`;
+  if (d.id === "serenity" || d.id === "tranquility") {
+    const n = inPlay(g, m.owner).length;
+    return `${n} moods in play is ${n % 2 === 0 ? "even" : "odd"}, so ${d.name} is worth ${points}.`;
+  }
+  if (m.chosenValue !== undefined)
+    return `Its effect changed its value to ${points}.`;
+  const rule = d.rules_text
+    .match(/While in play — (.*?)(?=After scoring —|$)/)?.[1]
+    ?.trim();
+  return rule
+    ? rule.replace(/(?:\[\d+\])+/g, (dice) =>
+        String(
+          [...dice.matchAll(/\[(\d+)\]/g)].reduce(
+            (sum, die) => sum + Number(die[1]),
+            0,
+          ),
+        ),
+      )
+    : `Printed value: ${points}.`;
+}
+function calculateScores(g: Game, explain = false) {
   const scores: Record<string, number> = {};
+  const details: Record<string, ScoreBreakdown> = {};
   for (const p of g.players) {
     const own = inPlay(g, p.id);
-    let n = own.reduce((sum, c) => sum + value(g, c), 0);
+    const values = own.map((c) => value(g, c));
+    const base = values.reduce((sum, n) => sum + n, 0);
+    const lines: ScoreLine[] = explain
+      ? own.map((c, i) => ({
+          kind: "mood",
+          label: definition(c).name,
+          points: values[i],
+          detail: explainValue(g, c, values[i]),
+          card: c.uid,
+          def: definition(c).id,
+        }))
+      : [];
+    let n = base;
     for (const c of own) {
       const id = definition(c).id;
-      if (id === "exhilaration")
-        n += own.reduce((sum, c) => sum + value(g, c), 0);
-      if (id === "bliss")
-        n += own
-          .filter((m) => color(g, m) === c.chosenColor)
-          .reduce((sum, c) => sum + 2 * value(g, c), 0);
+      if (id === "exhilaration" || id === "bliss") {
+        const bonus =
+          id === "exhilaration"
+            ? base
+            : own.reduce(
+                (sum, m, i) =>
+                  sum + (color(g, m) === c.chosenColor ? 2 * values[i] : 0),
+                0,
+              );
+        n += bonus;
+        if (explain)
+          lines.push({
+            kind: "bonus",
+            label: definition(c).name,
+            points: bonus,
+            detail:
+              id === "exhilaration"
+                ? "Score each of your moods one extra time."
+                : `Score your ${c.chosenColor ?? "matching"} moods two extra times.`,
+            card: c.uid,
+            def: id,
+          });
+      }
     }
     scores[p.id] = n;
+    if (explain) details[p.id] = { total: n, lines };
   }
-  return scores;
+  return { scores, details };
+}
+export function baseScores(g: Game) {
+  return calculateScores(g).scores;
+}
+export function liveScoreDetails(g: Game) {
+  return calculateScores(g, true).details;
+}
+function scoredDetails(g: Game): Record<string, ScoreBreakdown> {
+  return Object.fromEntries(
+    g.players.map((p) => [
+      p.id,
+      g.scoreDetails?.[p.id] ?? {
+        total: g.scores[p.id] ?? 0,
+        lines: [
+          {
+            kind: "adjustment",
+            label: "Recorded score",
+            points: g.scores[p.id] ?? 0,
+            detail: "This saved round predates detailed score records.",
+          },
+        ],
+      },
+    ]),
+  );
+}
+function scoreAdjustment(g: Game, actor: string, line: ScoreLine) {
+  g.scoreDetails = scoredDetails(g);
+  const record = g.scoreDetails[actor];
+  record.lines.push(line);
+  record.total += line.points;
 }
 function draw(g: Game, p: string, n = 1) {
   for (let i = 0; i < n; i++) {
@@ -1881,7 +1975,9 @@ function scoreTask(g: Game, t: Task) {
     putFirst(g, { kind: "finish-round", actor: t.actor });
     return;
   }
-  g.scores = baseScores(g);
+  const calculated = calculateScores(g, true);
+  g.scores = calculated.scores;
+  g.scoreDetails = calculated.details;
   g.afterDone = [];
   g.afterCursor = 0;
   const choices = g.order.flatMap((p) =>
@@ -1894,8 +1990,19 @@ function scoreTask(g: Game, t: Task) {
 function scoreChoice(g: Game, t: Task) {
   const m = card(g, t.card!);
   if (t.stage === 1) {
-    if (selected(t).length)
-      g.scores[t.actor] += value(g, card(g, selected(t)[0]));
+    if (selected(t).length) {
+      const target = card(g, selected(t)[0]),
+        points = value(g, target);
+      scoreAdjustment(g, t.actor, {
+        kind: "bonus",
+        label: definition(m).name,
+        points,
+        detail: `Score ${definition(target).name} one extra time.`,
+        card: m.uid,
+        def: definition(m).id,
+      });
+      g.scores[t.actor] += points;
+    }
     return;
   }
   const ms = inPlay(g).filter((c) =>
@@ -1997,6 +2104,18 @@ function afterEffect(g: Game, t: Task) {
       break;
     case "swap": {
       const a = g.scores[e.actor];
+      const b = g.scores[e.player!];
+      for (const [who, other, before, after] of [
+        [e.actor, e.player!, a, b],
+        [e.player!, e.actor, b, a],
+      ] as const)
+        scoreAdjustment(g, who, {
+          kind: "adjustment",
+          label: "Sneakiness",
+          points: after - before,
+          detail: `Swapped scores with ${playerName(g, other)}: ${before} → ${after}.`,
+          def: "sneakiness",
+        });
       g.scores[e.actor] = g.scores[e.player!];
       g.scores[e.player!] = a;
       break;
@@ -2026,6 +2145,7 @@ function finishRound(g: Game) {
     g.lastRound = {
       round: g.round,
       scores: { ...g.scores },
+      scoreDetails: structuredClone(scoredDetails(g)),
       winner: who,
       order: [...g.order],
     };
@@ -2080,12 +2200,17 @@ function finishRound(g: Game) {
   g.roundAward = 1;
   g.scoring = false;
   g.scores = {};
+  delete g.scoreDetails;
   g.delayed = g.delayed.filter((e) => e.round >= g.round);
   g.suppressions = g.suppressions.filter((s) => !s.round || s.round >= g.round);
   g.bans = g.bans.filter((b) => b.round >= g.round);
   beginTurn(g);
 }
-export function publicView(g: Game, you: string): View {
+export function publicView(
+  g: Game,
+  you: string,
+  includeScoreDetails = false,
+): View {
   const visible = (m: Mood): PublicCard => ({
     ...m,
     name: definition(m).name,
@@ -2103,7 +2228,8 @@ export function publicView(g: Game, you: string): View {
         .map((gr) => gr.id);
       if (grants.length) playable[m.uid] = grants;
     }
-  const scores = g.scoring ? g.scores : baseScores(g);
+  const frozen = g.scoring || g.status === "finished";
+  const scores = frozen ? g.scores : baseScores(g);
   let prompt: View["prompt"];
   if (g.prompt?.actor === you) {
     const { task, ...q } = g.prompt;
@@ -2125,6 +2251,9 @@ export function publicView(g: Game, you: string): View {
     };
   }
   return {
+    ...(includeScoreDetails
+      ? { scoreDetails: frozen ? scoredDetails(g) : liveScoreDetails(g) }
+      : {}),
     order: g.order,
     suppressions: g.suppressions,
     revision: g.revision,

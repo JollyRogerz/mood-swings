@@ -14,7 +14,11 @@ export default defineConfig({
     { name: "chromium", use: { browserName: "chromium" } },
     {
       name: "webkit-touch",
-      testMatch: ["**/portable.spec.ts", "**/clarity.spec.ts"],
+      testMatch: [
+        "**/portable.spec.ts",
+        "**/clarity.spec.ts",
+        "**/features.spec.ts",
+      ],
       use: { browserName: "webkit" },
     },
   ],

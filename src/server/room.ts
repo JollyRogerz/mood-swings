@@ -452,7 +452,7 @@ export class MoodRoom extends Room {
     const id = this.actors.get(client.sessionId);
     if (id)
       client.send("view", {
-        ...publicView(this.game, id),
+        ...publicView(this.game, id, true),
         presence: Object.fromEntries(this.activity),
         pace: this.game.pace ?? "standard",
         revealReady: this.game.revealReady ?? [],

@@ -1,0 +1,688 @@
+.app .score-open {
+  cursor: pointer;
+  border: 0;
+  font: inherit;
+}
+.app .score-open:hover {
+  filter: brightness(1.08);
+  outline: 2px solid #8977c6;
+  outline-offset: 4px;
+}
+.app .round-score-open {
+  margin-left: auto;
+  color: inherit;
+  font: inherit;
+  background: transparent;
+  border: 0;
+  display: grid;
+  justify-items: end;
+  cursor: pointer;
+  padding: 6px 0;
+}
+.app .round-score-open small {
+  font:
+    700 8px "DM Sans",
+    sans-serif;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+.app .score-details-backdrop,
+.app .invite-backdrop {
+  z-index: 180;
+}
+.app .inspect-backdrop {
+  z-index: 220;
+}
+.app .score-details,
+.app .invite-dialog {
+  position: relative;
+  background: #fffaf0;
+  color: #28272b;
+  border: 1px solid #292727;
+  border-radius: 18px;
+  box-shadow: 8px 10px 0 #1115;
+  width: min(650px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 32px;
+}
+.app .score-details .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 30px;
+}
+.app .score-details h2,
+.app .invite-dialog h2 {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  margin: 18px 0 22px;
+  letter-spacing: -0.03em;
+}
+.app .score-player-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.app .score-player-tabs button {
+  border: 1px solid #c4b9a7;
+  border-radius: 50px;
+  padding: 9px 16px;
+  min-height: 44px;
+  font-weight: 700;
+  background: transparent;
+  color: #3e3431;
+}
+.app .score-player-tabs button[aria-pressed="true"] {
+  background: #322e3d;
+  color: #fffaf0;
+  border-color: #322e3d;
+}
+.app .score-details-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 18px 22px;
+  border-radius: 12px;
+  background: #e3daf6;
+  font-weight: 700;
+}
+.app .score-details-total strong {
+  font-size: 44px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.app .score-details-total small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+  text-align: center;
+}
+.app .score-line {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 0;
+  border-bottom: 1px dashed #c8bfaf;
+}
+.app .score-line-card {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0;
+  min-height: 48px;
+}
+.app .score-line-card img {
+  display: block;
+  width: 40px;
+  border-radius: 4px;
+}
+.app .score-line-card svg {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  background: #fffaf0;
+  border-radius: 50%;
+}
+.app .score-line strong {
+  font-size: 13px;
+}
+.app .score-line strong small {
+  display: inline-block;
+  color: #355c45;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+}
+.app .score-line p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #635849;
+  margin: 5px 0 0;
+}
+.app .score-line > b {
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+.app .score-line-bonus > b {
+  color: #2a7148;
+}
+.app .score-line-adjustment {
+  background: #f0e9dc;
+}
+.app .score-details-note,
+.app .score-empty {
+  margin: 18px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #695d4c;
+}
+.app .invite-more,
+.app .learn-entry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 44px;
+}
+.app .invite-more {
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  border: 1px solid #b0a48f;
+  border-radius: 50px;
+  background: #f8f1e5;
+  color: #332d24;
+  font-weight: 700;
+}
+.app .invite-dialog {
+  width: min(490px, 100%);
+  text-align: center;
+}
+.app .invite-dialog > p {
+  line-height: 1.6;
+  color: #635849;
+  font-size: 14px;
+}
+.app .invite-qr {
+  display: grid;
+  place-items: center;
+  width: min(240px, 100%);
+  aspect-ratio: 1;
+  margin: 20px auto 10px;
+  background: #fff;
+  border: 1px solid #d9d1c3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.app .invite-qr img {
+  width: 100%;
+  height: 100%;
+}
+.app .invite-room-code {
+  display: block;
+  font-size: 24px;
+  letter-spacing: 0.13em;
+  margin-bottom: 20px;
+}
+.app .invite-link {
+  display: block;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+}
+.app .invite-link input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 7px;
+  padding: 12px;
+  border: 1px solid #c8bfaf;
+  border-radius: 7px;
+  background: #f5efdf;
+  color: #41392e;
+  font-size: 12px;
+}
+.app .invite-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.app .invite-message {
+  min-height: 38px;
+  font-size: 12px !important;
+  margin-bottom: 0;
+}
+.app .effect-notice {
+  border-left: 3px solid #9e89cc;
+  background: #eee7f8;
+  padding: 10px 15px;
+  margin: 0 0 16px;
+  border-radius: 0 8px 8px 0;
+  color: #403451;
+  animation: effect-arrive 220ms ease-out;
+}
+.app .effect-notice-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.app .effect-notice-heading > button {
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  min-width: 32px;
+  min-height: 32px;
+}
+.app .effect-notice-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+.app .effect-notice-items > div {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 4px 0;
+}
+.app .effect-notice-items img {
+  width: 25px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.app .effect-notice-items strong,
+.app .effect-notice-items small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.app .effect-notice-items small {
+  color: #665570;
+}
+.app .mood-card.effect-changed {
+  outline: 3px solid #b598ed;
+  outline-offset: 4px;
+  animation: effect-glow 650ms ease-out 2;
+}
+.app .effect-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  background: #e5d7ff;
+  color: #413057;
+  border: 1px solid #8870ad;
+  padding: 5px 9px;
+  font:
+    800 10px "DM Sans",
+    sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+@keyframes effect-glow {
+  50% {
+    outline-color: #f9f0ff;
+    box-shadow: 0 0 24px #b29bdf99;
+  }
+}
+@keyframes effect-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.app .learn-entry {
+  margin: 20px 0 0;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #473956;
+  padding: 8px 0;
+}
+.app .learn-entry span {
+  font-weight: 750;
+  font-size: 14px;
+}
+.app .learn-entry small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #6e6358;
+  font-weight: 400;
+}
+.app .tutorial-backdrop {
+  z-index: 160;
+}
+.app .tutorial {
+  width: min(1060px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  background: #f8f1e3;
+  border: 1px solid #3d342e;
+  border-radius: 16px;
+  padding: 24px;
+  color: #302b28;
+  box-shadow: 10px 10px 0 #18131c66;
+}
+.app .practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.app .practice-header .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.app .practice-header > button {
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  min-width: 44px;
+  color: inherit;
+}
+.app .practice-progress {
+  height: 4px;
+  background: #ddd0b9;
+  margin: 8px 0 20px;
+  border-radius: 4px;
+}
+.app .practice-progress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #8466b4;
+  transition: width 250ms ease;
+}
+.app .practice-coach {
+  background: #e8dff3;
+  border: 1px solid #bbaac8;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.app .practice-coach h2 {
+  font-family: var(--serif);
+  font-size: 32px;
+  margin: 10px 0;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.app .practice-coach p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 780px;
+  margin: 0 0 16px;
+}
+.app .practice-thinking {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-size: 12px;
+  color: #6b517b;
+}
+.app .practice-table {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.app .practice-seat {
+  border: 1px solid #c6b99f;
+  padding: 14px;
+  border-radius: 10px;
+  background: #ede4d1;
+  min-width: 0;
+}
+.app .practice-active {
+  border-color: #8e6ebc;
+  background: #f2eadf;
+}
+.app .practice-seat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.app .practice-seat-head small {
+  display: block;
+  font-size: 9px;
+  color: #6a5f50;
+  margin-top: 4px;
+}
+.app .practice-seat-head > button {
+  margin-left: auto;
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: #352b42;
+}
+.app .practice-seat-head b {
+  font-size: 30px;
+  line-height: 1;
+}
+.app .practice-wins {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 11px;
+  align-items: center;
+}
+.app .practice-moods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 125px;
+  align-items: start;
+}
+.app .practice-moods > p {
+  font-size: 12px;
+  color: #968774;
+}
+.app .practice-card {
+  width: 74px;
+  flex: 0 0 74px;
+}
+.app .practice-card > button:first-child {
+  position: relative;
+  display: block;
+  padding: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+}
+.app .practice-card img {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: 1px 3px 5px #0004;
+  transition: transform 350ms ease;
+}
+.app .practice-card b {
+  position: absolute;
+  bottom: -4px;
+  right: -5px;
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  background: #fff9e9;
+  border: 1px solid #5e5346;
+  color: #332b23;
+  border-radius: 50%;
+  font-size: 13px;
+}
+.app .practice-eligible > button:first-child {
+  outline: 3px solid #8360b7;
+  outline-offset: 3px;
+}
+.app .practice-selected > button:first-child {
+  outline-color: #387855;
+}
+.app .practice-check {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  border-radius: 50%;
+  background: #397551;
+  color: white;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+}
+.app .practice-read {
+  background: transparent;
+  border: 0;
+  font-size: 9px;
+  line-height: 1.25;
+  color: #68584a;
+  width: 100%;
+  padding: 7px 0 4px;
+  min-height: 30px;
+}
+.app .practice-hand {
+  border-top: 1px dashed #bbad98;
+  padding-top: 15px;
+}
+.app .practice-hand > div {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 16px 8px 10px;
+}
+.app .practice-hand .practice-card {
+  width: 100px;
+  flex-basis: 100px;
+}
+.app .practice-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid #d8cbb6;
+  padding-top: 14px;
+  margin-top: 15px;
+  font-size: 10px;
+  color: #766959;
+}
+.app .practice-footer button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #65523e;
+  border: 0;
+  min-height: 44px;
+}
+@media (max-width: 600px) {
+  .app .score-details,
+  .app .invite-dialog {
+    padding: 24px 18px;
+    max-height: calc(var(--visible-height, 100dvh) - 24px);
+  }
+  .app .score-details-total {
+    padding: 14px 18px;
+  }
+  .app .score-line {
+    gap: 10px;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+  }
+  .app .score-line-card img {
+    width: 34px;
+  }
+  .app .score-line p {
+    font-size: 11px;
+  }
+  .app .effect-notice {
+    padding: 8px 10px;
+  }
+  .app .effect-notice-heading > button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .app .tutorial {
+    padding: 14px;
+    max-height: calc(var(--visible-height, 100dvh) - 20px);
+  }
+  .app .practice-coach {
+    padding: 17px;
+  }
+  .app .practice-coach h2 {
+    font-size: 28px;
+  }
+  .app .practice-table {
+    grid-template-columns: 1fr;
+  }
+  .app .practice-seat {
+    padding: 12px;
+  }
+  .app .practice-seat:first-child {
+    order: 3;
+  }
+  .app .practice-moods {
+    min-height: 30px;
+  }
+  .app .practice-card {
+    width: 68px;
+    flex-basis: 68px;
+  }
+  .app .practice-hand .practice-card {
+    width: 90px;
+    flex-basis: 90px;
+  }
+  .app .practice-read {
+    min-height: 44px;
+  }
+  .app .practice-seat-head {
+    margin-bottom: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .effect-notice,
+  .app .mood-card.effect-changed {
+    animation: none;
+  }
+  .app .practice-progress i,
+  .app .practice-card img {
+    transition: none;
+  }
+}
+.app[data-reduced-motion="true"] .effect-notice,
+.app[data-reduced-motion="true"] .mood-card.effect-changed {
+  animation: none;
+}
+
+.app .opponent-score.score-open {
+  background: transparent;
+  color: inherit;
+}
+.app .practice-actions {
+  position: sticky;
+  bottom: -24px;
+  background: #f8f1e3f5;
+  padding: 12px 0;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #bdb097;
+  z-index: 5;
+}
+.app .practice-actions .primary {
+  min-height: 48px;
+}
+@media (max-width: 600px) {
+  .app .practice-actions {
+    bottom: -14px;
+  }
+  .app .practice-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.app .card-zoom {
+  z-index: 210;
+}
+.app .mood-card.effect-changed.target-eligible {
+  outline-color: #2c9fda;
+  animation: none;
+}
+.app .mood-card.effect-changed.target-selected {
+  outline-color: #8651a2;
+}

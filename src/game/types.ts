@@ -114,6 +114,7 @@ export interface Delayed {
   round: number;
 }
 export interface Game {
+  scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   revealReady?: string[];
   visibility?: "private" | "public";
@@ -148,6 +149,7 @@ export interface Game {
   lastPlayed?: { id: number; actor: string; def: string; originalDef: string };
   roundPauseUntil?: number;
   lastRound?: {
+    scoreDetails?: Record<string, ScoreBreakdown>;
     round: number;
     scores: Record<string, number>;
     skippedBy?: "awe";
@@ -187,7 +189,20 @@ export interface PublicRoom {
   players: number;
   bots: number;
 }
+export interface ScoreLine {
+  kind: "mood" | "bonus" | "adjustment";
+  label: string;
+  points: number;
+  detail: string;
+  card?: string;
+  def?: string;
+}
+export interface ScoreBreakdown {
+  total: number;
+  lines: ScoreLine[];
+}
 export interface View {
+  scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   revealReady?: string[];
   visibility?: "private" | "public";

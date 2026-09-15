@@ -239,6 +239,7 @@ export function usePresentedTable(
     ...view,
     hand: before.hand,
     moods: before.moods,
+    scoreDetails: before.scoreDetails,
     discard: before.discard,
     deckCount: before.deckCount,
     players: view.players.map((p) => {
