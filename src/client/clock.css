@@ -1,0 +1,86 @@
+/* Turn timer: a taped-on stopwatch slip. */
+.app .turn-clock {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 9px 5px;
+  border: 2px solid var(--ink, #242323);
+  background: #fffdf5;
+  color: var(--ink, #242323);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  rotate: -1deg;
+  flex: none;
+}
+.app .turn-clock-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+.app .turn-clock strong {
+  font-family: var(--serif, inherit);
+  font-size: 18px;
+  line-height: 1;
+}
+.app .turn-clock i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--green, #176846);
+  transition: width 0.25s linear;
+}
+.app .turn-clock.paused {
+  opacity: 0.55;
+}
+.app .turn-clock.overtime {
+  background: #fff1c9;
+}
+.app .turn-clock.overtime i {
+  background: #d99a1c;
+}
+.app .turn-clock.urgent {
+  background: var(--coral, #db514f);
+  color: #fff;
+  border-color: var(--ink, #242323);
+  animation: clock-urgent 1s steps(2, jump-none) infinite;
+}
+.app .turn-clock.urgent i {
+  background: #fff;
+}
+@keyframes clock-urgent {
+  50% {
+    rotate: 1.5deg;
+  }
+}
+.app .bank-pill {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px dashed var(--muted, #615d55);
+  color: var(--muted, #615d55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.app .bank-pill.empty {
+  border-color: var(--coral, #db514f);
+  color: var(--coral, #db514f);
+}
+.app .player-head .turn-clock {
+  margin-top: 5px;
+}
+.app .clock-choice {
+  margin-top: -14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .turn-clock.urgent {
+    animation: none;
+  }
+}
+.app[data-motion="reduced"] .turn-clock.urgent {
+  animation: none;
+}

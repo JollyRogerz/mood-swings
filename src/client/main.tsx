@@ -72,6 +72,8 @@ import {
   usePortableViewport,
 } from "./portable";
 import { PACING, pacing } from "../game/pacing";
+import { CLOCKS } from "../game/clock";
+import { BankPill, describeClock, TurnClock } from "./clock";
 import {
   Score,
   TableSettings,
@@ -736,6 +738,24 @@ function App() {
               can ready up early
             </small>
           </label>
+          <label className="pace-choice clock-choice">
+            Turn timer
+            <select
+              aria-label="Turn timer"
+              value={view.clock?.setting ?? "off"}
+              disabled={!connected || view.you !== view.host}
+              onChange={(e) =>
+                room.current?.send("clock", { clock: e.target.value })
+              }
+            >
+              {Object.entries(CLOCKS).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value.label}
+                </option>
+              ))}
+            </select>
+            <small>{describeClock(view.clock?.setting ?? "off")}</small>
+          </label>
           <div className="lobby-seats">
             {[0, 1, 2, 3].map((i) => {
               const p = view.players[i];
@@ -921,6 +941,8 @@ function App() {
                     moods={table!.moods.filter((c) => c.owner === p.id)}
                     active={view.active === p.id}
                     inspect={setInspect}
+                    clock={view.clock}
+                    you={view.you}
                     doing={describeActivity(
                       p,
                       view,
@@ -1041,6 +1063,15 @@ function App() {
                                 : "Your turn. How are you feeling?"
                               : `${view.players.find((p) => p.id === view.active)?.name}’s turn`}
                 </span>
+                {connected && !interactionPaused && (
+                  <TurnClock
+                    clock={view.clock}
+                    you={view.you}
+                    name={
+                      view.players.find((p) => p.id === view.clock?.actor)?.name
+                    }
+                  />
+                )}
                 <button
                   className="portable-your-score score-open"
                   aria-label="Your points"
@@ -1911,7 +1942,11 @@ function PlayerZone({
   inspect,
   doing,
   reactions,
+  clock,
+  you,
 }: {
+  clock?: View["clock"];
+  you: string;
   showScore: () => void;
   player: View["players"][number];
   index: number;
@@ -1935,8 +1970,12 @@ function PlayerZone({
               <small className="bot-label"> · {botLabel(player.bot)}</small>
             )}
             {!player.connected && <small className="away"> · away</small>}
+            <BankPill clock={clock} player={player.id} />
           </strong>
           <WinDots wins={player.wins} />
+          {clock?.actor === player.id && (
+            <TurnClock clock={clock} you={you} name={player.name} />
+          )}
           {doing && (
             <span className="player-doing" aria-live="polite">
               {doing.endsWith("…") ? (

@@ -34,6 +34,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Guidance           | The one control that moves the game along glows                     |
 | Decide first       | A card's decisions are previewed and answered from the hand before it is played |
 | Auto-advance       | A turn with no legal play left ends by itself                       |
+| Turn timer         | Optional per-decision clock with a personal time bank, set by the host |
 | Device support     | Touch layouts for phones and tablets, portrait and landscape; no installer required    |
 
 This release does not include Duel, drafting, team variants, custom deck construction, spectators, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
@@ -137,6 +138,17 @@ Affected moods briefly glow with a change badge, while a **Feel the shift** summ
 Cards move between the visible hand, table, and discard pile, and remaining cards slide into their new positions. Suppression and the secondary printed value keep their sideways and upside-down orientations. During a played-card reveal, the previous table stays visible behind it; card positions and score changes appear when reading finishes. Reconnecting establishes the current table without replaying historical card movement. Only each player's permitted public view is used for these animations.
 
 The host chooses a pace in the lobby: **Relaxed** (9-second reveals / 12-second results), **Standard** (6 / 9), or **Quick** (3 / 6.5). Every connected human can press **I'm ready** to finish a reveal early; one player cannot dismiss it for everyone else, bots do not hold it open, and a minimum reveal still applies. If a card ends a round, its reveal precedes the full result sequence. Pacing survives reconnects, server restarts, and rematches.
+
+The host can also switch on a **turn timer**. It is a shot clock with a time bank, not a fixed turn length, because a Mood Swings turn can hold several plays and decisions:
+
+| Timer    | Each decision | Time bank per player | Bank top-up each round |
+| -------- | ------------: | -------------------: | ---------------------: |
+| No timer |             — |                    — |                      — |
+| Relaxed  |          90 s |                 3:00 |                  +30 s |
+| Standard |          45 s |                 1:30 |                  +20 s |
+| Brisk    |          25 s |                 0:45 |                  +10 s |
+
+Every decision the table waits on (playing a card, ending the turn, answering an effect) gets a fresh allowance, so a long combo is never punished. The clock runs only while the table is actually waiting on that player: never during a card reveal or the round results, and an early "I'm ready" starts it sooner, never later. When the allowance runs out, that player's own bank drains instead, which forgives the occasional hard decision without letting anyone stall every turn. When the bank is empty too, the table moves on for them: an optional effect is skipped, a mandatory one is answered the way the Normal bot would, and an unfinished turn simply ends. It never plays a card from their hand. A player who times out twice in a row is treated as away and gets a ten-second allowance until they next act for themselves, so an absent or disconnected friend costs the table seconds, not minutes. Bots are never timed, the clock stops if no human is connected, and a server restart gives the waiting player a fresh allowance. The browser receives remaining time rather than timestamps, so a wrong device clock cannot distort the countdown. At ten seconds the player on the clock gets one warning: the countdown turns coral, the turn tone plays if sound is on, and phones vibrate.
 
 Card-effect choices highlight eligible moods on the table. Clicking a highlighted mood selects it for the existing confirmation flow; the choice panel remains available. The latest move and a **Last played** inspection shortcut stay alongside the board. Score changes have brief signed badges.
 

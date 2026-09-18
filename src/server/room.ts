@@ -21,6 +21,17 @@ import {
 } from "../game/types";
 import { store } from "./store";
 import { acknowledgeReveal, isPace, pacing } from "../game/pacing";
+import {
+  armClock,
+  clockView,
+  expireClock,
+  isClock,
+  setClockScale,
+  settleClock,
+  waitingOn,
+} from "../game/clock";
+import { timeoutAction } from "../game/timeout";
+setClockScale(Number(process.env.MOOD_CLOCK_SCALE ?? 1));
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
   if (typeof token !== "string" || !/^[a-f0-9-]{36,128}$/i.test(token))
@@ -42,6 +53,7 @@ export class MoodRoom extends Room {
   autoDispose = false;
   game!: Game;
   private botTimer?: { clear(): void };
+  private clockTimer?: { clear(): void };
   private chain: Promise<unknown> = Promise.resolve();
   private actors = new Map<string, string>();
   private rates = new Map<string, { time: number; count: number }>();
@@ -54,6 +66,8 @@ export class MoodRoom extends Room {
     this.roomId = options.code;
     this.game = options.snapshot;
     for (const p of this.game.players) p.connected = !!p.bot;
+    // A restart should never time someone out the instant they reconnect.
+    delete this.game.clockState;
     await this.setPrivate(true);
     this.onMessage("visibility", (client, message) =>
       this.enqueue(async () => {
@@ -84,6 +98,21 @@ export class MoodRoom extends Room {
         if (!isPace(message?.pace)) throw new RuleError("Choose a table pace.");
         const next = structuredClone(this.game);
         next.pace = message.pace;
+        next.revision++;
+        await this.commit(next);
+      }, client),
+    );
+    this.onMessage("clock", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        if (
+          this.actor(client) !== this.game.host ||
+          this.game.status !== "lobby"
+        )
+          throw new RuleError("Only the host can set the timer in the lobby.");
+        if (!isClock(message?.clock)) throw new RuleError("Choose a timer.");
+        const next = structuredClone(this.game);
+        next.clock = message.clock;
         next.revision++;
         await this.commit(next);
       }, client),
@@ -126,6 +155,7 @@ export class MoodRoom extends Room {
         if (action?.type === "play")
           action.choices = parsePlannedChoices(action.choices);
         const next = playPlanned(this.game, actor, action);
+        settleClock(next, this.game, actor, Date.now());
         await this.commit(next);
         if (this.activity.delete(actor)) this.broadcastPresence();
       }, client),
@@ -253,6 +283,7 @@ export class MoodRoom extends Room {
         );
         next.visibility = this.game.visibility;
         next.pace = this.game.pace;
+        next.clock = this.game.clock;
         for (const p of this.game.players.filter((p) => p.id !== actor)) {
           addPlayer(next, p.id, p.name);
           next.players.find((x) => x.id === p.id)!.bot = p.bot;
@@ -354,11 +385,68 @@ export class MoodRoom extends Room {
       next.roundPauseUntil =
         Math.max(Date.now(), next.playPauseUntil ?? 0) +
         pacing(next.pace).results;
+    const waiting = waitingOn(next);
+    armClock(next, Date.now(), {
+      humanConnected: next.players.some((p) => !p.bot && p.connected),
+      nothingToDecide:
+        !!waiting &&
+        !next.prompt &&
+        Object.keys(publicView(next, waiting).playable).length === 0,
+    });
     await store.save(this.roomId, next);
     this.game = next;
     this.updateListing();
     for (const client of this.clients) this.sendView(client);
     this.scheduleBot();
+    this.scheduleClock();
+  }
+  // When a human's allowance ends: first their bank starts to drain, then the
+  // table acts for them. Every step re-validates against the live game.
+  private scheduleClock() {
+    this.clockTimer?.clear();
+    const state = this.game.clockState;
+    if (!state) return;
+    this.clockTimer = this.clock.setTimeout(
+      () => {
+        void this.enqueue(async () => {
+          const next = structuredClone(this.game);
+          const outcome = expireClock(next, Date.now());
+          if (outcome === "none") return this.scheduleClock();
+          if (outcome === "overtime") return this.commit(next);
+          const actor = state.actor,
+            name = next.players.find((p) => p.id === actor)?.name ?? "A player",
+            view = publicView(next, actor);
+          let acted: Game | undefined;
+          for (let attempt = 0; attempt < 8 && !acted; attempt++)
+            try {
+              acted = act(
+                next,
+                actor,
+                attempt
+                  ? botAction(view, "easy", next.revision * 31 + attempt)
+                  : timeoutAction(view, next.revision * 997),
+              );
+            } catch (error) {
+              if (attempt === 7) throw error;
+            }
+          if (!acted) return;
+          acted.log.push({
+            id: ++acted.serial,
+            text: view.prompt
+              ? `${name} ran out of time; the table decided for them.`
+              : `${name} ran out of time; their turn ended.`,
+          });
+          if (acted.log.length > 120) acted.log.shift();
+          await this.commit(acted);
+        }).catch((error) =>
+          console.error(
+            "Clock could not act",
+            error instanceof Error ? error.message : "Unknown error",
+          ),
+        );
+      },
+      Math.max(50, state.deadline - Date.now() + 30),
+    );
   }
   onDispose() {
     publicRooms.delete(this.roomId);
@@ -455,6 +543,7 @@ export class MoodRoom extends Room {
         ...publicView(this.game, id, true),
         presence: Object.fromEntries(this.activity),
         pace: this.game.pace ?? "standard",
+        clock: clockView(this.game, Date.now()),
         revealReady: this.game.revealReady ?? [],
         visibility: this.game.visibility ?? "private",
         playPauseMs: Math.max(0, (this.game.playPauseUntil ?? 0) - Date.now()),
