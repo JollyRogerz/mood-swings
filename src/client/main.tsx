@@ -74,6 +74,18 @@ import {
 import { PACING, pacing } from "../game/pacing";
 import { CLOCKS } from "../game/clock";
 import { BankPill, describeClock, TurnClock } from "./clock";
+import { CLOCKS as CLOCK_LABELS } from "../game/clock";
+import {
+  AwayRecap,
+  GalleryCount,
+  ShortcutList,
+  SpectatorBar,
+  UndoToast,
+  useAwayRecap,
+  useShortcuts,
+  useTurnNotifications,
+  useUndoable,
+} from "./upgrades";
 import {
   Score,
   TableSettings,
@@ -112,6 +124,9 @@ async function post(url: string, body: unknown) {
 }
 const startingCode =
   location.pathname.match(/^\/room\/([A-Z2-9]{8})$/i)?.[1].toUpperCase() ?? "";
+// A watch link seats nobody: /room/CODE?watch=1
+const startingAsSpectator =
+  new URLSearchParams(location.search).get("watch") === "1";
 function App() {
   usePortableViewport();
   useModalNavigation();
@@ -207,6 +222,20 @@ function App() {
     });
   }, [table?.revision, table?.scoreDetails, interactionPaused]);
   useTurnSound(view, interactionPaused, connected);
+  useTurnNotifications(
+    view,
+    preferences.notify,
+    connected && !interactionPaused,
+  );
+  const away = useAwayRecap(view, hidden);
+  const undoable = useUndoable(
+    `${view?.revision}:${view?.prompt?.id}:${interactionPaused}`,
+  );
+  useShortcuts(view?.status === "playing" && !view.spectator, {
+    log: () => setActivity((open) => !open),
+    score: () => view && showScore(view.you),
+    help: () => setHelp(true),
+  });
   useEffect(() => {
     const mine = view?.status === "playing" && connected && !interactionPaused;
     document.title =
@@ -244,14 +273,17 @@ function App() {
     keepConnected = useRef(false),
     retries = useRef(0),
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
-    viewRef = useRef<View | undefined>(undefined);
+    viewRef = useRef<View | undefined>(undefined),
+    spectating = useRef(startingAsSpectator);
   viewRef.current = view;
-  async function connect(target: string) {
+  async function connect(target: string, spectate = spectating.current) {
+    spectating.current = spectate;
     await post(`/api/rooms/${target}/connect`, { token });
     const client = new Client(serverURL);
     const joined = await client.joinById(target, {
       token,
       name: localStorage.getItem("mood-name") ?? name,
+      spectate,
     });
     room.current = joined;
     joined.reconnection.enabled = false;
@@ -299,8 +331,26 @@ function App() {
     });
     joined.send("sync");
     setRoomCode(target);
-    history.replaceState({}, "", `/room/${target}`);
+    history.replaceState(
+      {},
+      "",
+      `/room/${target}${spectate ? "?watch=1" : ""}`,
+    );
     keepConnected.current = true;
+  }
+  // Leave the gallery and sit down, when the lobby still has a seat.
+  async function takeSeat() {
+    const target = roomCode;
+    keepConnected.current = false;
+    room.current?.leave();
+    room.current = null;
+    setBusy(true);
+    try {
+      await connect(target, false);
+    } catch (e) {
+      setError((e as Error).message);
+      setBusy(false);
+    }
   }
   function scheduleReconnect(target: string) {
     if (!keepConnected.current) return;
@@ -315,7 +365,11 @@ function App() {
       Math.min(1000 * 2 ** retries.current++, 10000),
     );
   }
-  async function enter(create: boolean, selectedCode?: string) {
+  async function enter(
+    create: boolean,
+    selectedCode?: string,
+    spectate = false,
+  ) {
     if (!name.trim()) {
       setError("What should we call you at the table?");
       return;
@@ -327,7 +381,7 @@ function App() {
       const target = create
         ? (await post("/api/rooms", { name, token, visibility })).code
         : (selectedCode ?? code).trim().toUpperCase();
-      await connect(target);
+      await connect(target, spectate);
     } catch (e) {
       setError((e as Error).message);
       setBusy(false);
@@ -363,12 +417,12 @@ function App() {
           ? "holding"
           : "idle";
   useEffect(() => {
-    if (connected && view?.status === "playing")
+    if (connected && view?.status === "playing" && !view.spectator)
       room.current?.send("presence", { state: myPresence });
-  }, [myPresence, connected, view?.status]);
+  }, [myPresence, connected, view?.status, view?.spectator]);
   function react(emoji: Reaction) {
     setReactionsOpen(false);
-    if (connected) room.current?.send("react", { emoji });
+    if (connected && !view?.spectator) room.current?.send("react", { emoji });
   }
   const requestPlan = useCallback(
     (card: string, grant: string, choices: PlannedChoice[]) => {
@@ -398,6 +452,7 @@ function App() {
   }
   function leave() {
     setRecap(undefined);
+    spectating.current = false;
     keepConnected.current = false;
     clearTimeout(timer.current);
     room.current?.leave();
@@ -548,6 +603,14 @@ function App() {
                     >
                       Join <ArrowUpRight size={17} />
                     </button>
+                    <button
+                      className="watch-button"
+                      disabled={busy || code.length !== 8}
+                      onClick={() => enter(false, undefined, true)}
+                      aria-label="Watch this table"
+                    >
+                      Watch
+                    </button>
                   </div>
                 </div>
               </div>
@@ -627,7 +690,10 @@ function App() {
               Meet all 133 moods <ArrowUpRight size={17} />
             </button>
           </section>
-          <PublicTables busy={busy} onJoin={(target) => enter(false, target)} />
+          <PublicTables
+            busy={busy}
+            onJoin={(target, spectate) => enter(false, target, spectate)}
+          />
           <section className="intro">
             <div>
               <span className="eyebrow">SIMPLE TO START. HARD TO PREDICT.</span>
@@ -680,6 +746,10 @@ function App() {
         </main>
       ) : view.status === "lobby" ? (
         <main className="lobby">
+          <SpectatorBar
+            view={view}
+            takeSeat={view.players.length < 4 ? takeSeat : undefined}
+          />
           <div className="eyebrow">YOUR TABLE IS READY</div>
           <h1>
             Good company
@@ -863,6 +933,7 @@ function App() {
               <h2>Make yourself felt.</h2>
             </div>
             <div className="table-tools">
+              <GalleryCount count={view.spectators} />
               <button onClick={invite} aria-label="Copy room invite">
                 <span className="room-code">{roomCode}</span>
                 {copied ? <Check size={15} /> : <Copy size={15} />}
@@ -916,6 +987,41 @@ function App() {
                   <History size={14} /> Last round
                 </button>
               )}
+              {(view.history?.length ?? 0) > 1 && (
+                <select
+                  className="round-history"
+                  aria-label="Earlier rounds"
+                  value=""
+                  disabled={interactionPaused}
+                  onChange={(e) => {
+                    const round = view.history!.find(
+                      (r) => r.round === Number(e.target.value),
+                    );
+                    if (round)
+                      setRecap({
+                        lastRound: round,
+                        players: view.players,
+                        you: view.you,
+                        status: "playing",
+                        winner: undefined,
+                        pace: view.pace,
+                      });
+                  }}
+                >
+                  <option value="">Earlier rounds…</option>
+                  {view
+                    .history!.slice(0, -1)
+                    .reverse()
+                    .map((r) => (
+                      <option key={r.round} value={r.round}>
+                        Round {r.round}
+                        {r.winner
+                          ? ` · ${view.players.find((p) => p.id === r.winner)?.name ?? "?"} won`
+                          : " · no scoring"}
+                      </option>
+                    ))}
+                </select>
+              )}
               {view.lastPlayed && (
                 <button onClick={() => setInspect(view.lastPlayed!.def)}>
                   Last played <ArrowUpRight size={14} />
@@ -923,7 +1029,10 @@ function App() {
               )}
             </div>
           </div>
+          <SpectatorBar view={view} />
+          <AwayRecap missed={away.missed} dismiss={away.dismiss} />
           <EffectNotice changes={effects.changes} dismiss={effects.dismiss} />
+          <UndoToast {...undoable} />
           <section className={`board players-${view.players.length}`}>
             <OpponentOverview view={table!} reduced={reduced} />
             <div className="board-watermark">
@@ -943,6 +1052,14 @@ function App() {
                     inspect={setInspect}
                     clock={view.clock}
                     you={view.you}
+                    seatBot={
+                      view.you === view.host &&
+                      view.status === "playing" &&
+                      !p.bot &&
+                      (!p.connected || view.clock?.away.includes(p.id))
+                        ? () => room.current?.send("seat-bot", { id: p.id })
+                        : undefined
+                    }
                     doing={describeActivity(
                       p,
                       view,
@@ -983,7 +1100,7 @@ function App() {
                 <span>{table!.discard.length} discarded</span>
               </button>
             </div>
-            <div className="your-moods">
+            <div className="your-moods" hidden={view.spectator}>
               <div className="zone-label">
                 <span>YOUR MOODS</span>
                 <button
@@ -1018,7 +1135,11 @@ function App() {
               </div>
             </div>
           </section>
-          <section className="hand-section" aria-label="Your hand">
+          <section
+            className="hand-section"
+            aria-label="Your hand"
+            hidden={view.spectator}
+          >
             <div className="hand-heading">
               <div className="you-label">
                 <Avatar
@@ -1128,9 +1249,20 @@ function App() {
                   interactionPaused ||
                   busy ||
                   !connected ||
-                  outOfPlays
+                  outOfPlays ||
+                  !!undoable.pending
                 }
-                onClick={() => send({ type: "pass" })}
+                onClick={() =>
+                  undoable.run(
+                    "Ending your turn…",
+                    () => send({ type: "pass" }),
+                    // Nothing to regret when no card could still be played,
+                    // and never eat into the last seconds of a running clock.
+                    !Object.keys(view.playable).length ||
+                      (view.clock?.actor === view.you &&
+                        (view.clock.remainingMs ?? Infinity) < 6000),
+                  )
+                }
               >
                 {outOfPlays
                   ? "Moving on"
@@ -1157,7 +1289,10 @@ function App() {
               key={view.prompt.id}
               view={view}
               send={send}
-              disabled={busy || !connected || interactionPaused}
+              undoable={undoable}
+              disabled={
+                busy || !connected || interactionPaused || !!undoable.pending
+              }
             />
           )}
           {activity && (
@@ -1224,6 +1359,17 @@ function App() {
               view={view}
               remaining={roundDeadline - clockNow}
               showScore={(id) => showScore(id, view)}
+              ready={
+                view.spectator
+                  ? undefined
+                  : {
+                      done: !!view.resultsReady?.includes(view.you),
+                      send: () =>
+                        room.current?.send("results-ready", {
+                          round: view.lastRound!.round,
+                        }),
+                    }
+              }
             />
           )}
           {recap && !interactionPaused && (
@@ -1416,6 +1562,7 @@ function App() {
               You can rejoin this table from the same browser after a
               disconnect.
             </p>
+            <ShortcutList />
             <a
               href="https://magic.wizards.com/en/news/feature/mood-swings-extended-rules"
               target="_blank"
@@ -1548,6 +1695,7 @@ function PlayedCardReveal({
         </div>
         <button
           className="reveal-ready"
+          hidden={view.spectator}
           disabled={view.revealReady?.includes(view.you)}
           onClick={ready}
         >
@@ -1573,7 +1721,9 @@ function RoundResults({
   remaining = 0,
   onClose,
   showScore,
+  ready,
 }: {
+  ready?: { done: boolean; send: () => void };
   view: RoundResultView;
   showScore?: (id: string) => void;
   remaining?: number;
@@ -1784,6 +1934,16 @@ function RoundResults({
             <div className="round-progress">
               <span style={{ width: `${Math.min(100, elapsed / 90)}%` }} />
             </div>
+            {ready && (
+              <button
+                className="reveal-ready results-ready"
+                disabled={ready.done}
+                onClick={ready.send}
+              >
+                {ready.done ? "Ready · waiting for the table" : "I’m ready"}{" "}
+                <Check size={16} />
+              </button>
+            )}
             <small>
               {view.status === "finished" ? "Final results" : "Play resumes"} in{" "}
               {Math.max(1, Math.ceil(remaining / 1000))}s
@@ -1913,6 +2073,7 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
     c.value === printed[1];
   return (
     <button
+      data-color={c.color}
       className={`mood-card ${effect ? "effect-changed" : ""} ${option ? "target-eligible" : ""} ${chosen ? "target-selected" : ""} ${c.suppressed ? "suppressed" : secondary ? "secondary-value" : ""}`}
       onClick={() => (option ? targets!.toggle(option.id) : onClick())}
       data-motion-card={c.uid}
@@ -1944,9 +2105,11 @@ function PlayerZone({
   reactions,
   clock,
   you,
+  seatBot,
 }: {
   clock?: View["clock"];
   you: string;
+  seatBot?: () => void;
   showScore: () => void;
   player: View["players"][number];
   index: number;
@@ -1969,12 +2132,24 @@ function PlayerZone({
             {player.bot && (
               <small className="bot-label"> · {botLabel(player.bot)}</small>
             )}
+            {player.substitute && (
+              <small className="bot-label"> · standing in</small>
+            )}
             {!player.connected && <small className="away"> · away</small>}
             <BankPill clock={clock} player={player.id} />
           </strong>
           <WinDots wins={player.wins} />
           {clock?.actor === player.id && (
             <TurnClock clock={clock} you={you} name={player.name} />
+          )}
+          {seatBot && (
+            <button
+              className="seat-bot"
+              onClick={seatBot}
+              title={`A Normal bot plays ${player.name}’s hand until they return`}
+            >
+              <Bot size={13} /> Seat a bot for {player.name}
+            </button>
           )}
           {doing && (
             <span className="player-doing" aria-live="polite">
@@ -2121,6 +2296,7 @@ function Hand({
             key={c.uid}
             data-motion-card={c.uid}
             data-motion-zone="hand"
+            data-color={c.color}
             className={`hand-card ${targets?.options.some((o) => o.card === c.uid) ? "target-eligible" : ""} ${targets?.options.some((o) => o.card === c.uid && targets.selected.includes(o.id)) ? "target-selected" : ""} ${view.playable[c.uid] ? "playable" : ""} ${selected === c.uid ? "selected" : ""}`}
             style={
               {
@@ -2336,11 +2512,13 @@ function ChoicePanel({
   send,
   disabled,
   setTargets,
+  undoable,
 }: {
   view: View;
   send: (a: Action) => void;
   disabled: boolean;
   setTargets: (targets: Targets | undefined) => void;
+  undoable: ReturnType<typeof useUndoable>;
 }) {
   const q = view.prompt!;
   const [selected, setSelected] = useState<string[]>([]);
@@ -2379,7 +2557,11 @@ function ChoicePanel({
           <button
             className={`text-button ${!disabled && !selected.length ? "attention" : ""}`}
             disabled={disabled}
-            onClick={() => send({ type: "choose", prompt: q.id, selected: [] })}
+            onClick={() =>
+              undoable.run("Skipping this effect…", () =>
+                send({ type: "choose", prompt: q.id, selected: [] }),
+              )
+            }
           >
             Skip effect
           </button>
@@ -2589,7 +2771,7 @@ function PublicTables({
   onJoin,
 }: {
   busy: boolean;
-  onJoin: (code: string) => void;
+  onJoin: (code: string, spectate: boolean) => void;
 }) {
   const [rooms, setRooms] = useState<PublicRoom[]>([]);
   const [status, setStatus] = useState("Finding open tables…");
@@ -2628,8 +2810,8 @@ function PublicTables({
       <div className="eyebrow">THERE’S ROOM FOR ONE MORE</div>
       <h2>Find your next table.</h2>
       <p>
-        Meet other players. Public tables appear here while their host is online
-        and seats are open.
+        Meet other players. Public tables appear here while their host is
+        online: take an open seat, or pull up a chair and watch.
       </p>
       {status ? (
         <p role="status">{status}</p>
@@ -2650,13 +2832,37 @@ function PublicTables({
                     : ""}
                 </span>
               </div>
-              <button
-                className="primary"
-                disabled={busy}
-                onClick={() => onJoin(r.code)}
-              >
-                Join table <ArrowRight size={16} />
-              </button>
+              <div className="room-chips">
+                <span>
+                  {r.status === "playing" ? "In play" : "In the lobby"}
+                </span>
+                <span>{PACING[r.pace]?.label ?? "Standard"} pace</span>
+                <span>
+                  {r.clock && r.clock !== "off"
+                    ? `${CLOCK_LABELS[r.clock].label} timer`
+                    : "No timer"}
+                </span>
+                {r.spectators > 0 && <span>{r.spectators} watching</span>}
+              </div>
+              <div className="room-actions">
+                {r.status === "lobby" && r.players < 4 && (
+                  <button
+                    className="primary"
+                    disabled={busy}
+                    onClick={() => onJoin(r.code, false)}
+                  >
+                    Join table <ArrowRight size={16} />
+                  </button>
+                )}
+                <button
+                  className="watch-button"
+                  disabled={busy}
+                  onClick={() => onJoin(r.code, true)}
+                  aria-label={`Watch ${r.hostName}’s table`}
+                >
+                  Watch
+                </button>
+              </div>
             </article>
           ))}
         </div>

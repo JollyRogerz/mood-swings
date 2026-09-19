@@ -35,9 +35,13 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Decide first       | A card's decisions are previewed and answered from the hand before it is played |
 | Auto-advance       | A turn with no legal play left ends by itself                       |
 | Turn timer         | Optional per-decision clock with a personal time bank, set by the host |
+| Spectators         | Up to sixty people can watch a table; they see what the table sees, never a hand |
+| Stand-in bot       | The host can seat a bot for a friend who left; they take the seat back on return |
+| Catching up        | Turn notifications, a recap of what you missed, earlier rounds' score sheets |
+| Comfort            | Undo for End turn and Skip effect, keyboard shortcuts, shapes for card colours |
 | Device support     | Touch layouts for phones and tablets, portrait and landscape; no installer required    |
 
-This release does not include Duel, drafting, team variants, custom deck construction, spectators, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+This release does not include Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -58,7 +62,7 @@ Effect choices show a live selection count, a point-budget meter when relevant, 
 
 Every completed card play gets a shared six-second full-size reveal, showing who played it. Humans and bots wait while everyone reads; copied cards identify both the original mood and the copied identity. Inspect a card to read its full artwork, rules, and notes. The table displays current values, since effects may change a mood's value from the number printed on its card. The activity log helps explain what just happened. After each round, a nine-second results sequence shows the final scores, the round winner, the Hurt Feelings recipient (when applicable), and who starts next. Both humans and bots wait for it to finish. The sequence also explains ties and handles the final match result. After a match, the host can start a rematch with the same group.
 
-An invite is intended for the people you share it with. Rooms are private by default. Hosts can choose Public at creation or in the lobby to appear on the home-page directory. Only waiting tables with an online host and fewer than four occupied seats are listed. The directory exposes the room code, host nickname, seat count and bot count, never session credentials or hands. Listings refresh every 15 seconds and are rebuilt as hosts reconnect after a server restart. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
+An invite is intended for the people you share it with. Rooms are private by default. Hosts can choose Public at creation or in the lobby to appear on the home-page directory. A public table is listed while its host is online and the match is not over: a lobby with an open seat can be joined, and any listed table, full or already playing, can be watched. The directory exposes the room code, host nickname, seat and bot counts, whether it is in the lobby or in play, its pace and timer, and how many people are watching, never session credentials or hands. Listings refresh every 15 seconds and are rebuilt as hosts reconnect after a server restart. Anyone with a lobby invite can try to occupy an open seat, so share it with your intended group.
 
 Use **Last round** beside the latest move to reopen the completed round's scores, winner, Hurt Feelings, and next starting player. This personal recap has no countdown and does not pause the shared game; a new shared reveal or round result takes precedence. Catalog, inspection, rules, settings, and result dialogs keep keyboard focus inside the foremost dialog and restore it when closed. **Escape** dismisses a hover enlargement first, then a dismissible dialog. Empty catalog searches offer a **Show all cards** reset.
 
@@ -138,6 +142,18 @@ Affected moods briefly glow with a change badge, while a **Feel the shift** summ
 Cards move between the visible hand, table, and discard pile, and remaining cards slide into their new positions. Suppression and the secondary printed value keep their sideways and upside-down orientations. During a played-card reveal, the previous table stays visible behind it; card positions and score changes appear when reading finishes. Reconnecting establishes the current table without replaying historical card movement. Only each player's permitted public view is used for these animations.
 
 The host chooses a pace in the lobby: **Relaxed** (9-second reveals / 12-second results), **Standard** (6 / 9), or **Quick** (3 / 6.5). Every connected human can press **I'm ready** to finish a reveal early; one player cannot dismiss it for everyone else, bots do not hold it open, and a minimum reveal still applies. If a card ends a round, its reveal precedes the full result sequence. Pacing survives reconnects, server restarts, and rematches.
+
+### Watching, stepping away, and coming back
+
+**Spectators.** Anyone without a seat watches. Choose **Watch** on the home page (by room code or from a public listing), open a watch link (`/room/CODE?watch=1`), or simply arrive after the game has started or the table is full. Up to sixty spectators receive the same public table the players see: moods, scores, hand sizes, the discard pile, reveals and results. They never receive a hand, a prompt, or the deck, and nothing a spectator sends can change the game. In a lobby with an open seat, a spectator can choose **Take a seat**. Players see how many people are watching. Spectators cannot react and are not part of any future voice chat.
+
+**A friend left?** During a game the host sees **Seat a bot for …** on the seat of a human who has disconnected, or who has timed out twice in a row with the timer on. A Normal bot then plays that hand; the seat, cards, moods and round wins are untouched. When the friend reconnects from the same browser they take the seat back automatically.
+
+**Ready for the next round.** The round results close early once every connected human has pressed **I’m ready**, after a 2.5-second minimum, the same way card reveals do. Bots and spectators never hold it open.
+
+**Catching up.** Turn notifications are opt-in under Table settings and only fire while the tab is in the background. When you come back to the tab, a **While you were away** note lists what happened. The last twelve rounds' results and score sheets can be reopened from **Earlier rounds**.
+
+**Comfort.** Ending a turn while you could still play a card, and skipping a card effect, show a 1.8-second **Undo** (skipped when nothing could be played, or when a running timer is nearly out). Keyboard: `1`–`9` select a hand card, `Enter` plays it or confirms a decision, `E` ends the turn, `Esc` puts the card back, `L` opens the log, `S` explains your score, `?` lists the shortcuts. **Shapes for card colours** (○ white, ◆ blue, ■ black, ▲ red, ✚ green) can be switched on for anyone who cannot rely on hue.
 
 The host can also switch on a **turn timer**. It is a shot clock with a time bank, not a fixed turn length, because a Mood Swings turn can hold several plays and decisions:
 

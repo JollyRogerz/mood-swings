@@ -1,0 +1,298 @@
+/* Gallery */
+.app .spectator-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border: 2px solid var(--ink, #242323);
+  border-left: 8px solid var(--purple, #9661b6);
+  background: #fffdf5;
+  font-size: 14px;
+}
+.app .spectator-bar span {
+  flex: 1;
+  min-width: 200px;
+}
+.app .spectator-bar .primary {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+.app .lobby .spectator-bar {
+  width: 100%;
+  text-align: left;
+}
+.app .gallery-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted, #615d55);
+  font-variant-numeric: tabular-nums;
+}
+.app .watch-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: 1px dashed var(--ink, #242323);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+}
+.app .watch-button:hover:not(:disabled) {
+  background: var(--ink, #242323);
+  color: #fffdf5;
+}
+.app .join-row .watch-button {
+  border: 0;
+  border-left: 1px dashed var(--ink, #242323);
+}
+.app .room-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-basis: 100%;
+  order: 3;
+}
+.app .room-chips span {
+  padding: 2px 7px;
+  border: 1px solid var(--line, #c2bcae);
+  background: #fffdf5;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted, #615d55);
+}
+.app .public-room-grid article {
+  flex-wrap: wrap;
+}
+.app .room-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+/* Stand-in bot */
+.app .seat-bot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--coral, #db514f);
+  color: var(--coral, #db514f);
+  background: #fffdf5;
+  font-size: 11px;
+  font-weight: 700;
+}
+.app .seat-bot:hover {
+  background: var(--coral, #db514f);
+  color: #fff;
+}
+/* Away recap */
+.app .away-recap {
+  margin: 0 0 12px;
+  padding: 10px 14px 12px;
+  border: 2px solid var(--ink, #242323);
+  border-left: 8px solid var(--blue, #2c9fda);
+  background: #fffdf5;
+}
+.app .away-recap > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.app .away-recap ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+/* Undo */
+.app .undo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  translate: -50% 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px 12px;
+  background: var(--ink, #242323);
+  color: #fffdf5;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 5px 5px 0 var(--coral, #db514f);
+  overflow: hidden;
+  max-width: calc(100vw - 24px);
+}
+.app .undo-toast .undo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #fffdf5;
+  color: var(--ink, #242323);
+  font-weight: 800;
+}
+.app .undo-toast .text-button {
+  color: #d9d3c4;
+  font-size: 12px;
+}
+.app .undo-toast i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--coral, #db514f);
+  transform-origin: left;
+  animation: undo-drain linear forwards;
+}
+@keyframes undo-drain {
+  to {
+    transform: scaleX(0);
+  }
+}
+/* History, results ready-up, shortcuts, settings notes */
+.app .round-history {
+  padding: 5px 8px;
+  border: 1px solid var(--line, #c2bcae);
+  background: #fffdf5;
+  color: var(--ink, #242323);
+  font: inherit;
+  font-size: 12px;
+}
+.app .results-ready {
+  margin: 12px auto 4px;
+}
+.app .shortcut-list {
+  margin-top: 16px;
+  border-top: 1px dashed var(--line, #c2bcae);
+  padding-top: 10px;
+}
+.app .shortcut-list summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+.app .shortcut-list dl {
+  margin: 10px 0 0;
+  display: grid;
+  gap: 6px;
+}
+.app .shortcut-list dl > div {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+}
+.app .shortcut-list dt {
+  min-width: 58px;
+}
+.app .shortcut-list dd {
+  margin: 0;
+}
+.app kbd {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--ink, #242323);
+  border-bottom-width: 3px;
+  background: #fffdf5;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+.app .preference-note {
+  display: block;
+  margin: -6px 0 10px;
+  font-size: 11px;
+  color: var(--muted, #615d55);
+}
+/* Colour cues: a shape for every card colour, for anyone who cannot rely on hue. */
+html[data-cues="on"] .color-dot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+html[data-cues="on"] .color-dot::after,
+html[data-cues="on"] [data-color]::after {
+  font-family: system-ui, sans-serif;
+  font-weight: 900;
+  line-height: 1;
+}
+html[data-cues="on"] .color-dot::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  color: #fff;
+}
+html[data-cues="on"] .color-dot.white::after {
+  content: "○";
+  color: #242323;
+}
+html[data-cues="on"] .color-dot.blue::after {
+  content: "◆";
+}
+html[data-cues="on"] .color-dot.black::after {
+  content: "■";
+}
+html[data-cues="on"] .color-dot.red::after {
+  content: "▲";
+}
+html[data-cues="on"] .color-dot.green::after {
+  content: "✚";
+}
+html[data-cues="on"] .mood-card[data-color],
+html[data-cues="on"] .hand-card[data-color] {
+  position: relative;
+}
+html[data-cues="on"] .mood-card[data-color]::after,
+html[data-cues="on"] .hand-card[data-color]::after {
+  position: absolute;
+  left: -7px;
+  top: -7px;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #242323;
+  border-radius: 50%;
+  background: #fffdf5;
+  color: #242323;
+  font-size: 11px;
+}
+html[data-cues="on"] [data-color="white"]::after {
+  content: "○";
+}
+html[data-cues="on"] [data-color="blue"]::after {
+  content: "◆";
+}
+html[data-cues="on"] [data-color="black"]::after {
+  content: "■";
+}
+html[data-cues="on"] [data-color="red"]::after {
+  content: "▲";
+}
+html[data-cues="on"] [data-color="green"]::after {
+  content: "✚";
+}
+@media (max-width: 700px) {
+  .app .undo-toast {
+    bottom: 12px;
+    gap: 8px;
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app .undo-toast i {
+    animation: none;
+  }
+}
