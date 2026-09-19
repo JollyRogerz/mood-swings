@@ -35,7 +35,12 @@ it("spectators watch without seats or secrets; the host can seat a bot for an ab
     expect(d.view.playable).toEqual({});
     expect(d.view.prompt).toBeUndefined();
     expect(d.view.players.map((p) => p.handCount)).toEqual([5, 5]);
-    expect(JSON.stringify(d.view)).not.toContain(a.view.hand[0].uid);
+    // No card from anyone's hand reaches the gallery, under any field.
+    const hidden = new Set([...a.view.hand, ...b.view.hand].map((c) => c.uid));
+    const seen = [...d.view.hand, ...d.view.moods, ...d.view.discard];
+    expect(seen.filter((c) => hidden.has(c.uid))).toEqual([]);
+    expect(JSON.stringify(d.view)).not.toContain('"zone":"hand"');
+    expect(JSON.stringify(d.view)).not.toContain('"zone":"deck"');
     d.room.send("action", {
       revision: d.view.revision,
       action: { type: "pass" },
