@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -74,6 +75,7 @@ import {
 import { PACING, pacing } from "../game/pacing";
 import { CLOCKS } from "../game/clock";
 import { BankPill, describeClock, TurnClock } from "./clock";
+import { useVoice, VoiceBadge, VoiceDock, type Voice } from "./voice";
 import { CLOCKS as CLOCK_LABELS } from "../game/clock";
 import {
   AwayRecap,
@@ -276,6 +278,21 @@ function App() {
     viewRef = useRef<View | undefined>(undefined),
     spectating = useRef(startingAsSpectator);
   viewRef.current = view;
+  // Bumped whenever the socket is replaced, so voice can re-attach to it.
+  const [socketEpoch, setSocketEpoch] = useState(0);
+  const seatOrder = useMemo(
+    () => view?.players.map((p) => p.id) ?? [],
+    [view?.players.map((p) => p.id).join()],
+  );
+  const voice = useVoice({
+    room,
+    epoch: socketEpoch,
+    you: view?.you ?? "",
+    order: seatOrder,
+    ice: view?.ice,
+    initialRoster: view?.voice,
+    enabled: !!view && !view.spectator,
+  });
   async function connect(target: string, spectate = spectating.current) {
     spectating.current = spectate;
     await post(`/api/rooms/${target}/connect`, { token });
@@ -286,6 +303,7 @@ function App() {
       spectate,
     });
     room.current = joined;
+    setSocketEpoch((n) => n + 1);
     joined.reconnection.enabled = false;
     joined.onMessage("view", (v: View) => {
       setView(v);
@@ -499,6 +517,7 @@ function App() {
           </span>
         </button>
         <nav>
+          {view && !view.spectator && <VoiceDock voice={voice} />}
           <TableSettings preferences={preferences} update={update} />
           <button aria-label="The cards" onClick={() => setCatalogOpen(true)}>
             <Layers size={16} />
@@ -837,6 +856,7 @@ function App() {
                       <strong>
                         {p.name}
                         {p.id === view.you ? " (you)" : ""}
+                        <VoiceBadge voice={voice} id={p.id} />
                       </strong>
                       <small>
                         {p.bot
@@ -1052,6 +1072,7 @@ function App() {
                     inspect={setInspect}
                     clock={view.clock}
                     you={view.you}
+                    voice={voice}
                     seatBot={
                       view.you === view.host &&
                       view.status === "playing" &&
@@ -1153,6 +1174,7 @@ function App() {
                   <strong>
                     {view.players.find((p) => p.id === view.you)?.name}{" "}
                     <small>YOU</small>
+                    <VoiceBadge voice={voice} id={view.you} />
                   </strong>
                   <WinDots
                     wins={
@@ -2106,7 +2128,9 @@ function PlayerZone({
   clock,
   you,
   seatBot,
+  voice,
 }: {
+  voice: Voice;
   clock?: View["clock"];
   you: string;
   seatBot?: () => void;
@@ -2136,6 +2160,7 @@ function PlayerZone({
               <small className="bot-label"> · standing in</small>
             )}
             {!player.connected && <small className="away"> · away</small>}
+            <VoiceBadge voice={voice} id={player.id} />
             <BankPill clock={clock} player={player.id} />
           </strong>
           <WinDots wins={player.wins} />

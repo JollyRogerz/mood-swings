@@ -37,6 +37,8 @@ import {
   waitingOn,
 } from "../game/clock";
 import { timeoutAction } from "../game/timeout";
+import { cleanSignal, iceServers, type VoiceRoster } from "../game/voice";
+const ICE = iceServers(process.env);
 setClockScale(Number(process.env.MOOD_CLOCK_SCALE ?? 1));
 export const serverKey = randomBytes(32).toString("hex");
 export function identity(token: unknown): string {
@@ -69,6 +71,9 @@ export class MoodRoom extends Room {
   // Spectators by connection. They receive the public table and nothing else,
   // and no message they send can change the game.
   private watchers = new Map<string, string>();
+  // Seated players in voice chat. Audio flows browser to browser; the room only
+  // introduces them. Never persisted.
+  private voice = new Map<string, { muted: boolean }>();
   private reactionSerial = 0;
   async onCreate(options: { key: string; code: string; snapshot: Game }) {
     if (options.key !== serverKey)
@@ -127,6 +132,38 @@ export class MoodRoom extends Room {
         await this.commit(next);
       }, client),
     );
+    this.onMessage("voice", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const player = this.actor(client);
+        if (message?.on === true)
+          this.voice.set(player, { muted: message?.muted !== false });
+        else this.voice.delete(player);
+        this.broadcastVoice();
+      }, client),
+    );
+    // Relay one WebRTC handshake message between two players who are both in
+    // voice. Rebuilt from known fields; nothing else passes through.
+    this.onMessage("rtc", (client, message) => {
+      try {
+        this.limit(client, 200);
+        const from = this.actor(client),
+          to = String(message?.to ?? ""),
+          data = cleanSignal(message?.data);
+        if (
+          !data ||
+          from === to ||
+          !this.voice.has(from) ||
+          !this.voice.has(to)
+        )
+          return;
+        for (const other of this.clients)
+          if (this.actors.get(other.sessionId) === to)
+            other.send("rtc", { from, data });
+      } catch {
+        // A dropped handshake message only delays a connection.
+      }
+    });
     this.onMessage("seat-bot", (client, message) =>
       this.enqueue(async () => {
         this.limit(client);
@@ -396,6 +433,8 @@ export class MoodRoom extends Room {
     this.rates.delete(client.sessionId);
     if (!id) return;
     if (this.activity.delete(id)) this.broadcastPresence();
+    if (![...this.actors.values()].includes(id) && this.voice.delete(id))
+      this.broadcastVoice();
     await this.enqueue(async () => {
       const next = structuredClone(this.game);
       const p = next.players.find((p) => p.id === id);
@@ -416,11 +455,11 @@ export class MoodRoom extends Room {
       );
     return id;
   }
-  private limit(client: Client) {
+  private limit(client: Client, max = 20) {
     const now = Date.now(),
       old = this.rates.get(client.sessionId),
       r = old && now - old.time < 1000 ? old : { time: now, count: 0 };
-    if (++r.count > 20) throw new RuleError("Please slow down.");
+    if (++r.count > max) throw new RuleError("Please slow down.");
     this.rates.set(client.sessionId, r);
   }
   private enqueue(fn: () => Promise<void>, client?: Client): Promise<unknown> {
@@ -605,6 +644,12 @@ export class MoodRoom extends Room {
       ),
     );
   }
+  private voiceRoster(): VoiceRoster {
+    return Object.fromEntries(this.voice);
+  }
+  private broadcastVoice() {
+    this.broadcast("voice", this.voiceRoster());
+  }
   private broadcastPresence() {
     this.broadcast("presence", Object.fromEntries(this.activity));
   }
@@ -615,6 +660,8 @@ export class MoodRoom extends Room {
       client.send("view", {
         ...publicView(this.game, id, true),
         spectator,
+        voice: this.voiceRoster(),
+        ice: spectator ? undefined : ICE,
         spectators: this.watchers.size,
         history: this.game.history ?? [],
         resultsReady: this.game.resultsReady ?? [],

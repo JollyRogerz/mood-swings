@@ -1,0 +1,96 @@
+/* Voice chat controls and seat badges */
+.app .voice-dock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+.app .voice-dock button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid currentColor;
+  font-size: 13px;
+  font-weight: 700;
+  color: inherit;
+  background: transparent;
+}
+.app .voice-dock .voice-join:hover:not(:disabled) {
+  background: #fffdf5;
+  color: var(--ink, #242323);
+}
+.app .voice-dock .voice-mic.live {
+  background: var(--green, #176846);
+  border-color: var(--green, #176846);
+  color: #fff;
+}
+.app .voice-dock .voice-mic.muted {
+  background: #fffdf5;
+  color: var(--ink, #242323);
+}
+.app .voice-dock .voice-leave {
+  padding: 7px 9px;
+  border-color: var(--coral, #db514f);
+  color: var(--coral, #db514f);
+}
+.app .voice-dock .voice-leave:hover {
+  background: var(--coral, #db514f);
+  color: #fff;
+}
+.app .voice-note {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 70;
+  width: max-content;
+  max-width: 260px;
+  padding: 7px 10px;
+  border: 1px solid var(--ink, #242323);
+  background: #fffdf5;
+  color: var(--ink, #242323);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.app .voice-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border: 1.5px solid var(--ink, #242323);
+  border-radius: 50%;
+  background: #fffdf5;
+  color: var(--ink, #242323);
+  transition:
+    box-shadow 0.12s,
+    background 0.12s;
+}
+.app .voice-badge.muted {
+  color: var(--muted, #615d55);
+  border-color: var(--line, #c2bcae);
+}
+.app .voice-badge.talking {
+  background: var(--green, #176846);
+  border-color: var(--green, #176846);
+  color: #fff;
+  box-shadow: 0 0 0 4px #17684633;
+}
+.app .voice-badge.connecting {
+  border-style: dashed;
+}
+.app .voice-badge.failed {
+  border-color: var(--coral, #db514f);
+  color: var(--coral, #db514f);
+}
+@media (max-width: 700px) {
+  .app .voice-dock button span {
+    display: none;
+  }
+  .app .voice-note {
+    right: auto;
+    left: 0;
+  }
+}
