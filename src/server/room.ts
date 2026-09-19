@@ -238,6 +238,7 @@ export class MoodRoom extends Room {
     );
     this.onMessage("presence", (client, message) =>
       this.enqueue(async () => {
+        if (this.watchers.has(client.sessionId)) return;
         this.limit(client);
         const player = this.actor(client),
           state: Presence = PRESENCES.includes(message?.state)

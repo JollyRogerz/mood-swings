@@ -2,13 +2,24 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Settings2, Volume2, VolumeX, X } from "lucide-react";
 import type { View } from "../game/types";
 import { useOverlayScrollLock } from "./portable";
+import { notificationsSupported, requestNotifications } from "./upgrades";
 
 export interface Preferences {
   sound: boolean;
   volume: number;
   motion: "system" | "reduced";
+  // Browser notification when it becomes your turn in a hidden tab.
+  notify: boolean;
+  // Shapes alongside the five card colours.
+  cues: boolean;
 }
-const defaults: Preferences = { sound: false, volume: 0.35, motion: "system" };
+const defaults: Preferences = {
+  sound: false,
+  volume: 0.35,
+  motion: "system",
+  notify: false,
+  cues: false,
+};
 function readPreferences(): Preferences {
   try {
     const saved = JSON.parse(localStorage.getItem("mood-preferences") ?? "{}");
@@ -19,6 +30,8 @@ function readPreferences(): Preferences {
           ? Math.max(0, Math.min(1, saved.volume))
           : defaults.volume,
       motion: saved.motion === "reduced" ? "reduced" : "system",
+      notify: saved.notify === true,
+      cues: saved.cues === true,
     };
   } catch {
     return defaults;
@@ -89,6 +102,9 @@ export function usePreferences() {
     return () => media.removeEventListener("change", changed);
   }, []);
   useEffect(() => {
+    document.documentElement.dataset.cues = preferences.cues ? "on" : "off";
+  }, [preferences.cues]);
+  useEffect(() => {
     soundPreferences = preferences;
     try {
       localStorage.setItem("mood-preferences", JSON.stringify(preferences));
@@ -103,9 +119,10 @@ export function usePreferences() {
     };
   }, []);
   const update = (next: Preferences) => {
+    const soundTurnedOn = next.sound && !soundPreferences.sound;
     soundPreferences = next;
     setPreferences(next);
-    if (next.sound) {
+    if (soundTurnedOn) {
       unlockSound();
       sound("lift");
     }
@@ -199,6 +216,41 @@ export function TableSettings({
                 <option value="reduced">Reduce motion</option>
               </select>
             </label>
+            <label className="preference-toggle">
+              Tell me when it’s my turn{" "}
+              <input
+                type="checkbox"
+                aria-label="Turn notifications"
+                checked={preferences.notify}
+                disabled={!notificationsSupported()}
+                onChange={async (e) => {
+                  const wanted = e.target.checked;
+                  update({
+                    ...preferences,
+                    notify: wanted && (await requestNotifications()),
+                  });
+                }}
+              />
+            </label>
+            <small className="preference-note">
+              {notificationsSupported()
+                ? "A browser notification, only while this tab is in the background."
+                : "This browser does not support notifications."}
+            </small>
+            <label className="preference-toggle">
+              Shapes for card colours{" "}
+              <input
+                type="checkbox"
+                aria-label="Colour shapes"
+                checked={preferences.cues}
+                onChange={(e) =>
+                  update({ ...preferences, cues: e.target.checked })
+                }
+              />
+            </label>
+            <small className="preference-note">
+              ○ white · ◆ blue · ■ black · ▲ red · ✚ green, on cards and chips.
+            </small>
             <p>
               Saved on this device. Room pacing is chosen by the host before a
               game.

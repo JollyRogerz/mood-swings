@@ -1,10 +1,10 @@
 import { it, expect } from "vitest";
 import { randomUUID } from "node:crypto";
 import { launchServer } from "./server-harness";
-// Real server, real sockets, durations shrunk fifty-fold: a Brisk decision is
-// half a second and the time bank under a second.
+// Real server, real sockets, durations shrunk about sixteen-fold: a Brisk decision
+// is a second and a half and the time bank under three seconds.
 it("the room drains the bank, then ends an idle player's turn", async () => {
-  const server = await launchServer({ MOOD_CLOCK_SCALE: "0.02" });
+  const server = await launchServer({ MOOD_CLOCK_SCALE: "0.06" });
   const { post, join } = server;
   try {
     const tokenA = randomUUID(),
@@ -24,14 +24,14 @@ it("the room drains the bank, then ends an idle player's turn", async () => {
     const first = a.view.active!,
       second = a.view.players.find((p) => p.id !== first)!.id;
     expect(a.view.clock).toMatchObject({ actor: first, overtime: false });
-    expect(a.view.clock!.bank[first]).toBe(900);
+    expect(a.view.clock!.bank[first]).toBe(2700);
     // Nobody touches anything: decision time, then the bank, then the table acts.
     await expect
-      .poll(() => a.view.clock?.overtime, { timeout: 4000 })
+      .poll(() => a.view.clock?.overtime, { timeout: 8000 })
       .toBe(true);
-    await expect.poll(() => a.view.active, { timeout: 4000 }).toBe(second);
+    await expect.poll(() => a.view.active, { timeout: 8000 }).toBe(second);
     expect(a.view.clock!.bank[first]).toBe(0);
-    expect(a.view.clock!.bank[second]).toBe(900);
+    expect(a.view.clock!.bank[second]).toBe(2700);
     expect(a.view.log.at(-1)!.text).toMatch(
       /ran out of time; their turn ended/,
     );
@@ -44,7 +44,7 @@ it("the room drains the bank, then ends an idle player's turn", async () => {
       action: { type: "pass" },
     });
     await expect.poll(() => a.view.round).toBe(2);
-    expect(a.view.clock!.bank[second]).toBe(900);
+    expect(a.view.clock!.bank[second]).toBe(2700);
     await a.room.leave();
     await b.room.leave();
   } finally {
