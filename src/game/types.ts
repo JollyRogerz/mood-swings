@@ -220,6 +220,9 @@ export interface View {
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   clock?: import("./clock").ClockView;
+  // Seated players currently in voice chat, and how browsers find each other.
+  voice?: import("./voice").VoiceRoster;
+  ice?: import("./voice").IceServer[];
   // You are watching, not seated: no hand, no decisions.
   spectator?: boolean;
   spectators?: number;

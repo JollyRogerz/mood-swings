@@ -39,9 +39,10 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Stand-in bot       | The host can seat a bot for a friend who left; they take the seat back on return |
 | Catching up        | Turn notifications, a recap of what you missed, earlier rounds' score sheets |
 | Comfort            | Undo for End turn and Skip effect, keyboard shortcuts, shapes for card colours |
+| Voice chat         | Opt-in, direct browser-to-browser voice between the seated players, at no cost |
 | Device support     | Touch layouts for phones and tablets, portrait and landscape; no installer required    |
 
-This release does not include Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+This release does not include Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, text chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -155,6 +156,16 @@ The host chooses a pace in the lobby: **Relaxed** (9-second reveals / 12-second 
 
 **Comfort.** Ending a turn while you could still play a card, and skipping a card effect, show a 1.8-second **Undo** (skipped when nothing could be played, or when a running timer is nearly out). Keyboard: `1`–`9` select a hand card, `Enter` plays it or confirms a decision, `E` ends the turn, `Esc` puts the card back, `L` opens the log, `S` explains your score, `?` lists the shortcuts. **Shapes for card colours** (○ white, ◆ blue, ■ black, ▲ red, ✚ green) can be switched on for anyone who cannot rely on hue.
 
+### Voice chat
+
+Seated players can talk to each other. Choose **Join voice** in the header, in the lobby or during a game; the browser asks for the microphone, and you arrive **muted** until you press the mic button. Each seat shows who is in voice, who is muted, and who is talking, and each friend's voice is panned slightly left or right to match where their seat is on your screen.
+
+Audio never passes through this server. Browsers connect to each other directly with WebRTC, which works well for a table of four (six connections at most); the game room only relays the few small handshake messages two browsers need to find each other, rebuilt from known fields, and only between two players who have both joined voice. Public STUN servers (Cloudflare's and Google's, both free) tell each browser its own public address. Voice is capped at 32 kbps mono with echo cancellation, noise suppression and automatic gain.
+
+**The honest limit:** on some networks (strict corporate Wi-Fi, some mobile carriers) a direct connection cannot be made. Reaching those players needs a TURN relay, which is a paid kind of service, so none is configured. The seat badge then says that friend's network blocks direct audio, a failed link is retried once, and everyone else keeps talking. A host who has a relay can set `TURN_URL` (comma-separated `turn:`/`turns:` URLs), `TURN_USERNAME` and `TURN_CREDENTIAL`; nothing else changes.
+
+Spectators see who is in voice but cannot join it or hear it. Bots are silent. Voice state is never saved, and leaving the table, losing the connection, or closing the tab ends your part of the call.
+
 The host can also switch on a **turn timer**. It is a shot clock with a time bank, not a fixed turn length, because a Mood Swings turn can hold several plays and decisions:
 
 | Timer    | Each decision | Time bank per player | Bank top-up each round |
@@ -241,6 +252,8 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 | `PORT`               | Server port; defaults to 3000 and is supplied by Railway in production |
 | `DATABASE_URL`       | PostgreSQL connection string; omit to use local files                  |
 | `TEST_BASE_URL`      | Override the browser test target; defaults to localhost:3000           |
+| `TURN_URL`, `TURN_USERNAME`, `TURN_CREDENTIAL` | Optional TURN relay for voice chat; unset by default  |
+| `MOOD_CLOCK_SCALE`   | Test-only multiplier that shortens turn-timer durations                |
 
 `.env.example` documents the values but contains placeholders. The server reads process environment variables; it does not automatically load a `.env` file. Export values in your shell or configure them in your host. Do not commit real credentials.
 
