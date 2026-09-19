@@ -116,6 +116,13 @@ export interface Delayed {
 export interface Game {
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
+  // Turn timer: the host's setting, the running allowance, each human's time
+  // bank, and consecutive timeouts. See clock.ts.
+  clock?: import("./clock").ClockSetting;
+  clockState?: import("./clock").ClockState;
+  bank?: Record<string, number>;
+  bankRound?: number;
+  timeouts?: Record<string, number>;
   revealReady?: string[];
   visibility?: "private" | "public";
   version: 1;
@@ -204,6 +211,7 @@ export interface ScoreBreakdown {
 export interface View {
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
+  clock?: import("./clock").ClockView;
   revealReady?: string[];
   visibility?: "private" | "public";
   presence?: Record<string, Presence>;
