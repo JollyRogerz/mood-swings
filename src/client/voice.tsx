@@ -19,7 +19,8 @@ interface Peer {
   polite: boolean;
   makingOffer: boolean;
   ignoreOffer: boolean;
-  retried?: boolean;
+  attempts: number;
+  watchdog?: ReturnType<typeof setInterval>;
   audio?: HTMLAudioElement;
   nodes?: { source: MediaStreamAudioSourceNode; analyser: AnalyserNode };
 }
@@ -33,6 +34,10 @@ const MIC: MediaStreamConstraints = {
   video: false,
 };
 const VOICE_BITRATE = 32_000;
+// A link that has not connected is nudged every so often, a few times, before
+// it is reported as unreachable.
+const RETRY_EVERY_MS = 10_000;
+const MAX_ATTEMPTS = 3;
 export const voiceSupported = () =>
   typeof RTCPeerConnection !== "undefined" &&
   !!navigator.mediaDevices?.getUserMedia;
@@ -93,6 +98,7 @@ export function useVoice({
     if (!p) return;
     p.pc.ontrack = p.pc.onicecandidate = p.pc.onnegotiationneeded = null;
     p.pc.onconnectionstatechange = null;
+    clearInterval(p.watchdog);
     p.pc.close();
     p.nodes?.source.disconnect();
     if (p.audio) p.audio.srcObject = null;
@@ -110,7 +116,29 @@ export function useVoice({
         polite: isPolite(live.current.you, id),
         makingOffer: false,
         ignoreOffer: false,
+        attempts: 0,
       };
+      // Try again when a link stalls: a lost handshake message, a slow network,
+      // or a first path that did not work out. An offer nobody answered is
+      // withdrawn first, because a restart only begins from a settled state.
+      const retry = async () => {
+        if (pc.connectionState === "connected") return;
+        if (peer.attempts >= MAX_ATTEMPTS) {
+          clearInterval(peer.watchdog);
+          setLinks((old) => ({ ...old, [id]: "failed" }));
+          return;
+        }
+        peer.attempts++;
+        setLinks((old) => ({ ...old, [id]: "connecting" }));
+        try {
+          if (pc.signalingState === "have-local-offer")
+            await pc.setLocalDescription({ type: "rollback" });
+          pc.restartIce();
+        } catch {
+          // The next tick tries again.
+        }
+      };
+      peer.watchdog = setInterval(retry, RETRY_EVERY_MS);
       peers.current.set(id, peer);
       setLinks((old) => ({ ...old, [id]: "connecting" }));
       for (const track of mic.current.getTracks())
@@ -142,14 +170,9 @@ export function useVoice({
             params.encodings[0].maxBitrate = VOICE_BITRATE;
             sender.setParameters(params).catch(() => {});
           }
-        } else if (s === "failed") {
-          // One fresh attempt at finding a path before giving up on this pair.
-          if (!peer.retried) {
-            peer.retried = true;
-            pc.restartIce();
-            setLinks((old) => ({ ...old, [id]: "connecting" }));
-          } else setLinks((old) => ({ ...old, [id]: "failed" }));
-        } else if (s === "disconnected" || s === "connecting")
+          peer.attempts = 0;
+        } else if (s === "failed") void retry();
+        else if (s === "disconnected" || s === "connecting")
           setLinks((old) => ({ ...old, [id]: "connecting" }));
       };
       pc.ontrack = ({ streams, track }) => {
