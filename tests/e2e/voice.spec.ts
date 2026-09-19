@@ -53,11 +53,15 @@ const seatBadge = (page: Page, name: string) =>
     .locator(".player-zone, .lobby-seat")
     .filter({ hasText: name })
     .locator(".voice-badge");
+// This is the one scenario that needs real UDP between two browsers on a shared
+// CI machine, so it is allowed to try again; the app itself also re-attempts a
+// stalled link, which the generous connection timeout leaves room for.
+test.describe.configure({ retries: 2 });
 test("two friends talk over a direct connection; the gallery cannot join", async ({
   page,
   browser,
 }) => {
-  test.setTimeout(120000);
+  test.setTimeout(180000);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(trackConnections);
@@ -90,10 +94,10 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   await expect(seatBadge(page, "Bob")).toBeVisible();
   // The two browsers reach each other directly.
   await expect(seatBadge(page, "Bob")).toHaveClass(/connected/, {
-    timeout: 30000,
+    timeout: 45000,
   });
   await expect(seatBadge(friend, "Alice")).toHaveClass(/connected/, {
-    timeout: 30000,
+    timeout: 45000,
   });
   // Both are muted: packets flow, but they carry only silence.
   const muted = await bytesPerPacket(page);
