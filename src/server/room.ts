@@ -20,7 +20,13 @@ import {
   type PublicRoom,
 } from "../game/types";
 import { store } from "./store";
-import { acknowledgeReveal, isPace, pacing } from "../game/pacing";
+import {
+  acknowledgeResults,
+  acknowledgeReveal,
+  isPace,
+  pacing,
+} from "../game/pacing";
+import { reclaimSeat, recordRound, substituteBot } from "../game/seats";
 import {
   armClock,
   clockView,
@@ -49,7 +55,8 @@ export function cleanName(name: unknown): string {
 }
 export const publicRooms = new Map<string, PublicRoom>();
 export class MoodRoom extends Room {
-  maxClients = 12;
+  // Four seats plus a gallery of spectators.
+  maxClients = 4 + 60;
   autoDispose = false;
   game!: Game;
   private botTimer?: { clear(): void };
@@ -59,6 +66,9 @@ export class MoodRoom extends Room {
   private rates = new Map<string, { time: number; count: number }>();
   // What each seated human is doing right now. Never persisted or scored.
   private activity = new Map<string, Presence>();
+  // Spectators by connection. They receive the public table and nothing else,
+  // and no message they send can change the game.
+  private watchers = new Map<string, string>();
   private reactionSerial = 0;
   async onCreate(options: { key: string; code: string; snapshot: Game }) {
     if (options.key !== serverKey)
@@ -114,6 +124,30 @@ export class MoodRoom extends Room {
         const next = structuredClone(this.game);
         next.clock = message.clock;
         next.revision++;
+        await this.commit(next);
+      }, client),
+    );
+    this.onMessage("seat-bot", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const next = structuredClone(this.game);
+        substituteBot(next, this.actor(client), String(message?.id ?? ""));
+        await this.commit(next);
+      }, client),
+    );
+    this.onMessage("results-ready", (client, message) =>
+      this.enqueue(async () => {
+        this.limit(client);
+        const next = structuredClone(this.game);
+        if (
+          !acknowledgeResults(
+            next,
+            this.actor(client),
+            message?.round,
+            Date.now(),
+          )
+        )
+          return;
         await this.commit(next);
       }, client),
     );
@@ -303,25 +337,44 @@ export class MoodRoom extends Room {
       30 * 60 * 1000,
     );
   }
-  onAuth(_client: Client, options: { token?: unknown; name?: unknown }) {
+  onAuth(
+    _client: Client,
+    options: { token?: unknown; name?: unknown; spectate?: unknown },
+  ) {
     const id = identity(options.token);
     const existing = this.game.players.find((p) => p.id === id);
-    if (
+    // Anyone without a seat watches: by choice, or because the table is full
+    // or already playing. A seated player always returns to their seat.
+    const spectator =
       !existing &&
-      (this.game.status !== "lobby" || this.game.players.length >= 4)
-    )
-      throw new ServerError(403, "This table is full or already playing.");
-    return { id, name: existing?.name ?? cleanName(options.name) };
+      (options.spectate === true ||
+        this.game.status !== "lobby" ||
+        this.game.players.length >= 4);
+    if (spectator && this.watchers.size >= 60)
+      throw new ServerError(403, "The gallery is full. Try again shortly.");
+    return { id, name: existing?.name ?? cleanName(options.name), spectator };
   }
   async onJoin(client: Client) {
+    const auth = client.auth as {
+      id: string;
+      name: string;
+      spectator: boolean;
+    };
+    if (auth.spectator) {
+      this.watchers.set(client.sessionId, auth.name);
+      this.updateListing();
+      for (const other of this.clients) this.sendView(other);
+      return;
+    }
     await this.enqueue(async () => {
-      const { id, name } = client.auth as { id: string; name: string };
+      const { id, name } = auth;
       const next = structuredClone(this.game);
       if (!next.players.some((p) => p.id === id)) addPlayer(next, id, name);
       this.actors.set(client.sessionId, id);
       for (const other of this.clients)
         if (other !== client && this.actors.get(other.sessionId) === id)
           other.leave(4001, "Opened in another tab");
+      reclaimSeat(next, id);
       next.players.find((p) => p.id === id)!.connected = true;
       next.revision++;
       await this.commit(next);
@@ -331,6 +384,12 @@ export class MoodRoom extends Room {
     await this.onLeave(client);
   }
   async onLeave(client: Client) {
+    if (this.watchers.delete(client.sessionId)) {
+      this.rates.delete(client.sessionId);
+      this.updateListing();
+      for (const other of this.clients) this.sendView(other);
+      return;
+    }
     const id = this.actors.get(client.sessionId);
     this.actors.delete(client.sessionId);
     this.rates.delete(client.sessionId);
@@ -339,7 +398,7 @@ export class MoodRoom extends Room {
     await this.enqueue(async () => {
       const next = structuredClone(this.game);
       const p = next.players.find((p) => p.id === id);
-      if (p) p.connected = [...this.actors.values()].includes(id);
+      if (p) p.connected = !!p.bot || [...this.actors.values()].includes(id);
       if (p && !p.connected && next.status === "lobby" && id !== next.host)
         next.players = next.players.filter((player) => player.id !== id);
       next.revision++;
@@ -348,7 +407,12 @@ export class MoodRoom extends Room {
   }
   private actor(client: Client) {
     const id = this.actors.get(client.sessionId);
-    if (!id) throw new RuleError("Your connection is not ready.");
+    if (!id)
+      throw new RuleError(
+        this.watchers.has(client.sessionId)
+          ? "Spectators can watch, not play."
+          : "Your connection is not ready.",
+      );
     return id;
   }
   private limit(client: Client) {
@@ -381,10 +445,13 @@ export class MoodRoom extends Room {
       next.playPauseUntil = Date.now() + pacing(next.pace).reveal;
       next.revealReady = [];
     }
-    if (next.lastRound && next.lastRound.round !== this.game.lastRound?.round)
+    if (next.lastRound && next.lastRound.round !== this.game.lastRound?.round) {
       next.roundPauseUntil =
         Math.max(Date.now(), next.playPauseUntil ?? 0) +
         pacing(next.pace).results;
+      next.resultsReady = [];
+    }
+    recordRound(next, this.game);
     const waiting = waitingOn(next);
     armClock(next, Date.now(), {
       humanConnected: next.players.some((p) => !p.bot && p.connected),
@@ -453,17 +520,21 @@ export class MoodRoom extends Room {
   }
   private updateListing() {
     const host = this.game.players.find((p) => p.id === this.game.host);
+    // Public tables are listed while they can be joined or watched.
     if (
       this.game.visibility === "public" &&
-      this.game.status === "lobby" &&
       host?.connected &&
-      this.game.players.length < 4
+      this.game.status !== "finished"
     ) {
       publicRooms.set(this.roomId, {
         code: this.roomId,
         hostName: host.name,
         players: this.game.players.length,
         bots: this.game.players.filter((p) => p.bot).length,
+        status: this.game.status,
+        pace: this.game.pace ?? "standard",
+        clock: this.game.clock ?? "off",
+        spectators: this.watchers.size,
       });
     } else publicRooms.delete(this.roomId);
   }
@@ -537,10 +608,15 @@ export class MoodRoom extends Room {
     this.broadcast("presence", Object.fromEntries(this.activity));
   }
   private sendView(client: Client) {
-    const id = this.actors.get(client.sessionId);
+    const spectator = this.watchers.has(client.sessionId);
+    const id = spectator ? "spectator" : this.actors.get(client.sessionId);
     if (id)
       client.send("view", {
         ...publicView(this.game, id, true),
+        spectator,
+        spectators: this.watchers.size,
+        history: this.game.history ?? [],
+        resultsReady: this.game.resultsReady ?? [],
         presence: Object.fromEntries(this.activity),
         pace: this.game.pace ?? "standard",
         clock: clockView(this.game, Date.now()),

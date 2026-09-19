@@ -49,6 +49,8 @@ export const PRESENCES = [
 export type Presence = (typeof PRESENCES)[number];
 export interface Player {
   bot?: Difficulty;
+  // A bot standing in for an absent human, who reclaims the seat on return.
+  substitute?: boolean;
   id: string;
   name: string;
   wins: number;
@@ -118,6 +120,8 @@ export interface Game {
   pace?: import("./pacing").Pace;
   // Turn timer: the host's setting, the running allowance, each human's time
   // bank, and consecutive timeouts. See clock.ts.
+  history?: NonNullable<Game["lastRound"]>[];
+  resultsReady?: string[];
   clock?: import("./clock").ClockSetting;
   clockState?: import("./clock").ClockState;
   bank?: Record<string, number>;
@@ -195,6 +199,10 @@ export interface PublicRoom {
   hostName: string;
   players: number;
   bots: number;
+  status: "lobby" | "playing";
+  pace: import("./pacing").Pace;
+  clock: import("./clock").ClockSetting;
+  spectators: number;
 }
 export interface ScoreLine {
   kind: "mood" | "bonus" | "adjustment";
@@ -212,6 +220,11 @@ export interface View {
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   clock?: import("./clock").ClockView;
+  // You are watching, not seated: no hand, no decisions.
+  spectator?: boolean;
+  spectators?: number;
+  history?: Game["history"];
+  resultsReady?: string[];
   revealReady?: string[];
   visibility?: "private" | "public";
   presence?: Record<string, Presence>;

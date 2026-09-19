@@ -44,3 +44,33 @@ export function acknowledgeReveal(
   }
   return true;
 }
+// The round results can be closed early the same way, once every connected
+// human has finished reading. A short minimum keeps the winner visible.
+export const RESULTS_MINIMUM = 2500;
+export function acknowledgeResults(
+  game: Game,
+  actor: string,
+  round: number,
+  now: number,
+): boolean {
+  if (
+    game.lastRound?.round !== round ||
+    (game.roundPauseUntil ?? 0) <= now ||
+    (game.playPauseUntil ?? 0) > now ||
+    !game.players.some((p) => p.id === actor && p.connected && !p.bot)
+  )
+    return false;
+  const ready = new Set(game.resultsReady ?? []);
+  if (ready.has(actor)) return false;
+  ready.add(actor);
+  game.resultsReady = [...ready];
+  const humans = game.players.filter((p) => !p.bot && p.connected);
+  if (humans.every((p) => ready.has(p.id))) {
+    const started = game.roundPauseUntil! - pacing(game.pace).results;
+    game.roundPauseUntil = Math.min(
+      game.roundPauseUntil!,
+      Math.max(now + 150, started + RESULTS_MINIMUM),
+    );
+  }
+  return true;
+}
