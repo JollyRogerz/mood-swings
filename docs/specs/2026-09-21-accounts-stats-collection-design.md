@@ -57,7 +57,7 @@ many devices.
    - registers a passkey on it (Face ID, fingerprint or device PIN),
    - writes `mood_profiles`, then `POST /api/account/link` with the device
      token writes `mood_devices`.
-   If the passkey step is cancelled, the half-made user is deleted.
+     If the passkey step is cancelled, the half-made user is deleted.
 3. On another device: "Sign in" with the passkey (or Discord/Google if linked),
    then the same link call attaches that device.
 4. "Sign out" removes the session cookie and nothing else. The device stays

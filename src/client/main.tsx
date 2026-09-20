@@ -64,6 +64,7 @@ import "./features.css";
 import { EffectContext, EffectNotice, useEffectFeedback } from "./effects";
 import { ScoreDetails, type ScoreSheet } from "./score-details";
 import { InviteDialog } from "./invite";
+import { AccountButton, useAccount } from "./account";
 const Tutorial = lazy(() => import("./tutorial"));
 import { choiceHint, selectionFeedback } from "./selection";
 import { useModalNavigation } from "./dialogs";
@@ -133,6 +134,7 @@ function App() {
   usePortableViewport();
   useModalNavigation();
   const { preferences, update, reduced } = usePreferences();
+  const { account, refresh: refreshAccount } = useAccount(token);
   const [targets, setTargets] = useState<Targets>();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [name, setName] = useState(localStorage.getItem("mood-name") ?? ""),
@@ -148,6 +150,12 @@ function App() {
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
   const [visibility, setVisibility] = useState<"private" | "public">("private");
+  // A saved profile fills in the name field, but never overwrites a name the
+  // player already typed for this table.
+  const username = account.user?.username;
+  useEffect(() => {
+    if (username) setName((old) => old || username);
+  }, [username]);
   const [reactions, setReactions] = useState<
     { id: number; player: string; emoji: Reaction }[]
   >([]);
@@ -518,6 +526,11 @@ function App() {
         </button>
         <nav>
           {view && !view.spectator && <VoiceDock voice={voice} />}
+          <AccountButton
+            token={token}
+            account={account}
+            refresh={refreshAccount}
+          />
           <TableSettings preferences={preferences} update={update} />
           <button aria-label="The cards" onClick={() => setCatalogOpen(true)}>
             <Layers size={16} />

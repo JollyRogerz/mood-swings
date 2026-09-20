@@ -39,6 +39,7 @@ it.
 ## Tasks
 
 ### 1. Username rules (pure)
+
 - Create `src/game/account.ts`: `cleanUsername(raw: unknown): string` (throws
   `Error` with a player-facing message), `usernameKey(name): string`
   (lower-case key for uniqueness).
@@ -46,6 +47,7 @@ it.
   emoji, non-strings; keeps case; key is lower-case.
 
 ### 2. Account store
+
 - Create `src/server/accounts.ts`:
   ```ts
   export interface Profile { userId: string; username: string; createdAt: string }
@@ -67,6 +69,7 @@ it.
   unlink by the wrong user is ignored; remove clears profile and devices.
 
 ### 3. Better Auth setup
+
 - Create `src/server/auth.ts`: `createAccounts(env)` returns
   `{ auth, store, providers: ("discord" | "google")[] } | undefined`.
   Plugins `anonymous()` and `passkey({ rpID, rpName: "Mood Swings Online", origin })`.
@@ -76,10 +79,12 @@ it.
   With Postgres, run `getMigrations(...).runMigrations()` at start.
 
 ### 4. Routes
+
 - Modify `src/server/index.ts`: mount `toNodeHandler(auth)` before
   `express.json()`; add, all rate limited like `/api/rooms`:
   - `GET /api/account` → `{ accounts, providers, user: null | { id, username, devices }, linked }`
-    (`linked` needs `?token=`; the token is hashed with `identity`, never stored raw)
+    (`linked` reads the device token from the `x-mood-session` header, so it never
+    appears in a URL or a log; it is hashed with `identity`, never stored raw)
   - `POST /api/account/username { username }`
   - `POST /api/account/link { token }`, `POST /api/account/unlink { token }`
   - `DELETE /api/account`
@@ -89,6 +94,7 @@ it.
   get 401; delete removes everything.
 
 ### 5. Client
+
 - Create `src/client/account.tsx` and `.css`: `authClient`, `useAccount(token)`,
   `AccountButton` in the site header, `AccountDialog` with three states
   (guest, needs username, signed in). After any sign-in the device is linked
@@ -97,12 +103,14 @@ it.
   as the default name.
 
 ### 6. End to end
+
 - Create `tests/e2e/account.spec.ts` (Chromium only): virtual authenticator;
   save a profile; reload and still signed in; sign out; sign in with the
   passkey; the landing name field shows the username.
 - Modify `playwright.config.ts` web server env: `MOOD_ACCOUNTS=memory`.
 
 ### 7. Docs
+
 - README: accounts section, env table (`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`,
   `DISCORD_*`, `GOOGLE_*`), redirect URLs to register with each provider.
 - `.env.example`: the same variables, empty.

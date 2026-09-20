@@ -13,7 +13,11 @@ const port = Number(process.env.PORT ?? 3000);
 const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
-const accounts = await createAccounts();
+// Profiles are optional. If they cannot start, the tables still must.
+const accounts = await createAccounts().catch((e) => {
+  console.error("Accounts are off: they failed to start.", e);
+  return undefined;
+});
 mountAuth(app, accounts);
 app.use(express.json({ limit: "8kb" }));
 const http = createServer(app);

@@ -21,7 +21,8 @@ jobs:
       - name: Start production server and test browser flows
         shell: bash
         run: |
-          npm start > /tmp/mood-swings-server.log 2>&1 &
+          # Accounts run against in-memory stores here; production uses Postgres.
+          MOOD_ACCOUNTS=memory npm start > /tmp/mood-swings-server.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           ready=false
