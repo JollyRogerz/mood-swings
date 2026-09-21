@@ -530,6 +530,7 @@ function App() {
             token={token}
             account={account}
             refresh={refreshAccount}
+            inGame={!!view}
           />
           <TableSettings preferences={preferences} update={update} />
           <button aria-label="The cards" onClick={() => setCatalogOpen(true)}>

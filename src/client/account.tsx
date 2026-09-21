@@ -85,10 +85,12 @@ export function AccountButton({
   token,
   account,
   refresh,
+  inGame,
 }: {
   token: string;
   account: Account;
   refresh: () => Promise<Account>;
+  inGame: boolean;
 }) {
   const needsName = !!account.user && !account.user.username;
   const [open, setOpen] = useState(false);
@@ -101,14 +103,18 @@ export function AccountButton({
   const label = account.user?.username ?? "Save profile";
   return (
     <>
-      <button
-        className="account-button"
-        aria-label={account.user?.username ? "Your profile" : "Save profile"}
-        onClick={() => setOpen(true)}
-      >
-        <UserRound size={16} />
-        <span>{label}</span>
-      </button>
+      {/* The table's header is full on a small phone, and nobody manages a
+          profile mid-game. The dialog can still open to finish a sign-in. */}
+      {!inGame && (
+        <button
+          className="account-button"
+          aria-label={account.user?.username ? "Your profile" : "Save profile"}
+          onClick={() => setOpen(true)}
+        >
+          <UserRound size={16} />
+          <span>{label}</span>
+        </button>
+      )}
       {open && (
         <div className="modal-backdrop preferences-backdrop">
           <div
