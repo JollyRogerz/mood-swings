@@ -147,7 +147,16 @@ test("undo, keyboard shortcuts, results ready-up, round history, and colour shap
     const results = page.getByRole("dialog", {
       name: `Round ${round} results`,
     });
-    await expect(results).toBeVisible({ timeout: 40000 });
+    await expect
+      .poll(
+        async () => {
+          // Confusion and other effects can also ask us a question after passing.
+          await answerPrompt(page);
+          return results.isVisible();
+        },
+        { timeout: 40000 },
+      )
+      .toBe(true);
     const started = Date.now();
     await results.getByRole("button", { name: "I’m ready" }).click();
     await expect(results).toHaveCount(0, { timeout: 6000 });
