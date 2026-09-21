@@ -14,9 +14,11 @@
     "check": "tsc --noEmit && vitest run"
   },
   "dependencies": {
+    "@better-auth/passkey": "^1.7.5",
     "@colyseus/core": "~0.17.0",
     "@colyseus/sdk": "~0.17.0",
     "@colyseus/ws-transport": "~0.17.0",
+    "better-auth": "^1.7.5",
     "express": "^4.21.2",
     "lucide-react": "^0.468.0",
     "pg": "^8.16.0",

@@ -1,0 +1,82 @@
+.app .account-panel h2 {
+  overflow-wrap: anywhere;
+}
+.app .account-panel .account-note {
+  margin: 0 0 18px;
+  font-size: 13px;
+}
+.app .account-panel .account-field {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 16px;
+}
+.app .account-panel .account-field input {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  padding: 11px 12px;
+  background: #f4eedf;
+  border: 1px solid #615d55;
+  color: #292727;
+}
+.app .account-panel .account-field small {
+  font-weight: 500;
+  color: #615d55;
+}
+.app .account-panel .primary,
+.app .account-panel .account-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 10px;
+}
+.app .account-panel .account-choice {
+  font: inherit;
+  font-weight: 650;
+  background: #fffdf5;
+  border: 2px solid #292727;
+  color: #292727;
+  cursor: pointer;
+}
+.app .account-panel .account-choice:hover:not(:disabled) {
+  background: #f4eedf;
+}
+.app .account-panel button:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+.app .account-panel .text-button {
+  display: block;
+  margin: 16px auto 0;
+}
+.app .account-panel .account-divider {
+  margin: 24px 0 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #615d55;
+  text-align: center;
+}
+.app .account-panel .account-error {
+  margin: 0 0 8px;
+  color: #a5341f;
+  font-size: 13px;
+  font-weight: 650;
+}
+.app .account-panel .account-danger {
+  margin-top: 18px;
+  padding: 14px;
+  border: 2px solid #a5341f;
+}
+.app .account-panel .account-danger p {
+  margin: 0;
+}
+.site-header .account-button span {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

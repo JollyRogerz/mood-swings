@@ -7,10 +7,18 @@ import { WebSocketTransport } from "@colyseus/ws-transport";
 import { createGame } from "../game/engine";
 import { cleanName, identity, MoodRoom, serverKey, publicRooms } from "./room";
 import { store } from "./store";
+import { createAccounts } from "./auth";
+import { mountAccountRoutes, mountAuth } from "./account-routes";
 const port = Number(process.env.PORT ?? 3000);
 const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
+// Profiles are optional. If they cannot start, the tables still must.
+const accounts = await createAccounts().catch((e) => {
+  console.error("Accounts are off: they failed to start.", e);
+  return undefined;
+});
+mountAuth(app, accounts);
 app.use(express.json({ limit: "8kb" }));
 const http = createServer(app);
 const server = new Server({
@@ -23,8 +31,10 @@ app.get("/api/health", (_req, res) =>
   res.json({ ok: true, game: "mood-swings", version: 1 }),
 );
 const limits = new Map<string, { time: number; n: number }>();
-app.use("/api/rooms", (req, res, next) => {
-  const key = `${req.method}:${req.ip ?? "unknown"}`,
+app.use(["/api/rooms", "/api/account"], (req, res, next) => {
+  // Each API gets its own budget, so a busy night of tables cannot lock a
+  // player out of their profile.
+  const key = `${req.baseUrl}:${req.method}:${req.ip ?? "unknown"}`,
     now = Date.now();
   for (const [k, v] of limits) if (now - v.time > 60_000) limits.delete(k);
   const r = limits.get(key) ?? { time: now, n: 0 };
@@ -37,6 +47,7 @@ app.use("/api/rooms", (req, res, next) => {
   limits.set(key, r);
   next();
 });
+mountAccountRoutes(app, accounts);
 app.get("/api/rooms", (_req, res) => {
   res
     .set("Cache-Control", "no-store")

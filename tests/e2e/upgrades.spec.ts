@@ -79,10 +79,28 @@ test("undo, keyboard shortcuts, results ready-up, round history, and colour shap
   await page.getByRole("button", { name: "Add bot", exact: true }).click();
   await page.getByRole("button", { name: "Start the game" }).click();
   await expect(page.locator(".board")).toBeVisible();
+  // A bot's card can put a decision to this player (Confusion asks for a card
+  // to pass), and the turn cannot end until it is answered.
+  const answerPrompt = async () => {
+    const panel = page.locator(".choice-panel");
+    if (!(await panel.count())) return;
+    const confirm = panel.locator(".choice-actions .primary");
+    if (await confirm.isEnabled().catch(() => false))
+      await confirm.click().catch(() => {});
+    else
+      await panel
+        .locator('.choice-options > button[aria-pressed="false"]:enabled')
+        .first()
+        .click({ timeout: 1000 })
+        .catch(() => {});
+    const now = page.getByRole("button", { name: "Do it now" });
+    if (await now.count()) await now.click().catch(() => {});
+  };
   const myTurn = async () => {
     await expect
       .poll(
         async () =>
+          (await answerPrompt(), true) &&
           (await page.locator(".played-card-reveal").count()) === 0 &&
           (await page.locator(".round-results").count()) === 0 &&
           (await page.locator(".end-turn").isEnabled()),

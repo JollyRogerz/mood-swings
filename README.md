@@ -40,6 +40,7 @@
 
 - [Architecture](#architecture)
 - [Privacy, sessions, and recovery](#privacy-sessions-and-recovery)
+- [Profiles](#profiles)
 - [Run locally](#run-locally)
 - [Verification and tests](#verification-and-tests)
 - [Railway hosting](#railway-hosting)
@@ -99,7 +100,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Persistence  | PostgreSQL snapshots for the hosted game                                         |
 | Rematches    | Host returns the same players and bots to the lobby                              |
 
-**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, text chat, or account-based seat recovery. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, or text chat. Optional [profiles](#profiles) exist; stats and rankings do not yet. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -461,7 +462,8 @@ Each room serializes mutations, and a rejected action does not partially mutate 
 
 **Who you are**
 
-- There is no email login. The browser creates a random session credential and stores it locally with the nickname.
+- Playing needs no login. The browser creates a random session credential and stores it locally with the nickname.
+- A [profile](#profiles) is optional, and it is a layer on top: seats still belong to the browser's credential.
 - The server derives the player identity from that credential; matching a nickname is not enough to reclaim a seat.
 
 **What others can see**
@@ -482,6 +484,34 @@ Each room serializes mutations, and a rejected action does not partially mutate 
 > The hosted PostgreSQL store permits recovery of snapshots updated within the last 30 days. **That is a recovery cutoff, not automatic deletion:** expired database records are not currently purged. Local file snapshots have no time cutoff.
 >
 > Nicknames, game histories, player identifiers, and full game states are part of these snapshots. The hosting platform may also maintain operational logs. Never publish database snapshots, browser credentials, or Playwright traces containing live sessions.
+
+## Profiles
+
+Optional. A guest plays exactly as before and creates no database record.
+
+**Saving a profile**
+
+- Pick a username (3 to 20 letters, numbers, `_` or `-`; unique whatever the capitals) and confirm with a **passkey**: Face ID, a fingerprint, or the device PIN.
+- There is no email and no password. The private half of a passkey never leaves the player's device.
+- Discord and Google sign-in appear when the deployment has their credentials.
+- Signing in on another device links that device to the same profile. The name field at a new table starts as the username and stays editable.
+- **Delete my profile** removes the username, the linked devices and every sign-in method.
+
+**How it is built**
+
+- [Better Auth](https://better-auth.com) is mounted on the same Express server at `/api/auth/*` and keeps its tables in the same PostgreSQL database.
+- Two tables belong to the game: `mood_profiles` (the username) and `mood_devices` (which seat identities belong to which profile). Device credentials are stored only as the hash the rooms already use.
+- Accounts are **on** when `DATABASE_URL` and `BETTER_AUTH_SECRET` are both set. Otherwise the button is hidden and nothing else changes. `MOOD_ACCOUNTS=memory` keeps accounts in memory for local development and tests.
+
+| Variable                                     | Purpose                                                                                                                |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `BETTER_AUTH_SECRET`                         | Signs sessions. Generate with `openssl rand -base64 32`.                                                               |
+| `BETTER_AUTH_URL`                            | Public address, no trailing slash. Defaults to `https://$RAILWAY_PUBLIC_DOMAIN`. Passkeys are bound to this host name. |
+| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Discord button. Redirect URL: `<address>/api/auth/callback/discord`                                                    |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`   | Google button. Redirect URL: `<address>/api/auth/callback/google`                                                      |
+
+> [!NOTE]
+> Passkeys need a real host name, so open `http://localhost:3000` rather than `http://127.0.0.1:3000` when trying them locally. Changing the site's domain later orphans existing passkeys; Discord and Google logins survive it.
 
 ## Run locally
 
@@ -592,6 +622,7 @@ TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 | `tests/e2e/features.spec.ts`    | Invites, QR codes, sharing and clipboard fallbacks, and the guided practice game                                                                                                                                     |
 | `tests/e2e/upgrades.spec.ts`    | Watching from a listing, stand-in bots, undo, keyboard shortcuts, results ready-up, round history, colour shapes, hidden-tab notifications and recap                                                                 |
 | `tests/e2e/voice.spec.ts`       | A real peer-to-peer call between two browsers with fake microphones: muting silences the wire, and the gallery cannot join                                                                                           |
+| `tests/e2e/account.spec.ts`     | Saving a profile with a passkey (Chrome's virtual authenticator), signing back in with it, and a dismissed passkey prompt leaving no account behind                                                                  |
 
 </details>
 
@@ -624,6 +655,7 @@ TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 2. Configure the app's `DATABASE_URL` as a reference to the database service, such as `${{Postgres.DATABASE_URL}}`, when the database service is named `Postgres`.
 3. Railway supplies `PORT`; the app listens on that port.
 4. Generate a public domain for the app and keep the database connection private.
+5. Optional: set `BETTER_AUTH_SECRET` (and the provider variables) to switch on [profiles](#profiles).
 
 ```sh
 railway login
@@ -689,6 +721,9 @@ src/game/fly.ts             Fruit-fly mushroom body encoder, circuit, and readou
 src/server/index.ts         HTTP, WebSocket, and static-serving entry point
 src/server/room.ts          Sessions, serialized actions, bots, spectators, and broadcasts
 src/server/store.ts         PostgreSQL and local-file persistence
+src/server/auth.ts          Better Auth setup: passkeys, optional Discord and Google
+src/server/accounts.ts      Usernames and which devices belong to which profile
+src/server/account-routes.ts  /api/account endpoints
 scripts/                    Source collection and fly-brain extraction and training
 tests/                      Automated rules, bot, real-server, and browser tests
 data/                       Source snapshots and processed research
