@@ -10,7 +10,11 @@ export async function requestNotifications(): Promise<boolean> {
   if (!notificationsSupported()) return false;
   if (Notification.permission === "granted") return true;
   if (Notification.permission === "denied") return false;
-  return (await Notification.requestPermission()) === "granted";
+  try {
+    return (await Notification.requestPermission()) === "granted";
+  } catch {
+    return false;
+  }
 }
 export function useTurnNotifications(
   view: View | undefined,
@@ -22,10 +26,9 @@ export function useTurnNotifications(
     !!view &&
     !view.spectator &&
     view.status === "playing" &&
-    !view.scoring &&
     (view.prompt
       ? "choice"
-      : view.active === view.you && !view.waitingFor
+      : !view.scoring && view.active === view.you && !view.waitingFor
         ? "turn"
         : "");
   const shown = useRef<Notification | undefined>(undefined);
@@ -42,16 +45,22 @@ export function useTurnNotifications(
       Notification.permission !== "granted"
     )
       return close;
-    const note = new Notification(
-      mine === "choice" ? "A card needs your decision" : "It’s your turn",
-      {
-        body:
-          mine === "choice"
-            ? (view!.prompt?.title ?? "Mood Swings")
-            : "Your friends are waiting at the Mood Swings table.",
-        tag: "mood-swings-turn",
-      },
-    );
+    let note: Notification;
+    try {
+      note = new Notification(
+        mine === "choice" ? "A card needs your decision" : "It’s your turn",
+        {
+          body:
+            mine === "choice"
+              ? (view!.prompt?.title ?? "Mood Swings")
+              : "Your friends are waiting at the Mood Swings table.",
+          tag: "mood-swings-turn",
+        },
+      );
+    } catch {
+      // Some mobile browsers expose Notification but require a service worker.
+      return close;
+    }
     note.onclick = () => {
       window.focus();
       note.close();

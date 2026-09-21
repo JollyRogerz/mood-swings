@@ -1,5 +1,5 @@
 import { AWAY_AFTER } from "./clock";
-import { RuleError } from "./engine";
+import { addPlayer, createGame, RuleError } from "./engine";
 import type { Game } from "./types";
 // Seat management that is not part of the card rules: letting the host hand an
 // absent friend's seat to a bot, giving it back when they return, and keeping
@@ -55,4 +55,34 @@ export function recordRound(next: Game, before: Game) {
     ...(next.history ?? []).filter((r) => r.round !== next.lastRound!.round),
     structuredClone(next.lastRound),
   ].slice(-HISTORY_LIMIT);
+}
+
+// Keep temporary stand-ins reclaimable across rematches; ordinary bots remain bots.
+export function rematchGame(
+  game: Game,
+  actor: string,
+  seed: number,
+  connected: string[],
+) {
+  if (actor !== game.host || game.status !== "finished")
+    throw new RuleError("Only the host can start a rematch after the game.");
+  const host = game.players.find((p) => p.id === actor)!;
+  const next = createGame(actor, host.name, seed);
+  next.visibility = game.visibility;
+  next.pace = game.pace;
+  next.clock = game.clock;
+  for (const p of game.players.filter((p) => p.id !== actor)) {
+    addPlayer(next, p.id, p.name);
+    const seat = next.players.find((x) => x.id === p.id)!;
+    seat.bot = p.bot;
+    if (p.substitute) {
+      seat.substitute = true;
+      if (connected.includes(p.id)) reclaimSeat(next, p.id);
+    }
+  }
+  next.players.forEach((p) => {
+    p.connected = !!p.bot || connected.includes(p.id);
+  });
+  next.revision = game.revision + 1;
+  return next;
 }

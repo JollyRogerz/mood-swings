@@ -67,8 +67,10 @@ export function clockRules(setting?: ClockSetting) {
 }
 // The player the table is waiting on, if any.
 export function waitingOn(game: Game): string | undefined {
-  if (game.status !== "playing" || game.scoring) return undefined;
-  return game.prompt?.actor ?? game.order[game.turnIndex];
+  if (game.status !== "playing") return undefined;
+  // Scoring can stop on a human choice (extra scores or after-scoring order).
+  if (game.prompt) return game.prompt.actor;
+  return game.scoring ? undefined : game.order[game.turnIndex];
 }
 const keyOf = (game: Game, actor: string) =>
   [

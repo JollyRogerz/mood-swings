@@ -22,6 +22,7 @@ interface Peer {
   attempts: number;
   watchdog?: ReturnType<typeof setInterval>;
   audio?: HTMLAudioElement;
+  disposeAudio?: () => void;
   nodes?: { source: MediaStreamAudioSourceNode; analyser: AnalyserNode };
 }
 const MIC: MediaStreamConstraints = {
@@ -88,6 +89,8 @@ export function useVoice({
   // Set synchronously, before the room is told: a friend's offer can arrive
   // before React has committed the `joined` state, and must not be dropped.
   const inCall = useRef(false);
+  const attempt = useRef(0);
+  const pending = useRef(false);
   useEffect(() => {
     if (initialRoster) setRoster(initialRoster);
   }, [initialRoster]);
@@ -100,7 +103,7 @@ export function useVoice({
     p.pc.onconnectionstatechange = null;
     clearInterval(p.watchdog);
     p.pc.close();
-    p.nodes?.source.disconnect();
+    p.disposeAudio?.();
     if (p.audio) p.audio.srcObject = null;
     peers.current.delete(id);
     setLinks(({ [id]: _gone, ...rest }) => rest);
@@ -176,6 +179,8 @@ export function useVoice({
           setLinks((old) => ({ ...old, [id]: "connecting" }));
       };
       pc.ontrack = ({ streams, track }) => {
+        peer.disposeAudio?.();
+        if (peer.audio) peer.audio.srcObject = null;
         const stream = streams[0] ?? new MediaStream([track]);
         // Chrome only pulls remote WebRTC audio into Web Audio while a media
         // element also holds the stream, so keep a silent one attached.
@@ -202,6 +207,12 @@ export function useVoice({
         ctx.addEventListener("statechange", handOver);
         handOver();
         peer.nodes = { source, analyser };
+        peer.disposeAudio = () => {
+          ctx.removeEventListener("statechange", handOver);
+          source.disconnect();
+          analyser.disconnect();
+          panner.disconnect();
+        };
       };
     },
     [room],
@@ -285,7 +296,10 @@ export function useVoice({
     return () => clearInterval(timer);
   }, [joined, you]);
   const leave = useCallback(() => {
-    if (!inCall.current) return;
+    attempt.current++;
+    pending.current = false;
+    setJoining(false);
+    const wasInCall = inCall.current;
     inCall.current = false;
     for (const id of [...peers.current.keys()]) closePeer(id);
     mic.current?.getTracks().forEach((t) => t.stop());
@@ -296,20 +310,32 @@ export function useVoice({
     setJoined(false);
     setMuted(true);
     setSpeaking({});
-    room.current?.send("voice", { on: false });
+    if (wasInCall) room.current?.send("voice", { on: false });
   }, [closePeer, room]);
   const join = useCallback(async () => {
-    if (joined || joining) return;
+    if (!enabled || inCall.current || pending.current) return;
+    const token = ++attempt.current;
+    const socket = room.current;
+    pending.current = true;
     setError("");
     setJoining(true);
     // Start the audio engine inside the click, before the permission prompt can
     // outlast the browser's "user gesture" window. Never wait on it.
     const Ctx: typeof AudioContext | undefined =
       window.AudioContext ?? (window as any).webkitAudioContext;
-    const ctx = Ctx ? new Ctx() : undefined;
-    void ctx?.resume().catch(() => {});
+    let ctx: AudioContext | undefined;
+    let acquired: MediaStream | undefined;
     try {
+      ctx = Ctx ? new Ctx() : undefined;
+      context.current = ctx;
+      void ctx?.resume().catch(() => {});
       const stream = await navigator.mediaDevices.getUserMedia(MIC);
+      acquired = stream;
+      if (attempt.current !== token || room.current !== socket) {
+        stream.getTracks().forEach((track) => track.stop());
+        void ctx?.close().catch(() => {});
+        return;
+      }
       // You join listening; the microphone opens when you unmute.
       stream.getAudioTracks().forEach((t) => (t.enabled = false));
       mic.current = stream;
@@ -325,7 +351,13 @@ export function useVoice({
       setJoined(true);
       room.current?.send("voice", { on: true, muted: true });
     } catch (e) {
+      acquired?.getTracks().forEach((track) => track.stop());
       void ctx?.close().catch(() => {});
+      if (attempt.current !== token) return;
+      inCall.current = false;
+      mic.current = undefined;
+      context.current = undefined;
+      setJoined(false);
       const name = (e as DOMException)?.name;
       setError(
         name === "NotAllowedError" || name === "SecurityError"
@@ -335,9 +367,12 @@ export function useVoice({
             : "Could not start the microphone.",
       );
     } finally {
-      setJoining(false);
+      if (attempt.current === token) {
+        pending.current = false;
+        setJoining(false);
+      }
     }
-  }, [joined, joining, room]);
+  }, [enabled, room]);
   const toggleMute = useCallback(() => {
     void context.current?.resume().catch(() => {});
     const next = !live.current.muted;
@@ -347,7 +382,7 @@ export function useVoice({
   }, [room]);
   // Leaving the table, or losing the seat, ends the call.
   useEffect(() => {
-    if (!enabled && inCall.current) leave();
+    if (!enabled) leave();
   }, [enabled, leave]);
   useEffect(() => () => leave(), []);
   return {
@@ -385,7 +420,7 @@ export function VoiceDock({ voice }: { voice: Voice }) {
             {voice.joining
               ? "Asking for the mic…"
               : others > 0
-                ? `Join voice · ${others} talking`
+                ? `Join voice · ${others} in voice`
                 : "Join voice"}
           </span>
         </button>

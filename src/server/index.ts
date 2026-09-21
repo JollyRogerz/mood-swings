@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
-import { Server, matchMaker } from "@colyseus/core";
+import { Server, ServerError, matchMaker } from "@colyseus/core";
 import { WebSocketTransport } from "@colyseus/ws-transport";
 import { createGame } from "../game/engine";
 import { cleanName, identity, MoodRoom, serverKey, publicRooms } from "./room";
@@ -13,6 +13,16 @@ const port = Number(process.env.PORT ?? 3000);
 const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
+app.use((_req, res, next) => {
+  res.set({
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy":
+      "frame-ancestors 'none'; object-src 'none'; base-uri 'self'",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+  });
+  next();
+});
 // Profiles are optional. If they cannot start, the tables still must.
 const accounts = await createAccounts().catch((e) => {
   console.error("Accounts are off: they failed to start.", e);
@@ -73,8 +83,10 @@ app.post("/api/rooms", async (req, res) => {
     });
     res.status(201).json({ code: roomCode });
   } catch (e) {
-    res.status(400).json({
-      error: e instanceof Error ? e.message : "Could not create table.",
+    const expected = e instanceof ServerError && e.code >= 400 && e.code < 500;
+    if (!expected) console.error("Table creation failed.", e);
+    res.status(expected ? e.code : 500).json({
+      error: expected ? e.message : "Could not create table. Please try again.",
     });
   }
 });
@@ -94,9 +106,15 @@ app.post("/api/rooms/:code/connect", async (req, res) => {
           (async () => {
             const snapshot = await store.load(roomCode);
             if (!snapshot)
-              throw new Error("Table not found. Check your invite link.");
+              throw new ServerError(
+                404,
+                "Table not found. Check your invite link.",
+              );
             if (snapshot.version !== 1)
-              throw new Error("This saved game needs a newer client.");
+              throw new ServerError(
+                409,
+                "This saved game needs a newer client.",
+              );
             await matchMaker.createRoom("mood", {
               key: serverKey,
               code: roomCode,
@@ -108,8 +126,10 @@ app.post("/api/rooms/:code/connect", async (req, res) => {
     }
     res.json({ code: roomCode });
   } catch (e) {
-    res.status(404).json({
-      error: e instanceof Error ? e.message : "Could not join table.",
+    const expected = e instanceof ServerError && e.code >= 400 && e.code < 500;
+    if (!expected) console.error("Table connection failed.", e);
+    res.status(expected ? e.code : 500).json({
+      error: expected ? e.message : "Could not join table. Please try again.",
     });
   }
 });

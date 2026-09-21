@@ -3,7 +3,6 @@ import { createHash, randomBytes } from "node:crypto";
 import {
   act,
   addPlayer,
-  createGame,
   publicView,
   RuleError,
   startGame,
@@ -26,7 +25,12 @@ import {
   isPace,
   pacing,
 } from "../game/pacing";
-import { reclaimSeat, recordRound, substituteBot } from "../game/seats";
+import {
+  reclaimSeat,
+  recordRound,
+  rematchGame,
+  substituteBot,
+} from "../game/seats";
 import {
   armClock,
   clockView,
@@ -86,7 +90,6 @@ export class MoodRoom extends Room {
     await this.setPrivate(true);
     this.onMessage("visibility", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         if (
           this.actor(client) !== this.game.host ||
           this.game.status !== "lobby"
@@ -104,7 +107,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("pace", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         if (
           this.actor(client) !== this.game.host ||
           this.game.status !== "lobby"
@@ -119,7 +121,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("clock", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         if (
           this.actor(client) !== this.game.host ||
           this.game.status !== "lobby"
@@ -134,7 +135,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("voice", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const player = this.actor(client);
         if (message?.on === true)
           this.voice.set(player, { muted: message?.muted !== false });
@@ -166,7 +166,6 @@ export class MoodRoom extends Room {
     });
     this.onMessage("seat-bot", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const next = structuredClone(this.game);
         substituteBot(next, this.actor(client), String(message?.id ?? ""));
         await this.commit(next);
@@ -174,7 +173,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("results-ready", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const next = structuredClone(this.game);
         if (
           !acknowledgeResults(
@@ -190,7 +188,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("reveal-ready", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const next = structuredClone(this.game);
         if (
           !acknowledgeReveal(
@@ -205,10 +202,16 @@ export class MoodRoom extends Room {
         await this.commit(next);
       }, client),
     );
-    this.onMessage("sync", (client) => this.sendView(client));
+    this.onMessage("sync", (client) => {
+      try {
+        this.limit(client);
+        this.sendView(client);
+      } catch {
+        /* Drop excess syncs. */
+      }
+    });
     this.onMessage("action", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const actor = this.actor(client);
         if (!message || message.revision !== this.game.revision) {
           this.sendView(client);
@@ -263,7 +266,6 @@ export class MoodRoom extends Room {
     });
     this.onMessage("react", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const player = this.actor(client);
         if (!REACTIONS.includes(message?.emoji)) return;
         this.broadcast("reaction", {
@@ -276,7 +278,6 @@ export class MoodRoom extends Room {
     this.onMessage("presence", (client, message) =>
       this.enqueue(async () => {
         if (this.watchers.has(client.sessionId)) return;
-        this.limit(client);
         const player = this.actor(client),
           state: Presence = PRESENCES.includes(message?.state)
             ? message.state
@@ -289,7 +290,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("start", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         const actor = this.actor(client);
         const next = structuredClone(this.game);
         startGame(next, actor, message?.mode === "all" ? "all" : "retail");
@@ -298,7 +298,6 @@ export class MoodRoom extends Room {
     );
     this.onMessage("add-bot", (client, message) =>
       this.enqueue(async () => {
-        this.limit(client);
         if (
           this.actor(client) !== this.game.host ||
           this.game.status !== "lobby"
@@ -342,29 +341,12 @@ export class MoodRoom extends Room {
     );
     this.onMessage("rematch", (client) =>
       this.enqueue(async () => {
-        const actor = this.actor(client);
-        if (actor !== this.game.host || this.game.status !== "finished")
-          throw new RuleError(
-            "Only the host can start a rematch after the game.",
-          );
-        const host = this.game.players.find((p) => p.id === actor)!;
-        const next = createGame(
-          actor,
-          host.name,
+        const next = rematchGame(
+          this.game,
+          this.actor(client),
           randomBytes(4).readUInt32LE(),
+          [...this.actors.values()],
         );
-        next.visibility = this.game.visibility;
-        next.pace = this.game.pace;
-        next.clock = this.game.clock;
-        for (const p of this.game.players.filter((p) => p.id !== actor)) {
-          addPlayer(next, p.id, p.name);
-          next.players.find((x) => x.id === p.id)!.bot = p.bot;
-        }
-        next.players.forEach(
-          (p) =>
-            (p.connected = !!p.bot || [...this.actors.values()].includes(p.id)),
-        );
-        next.revision = this.game.revision + 1;
         await this.commit(next);
       }, client),
     );
@@ -463,6 +445,14 @@ export class MoodRoom extends Room {
     this.rates.set(client.sessionId, r);
   }
   private enqueue(fn: () => Promise<void>, client?: Client): Promise<unknown> {
+    if (client) {
+      try {
+        this.limit(client);
+      } catch {
+        client.send("error", "Please slow down.");
+        return Promise.resolve();
+      }
+    }
     const job = this.chain.then(fn);
     this.chain = job.catch((error) => {
       if (client)

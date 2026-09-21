@@ -205,7 +205,10 @@ function AccountBody({
           className="text-button"
           disabled={busy}
           onClick={run(async () => {
-            await auth.signOut();
+            check(
+              await auth.signOut(),
+              "Could not sign out. Please try again.",
+            );
             await refresh();
           })}
         >
@@ -219,9 +222,10 @@ function AccountBody({
         <span className="eyebrow">YOUR PROFILE</span>
         <h2>{account.user.username}</h2>
         <p className="account-note">
-          Signed in on {account.user.devices}{" "}
-          {account.user.devices === 1 ? "device" : "devices"}. Games you finish
-          here are saved to this profile.
+          Linked to {account.user.devices}{" "}
+          {account.user.devices === 1 ? "device" : "devices"}. Your username and
+          sign-in methods are saved. Match history and statistics are not
+          available yet.
         </p>
         <Problem text={error} />
         <button
@@ -260,7 +264,10 @@ function AccountBody({
           className="account-choice"
           disabled={busy}
           onClick={run(async () => {
-            await auth.signOut();
+            check(
+              await auth.signOut(),
+              "Could not sign out. Please try again.",
+            );
             await refresh();
             close();
           })}

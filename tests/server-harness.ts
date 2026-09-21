@@ -82,6 +82,7 @@ export async function launchServer(extraEnv: Record<string, string> = {}) {
     };
   }
   return {
+    root,
     base,
     post,
     join,

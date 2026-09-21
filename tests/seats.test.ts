@@ -8,6 +8,7 @@ import {
   HISTORY_LIMIT,
   isAbsent,
   reclaimSeat,
+  rematchGame,
   recordRound,
   substituteBot,
 } from "../src/game/seats";
@@ -18,6 +19,23 @@ function playing() {
   return g;
 }
 describe("bot stand-ins for absent friends", () => {
+  it("preserves temporary stand-ins through a rematch and returns their seats", () => {
+    const g = playing();
+    g.players[1].connected = false;
+    substituteBot(g, "a", "b");
+    g.players[2].bot = "hard";
+    g.status = "finished";
+    const next = rematchGame(g, "a", 123, ["a"]);
+    expect(next.players[1]).toMatchObject({ bot: "normal", substitute: true });
+    expect(reclaimSeat(next, "b")).toBe(true);
+    expect(next.players[1].bot).toBeUndefined();
+    expect(next.players[2].bot).toBe("hard");
+    expect(reclaimSeat(next, "c")).toBe(false);
+    const present = rematchGame(g, "a", 123, ["a", "b"]);
+    expect(present.players[1].bot).toBeUndefined();
+    expect(present.players[1].connected).toBe(true);
+    expect(() => rematchGame(g, "b", 123, ["a"])).toThrow("Only the host");
+  });
   it("only the host, only mid-game, only for someone who is really gone", () => {
     const g = playing();
     expect(() => substituteBot(g, "b", "c")).toThrow(/Only the host/);

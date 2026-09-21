@@ -6,6 +6,7 @@ import { anonymous } from "better-auth/plugins";
 import { passkey } from "@better-auth/passkey";
 import type { IncomingHttpHeaders } from "node:http";
 import { Pool } from "pg";
+import { randomBytes } from "node:crypto";
 import {
   MemoryAccountStore,
   PostgresAccountStore,
@@ -18,6 +19,21 @@ export function baseUrl(env: Env) {
   if (env.BETTER_AUTH_URL) return env.BETTER_AUTH_URL.replace(/\/+$/, "");
   if (env.RAILWAY_PUBLIC_DOMAIN) return `https://${env.RAILWAY_PUBLIC_DOMAIN}`;
   return `http://localhost:${env.PORT ?? 3000}`;
+}
+export function accountOrigins(env: Env): string[] {
+  const url = new URL(baseUrl(env));
+  const local = ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
+  return local
+    ? [
+        ...new Set([
+          url.origin,
+          `http://localhost:${url.port || 80}`,
+          `http://127.0.0.1:${url.port || 80}`,
+          "http://127.0.0.1:5173",
+          "http://localhost:5173",
+        ]),
+      ]
+    : [url.origin];
 }
 // A provider is offered only when both halves of its credentials are present,
 // so a half-configured deploy shows no dead button.
@@ -35,6 +51,7 @@ export function accountsMode(env: Env): AccountsMode {
   return "off";
 }
 export interface Accounts {
+  origins: string[];
   auth: ReturnType<typeof build>;
   store: AccountStore;
   providers: Provider[];
@@ -50,9 +67,9 @@ function build(env: Env, database: Pool | ReturnType<typeof memoryAdapter>) {
     providers = configuredProviders(env);
   return betterAuth({
     baseURL: url,
-    secret: env.BETTER_AUTH_SECRET ?? "memory-mode-only-".padEnd(32, "x"),
+    secret: env.BETTER_AUTH_SECRET ?? randomBytes(32).toString("hex"),
     database,
-    trustedOrigins: [url, "http://127.0.0.1:5173", "http://localhost:5173"],
+    trustedOrigins: accountOrigins(env),
     socialProviders: Object.fromEntries(
       providers.map((p) => [
         p,
@@ -105,6 +122,7 @@ export async function createAccounts(
   }
   await store.init();
   return {
+    origins: accountOrigins(env),
     auth,
     store,
     providers: configuredProviders(env),

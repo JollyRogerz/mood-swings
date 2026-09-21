@@ -10,6 +10,7 @@ function visitor(base: string) {
     method = "GET",
     body?: unknown,
     token?: string,
+    extraHeaders: Record<string, string> = {},
   ) => {
     const r = await fetch(base + url, {
       method,
@@ -18,6 +19,7 @@ function visitor(base: string) {
         ...(body ? { "content-type": "application/json" } : {}),
         ...(cookie ? { cookie } : {}),
         ...(token ? { "x-mood-session": token } : {}),
+        ...extraHeaders,
       },
       body: body ? JSON.stringify(body) : undefined,
     });
@@ -52,6 +54,43 @@ describe("accounts", () => {
     );
     return as;
   };
+  it("rejects cross-site profile changes even with a valid session", async () => {
+    const as = await signUp();
+    for (const origin of ["https://untrusted.example", "null", ""]) {
+      expect(
+        (
+          await as(
+            "/api/account/username",
+            "POST",
+            { username: "Injected" },
+            undefined,
+            { origin },
+          )
+        ).status,
+      ).toBe(403);
+    }
+    expect(
+      (
+        await as(
+          "/api/account/username",
+          "POST",
+          { username: "Injected" },
+          undefined,
+          { "sec-fetch-site": "cross-site" },
+        )
+      ).status,
+    ).toBe(403);
+    expect(
+      (await as("/api/account/username", "POST", { username: "Allowed" }))
+        .status,
+    ).toBe(200);
+    const response = await fetch(server.base + "/api/account");
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(response.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+  });
   it("refuses writes from a guest", async () => {
     const guest = visitor(server.base);
     expect((await guest("/api/account")).json).toMatchObject({

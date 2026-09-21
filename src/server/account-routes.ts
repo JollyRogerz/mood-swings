@@ -19,6 +19,25 @@ export function mountAccountRoutes(
   accounts: Accounts | undefined,
 ) {
   const router = express.Router();
+  // These routes sit outside Better Auth's handler and need their own origin
+  // validation. A session cookie alone is not permission for cross-site writes.
+  router.use((req, res, next) => {
+    res.set("Cache-Control", "no-store");
+    if (
+      accounts &&
+      !["GET", "HEAD", "OPTIONS"].includes(req.method) &&
+      (!accounts.origins.includes(req.get("origin") ?? "") ||
+        req.get("sec-fetch-site") === "cross-site")
+    ) {
+      res
+        .status(403)
+        .json({
+          error: "Open your profile on the Mood Swings site to make changes.",
+        });
+      return;
+    }
+    next();
+  });
   // Express 4 does not catch a rejected handler, and an uncaught rejection
   // would end the process and every table with it.
   const safely =

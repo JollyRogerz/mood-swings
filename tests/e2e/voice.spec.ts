@@ -89,7 +89,7 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   await expect(seatBadge(friend, "Alice")).toHaveClass(/muted/);
   await expect(
     friend.getByRole("button", { name: "Join voice chat" }),
-  ).toContainText("1 talking");
+  ).toContainText("1 in voice");
   await friend.getByRole("button", { name: "Join voice chat" }).click();
   await expect(seatBadge(page, "Bob")).toBeVisible();
   // The two browsers reach each other directly.
@@ -145,4 +145,47 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   expect(errors).toEqual([]);
   await watcherContext.close();
   await friendContext.close();
+});
+
+test("a late microphone permission cannot join voice after leaving the table", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = navigator.mediaDevices.getUserMedia.bind(
+      navigator.mediaDevices,
+    );
+    navigator.mediaDevices.getUserMedia = async (constraints) => {
+      const stream = await original(constraints);
+      (window as any).__lateStream = stream;
+      await new Promise<void>((resolve) => {
+        (window as any).__grantMic = resolve;
+      });
+      return stream;
+    };
+  });
+  await page.goto("/");
+  await page.getByLabel("Your name at the table").fill("Late mic");
+  await page.getByRole("button", { name: "Create a table" }).click();
+  await page.getByRole("button", { name: "Join voice chat" }).click();
+  await expect
+    .poll(() => page.evaluate(() => !!(window as any).__grantMic))
+    .toBe(true);
+  await page.getByRole("button", { name: "Leave table", exact: true }).click();
+  await page.evaluate(() => (window as any).__grantMic());
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (window as any).__lateStream
+          .getTracks()
+          .every((t: MediaStreamTrack) => t.readyState === "ended"),
+      ),
+    )
+    .toBe(true);
+  await page.getByRole("button", { name: "Create a table" }).click();
+  await expect(
+    page.getByRole("button", { name: "Join voice chat" }),
+  ).toBeEnabled();
+  await expect(
+    page.getByRole("button", { name: "Unmute microphone" }),
+  ).toHaveCount(0);
 });

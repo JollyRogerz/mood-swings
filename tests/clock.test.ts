@@ -10,7 +10,7 @@ import {
   settleClock,
 } from "../src/game/clock";
 import { timeoutAction } from "../src/game/timeout";
-import { add, play, table } from "./helpers";
+import { add, pass, play, table } from "./helpers";
 const live = { humanConnected: true, nothingToDecide: false };
 function timed(setting: "relaxed" | "standard" | "brisk" = "standard") {
   const g = table();
@@ -19,6 +19,21 @@ function timed(setting: "relaxed" | "standard" | "brisk" = "standard") {
   return g;
 }
 describe("turn timer with a time bank", () => {
+  it("times out an unanswered scoring choice instead of stalling the round", () => {
+    let g = timed();
+    add(g, "apathy");
+    add(g, "enthusiasm");
+    g = pass(pass(g));
+    expect(g.scoring).toBe(true);
+    expect(g.prompt?.actor).toBe("a");
+    armClock(g, 0, live);
+    expect(g.clockState?.actor).toBe("a");
+    expect(expireClock(g, 45_000)).toBe("overtime");
+    expect(expireClock(g, 135_000)).toBe("timeout");
+    g = act(g, "a", timeoutAction(publicView(g, "a"), 1));
+    expect(g.round).toBe(2);
+    expect(g.lastRound?.scores.a).toBe(4);
+  });
   it("is off by default and validates untrusted settings", () => {
     const g = table();
     armClock(g, 1000, live);

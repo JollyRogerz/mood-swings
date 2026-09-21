@@ -551,8 +551,10 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 ## Verification and tests
 
-- **575** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
-- **17 Playwright scenarios** exercise the actual browser application, 23 runs across Chromium and WebKit.
+See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
+
+- **605** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **23 Playwright scenarios** exercise the actual browser application, 29 runs across Chromium and WebKit.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.

@@ -36,7 +36,7 @@ test("a guest saves a profile with a passkey and signs back in with it", async (
   await dialog.getByLabel("Username").fill(name);
   await dialog.getByRole("button", { name: "Save with a passkey" }).click();
   await expect(dialog.getByRole("heading", { name })).toBeVisible();
-  await expect(dialog).toContainText("Signed in on 1 device");
+  await expect(dialog).toContainText("Linked to 1 device");
   // The profile survives a reload and names the player at the next table.
   await page.evaluate(() => localStorage.removeItem("mood-name"));
   await page.reload();
