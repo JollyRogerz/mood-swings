@@ -74,3 +74,51 @@ test("a cancelled passkey leaves no half-made account behind", async ({
   );
   expect(state.user).toBeNull();
 });
+test("a taken username keeps the new passkey and only asks for another name", async ({
+  page,
+  context,
+  browser,
+}) => {
+  const authenticator = async (ctx: typeof context, p: typeof page) => {
+    const cdp = await ctx.newCDPSession(p);
+    await cdp.send("WebAuthn.enable");
+    await cdp.send("WebAuthn.addVirtualAuthenticator", {
+      options: {
+        protocol: "ctap2",
+        transport: "internal",
+        hasResidentKey: true,
+        hasUserVerification: true,
+        isUserVerified: true,
+        automaticPresenceSimulation: true,
+      },
+    });
+  };
+  const save = async (p: typeof page, username: string) => {
+    await p.getByRole("button", { name: "Save profile" }).click();
+    const dialog = p.getByRole("dialog", { name: "Your profile" });
+    await dialog.getByLabel("Username").fill(username);
+    await dialog.getByRole("button", { name: "Save with a passkey" }).click();
+    return dialog;
+  };
+  const wanted = `Wanted_${Date.now() % 1_000_000}`;
+  await authenticator(context, page);
+  await page.goto(home);
+  await expect(
+    (await save(page, wanted)).getByRole("heading", { name: wanted }),
+  ).toBeVisible();
+  const otherContext = await browser.newContext();
+  const other = await otherContext.newPage();
+  await authenticator(otherContext, other);
+  await other.goto(home);
+  const dialog = await save(other, wanted.toUpperCase());
+  await expect(dialog.getByRole("alert")).toContainText("taken");
+  await expect(
+    dialog.getByRole("heading", { name: "Pick a username." }),
+  ).toBeVisible();
+  await dialog.getByLabel("Username").fill(`${wanted}2`.slice(0, 20));
+  await dialog.getByRole("button", { name: "Save username" }).click();
+  await expect(
+    dialog.getByRole("heading", { name: `${wanted}2`.slice(0, 20) }),
+  ).toBeVisible();
+  await otherContext.close();
+});

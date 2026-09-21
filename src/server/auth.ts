@@ -42,7 +42,7 @@ export interface Accounts {
   // A passkey profile starts life as an anonymous user. Once it has a
   // username it is a real account: clearing the flag lets a social login be
   // linked to it later instead of replacing it.
-  settle(userId: string, username: string): Promise<void>;
+  settle(userId: string): Promise<void>;
   destroy(userId: string): Promise<void>;
 }
 function build(env: Env, database: Pool | ReturnType<typeof memoryAdapter>) {
@@ -114,12 +114,9 @@ export async function createAccounts(
       });
       return session?.user.id ?? null;
     },
-    async settle(userId, username) {
+    async settle(userId) {
       const ctx = await auth.$context;
-      await ctx.internalAdapter.updateUser(userId, {
-        name: username,
-        isAnonymous: false,
-      });
+      await ctx.internalAdapter.updateUser(userId, { isAnonymous: false });
     },
     async destroy(userId) {
       const ctx = await auth.$context;

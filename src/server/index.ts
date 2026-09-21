@@ -32,7 +32,9 @@ app.get("/api/health", (_req, res) =>
 );
 const limits = new Map<string, { time: number; n: number }>();
 app.use(["/api/rooms", "/api/account"], (req, res, next) => {
-  const key = `${req.method}:${req.ip ?? "unknown"}`,
+  // Each API gets its own budget, so a busy night of tables cannot lock a
+  // player out of their profile.
+  const key = `${req.baseUrl}:${req.method}:${req.ip ?? "unknown"}`,
     now = Date.now();
   for (const [k, v] of limits) if (now - v.time > 60_000) limits.delete(k);
   const r = limits.get(key) ?? { time: now, n: 0 };

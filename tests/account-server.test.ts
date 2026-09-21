@@ -106,7 +106,34 @@ describe("accounts", () => {
     const as = await signUp();
     await as("/api/account/username", "POST", { username: "Settled" });
     const session = (await as("/api/auth/get-session")).json;
-    expect(session.user).toMatchObject({ name: "Settled", isAnonymous: false });
+    expect(session.user).toMatchObject({ isAnonymous: false });
+  });
+  it("keeps the account, and asks again, when the name is taken", async () => {
+    const first = await signUp(),
+      second = await signUp();
+    await first("/api/account/username", "POST", { username: "Wanted" });
+    expect(
+      (await second("/api/account/username", "POST", { username: "wanted" }))
+        .status,
+    ).toBe(409);
+    // Still signed in, still unnamed, and free to pick another.
+    expect((await second("/api/account")).json.user).toMatchObject({
+      username: null,
+    });
+    expect(
+      (await second("/api/account/username", "POST", { username: "Second" }))
+        .json,
+    ).toEqual({ username: "Second" });
+  });
+  it("gives profiles their own request budget", async () => {
+    const guest = visitor(server.base);
+    for (let i = 0; i < 31; i++)
+      await guest("/api/rooms/ABCDEFGH/connect", "POST", { token: "x" });
+    expect(
+      (await guest("/api/rooms/ABCDEFGH/connect", "POST", { token: "x" }))
+        .status,
+    ).toBe(429);
+    expect((await guest("/api/account/link", "POST", {})).status).toBe(401);
   });
   it("deletes everything on request", async () => {
     const as = await signUp(),

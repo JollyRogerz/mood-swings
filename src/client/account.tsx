@@ -64,11 +64,13 @@ export function useAccount(token: string) {
     try {
       let next: Account = await call("/api/account", token);
       // Signing in anywhere makes this device part of the account, so its
-      // games are counted without another step.
-      if (next.user?.username && !next.linked) {
-        await call("/api/account/link", token, "POST", { token });
-        next = await call("/api/account", token);
-      }
+      // games are counted without another step. A failed link is retried on
+      // the next load; it must never make a signed-in player look signed out.
+      if (next.user?.username && !next.linked)
+        try {
+          await call("/api/account/link", token, "POST", { token });
+          next = await call("/api/account", token);
+        } catch {}
       setAccount(next);
       return next;
     } catch {
@@ -311,13 +313,18 @@ function AccountBody({
               await auth.passkey.addPasskey({ name: username.trim() }),
               "The passkey was not saved.",
             );
-            await saveName();
           } catch (e) {
-            // Never leave a nameless, keyless account behind.
+            // Never leave a keyless account behind.
             await auth.deleteAnonymousUser().catch(() => auth.signOut());
             throw e;
           }
-          await refresh();
+          // From here the passkey exists. A taken username keeps it, and the
+          // player only has to choose another name.
+          try {
+            await saveName();
+          } finally {
+            await refresh();
+          }
         })}
       >
         <Fingerprint size={18} /> Save with a passkey
