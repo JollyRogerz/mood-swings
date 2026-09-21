@@ -49,6 +49,7 @@
 
 **Project**
 
+- [What's left to do](#whats-left-to-do)
 - [Report an issue or contribute](#report-an-issue-or-contribute)
 - [Thank you to the original creators](#thank-you-to-the-original-creators)
 - [Optional maintainer donations](#optional-maintainer-donations)
@@ -100,7 +101,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Persistence  | PostgreSQL snapshots for the hosted game                                         |
 | Rematches    | Host returns the same players and bots to the lobby                              |
 
-**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, or text chat. Optional [profiles](#profiles) exist; stats and rankings do not yet. The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, or text chat. Optional [profiles](#profiles) exist; stats and rankings do not yet; see [what's left to do](#whats-left-to-do). The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -736,6 +737,62 @@ CREDITS.md                  Original creators, rights, and free-access policy
 ```
 
 ---
+
+## What's left to do
+
+Open work, in the order it is meant to be built. Each item is one pull request. The full design, with table layouts and rules, is in [`docs/specs/2026-09-21-accounts-stats-collection-design.md`](docs/specs/2026-09-21-accounts-stats-collection-design.md).
+
+| #   | Piece                        | Status                                         |
+| --- | ---------------------------- | ---------------------------------------------- |
+| 1   | Profiles                     | ✅ Merged. Off in production until configured. |
+| 2   | Stats and leaderboard        | Not started                                    |
+| 3   | Deck collection and profiles | Not started                                    |
+| 4   | Owned badge, Bring your deck | Not started                                    |
+| 5   | Verified owner               | Later, optional                                |
+
+**1. Profiles: finish switching them on**
+
+- [ ] Set `BETTER_AUTH_SECRET` on the deployment (see [Profiles](#profiles)).
+- [ ] Create the Discord and Google OAuth apps and set their four variables.
+- [ ] Try a passkey on iPhone Safari and on Android Chrome. Only desktop Chrome has been tested, with a virtual authenticator.
+- [ ] Try Discord and Google sign-in end to end. Neither has been run against a real provider.
+- [ ] Once a social login is on, reword the "no email" lines in this README: Better Auth stores the email the provider sends.
+
+**2. Stats and leaderboard**
+
+- Record each finished game once, on the server, when the engine sets `status = "finished"`. Rematches are separate results.
+- Personal stats: games, wins, losses, win rate, round wins, streaks, record against each bot. There are no draws in this game.
+- Leaderboard: only games where two or more humans finished their own seats. A seat finished by a stand-in bot is a loss for that player and is left out of the ranking.
+- Start with `src/game/results.ts` (pure: finished `Game` to result record), then a store beside `src/server/accounts.ts`, then the page.
+
+**3. Deck collection and public profiles**
+
+- A player logs the physical decks they own: a named deck is up to 45 cards ticked in a binder of all 133. Honour system.
+- A deck matching the retail shape (23 common, 14 uncommon, 6 rare, 2 mythic rare) is marked as such; others still save.
+- Public page at `/u/<username>`: stats, decks, completion overall, by colour and by rarity. The collection can be set private.
+
+**4. Owned badge and Bring your deck**
+
+- A small marker on a card in play when the player who played it owns it. Cosmetic only.
+- In the lobby the host can deal from one of their logged decks. The server loads the list from the database, never from the browser, and passes it to `start()` as `fixedDeck`, which the engine already supports.
+
+**5. Verified owner (later, optional)**
+
+- One photo per deck: the cards fanned out beside a handwritten note with the username. Reviewed by hand, then deleted. It adds a mark and never becomes a requirement.
+
+**Also open**
+
+- Voice chat is untested on real home networks and phones, iOS Safari especially. Players behind strict NATs need a TURN relay, which is supported through `TURN_URL`, `TURN_USERNAME` and `TURN_CREDENTIAL` but not provided.
+- The touch catalog browser test stalled once on CI with no recorded cause. CI now uploads Playwright traces on failure; read the trace if it happens again.
+- Expired room snapshots are not purged from PostgreSQL.
+- One app replica only: rooms live in one process.
+
+**Ground rules for whoever picks this up**
+
+- No paid services. Everything runs on the one Railway app and its PostgreSQL.
+- Guests must always be able to play without a profile, and the collection must never gate play or affect the ranking.
+- The rules engine (`src/game/engine.ts`) stays free of database and account concerns.
+- Branch from `main`, open a pull request, and wait for CI: merging to `main` is the release.
 
 ## Report an issue or contribute
 
