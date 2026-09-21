@@ -1,6 +1,21 @@
 import { test, expect, type Page } from "@playwright/test";
 const collect = (page: Page, errors: string[]) =>
   page.on("pageerror", (e) => errors.push(e.message));
+async function answerPrompt(page: Page) {
+  const panel = page.locator(".choice-panel");
+  if (!(await panel.count())) return;
+  const confirm = panel.locator(".choice-actions .primary");
+  if (await confirm.isEnabled().catch(() => false))
+    await confirm.click().catch(() => {});
+  else
+    await panel
+      .locator('.choice-options > button[aria-pressed="false"]:enabled')
+      .first()
+      .click({ timeout: 1000 })
+      .catch(() => {});
+  const now = page.getByRole("button", { name: "Do it now" });
+  if (await now.count()) await now.click().catch(() => {});
+}
 async function host(page: Page, name: string, visibility?: "public") {
   await page.goto("/");
   await page.getByLabel("Your name at the table").fill(name);
@@ -81,26 +96,12 @@ test("undo, keyboard shortcuts, results ready-up, round history, and colour shap
   await expect(page.locator(".board")).toBeVisible();
   // A bot's card can put a decision to this player (Confusion asks for a card
   // to pass), and the turn cannot end until it is answered.
-  const answerPrompt = async () => {
-    const panel = page.locator(".choice-panel");
-    if (!(await panel.count())) return;
-    const confirm = panel.locator(".choice-actions .primary");
-    if (await confirm.isEnabled().catch(() => false))
-      await confirm.click().catch(() => {});
-    else
-      await panel
-        .locator('.choice-options > button[aria-pressed="false"]:enabled')
-        .first()
-        .click({ timeout: 1000 })
-        .catch(() => {});
-    const now = page.getByRole("button", { name: "Do it now" });
-    if (await now.count()) await now.click().catch(() => {});
-  };
+
   const myTurn = async () => {
     await expect
       .poll(
         async () =>
-          (await answerPrompt(), true) &&
+          (await answerPrompt(page), true) &&
           (await page.locator(".played-card-reveal").count()) === 0 &&
           (await page.locator(".round-results").count()) === 0 &&
           (await page.locator(".end-turn").isEnabled()),
@@ -200,9 +201,16 @@ test("a hidden tab gets a turn notification, and a recap of what it missed on re
   await page.getByRole("button", { name: "Close settings" }).click();
   await expect
     .poll(
-      async () =>
-        (await page.locator(".played-card-reveal").count()) === 0 &&
-        (await page.locator(".end-turn").isEnabled()),
+      async () => {
+        // An opponent can ask us a question before our first turn (for
+        // example Disillusionment or Confusion). Answer it before waiting
+        // for the end-turn control; otherwise the test itself stalls play.
+        await answerPrompt(page);
+        return (
+          (await page.locator(".played-card-reveal").count()) === 0 &&
+          (await page.locator(".end-turn").isEnabled())
+        );
+      },
       { timeout: 40000 },
     )
     .toBe(true);
