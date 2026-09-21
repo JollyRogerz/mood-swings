@@ -28,6 +28,16 @@ test("public tables are discoverable and donations remain optional", async ({
       .getByRole("button", { name: "Leave table", exact: true })
       .click();
     await page.getByLabel("Lobby visibility").selectOption("private");
+    // The guest's list is fetched on load, so wait until the server has
+    // delisted the table before reloading; otherwise this races the change.
+    await expect
+      .poll(async () => {
+        const { rooms } = await (await guest.request.get("/api/rooms")).json();
+        return rooms.some(
+          (r: { hostName: string }) => r.hostName === "Community Host",
+        );
+      })
+      .toBe(false);
     await guest.reload();
     await expect(
       guest
