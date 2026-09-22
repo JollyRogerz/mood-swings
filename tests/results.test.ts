@@ -91,6 +91,9 @@ describe("finished game records", () => {
     rounds[0].players[1].userId = "alice";
     expect(personalStats(rounds, "alice").games).toBe(4);
     expect(rankingSeats(rounds[0])).toEqual([]);
+    rounds[0].players[1].bot = "normal";
+    rounds[0].players[1].substituted = true;
+    expect(rankingSeats(rounds[0])).toEqual([]);
   });
 });
 describe("result storage", () => {

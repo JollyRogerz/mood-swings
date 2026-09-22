@@ -111,9 +111,9 @@ export function personalStats(
 }
 export function rankingSeats(result: MatchResult) {
   if (!result.ranked) return [];
-  // Multiple seats controlled by one account cannot manufacture ranked wins.
+  // Include stand-ins: replacing a duplicate seat must not restore ranked credit.
   const ids = result.players
-    .filter((p) => p.userId && !p.bot)
+    .filter((p) => p.userId)
     .map((p) => p.userId);
   if (new Set(ids).size !== ids.length) return [];
   return result.players.filter((p) => p.userId && !p.bot && !p.substituted);
