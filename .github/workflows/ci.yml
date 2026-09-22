@@ -1,7 +1,11 @@
 name: Game verification
 on:
   push:
+    branches: [main]
   pull_request:
+concurrency:
+  group: game-verification-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

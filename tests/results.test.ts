@@ -7,6 +7,7 @@ import {
 import { MemoryResultStore } from "../src/server/results";
 import { MemoryAccountStore } from "../src/server/accounts";
 import { rematchGame } from "../src/game/seats";
+import { configureResults, recordResult } from "../src/server/result-service";
 import { table } from "./helpers";
 function result(gameNo = 1, won = true) {
   const g = table(3);
@@ -93,6 +94,15 @@ describe("finished game records", () => {
   });
 });
 describe("result storage", () => {
+  it("retains linked results if the optional account service is unavailable", async () => {
+    configureResults(undefined);
+    const g = table();
+    g.result = result();
+    await expect(recordResult(g)).rejects.toThrow("keep the saved result");
+    g.result.players.forEach((p) => (p.userId = null));
+    await expect(recordResult(g)).resolves.toBeUndefined();
+  });
+
   it("records once, ranks after three games, and anonymizes deleted accounts", async () => {
     const accounts = new MemoryAccountStore();
     await accounts.setUsername("alice", "Alice");

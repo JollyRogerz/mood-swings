@@ -15,5 +15,13 @@ export async function attributeMatch(game: Game) {
   );
 }
 export async function recordResult(game: Game) {
-  if (game.result && accounts) await accounts.results.record(game.result);
+  if (!game.result) return;
+  if (!accounts) {
+    if (game.result.players.some((p) => p.userId))
+      throw new Error(
+        "Profiles are unavailable; keep the saved result until recording can resume.",
+      );
+    return;
+  }
+  await accounts.results.record(game.result);
 }
