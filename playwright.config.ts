@@ -11,7 +11,16 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   projects: [
-    { name: "chromium", use: { browserName: "chromium" } },
+    {
+      name: "chromium-voice",
+      testMatch: "**/voice.spec.ts",
+      use: { browserName: "chromium" },
+    },
+    {
+      name: "chromium",
+      testIgnore: "**/voice.spec.ts",
+      use: { browserName: "chromium" },
+    },
     {
       name: "webkit-touch",
       testMatch: [
