@@ -6,6 +6,7 @@ export interface Deck {
   createdAt: string;
   updatedAt: string;
   verifiedAt: string | null;
+  photoAt?: string | null;
 }
 export interface Collection {
   decks: Deck[];

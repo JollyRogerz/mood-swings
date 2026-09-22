@@ -1,3 +1,5 @@
+import { collectionApi } from "./collection-api";
+import { DeckPhoto, PhotoBadge } from "./deck-photo";
 import React, { useEffect, useState } from "react";
 import { catalog, COLORS } from "../game/catalog";
 import {
@@ -7,21 +9,6 @@ import {
   type Deck,
 } from "../game/collection";
 import "./collection.css";
-export async function collectionApi(
-  url: string,
-  method = "GET",
-  body?: unknown,
-) {
-  const r = await fetch(url, {
-    method,
-    credentials: "same-origin",
-    headers: body ? { "content-type": "application/json" } : {},
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await r.json();
-  if (!r.ok) throw new Error(data.error ?? "Please try again.");
-  return data;
-}
 export function CollectionSummary({ decks }: { decks: Deck[] }) {
   const c = completion(decks);
   return (
@@ -122,6 +109,7 @@ export function Binder() {
                   <li key={d.id}>
                     <div>
                       <strong>{d.name}</strong>
+                      <PhotoBadge deck={d} />
                       <span>
                         {d.cards.length}/45 moods ·{" "}
                         {retailShaped(d.cards)
@@ -140,6 +128,7 @@ export function Binder() {
                     <button disabled={busy} onClick={() => setRemove(d.id)}>
                       Delete {d.name}
                     </button>
+                    <DeckPhoto deck={d} refresh={refresh} />
                     {remove === d.id && (
                       <div
                         role="group"
