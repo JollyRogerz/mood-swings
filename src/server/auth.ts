@@ -1,3 +1,8 @@
+import {
+  MemoryCollectionStore,
+  PostgresCollectionStore,
+  type CollectionStore,
+} from "./collection";
 import { betterAuth } from "better-auth";
 import { memoryAdapter } from "better-auth/adapters/memory";
 import { getMigrations } from "better-auth/db/migration";
@@ -60,6 +65,7 @@ export interface Accounts {
   auth: ReturnType<typeof build>;
   store: AccountStore;
   results: ResultStore;
+  collection: CollectionStore;
   providers: Provider[];
   userId(headers: IncomingHttpHeaders): Promise<string | null>;
   // A passkey profile starts life as an anonymous user. Once it has a
@@ -106,7 +112,10 @@ export async function createAccounts(
       console.warn("Accounts are off: set BETTER_AUTH_SECRET to enable them.");
     return undefined;
   }
-  let auth: ReturnType<typeof build>, store: AccountStore, results: ResultStore;
+  let auth: ReturnType<typeof build>,
+    store: AccountStore,
+    results: ResultStore,
+    collection: CollectionStore;
   if (mode === "memory") {
     auth = build(
       env,
@@ -120,6 +129,7 @@ export async function createAccounts(
     );
     store = new MemoryAccountStore();
     results = new MemoryResultStore(store);
+    collection = new MemoryCollectionStore();
   } else {
     const pool = new Pool({ connectionString: env.DATABASE_URL, max: 5 });
     auth = build(env, pool);
@@ -127,14 +137,17 @@ export async function createAccounts(
     await runMigrations();
     store = new PostgresAccountStore(pool);
     results = new PostgresResultStore(pool);
+    collection = new PostgresCollectionStore(pool);
   }
   await store.init();
   await results.init();
+  await collection.init();
   return {
     origins: accountOrigins(env),
     auth,
     store,
     results,
+    collection,
     providers: configuredProviders(env),
     async userId(headers) {
       const session = await auth.api.getSession({
@@ -149,6 +162,7 @@ export async function createAccounts(
     async destroy(userId) {
       const ctx = await auth.$context;
       await results.anonymize(userId);
+      await collection.erase(userId);
       await store.remove(userId);
       await ctx.adapter.deleteMany({
         model: "passkey",

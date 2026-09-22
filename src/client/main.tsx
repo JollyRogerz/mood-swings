@@ -1,3 +1,4 @@
+import { PublicProfile, CollectionPage } from "./profile";
 import React, {
   lazy,
   Suspense,
@@ -2805,7 +2806,7 @@ function Catalog({
     </div>
   );
 }
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(<Root />);
 
 function PublicTables({
   busy,
@@ -2938,5 +2939,15 @@ function DonationPanel() {
       <p role="status">{notice}</p>
       <small>No wallet connection is required.</small>
     </details>
+  );
+}
+
+function Root() {
+  if (location.pathname === "/collection") return <CollectionPage />;
+  const match = location.pathname.match(/^\/u\/([^/]+)\/?$/);
+  return match ? (
+    <PublicProfile username={decodeURIComponent(match[1])} />
+  ) : (
+    <App />
   );
 }

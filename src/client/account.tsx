@@ -228,7 +228,17 @@ function AccountBody({
           sign-in methods are saved. Finished games count from the next match
           you start with this device linked.
         </p>
+        <a href={`/u/${encodeURIComponent(account.user.username!)}`}>
+          View your public profile
+        </a>
+        <p>
+          Your public profile shows your name and overall game record. Your
+          decks stay private unless you choose to share them.
+        </p>
         <PersonalStatsPanel />
+        <a className="account-choice" href="/collection">
+          Manage my decks
+        </a>
         <Problem text={error} />
         <button
           className="account-choice"

@@ -44,7 +44,7 @@ app.get("/api/health", (_req, res) =>
 );
 const limits = new Map<string, { time: number; n: number }>();
 app.use(
-  ["/api/rooms", "/api/account", "/api/leaderboard"],
+  ["/api/rooms", "/api/account", "/api/leaderboard", "/api/profiles"],
   (req, res, next) => {
     // Each API gets its own budget, so a busy night of tables cannot lock a
     // player out of their profile.

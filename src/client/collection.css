@@ -1,0 +1,153 @@
+.binder {
+  border-top: 2px solid #d6cbb7;
+  margin-top: 24px;
+  padding-top: 16px;
+}
+.binder p,
+.binder small {
+  line-height: 1.5;
+}
+.binder label {
+  display: block;
+  font-weight: 600;
+}
+.binder input:not([type="checkbox"]),
+.binder select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #887b67;
+  background: #fffdf5;
+  font-size: 16px;
+}
+.binder input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  accent-color: #176846;
+  flex-shrink: 0;
+}
+.collection-privacy {
+  margin-block: 16px;
+}
+.collection-summary progress {
+  width: 100%;
+  height: 16px;
+  accent-color: #176846;
+}
+.completion-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 13px;
+  text-transform: capitalize;
+  margin: 10px 0 20px;
+}
+.deck-list {
+  list-style: none;
+  padding: 0;
+}
+.deck-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid #c2bcae;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.deck-list li > div:first-child {
+  flex: 1;
+  min-width: 120px;
+  overflow-wrap: anywhere;
+}
+.deck-list span {
+  display: block;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.binder button:not(.primary) {
+  padding: 10px;
+  border: 1px solid #887b67;
+  border-radius: 4px;
+}
+.binder-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  align-items: end;
+}
+.binder-toolbar > label {
+  flex: 1;
+  min-width: 120px;
+}
+.binder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+  max-height: 65vh;
+  overflow: auto;
+  padding: 4px;
+}
+.binder-grid > label,
+.binder-grid > div {
+  padding: 8px;
+  border: 2px solid transparent;
+  background: #e8e1d1;
+  border-radius: 6px;
+  position: relative;
+  min-width: 0;
+}
+.binder-grid > label.selected {
+  border-color: #176846;
+  background: #d8e6d5;
+}
+.binder-grid img {
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 6px;
+}
+.binder-grid input {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+.binder-grid strong,
+.binder-grid small {
+  display: block;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.binder-actions {
+  display: flex;
+  gap: 10px;
+  background: #fffdf5;
+  padding: 12px 0;
+  border-top: 1px solid #c2bcae;
+}
+.public-profile {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+  overflow-wrap: anywhere;
+}
+.public-profile h1 {
+  font: clamp(36px, 7vw, 70px) var(--serif);
+  margin: 20px 0;
+}
+.profile-deck {
+  padding: 20px 0;
+  border-top: 1px solid #c2bcae;
+}
+.profile-deck summary {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+}
+.public-profile a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 10px 0;
+}

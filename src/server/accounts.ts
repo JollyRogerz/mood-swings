@@ -11,6 +11,7 @@ export interface Profile {
 export interface AccountStore {
   init(): Promise<void>;
   profile(userId: string): Promise<Profile | null>;
+  byUsername(username: string): Promise<Profile | null>;
   setUsername(userId: string, username: string): Promise<Profile>;
   link(playerId: string, userId: string): Promise<void>;
   unlink(playerId: string, userId: string): Promise<void>;
@@ -29,6 +30,13 @@ export class MemoryAccountStore implements AccountStore {
   async init() {}
   async profile(userId: string) {
     return this.profiles.get(userId) ?? null;
+  }
+  async byUsername(username: string) {
+    return (
+      [...this.profiles.values()].find(
+        (p) => usernameKey(p.username) === usernameKey(username),
+      ) ?? null
+    );
   }
   async setUsername(userId: string, username: string) {
     const key = usernameKey(username);
@@ -88,6 +96,13 @@ export class PostgresAccountStore implements AccountStore {
           createdAt: new Date(row.created_at).toISOString(),
         }
       : null;
+  }
+  async byUsername(username: string) {
+    const r = await this.pool.query(
+      "SELECT user_id FROM mood_profiles WHERE username_key=$1",
+      [usernameKey(username)],
+    );
+    return r.rows[0] ? this.profile(r.rows[0].user_id) : null;
   }
   async setUsername(userId: string, username: string) {
     try {
