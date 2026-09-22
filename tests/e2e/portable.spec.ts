@@ -17,7 +17,9 @@ async function fits(page: Page, element: Locator) {
 async function noOverflow(page: Page) {
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
     ),
   ).toBe(true);
 }
@@ -46,6 +48,8 @@ test("touch catalog stays readable and restores the page after nested inspection
         .boundingBox())!;
       expect(box.width).toBeGreaterThanOrEqual(44);
       expect(box.height).toBeGreaterThanOrEqual(44);
+      const header = (await page.locator(".site-header").boundingBox())!;
+      expect(box.y + box.height).toBeLessThanOrEqual(header.y + header.height);
     }
   }
   await page.evaluate(() => scrollTo(0, 250));
@@ -87,6 +91,10 @@ test("touch catalog stays readable and restores the page after nested inspection
   });
   await page.getByRole("button", { name: "Close card", exact: true }).tap();
   await expect(page.locator("body")).toHaveCSS("position", "fixed");
+  // Narrow-screen overflow must not leave the browser zoomed after resizing.
+  await expect
+    .poll(() => page.evaluate(() => visualViewport?.scale ?? 1))
+    .toBe(1);
   await page.getByRole("button", { name: "Close catalog" }).tap();
   await expect(page.locator("body")).not.toHaveCSS("position", "fixed");
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(y);

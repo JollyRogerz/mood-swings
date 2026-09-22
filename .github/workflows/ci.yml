@@ -1,13 +1,33 @@
 name: Game verification
 on:
   push:
+    branches: [main]
   pull_request:
+concurrency:
+  group: game-verification-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: moodtest
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: moodtest
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U moodtest"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgres://moodtest:ci-only-password@127.0.0.1:5432/moodtest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

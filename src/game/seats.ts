@@ -68,6 +68,7 @@ export function rematchGame(
     throw new RuleError("Only the host can start a rematch after the game.");
   const host = game.players.find((p) => p.id === actor)!;
   const next = createGame(actor, host.name, seed);
+  next.gameNo = (game.gameNo ?? 1) + 1;
   next.visibility = game.visibility;
   next.pace = game.pace;
   next.clock = game.clock;

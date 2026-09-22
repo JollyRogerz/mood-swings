@@ -116,6 +116,9 @@ export interface Delayed {
   round: number;
 }
 export interface Game {
+  gameNo?: number;
+  matchAccounts?: Record<string, string | null>;
+  result?: import("./results").MatchResult;
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   // Turn timer: the host's setting, the running allowance, each human's time

@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { launchServer } from "./server-harness";
@@ -90,6 +92,46 @@ describe("accounts", () => {
     expect(response.headers.get("content-security-policy")).toContain(
       "frame-ancestors 'none'",
     );
+  });
+  it("captures linked accounts at game start without exposing them to seats", async () => {
+    const as = await signUp(),
+      token = randomUUID();
+    await as("/api/account/username", "POST", { username: "Attribution" });
+    await as("/api/account/link", "POST", { token });
+    const account = (await as("/api/account")).json;
+    const { code } = await server.post("/api/rooms", {
+      token,
+      name: "Attribution",
+    });
+    const host = await server.join(code, token, "Attribution");
+    host.room.send("add-bot", { difficulty: "easy" });
+    await expect.poll(() => host.view.players.length).toBe(2);
+    host.room.send("start", { mode: "retail" });
+    await expect.poll(() => host.view.status).toBe("playing");
+    const snapshot = JSON.parse(
+      await readFile(
+        path.join(server.root, `.runtime/rooms/${code}.json`),
+        "utf8",
+      ),
+    );
+    expect(snapshot.matchAccounts[host.view.you]).toBe(account.user.id);
+    expect(host.view).not.toHaveProperty("matchAccounts");
+    expect(host.view).not.toHaveProperty("result");
+    await host.room.leave();
+  });
+  it("keeps personal stats private and serves a public empty leaderboard", async () => {
+    const guest = visitor(server.base);
+    expect((await guest("/api/account/stats")).status).toBe(401);
+    expect((await guest("/api/leaderboard")).json).toEqual({
+      enabled: true,
+      players: [],
+    });
+    const as = await signUp();
+    expect((await as("/api/account/stats")).json).toMatchObject({
+      games: 0,
+      wins: 0,
+      losses: 0,
+    });
   });
   it("refuses writes from a guest", async () => {
     const guest = visitor(server.base);

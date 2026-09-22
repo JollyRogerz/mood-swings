@@ -1,3 +1,5 @@
+import { finishedResult } from "../game/results";
+import { attributeMatch, recordResult } from "./result-service";
 import { Client, Room, ServerError } from "@colyseus/core";
 import { createHash, randomBytes } from "node:crypto";
 import {
@@ -84,6 +86,7 @@ export class MoodRoom extends Room {
       throw new ServerError(403, "Create a table from the home screen.");
     this.roomId = options.code;
     this.game = options.snapshot;
+    void this.flushResult();
     for (const p of this.game.players) p.connected = !!p.bot;
     // A restart should never time someone out the instant they reconnect.
     delete this.game.clockState;
@@ -293,6 +296,7 @@ export class MoodRoom extends Room {
         const actor = this.actor(client);
         const next = structuredClone(this.game);
         startGame(next, actor, message?.mode === "all" ? "all" : "retail");
+        await attributeMatch(next);
         await this.commit(next);
       }, client),
     );
@@ -341,6 +345,8 @@ export class MoodRoom extends Room {
     );
     this.onMessage("rematch", (client) =>
       this.enqueue(async () => {
+        // Do not replace the durable result outbox until its write succeeds.
+        await recordResult(this.game);
         const next = rematchGame(
           this.game,
           this.actor(client),
@@ -490,12 +496,31 @@ export class MoodRoom extends Room {
         !next.prompt &&
         Object.keys(publicView(next, waiting).playable).length === 0,
     });
+    if (next.status === "finished" && !next.result)
+      next.result = finishedResult(next, this.roomId, new Date().toISOString());
     await store.save(this.roomId, next);
     this.game = next;
+    void this.flushResult();
     this.updateListing();
     for (const client of this.clients) this.sendView(client);
     this.scheduleBot();
     this.scheduleClock();
+  }
+  private recording = false;
+  private async flushResult() {
+    if (!this.game.result || this.recording) return;
+    this.recording = true;
+    try {
+      await recordResult(this.game);
+    } catch (error) {
+      console.error(
+        "Result recording failed; saved snapshot will retry.",
+        error,
+      );
+      this.clock.setTimeout(() => void this.flushResult(), 5000);
+    } finally {
+      this.recording = false;
+    }
   }
   // When a human's allowance ends: first their bank starts to drain, then the
   // table acts for them. Every step re-validates against the live game.
