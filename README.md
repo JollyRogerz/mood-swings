@@ -101,7 +101,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Persistence  | PostgreSQL snapshots for the hosted game                                         |
 | Rematches    | Host returns the same players and bots to the lobby                              |
 
-**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, rankings, or text chat. Optional [profiles](#profiles) exist; stats and rankings do not yet; see [what's left to do](#whats-left-to-do). The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, or text chat. Optional [profiles](#profiles), personal statistics and a leaderboard are available; see [what's left to do](#whats-left-to-do). The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -488,7 +488,7 @@ Each room serializes mutations, and a rejected action does not partially mutate 
 
 ## Profiles
 
-Optional. A guest plays exactly as before and creates no database record.
+Optional. Guests play without an account. Finished match records can include their table name, but have no account link.
 
 **Saving a profile**
 
@@ -501,7 +501,7 @@ Optional. A guest plays exactly as before and creates no database record.
 **How it is built**
 
 - [Better Auth](https://better-auth.com) is mounted on the same Express server at `/api/auth/*` and keeps its tables in the same PostgreSQL database.
-- Two tables belong to the game: `mood_profiles` (the username) and `mood_devices` (which seat identities belong to which profile). Device credentials are stored only as the hash the rooms already use.
+- Profile tables belong to the game: `mood_profiles` (the username) and `mood_devices` (which seat identities belong to which profile). Device credentials are stored only as the hash the rooms already use.
 - Accounts are **on** when `DATABASE_URL` and `BETTER_AUTH_SECRET` are both set. Otherwise the button is hidden and nothing else changes. `MOOD_ACCOUNTS=memory` keeps accounts in memory for local development and tests.
 
 | Variable                                     | Purpose                                                                                                                |
@@ -513,6 +513,14 @@ Optional. A guest plays exactly as before and creates no database record.
 
 > [!NOTE]
 > Passkeys need a real host name, so open `http://localhost:3000` rather than `http://127.0.0.1:3000` when trying them locally. Changing the site's domain later orphans existing passkeys; Discord and Google logins survive it.
+
+### Statistics and ranking
+
+Open **Your profile** for your personal record, or **Leaderboard** on the home screen for public rankings. Link the device to your profile before a match starts. Only completed games after this feature is deployed are recorded; there is no historical backfill. Profile statistics are private to the signed-in account. Leaderboard entries contain usernames and aggregated results, and may be cached for up to 60 seconds.
+
+The server stores `mood_results` and `mood_result_players` in the existing PostgreSQL database. Writes are transactional and idempotent. A saved result remains in the room snapshot as a durable retry record; if recording fails, the active room retries and a restored room retries again. A rematch waits for that result to be recorded. Guest names remain in match records after account deletion, while the account reference is removed. Detailed match-history browsing is not part of this release.
+
+For local PostgreSQL verification, point `TEST_DATABASE_URL` at a disposable test database and run `npm run check`. Tests create and remove their own schema; do not use your production database. Without this variable, the two PostgreSQL-specific tests are skipped. GitHub CI supplies a temporary PostgreSQL service.
 
 ## Run locally
 
@@ -554,8 +562,8 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
 
-- **605** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
-- **23 Playwright scenarios** exercise the actual browser application, 29 runs across Chromium and WebKit.
+- **615** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **24 Playwright scenarios** exercise the actual browser application, 30 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
@@ -744,28 +752,34 @@ CREDITS.md                  Original creators, rights, and free-access policy
 
 Open work, in the order it is meant to be built. Each item is one pull request. The full design, with table layouts and rules, is in [`docs/specs/2026-09-21-accounts-stats-collection-design.md`](docs/specs/2026-09-21-accounts-stats-collection-design.md).
 
-| #   | Piece                        | Status                                         |
-| --- | ---------------------------- | ---------------------------------------------- |
-| 1   | Profiles                     | ✅ Merged. Off in production until configured. |
-| 2   | Stats and leaderboard        | Not started                                    |
-| 3   | Deck collection and profiles | Not started                                    |
-| 4   | Owned badge, Bring your deck | Not started                                    |
-| 5   | Verified owner               | Later, optional                                |
+| #   | Piece                        | Status                                              |
+| --- | ---------------------------- | --------------------------------------------------- |
+| 1   | Profiles                     | ✅ Implemented. Passkeys configured for deployment. |
+| 2   | Stats and leaderboard        | ✅ Implemented with PostgreSQL and browser coverage |
+| 3   | Deck collection and profiles | Not started                                         |
+| 4   | Owned badge, Bring your deck | Not started                                         |
+| 5   | Verified owner               | Later, optional                                     |
 
 **1. Profiles: finish switching them on**
 
-- [ ] Set `BETTER_AUTH_SECRET` on the deployment (see [Profiles](#profiles)).
+- [x] Set `BETTER_AUTH_SECRET` securely on Railway (22 September); existing database and public hostname are used.
 - [ ] Create the Discord and Google OAuth apps and set their four variables.
 - [ ] Try a passkey on iPhone Safari and on Android Chrome. Only desktop Chrome has been tested, with a virtual authenticator.
 - [ ] Try Discord and Google sign-in end to end. Neither has been run against a real provider.
 - [ ] Once a social login is on, reword the "no email" lines in this README: Better Auth stores the email the provider sends.
 
-**2. Stats and leaderboard**
+**2. Stats and leaderboard — implemented**
 
-- Record each finished game once, on the server, when the engine sets `status = "finished"`. Rematches are separate results.
-- Personal stats: games, wins, losses, win rate, round wins, streaks, record against each bot. There are no draws in this game.
-- Leaderboard: only games where two or more humans finished their own seats. A seat finished by a stand-in bot is a loss for that player and is left out of the ranking.
-- Start with `src/game/results.ts` (pure: finished `Game` to result record), then a store beside `src/server/accounts.ts`, then the page.
+- [x] Record finished games once, keyed by room code and match number; rematches use a new number.
+- [x] Personal stats in the profile: games, wins/losses, win rate, round wins, current/best streak and record against each bot difficulty.
+- [x] Public leaderboard from the home screen, after three ranked games; sort by wins, win rate, then fewer games.
+- [x] At least two human-finished seats are required. Stand-in finishes count as personal losses and are excluded from rankings. Multiple seats linked to one profile do not earn ranked credit.
+- [x] Freeze account attribution when the host starts the match. Signing in later does not claim an earlier game; unfinished games do not count.
+- [x] Save a result in the game snapshot before publishing the finish, retry recording failures, recover on room restoration, and require recording before rematch replaces the snapshot.
+- [x] Anonymize account links on profile deletion; no private cards or device tokens are copied into results.
+- [x] PostgreSQL CI tests cover concurrent duplicate writes, rematches, deletion, rollback and reading from a new store instance. Browser coverage finishes three matches and checks the mobile leaderboard.
+
+The next implementation slice is **3. Deck collection and public profiles**. Real-device passkey and internet voice checks above/below remain outstanding.
 
 **3. Deck collection and public profiles**
 

@@ -64,6 +64,7 @@ import "./features.css";
 import { EffectContext, EffectNotice, useEffectFeedback } from "./effects";
 import { ScoreDetails, type ScoreSheet } from "./score-details";
 import { InviteDialog } from "./invite";
+import { LeaderboardButton } from "./leaderboard";
 import { AccountButton, useAccount } from "./account";
 const Tutorial = lazy(() => import("./tutorial"));
 import { choiceHint, selectionFeedback } from "./selection";
@@ -532,6 +533,7 @@ function App() {
             refresh={refreshAccount}
             inGame={!!view}
           />
+          {!view && <LeaderboardButton />}
           <TableSettings preferences={preferences} update={update} />
           <button aria-label="The cards" onClick={() => setCatalogOpen(true)}>
             <Layers size={16} />

@@ -6,6 +6,7 @@ import { Fingerprint, LogOut, UserRound, X } from "lucide-react";
 import { USERNAME_RULE, cleanUsername } from "../game/account";
 import { useOverlayScrollLock } from "./portable";
 import "./account.css";
+import { PersonalStatsPanel } from "./leaderboard";
 // Always same-origin: the Vite dev server proxies /api, and a session cookie
 // set by another origin would never come back.
 const auth = createAuthClient({
@@ -224,9 +225,10 @@ function AccountBody({
         <p className="account-note">
           Linked to {account.user.devices}{" "}
           {account.user.devices === 1 ? "device" : "devices"}. Your username and
-          sign-in methods are saved. Match history and statistics are not
-          available yet.
+          sign-in methods are saved. Finished games count from the next match
+          you start with this device linked.
         </p>
+        <PersonalStatsPanel />
         <Problem text={error} />
         <button
           className="account-choice"

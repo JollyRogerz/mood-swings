@@ -29,11 +29,9 @@ export function mountAccountRoutes(
       (!accounts.origins.includes(req.get("origin") ?? "") ||
         req.get("sec-fetch-site") === "cross-site")
     ) {
-      res
-        .status(403)
-        .json({
-          error: "Open your profile on the Mood Swings site to make changes.",
-        });
+      res.status(403).json({
+        error: "Open your profile on the Mood Swings site to make changes.",
+      });
       return;
     }
     next();
@@ -83,6 +81,32 @@ export function mountAccountRoutes(
           devices: await accounts.store.devices(userId),
         },
       });
+    }),
+  );
+  router.get(
+    "/stats",
+    safely(async (req, res) => {
+      if (!accounts) {
+        fail(res, 503, "Profiles are not enabled.");
+        return;
+      }
+      const userId = await signedIn(req, res);
+      if (!userId) return;
+      res.json(await accounts.results.stats(userId));
+    }),
+  );
+  app.get(
+    "/api/leaderboard",
+    safely(async (_req, res) => {
+      if (!accounts) {
+        res
+          .set("Cache-Control", "no-store")
+          .json({ enabled: false, players: [] });
+        return;
+      }
+      res
+        .set("Cache-Control", "public, max-age=60")
+        .json({ enabled: true, players: await accounts.results.leaderboard() });
     }),
   );
   if (accounts) {

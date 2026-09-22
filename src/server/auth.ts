@@ -6,6 +6,11 @@ import { anonymous } from "better-auth/plugins";
 import { passkey } from "@better-auth/passkey";
 import type { IncomingHttpHeaders } from "node:http";
 import { Pool } from "pg";
+import {
+  MemoryResultStore,
+  PostgresResultStore,
+  type ResultStore,
+} from "./results";
 import { randomBytes } from "node:crypto";
 import {
   MemoryAccountStore,
@@ -54,6 +59,7 @@ export interface Accounts {
   origins: string[];
   auth: ReturnType<typeof build>;
   store: AccountStore;
+  results: ResultStore;
   providers: Provider[];
   userId(headers: IncomingHttpHeaders): Promise<string | null>;
   // A passkey profile starts life as an anonymous user. Once it has a
@@ -100,7 +106,7 @@ export async function createAccounts(
       console.warn("Accounts are off: set BETTER_AUTH_SECRET to enable them.");
     return undefined;
   }
-  let auth: ReturnType<typeof build>, store: AccountStore;
+  let auth: ReturnType<typeof build>, store: AccountStore, results: ResultStore;
   if (mode === "memory") {
     auth = build(
       env,
@@ -113,18 +119,22 @@ export async function createAccounts(
       }),
     );
     store = new MemoryAccountStore();
+    results = new MemoryResultStore(store);
   } else {
     const pool = new Pool({ connectionString: env.DATABASE_URL, max: 5 });
     auth = build(env, pool);
     const { runMigrations } = await getMigrations(auth.options);
     await runMigrations();
     store = new PostgresAccountStore(pool);
+    results = new PostgresResultStore(pool);
   }
   await store.init();
+  await results.init();
   return {
     origins: accountOrigins(env),
     auth,
     store,
+    results,
     providers: configuredProviders(env),
     async userId(headers) {
       const session = await auth.api.getSession({
@@ -138,6 +148,7 @@ export async function createAccounts(
     },
     async destroy(userId) {
       const ctx = await auth.$context;
+      await results.anonymize(userId);
       await store.remove(userId);
       await ctx.adapter.deleteMany({
         model: "passkey",

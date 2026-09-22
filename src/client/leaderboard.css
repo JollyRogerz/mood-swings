@@ -1,0 +1,95 @@
+.personal-stats {
+  margin: 1.2rem 0;
+  padding: 1rem 0;
+  border-block: 1px dashed #b8ac95;
+}
+.personal-stats h3 {
+  margin: 0 0 0.8rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+.stats-grid > div {
+  background: #eee7da;
+  padding: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.stats-grid strong {
+  font-size: 1.65rem;
+  line-height: 1.1;
+}
+.stats-grid span,
+.stats-note {
+  font-size: 0.78rem;
+}
+.personal-stats details {
+  margin-top: 1rem;
+}
+.personal-stats summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.bot-records {
+  list-style: none;
+  padding: 0;
+}
+.bot-records li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+}
+.leaderboard-panel {
+  width: min(660px, calc(100vw - 24px));
+}
+.leaderboard-panel h2 {
+  margin: 0.6rem 0 1rem;
+}
+.leaderboard-panel p {
+  line-height: 1.55;
+}
+.leaderboard-empty {
+  padding: 1.5rem;
+  border: 1px dashed #b8ac95;
+  margin-top: 1rem;
+  font-weight: 700;
+}
+.leaderboard-empty small {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+.ranking-scroll {
+  overflow-x: auto;
+}
+.ranking-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.ranking-scroll th,
+.ranking-scroll td {
+  padding: 0.75rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid #d4c8b2;
+}
+.ranking-scroll tbody th {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .ranking-scroll table {
+    font-size: 0.75rem;
+  }
+  .ranking-scroll th,
+  .ranking-scroll td {
+    padding: 0.65rem 0.25rem;
+  }
+}
