@@ -48,6 +48,8 @@ test("touch catalog stays readable and restores the page after nested inspection
         .boundingBox())!;
       expect(box.width).toBeGreaterThanOrEqual(44);
       expect(box.height).toBeGreaterThanOrEqual(44);
+      const header = (await page.locator(".site-header").boundingBox())!;
+      expect(box.y + box.height).toBeLessThanOrEqual(header.y + header.height);
     }
   }
   await page.evaluate(() => scrollTo(0, 250));

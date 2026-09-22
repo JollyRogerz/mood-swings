@@ -356,8 +356,11 @@ select {
 @media (max-width: 650px) {
   .app .site-header,
   .app.game-app .site-header {
-    height: calc(62px + env(safe-area-inset-top));
+    height: auto;
+    min-height: calc(62px + env(safe-area-inset-top));
+    flex-wrap: wrap;
     gap: 8px;
+    padding-bottom: 8px;
     padding-inline: max(12px, env(safe-area-inset-left))
       max(12px, env(safe-area-inset-right));
   }
@@ -373,10 +376,6 @@ select {
   .app .brand-small {
     font-size: 5px;
     letter-spacing: 0.8px;
-  }
-  .app .site-header {
-    flex-wrap: wrap;
-    gap: 8px;
   }
   .app .site-header nav {
     margin-left: auto;

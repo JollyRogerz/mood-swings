@@ -612,6 +612,7 @@ TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 | `tests/pacing.test.ts`         | Shared reading pace and readying up early on reveals                                                               |
 | `tests/clock.test.ts`          | Turn timer allowances, time bank, timeouts, the away rule, and what the table does for a timed-out player          |
 | `tests/seats.test.ts`          | Bot stand-ins and seat reclaim, round history, and readying up on round results                                    |
+| `tests/results.test.ts`, `tests/results-postgres.test.ts` | Result attribution, streaks, ranking eligibility, duplicate writes, transactional rollback, rematches and deletion |
 | `tests/voice.test.ts`          | STUN/TURN configuration, handshake-message sanitising, seat panning, and negotiation roles                         |
 | `tests/server-restart.test.ts` | Launch a real server, play, terminate it, relaunch, and recover the room                                           |
 | `tests/clock-server.test.ts`   | A real server drains the bank, then ends an idle player's turn                                                     |
@@ -633,11 +634,15 @@ TEST_BASE_URL=https://mood-swings-production.up.railway.app npm run test:e2e
 | `tests/e2e/features.spec.ts`    | Invites, QR codes, sharing and clipboard fallbacks, and the guided practice game                                                                                                                                     |
 | `tests/e2e/upgrades.spec.ts`    | Watching from a listing, stand-in bots, undo, keyboard shortcuts, results ready-up, round history, colour shapes, hidden-tab notifications and recap                                                                 |
 | `tests/e2e/voice.spec.ts`       | A real peer-to-peer call between two browsers with fake microphones: muting silences the wire, and the gallery cannot join                                                                                           |
+| `tests/e2e/stats.spec.ts` | Three completed games, persisted profile totals, ranking eligibility and a phone-sized leaderboard |
+| `tests/e2e/notification-safety.spec.ts` | Rejected notification permissions and unsupported notifications leave the game usable |
 | `tests/e2e/account.spec.ts`     | Saving a profile with a passkey (Chrome's virtual authenticator), signing back in with it, and a dismissed passkey prompt leaving no account behind                                                                  |
 
 </details>
 
 **Notes on the browser tests**
+
+- Mobile catalog regression: the extra navigation button exposed narrow-screen header overflow, which changed browser zoom during resizing and displaced taps. The header now wraps and browser coverage checks layout width and viewport scale. CI uploads traces on failure.
 
 - They create real rooms and matches on their target.
 - The populated-decision regression additionally starts its own built server with temporary storage, without modifying the target server.
@@ -799,7 +804,6 @@ The next implementation slice is **3. Deck collection and public profiles**. Rea
 **Also open**
 
 - Voice chat is untested on real home networks and phones, iOS Safari especially. Players behind strict NATs need a TURN relay, which is supported through `TURN_URL`, `TURN_USERNAME` and `TURN_CREDENTIAL` but not provided.
-- Mobile catalog regression: the extra navigation button exposed narrow-screen header overflow, which changed browser zoom during resizing and displaced taps. The header now wraps and browser coverage checks layout width and viewport scale. CI uploads traces on failure.
 - Expired room snapshots are not purged from PostgreSQL.
 - One app replica only: rooms live in one process.
 
