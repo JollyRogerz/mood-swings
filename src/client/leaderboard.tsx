@@ -164,7 +164,11 @@ function LeaderboardContent() {
               {data.players.map((p, i) => (
                 <tr key={p.username}>
                   <td>{i + 1}</td>
-                  <th scope="row">{p.username}</th>
+                  <th scope="row">
+                    <a href={`/u/${encodeURIComponent(p.username)}`}>
+                      {p.username}
+                    </a>
+                  </th>
                   <td>{p.wins}</td>
                   <td>{p.games}</td>
                   <td>{rate(p.winRate)}</td>

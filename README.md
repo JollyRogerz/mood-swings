@@ -516,11 +516,17 @@ Optional. Guests play without an account. Finished match records can include the
 
 ### Statistics and ranking
 
-Open **Your profile** for your personal record, or **Leaderboard** on the home screen for public rankings. Link the device to your profile before a match starts. Only completed games after this feature is deployed are recorded; there is no historical backfill. Profile statistics are private to the signed-in account. Leaderboard entries contain usernames and aggregated results, and may be cached for up to 60 seconds.
+Open **Your profile** for your personal record, or **Leaderboard** on the home screen for public rankings. Link the device to your profile before a match starts. Only completed games after this feature is deployed are recorded; there is no historical backfill. Detailed statistics (streaks and bot records) are private to the signed-in account. Public profiles expose overall games, wins, losses and win rate. Leaderboard entries contain usernames and aggregated results, and may be cached for up to 60 seconds.
 
 The server stores `mood_results` and `mood_result_players` in the existing PostgreSQL database. Writes are transactional and idempotent. A saved result remains in the room snapshot as a durable retry record; if recording fails, the active room retries and a restored room retries again. A rematch waits for that result to be recorded. Guest names remain in match records after account deletion, while the account reference is removed. Detailed match-history browsing is not part of this release.
 
 For local PostgreSQL verification, point `TEST_DATABASE_URL` at a disposable test database and run `npm run check`. Tests create and remove their own schema; do not use your production database. Without this variable, the two PostgreSQL-specific tests are skipped. GitHub CI supplies a temporary PostgreSQL service.
+
+### Physical deck collection
+
+From **Your profile**, choose **Manage my decks**. Add a name, search or filter the 133 moods, tick the cards in your physical deck, and save. Each account can store ten decks, each containing up to 45 unique cards. Incomplete decks are allowed; the retail rarity mix is a reference, not a save restriction. Collection completion counts distinct moods; owning a mood in several decks increases its quantity without inflating completion.
+
+Collections start private. The sharing checkbox controls whether `/u/<username>` includes decks and completion. Public profiles always show the username, join date and overall game record. Deleting a profile deletes its decks. Collection writes require a session and trusted origin; deck IDs never authorize access by themselves. PostgreSQL serializes edits per profile so concurrent requests cannot bypass the ten-deck limit.
 
 ## Run locally
 
@@ -562,7 +568,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
 
-- **616** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **621** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
 - **24 Playwright scenarios** exercise the actual browser application, 30 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
@@ -761,7 +767,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 | --- | ---------------------------- | --------------------------------------------------- |
 | 1   | Profiles                     | ✅ Live. Passkey profiles enabled on Railway.       |
 | 2   | Stats and leaderboard        | ✅ Implemented with PostgreSQL and browser coverage |
-| 3   | Deck collection and profiles | Not started                                         |
+| 3   | Deck collection and profiles | ✅ Implemented; private-by-default deck binder                                         |
 | 4   | Owned badge, Bring your deck | Not started                                         |
 | 5   | Verified owner               | Later, optional                                     |
 
@@ -784,13 +790,13 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 - [x] Anonymize account links on profile deletion; no private cards or device tokens are copied into results.
 - [x] PostgreSQL CI tests cover concurrent duplicate writes, rematches, deletion, rollback and reading from a new store instance. Browser coverage finishes three matches and checks the mobile leaderboard.
 
-The next implementation slice is **3. Deck collection and public profiles**. Real-device passkey and internet voice checks above/below remain outstanding.
+The next implementation slice is **4. Owned badges and Bring your deck**. Real-device passkey and internet voice checks above/below remain outstanding.
 
-**3. Deck collection and public profiles**
+**3. Deck collection and public profiles — implemented**
 
-- A player logs the physical decks they own: a named deck is up to 45 cards ticked in a binder of all 133. Honour system.
-- A deck matching the retail shape (23 common, 14 uncommon, 6 rare, 2 mythic rare) is marked as such; others still save.
-- Public page at `/u/<username>`: stats, decks, completion overall, by colour and by rarity. The collection can be set private.
+- [x] Manage up to ten named physical decks at `/collection`, with up to 45 unique catalog cards per deck. Ownership is self-declared.
+- [x] Retail-shaped decks match 23 common, 14 uncommon, 6 rare and 2 mythic rare cards; smaller or custom selections still save.
+- [x] `/u/<username>` shows the username, join date and overall game record. Collections are private by default; sharing exposes decks and completion overall, by colour and by rarity. Public profile responses are never cached so privacy changes take effect immediately.
 
 **4. Owned badge and Bring your deck**
 

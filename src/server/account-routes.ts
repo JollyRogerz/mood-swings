@@ -1,3 +1,5 @@
+import { cleanDeck, completion } from "../game/collection";
+import { CollectionError } from "./collection";
 import express, {
   type Express,
   type Request,
@@ -109,7 +111,107 @@ export function mountAccountRoutes(
         .json({ enabled: true, players: await accounts.results.leaderboard() });
     }),
   );
+  app.get(
+    "/api/profiles/:username",
+    safely(async (req, res) => {
+      res.set("Cache-Control", "no-store");
+      const profile =
+        accounts &&
+        (await accounts.store.byUsername(String(req.params.username)));
+      if (!profile) {
+        fail(res, 404, "Profile not found.");
+        return;
+      }
+      const [collection, stats] = await Promise.all([
+        accounts!.collection.get(profile.userId),
+        accounts!.results.stats(profile.userId),
+      ]);
+      const { games, wins, losses, winRate } = stats;
+      res.json({
+        username: profile.username,
+        createdAt: profile.createdAt,
+        stats: { games, wins, losses, winRate },
+        collection: collection.public
+          ? {
+              decks: collection.decks,
+              completion: completion(collection.decks),
+            }
+          : null,
+      });
+    }),
+  );
   if (accounts) {
+    router.use(["/decks", "/collection"], (req, res, next) => {
+      void (async () => {
+        const id = await signedIn(req, res);
+        if (!id) return;
+        if (!(await accounts.store.profile(id))) {
+          fail(res, 409, "Save your profile first.");
+          return;
+        }
+        res.locals.userId = id;
+        next();
+      })().catch((e) => {
+        console.error("Collection request failed.", e);
+        if (!res.headersSent) fail(res, 500, "Collections are having trouble.");
+      });
+    });
+    router.get(
+      "/collection",
+      safely(async (_req, res) => {
+        const collection = await accounts.collection.get(res.locals.userId);
+        res.json({ ...collection, completion: completion(collection.decks) });
+      }),
+    );
+    router.patch(
+      "/collection",
+      safely(async (req, res) => {
+        if (typeof req.body?.public !== "boolean") {
+          fail(res, 400, "Choose whether your collection is public.");
+          return;
+        }
+        await accounts.collection.privacy(res.locals.userId, req.body.public);
+        res.json({ ok: true });
+      }),
+    );
+    const saveDeck = safely(async (req, res) => {
+      let value;
+      try {
+        value = cleanDeck(req.body);
+      } catch (e) {
+        fail(res, 400, (e as Error).message);
+        return;
+      }
+      try {
+        res.json(
+          await accounts.collection.save(
+            res.locals.userId,
+            value,
+            req.params.id ? String(req.params.id) : undefined,
+          ),
+        );
+      } catch (e) {
+        if (!(e instanceof CollectionError)) throw e;
+        fail(res, 409, e.message);
+      }
+    });
+    router.post("/decks", saveDeck);
+    router.put("/decks/:id", saveDeck);
+    router.delete(
+      "/decks/:id",
+      safely(async (req, res) => {
+        if (
+          !(await accounts.collection.remove(
+            res.locals.userId,
+            String(req.params.id),
+          ))
+        ) {
+          fail(res, 404, "Deck not found.");
+          return;
+        }
+        res.json({ ok: true });
+      }),
+    );
     router.post(
       "/username",
       safely(async (req, res) => {
