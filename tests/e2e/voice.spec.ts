@@ -6,9 +6,11 @@ test.use({
     args: [
       "--use-fake-device-for-media-stream",
       "--use-fake-ui-for-media-stream",
+      // Both peers run on this test machine; avoid multicast DNS on CI runners.
+      "--disable-features=WebRtcHideLocalIpsWithMdns",
     ],
   },
-  permissions: ["microphone"],
+  permissions: ["microphone", "local-network-access"],
 });
 // Keep a handle on every connection so the test can read WebRTC's own
 // statistics. Injected as text: a serialized function would carry build helpers.
@@ -16,7 +18,9 @@ const trackConnections = `
   window.__pcs = [];
   const Original = window.RTCPeerConnection;
   window.RTCPeerConnection = function (config) {
-    const pc = new Original(config);
+    // This tests real local UDP audio and application signaling. Public STUN
+    // availability and NAT traversal are separate deployment checks.
+    const pc = new Original({ ...config, iceServers: [] });
     window.__pcs.push(pc);
     return pc;
   };
@@ -60,7 +64,7 @@ test.describe.configure({ retries: 2 });
 test("two friends talk over a direct connection; the gallery cannot join", async ({
   page,
   browser,
-}) => {
+}, info) => {
   test.setTimeout(180000);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -71,7 +75,7 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   await expect(page.locator(".invite-code")).toBeVisible();
   const url = page.url();
   const friendContext = await browser.newContext({
-    permissions: ["microphone"],
+    permissions: ["microphone", "local-network-access"],
   });
   const friend = await friendContext.newPage();
   friend.on("pageerror", (e) => errors.push(e.message));
@@ -92,13 +96,44 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   ).toContainText("1 in voice");
   await friend.getByRole("button", { name: "Join voice chat" }).click();
   await expect(seatBadge(page, "Bob")).toBeVisible();
-  // The two browsers reach each other directly.
-  await expect(seatBadge(page, "Bob")).toHaveClass(/connected/, {
-    timeout: 45000,
-  });
-  await expect(seatBadge(friend, "Alice")).toHaveClass(/connected/, {
-    timeout: 45000,
-  });
+  try {
+    // The two browsers reach each other directly.
+    await expect(seatBadge(page, "Bob")).toHaveClass(/connected/, {
+      timeout: 45000,
+    });
+    await expect(seatBadge(friend, "Alice")).toHaveClass(/connected/, {
+      timeout: 45000,
+    });
+  } catch (error) {
+    for (const [name, participant] of [
+      ["alice", page],
+      ["bob", friend],
+    ] as const) {
+      await info.attach(`${name}-rtc-diagnostics`, {
+        contentType: "application/json",
+        body: JSON.stringify(
+          await participant.evaluate(async () =>
+            Promise.all(
+              ((window as any).__pcs as RTCPeerConnection[]).map(
+                async (pc) => ({
+                  connection: pc.connectionState,
+                  ice: pc.iceConnectionState,
+                  gathering: pc.iceGatheringState,
+                  signaling: pc.signalingState,
+                  local: pc.localDescription,
+                  remote: pc.remoteDescription,
+                  stats: Array.from((await pc.getStats()).values()),
+                }),
+              ),
+            ),
+          ),
+          null,
+          2,
+        ),
+      });
+    }
+    throw error;
+  }
   // Both are muted: packets flow, but they carry only silence.
   const muted = await bytesPerPacket(page);
   expect(muted).toBeGreaterThan(0);

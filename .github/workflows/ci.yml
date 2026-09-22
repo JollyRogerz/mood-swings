@@ -37,7 +37,7 @@ jobs:
             cat /tmp/mood-swings-server.log
             exit 1
           fi
-          npm run test:e2e
+          npm run test:e2e -- --max-failures=1
       - name: Keep the browser traces from a failed run
         if: failure()
         uses: actions/upload-artifact@v4
