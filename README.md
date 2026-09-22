@@ -754,15 +754,15 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 
 | #   | Piece                        | Status                                              |
 | --- | ---------------------------- | --------------------------------------------------- |
-| 1   | Profiles                     | ✅ Implemented. Passkeys configured for deployment. |
+| 1   | Profiles                     | ✅ Live. Passkey profiles enabled on Railway.       |
 | 2   | Stats and leaderboard        | ✅ Implemented with PostgreSQL and browser coverage |
 | 3   | Deck collection and profiles | Not started                                         |
 | 4   | Owned badge, Bring your deck | Not started                                         |
 | 5   | Verified owner               | Later, optional                                     |
 
-**1. Profiles: finish switching them on**
+**1. Profiles: live, with optional follow-ups**
 
-- [x] Set `BETTER_AUTH_SECRET` securely on Railway (22 September); existing database and public hostname are used.
+- [x] Set `BETTER_AUTH_SECRET` securely on Railway (22 September); verified the live account endpoint reports profiles enabled. Existing database and public hostname are used.
 - [ ] Create the Discord and Google OAuth apps and set their four variables.
 - [ ] Try a passkey on iPhone Safari and on Android Chrome. Only desktop Chrome has been tested, with a virtual authenticator.
 - [ ] Try Discord and Google sign-in end to end. Neither has been run against a real provider.
@@ -799,7 +799,7 @@ The next implementation slice is **3. Deck collection and public profiles**. Rea
 **Also open**
 
 - Voice chat is untested on real home networks and phones, iOS Safari especially. Players behind strict NATs need a TURN relay, which is supported through `TURN_URL`, `TURN_USERNAME` and `TURN_CREDENTIAL` but not provided.
-- The touch catalog browser test stalled once on CI with no recorded cause. CI now uploads Playwright traces on failure; read the trace if it happens again.
+- Mobile catalog regression: the extra navigation button exposed narrow-screen header overflow, which changed browser zoom during resizing and displaced taps. The header now wraps and browser coverage checks layout width and viewport scale. CI uploads traces on failure.
 - Expired room snapshots are not purged from PostgreSQL.
 - One app replica only: rooms live in one process.
 

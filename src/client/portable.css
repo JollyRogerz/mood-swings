@@ -374,7 +374,12 @@ select {
     font-size: 5px;
     letter-spacing: 0.8px;
   }
+  .app .site-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
   .app .site-header nav {
+    margin-left: auto;
     gap: 2px;
   }
   .app .site-header nav > button {
