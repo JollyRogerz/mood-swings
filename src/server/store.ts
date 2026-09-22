@@ -7,6 +7,7 @@ export interface Store {
   save(code: string, game: Game): Promise<void>;
   load(code: string): Promise<Game | null>;
   close(): Promise<void>;
+  purgeExpired?(): Promise<number>;
 }
 export class PostgresStore implements Store {
   private pool: Pool;
@@ -24,9 +25,28 @@ export class PostgresStore implements Store {
       [code, JSON.stringify(game)],
     );
   }
-  async load(code: string) {
+  private async pendingResultSql() {
     const r = await this.pool.query(
-      "SELECT state FROM mood_games WHERE code=$1 AND updated_at > now() - interval '30 days'",
+      "SELECT to_regclass('mood_results') AS name",
+    );
+    const hasResult = "COALESCE(jsonb_typeof(state->'result')='object',false)";
+    // Preserve an outbox snapshot until its result exists in durable storage.
+    // Compare text rather than casting untrusted/legacy JSON to integers.
+    return r.rows[0].name
+      ? `${hasResult} AND NOT EXISTS (SELECT 1 FROM mood_results r WHERE r.code=mood_games.state->'result'->>'code' AND r.game_no::text=mood_games.state->'result'->>'gameNo')`
+      : hasResult;
+  }
+  async purgeExpired() {
+    const pending = await this.pendingResultSql();
+    const r = await this.pool.query(
+      `DELETE FROM mood_games WHERE updated_at <= now() - interval '30 days' AND NOT (${pending})`,
+    );
+    return r.rowCount ?? 0;
+  }
+  async load(code: string) {
+    const pending = await this.pendingResultSql();
+    const r = await this.pool.query(
+      `SELECT state FROM mood_games WHERE code=$1 AND (updated_at > now() - interval '30 days' OR (${pending}))`,
       [code],
     );
     return r.rows[0]?.state ?? null;
