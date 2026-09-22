@@ -116,6 +116,7 @@ export interface Delayed {
   round: number;
 }
 export interface Game {
+  customDeck?: { id: string; name: string; username: string; count: number };
   gameNo?: number;
   matchAccounts?: Record<string, string | null>;
   result?: import("./results").MatchResult;
@@ -190,6 +191,7 @@ export type Action =
   | { type: "choose"; prompt: string; selected: string[] }
   | { type: "pass" };
 export interface PublicCard extends Mood {
+  owned?: boolean;
   name: string;
   color: Color;
   value: number;
@@ -220,6 +222,7 @@ export interface ScoreBreakdown {
   lines: ScoreLine[];
 }
 export interface View {
+  customDeck?: { id?: string; name: string; username: string; count: number };
   scoreDetails?: Record<string, ScoreBreakdown>;
   pace?: import("./pacing").Pace;
   clock?: import("./clock").ClockView;

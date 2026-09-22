@@ -1,3 +1,4 @@
+import { configureCollections } from "./collection-service";
 import express from "express";
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
@@ -30,6 +31,7 @@ const accounts = await createAccounts().catch((e) => {
   return undefined;
 });
 configureResults(accounts);
+configureCollections(accounts);
 mountAuth(app, accounts);
 app.use(express.json({ limit: "8kb" }));
 const http = createServer(app);

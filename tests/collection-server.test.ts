@@ -70,3 +70,45 @@ it("protects private decks, owner writes, CSRF and deletion", async () => {
   await a("/api/account", "DELETE");
   expect((await b("/api/profiles/CollectorA")).status).toBe(404);
 });
+it("loads a host deck on the server and revalidates it at match start", async () => {
+  const { randomUUID } = await import("node:crypto");
+  const { catalog } = await import("../src/game/catalog");
+  const { readFile } = await import("node:fs/promises");
+  const as = await visitor("DeckHost"),
+    token = randomUUID();
+  await as("/api/account/link", "POST", { token });
+  const cards = catalog.slice(0, 12).map((c) => c.id);
+  const deck = (
+    await as("/api/account/decks", "POST", { name: "Our shared deck", cards })
+  ).body;
+  const created = await server.post("/api/rooms", { token, name: "Host" });
+  const host = await server.join(created.code, token, "Host"),
+    friend = await server.join(created.code, randomUUID(), "Friend");
+  friend.room.send("deck", { id: deck.id });
+  await expect.poll(() => friend.errors.length).toBe(1);
+  host.room.send("deck", { id: "forged", cards });
+  await expect.poll(() => host.errors.length).toBe(1);
+  host.room.send("deck", { id: deck.id });
+  await expect.poll(() => friend.view.customDeck?.name).toBe("Our shared deck");
+  expect(friend.view.customDeck?.id).toBeUndefined();
+  await as(`/api/account/decks/${deck.id}`, "PUT", {
+    name: "Now too small",
+    cards: [cards[0]],
+  });
+  host.room.send("start", {});
+  await expect.poll(() => host.errors.length).toBe(2);
+  expect(host.view.status).toBe("lobby");
+  await as(`/api/account/decks/${deck.id}`, "PUT", { name: "Ready", cards });
+  host.room.send("start", { cards: ["love"] });
+  await expect.poll(() => host.view.status).toBe("playing");
+  const saved = JSON.parse(
+    await readFile(
+      `${server.root}/.runtime/rooms/${created.code}.json`,
+      "utf8",
+    ),
+  );
+  expect(saved.cards.map((c: any) => c.def).sort()).toEqual([...cards].sort());
+  expect(friend.view.customDeck?.name).toBe("Ready");
+  await host.room.leave();
+  await friend.room.leave();
+});

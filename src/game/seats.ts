@@ -70,6 +70,7 @@ export function rematchGame(
   const next = createGame(actor, host.name, seed);
   next.gameNo = (game.gameNo ?? 1) + 1;
   next.visibility = game.visibility;
+  next.customDeck = game.customDeck;
   next.pace = game.pace;
   next.clock = game.clock;
   for (const p of game.players.filter((p) => p.id !== actor)) {
