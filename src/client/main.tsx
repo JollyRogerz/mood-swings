@@ -1,3 +1,4 @@
+import { ReviewPage } from "./review";
 import { DeckPicker } from "./deck-picker";
 import { PublicProfile, CollectionPage } from "./profile";
 import React, {
@@ -2969,6 +2970,7 @@ function DonationPanel() {
 }
 
 function Root() {
+  if (location.pathname === "/review") return <ReviewPage />;
   if (location.pathname === "/collection") return <CollectionPage />;
   const match = location.pathname.match(/^\/u\/([^/]+)\/?$/);
   return match ? (

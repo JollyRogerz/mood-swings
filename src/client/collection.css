@@ -191,3 +191,45 @@
   font-weight: 700;
   pointer-events: none;
 }
+
+.deck-photo {
+  flex-basis: 100%;
+  padding: 12px;
+  background: #f3eedf;
+}
+.deck-photo summary {
+  cursor: pointer;
+  min-height: 32px;
+  font-weight: 700;
+}
+.deck-photo input[type="file"] {
+  max-width: 100%;
+  font-size: 14px;
+}
+.photo-badge {
+  display: inline-block;
+  padding: 3px 6px;
+  background: #d4e7d1;
+  color: #174a2d;
+  border: 1px solid #8aac84;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+.review-photo {
+  padding: 20px 0;
+  border-top: 1px solid #c2bcae;
+}
+.review-photo img {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  margin: 12px 0;
+}
+.review-photo button {
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid #887b67;
+  margin-right: 10px;
+}

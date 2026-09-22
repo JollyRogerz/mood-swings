@@ -142,6 +142,7 @@ export async function createAccounts(
   await store.init();
   await results.init();
   await collection.init();
+  await collection.purgePhotos();
   return {
     origins: accountOrigins(env),
     auth,

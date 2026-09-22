@@ -1,3 +1,4 @@
+import { isReviewer, mountPhotoRoutes } from "./photos";
 import { collectionChanged } from "./collection-service";
 import { cleanDeck, completion } from "../game/collection";
 import { CollectionError } from "./collection";
@@ -78,6 +79,7 @@ export function mountAccountRoutes(
         accounts: true,
         providers: accounts.providers,
         linked,
+        reviewer: !!userId && isReviewer(userId),
         user: userId && {
           id: userId,
           username: (await accounts.store.profile(userId))?.username ?? null,
@@ -142,7 +144,7 @@ export function mountAccountRoutes(
     }),
   );
   if (accounts) {
-    router.use(["/decks", "/collection"], (req, res, next) => {
+    router.use(["/decks", "/collection", "/reviews"], (req, res, next) => {
       void (async () => {
         const id = await signedIn(req, res);
         if (!id) return;
@@ -157,6 +159,7 @@ export function mountAccountRoutes(
         if (!res.headersSent) fail(res, 500, "Collections are having trouble.");
       });
     });
+    mountPhotoRoutes(router, accounts);
     router.get(
       "/collection",
       safely(async (_req, res) => {

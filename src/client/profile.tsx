@@ -1,5 +1,7 @@
+import { PhotoBadge } from "./deck-photo";
 import React, { useEffect, useState } from "react";
-import { collectionApi, CollectionSummary, Binder } from "./binder";
+import { CollectionSummary, Binder } from "./binder";
+import { collectionApi } from "./collection-api";
 import { definitions } from "../game/catalog";
 import { retailShaped, type Deck } from "../game/collection";
 export function PublicProfile({ username }: { username: string }) {
@@ -47,7 +49,7 @@ export function PublicProfile({ username }: { username: string }) {
                 {data.collection.decks.map((d: Deck) => (
                   <details className="profile-deck" key={d.id}>
                     <summary>
-                      {d.name} · {d.cards.length} moods{" "}
+                      {d.name} · {d.cards.length} moods <PhotoBadge deck={d} />{" "}
                       {retailShaped(d.cards) && "· Retail-shaped"}
                     </summary>
                     <div className="binder-grid">
@@ -97,6 +99,7 @@ export function CollectionPage() {
             <a href={`/u/${encodeURIComponent(account.user.username)}`}>
               View your public profile
             </a>
+            {account.reviewer && <a href="/review">Review deck photos</a>}
             <Binder />
           </>
         ) : (

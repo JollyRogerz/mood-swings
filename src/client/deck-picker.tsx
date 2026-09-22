@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { View } from "../game/types";
 import type { Deck } from "../game/collection";
-import { collectionApi } from "./binder";
+import { collectionApi } from "./collection-api";
 export function DeckPicker({
   view,
   enabled,

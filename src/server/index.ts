@@ -41,6 +41,17 @@ const server = new Server({
 });
 server.define("mood", MoodRoom);
 await store.init();
+const photoCleanup = setInterval(
+  () => {
+    void accounts?.collection
+      .purgePhotos()
+      .catch(() =>
+        console.error("Photo retention cleanup failed; will retry."),
+      );
+  },
+  60 * 60 * 1000,
+);
+photoCleanup.unref();
 app.get("/api/health", (_req, res) =>
   res.json({ ok: true, game: "mood-swings", version: 1 }),
 );

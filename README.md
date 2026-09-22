@@ -493,7 +493,7 @@ Optional. Guests play without an account. Finished match records can include the
 **Saving a profile**
 
 - Pick a username (3 to 20 letters, numbers, `_` or `-`; unique whatever the capitals) and confirm with a **passkey**: Face ID, a fingerprint, or the device PIN.
-- There is no email and no password. The private half of a passkey never leaves the player's device.
+- Passkey-only profiles need no email or password. If Google or Discord login is configured, Better Auth stores the email returned by that provider. The private half of a passkey never leaves the player's device.
 - Discord and Google sign-in appear when the deployment has their credentials.
 - Signing in on another device links that device to the same profile. The name field at a new table starts as the username and stays editable.
 - **Delete my profile** removes the username, the linked devices and every sign-in method.
@@ -568,7 +568,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
 
-- **623** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **627** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
 - **24 Playwright scenarios** exercise the actual browser application, 30 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
@@ -769,7 +769,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 | 2   | Stats and leaderboard        | ✅ Implemented with PostgreSQL and browser coverage |
 | 3   | Deck collection and profiles | ✅ Implemented; private-by-default deck binder                                         |
 | 4   | Owned badge, Bring your deck | ✅ Implemented with server-owned deck loading                                         |
-| 5   | Verified owner               | Later, optional                                     |
+| 5   | Photo badges and optional review | ✅ Implemented; automatic photo badge, restricted review |
 
 **1. Profiles: live, with optional follow-ups**
 
@@ -777,7 +777,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 - [ ] Create the Discord and Google OAuth apps and set their four variables.
 - [ ] Try a passkey on iPhone Safari and on Android Chrome. Only desktop Chrome has been tested, with a virtual authenticator.
 - [ ] Try Discord and Google sign-in end to end. Neither has been run against a real provider.
-- [ ] Once a social login is on, reword the "no email" lines in this README: Better Auth stores the email the provider sends.
+- [x] Document that optional social providers share an email with Better Auth.
 
 **2. Stats and leaderboard — implemented**
 
@@ -790,7 +790,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 - [x] Anonymize account links on profile deletion; no private cards or device tokens are copied into results.
 - [x] PostgreSQL CI tests cover concurrent duplicate writes, rematches, deletion, rollback and reading from a new store instance. Browser coverage finishes three matches and checks the mobile leaderboard.
 
-The next implementation slice is **5. Automatic photo badges and optional review**. Real-device passkey and internet voice checks above/below remain outstanding.
+The collection roadmap is implemented. Provider setup, real-device checks and maintenance follow-ups remain listed below.
 
 **3. Deck collection and public profiles — implemented**
 
@@ -803,9 +803,14 @@ The next implementation slice is **5. Automatic photo badges and optional review
 - [x] A small “Owned” marker on a card in play when its current player logged that mood in a public collection. Cosmetic and self-declared; private collections never expose ownership lists or badges. Privacy and collection changes refresh active tables.
 - [x] The lobby host chooses Standard or a saved deck. Everyone sees its name, owner and size. The server loads the list from the host’s account, checks at least five cards per seat and revalidates at start. Guest play and shared-deck scoring stay unchanged. Rematches keep the selection but reload the saved contents.
 
-**5. Verified owner (later, optional)**
+**5. Photo badges and optional review — implemented**
 
-- One photo per deck: the cards fanned out beside a handwritten note with the username. Reviewed by hand, then deleted. It adds a mark and never becomes a requirement.
+- [x] Submit one photo per non-empty deck from `/collection`. Accepted images automatically earn **Photo provided**. This checks image format and size, not whether the image depicts the deck or proves ownership.
+- [x] Optional human review grants **Reviewed**, meaning a maintainer inspected the submitted photo. Neither badge is a requirement to play or a guarantee of ownership.
+- [x] Photos are private, re-encoded without metadata, and limited to JPEG/PNG/WebP, 2 MB upload, 8 million decoded pixels and 700 KB stored JPEG. The browser resizes larger photos before upload. Two server decodes may run concurrently.
+- [x] Photos become unavailable after 14 days and are deleted at startup/hourly cleanup, or immediately after review, removal, deck deletion or account deletion. Existing database backups follow their own retention policy. Badge metadata remains after automatic expiry; changing deck cards or removing the badge clears it.
+- [x] `/review` requires an authenticated profile whose stable user ID appears in `MOOD_REVIEWER_IDS` (comma separated). This variable is server-only; usernames never grant privileges. No reviewer has been configured yet: the supplied table name “Jolly V” does not match a saved profile. Automatic badges work without a reviewer.
+- [x] Memory/PostgreSQL, HTTP authorization and phone-width browser tests cover uploading, privacy, review, removal and expiry.
 
 **Also open**
 

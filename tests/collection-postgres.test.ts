@@ -47,4 +47,30 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("Postgres collections", () => {
     await accounts.remove("a");
     expect((await store.get("a")).decks).toHaveLength(0);
   });
+  it("deletes photo bytes on review, editing, expiry and account deletion", async () => {
+    await accounts.setUsername("photos", "Photos");
+    const d = await store.save("photos", {
+      name: "Photo deck",
+      cards: ["love"],
+    });
+    await store.attachPhoto("photos", d.id, Buffer.from("test"), d.cards);
+    expect((await store.pendingPhotos()).some((p) => p.deckId === d.id)).toBe(
+      true,
+    );
+    expect(await store.reviewPhoto(d.id, true)).toBe(true);
+    expect(await store.photo(d.id)).toBeNull();
+    expect((await store.get("photos")).decks[0].verifiedAt).toBeTruthy();
+    await store.save("photos", { name: "Changed", cards: ["curiosity"] }, d.id);
+    expect((await store.get("photos")).decks[0].verifiedAt).toBeNull();
+    await store.attachPhoto("photos", d.id, Buffer.from("test"), ["curiosity"]);
+    await pool.query(
+      "UPDATE mood_deck_photos SET submitted_at=now()-interval '15 days' WHERE deck_id=$1",
+      [d.id],
+    );
+    await store.purgePhotos();
+    expect(await store.photo(d.id)).toBeNull();
+    await store.attachPhoto("photos", d.id, Buffer.from("test"), ["curiosity"]);
+    await accounts.remove("photos");
+    expect(await store.photo(d.id)).toBeNull();
+  });
 });
