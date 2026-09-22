@@ -101,7 +101,7 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 | Persistence  | PostgreSQL snapshots for the hosted game                                         |
 | Rematches    | Host returns the same players and bots to the lobby                              |
 
-**Not in this release:** Duel, drafting, team variants, custom deck construction, public matchmaking, or text chat. Optional [profiles](#profiles), personal statistics and a leaderboard are available; see [what's left to do](#whats-left-to-do). The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
+**Not in this release:** Duel, drafting, team variants, draft-style deck construction, public matchmaking, or text chat. Optional [profiles](#profiles), personal statistics and a leaderboard are available; see [what's left to do](#whats-left-to-do). The source engine also has an all-cards deck mode for experimentation; the standard interface uses the 45-card format.
 
 ## Start a game with friends
 
@@ -568,7 +568,7 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
 
-- **621** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **623** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
 - **24 Playwright scenarios** exercise the actual browser application, 30 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
@@ -768,7 +768,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 | 1   | Profiles                     | ✅ Live. Passkey profiles enabled on Railway.       |
 | 2   | Stats and leaderboard        | ✅ Implemented with PostgreSQL and browser coverage |
 | 3   | Deck collection and profiles | ✅ Implemented; private-by-default deck binder                                         |
-| 4   | Owned badge, Bring your deck | Not started                                         |
+| 4   | Owned badge, Bring your deck | ✅ Implemented with server-owned deck loading                                         |
 | 5   | Verified owner               | Later, optional                                     |
 
 **1. Profiles: live, with optional follow-ups**
@@ -790,7 +790,7 @@ Open work, in the order it is meant to be built. Each item is one pull request. 
 - [x] Anonymize account links on profile deletion; no private cards or device tokens are copied into results.
 - [x] PostgreSQL CI tests cover concurrent duplicate writes, rematches, deletion, rollback and reading from a new store instance. Browser coverage finishes three matches and checks the mobile leaderboard.
 
-The next implementation slice is **4. Owned badges and Bring your deck**. Real-device passkey and internet voice checks above/below remain outstanding.
+The next implementation slice is **5. Automatic photo badges and optional review**. Real-device passkey and internet voice checks above/below remain outstanding.
 
 **3. Deck collection and public profiles — implemented**
 
@@ -798,10 +798,10 @@ The next implementation slice is **4. Owned badges and Bring your deck**. Real-d
 - [x] Retail-shaped decks match 23 common, 14 uncommon, 6 rare and 2 mythic rare cards; smaller or custom selections still save.
 - [x] `/u/<username>` shows the username, join date and overall game record. Collections are private by default; sharing exposes decks and completion overall, by colour and by rarity. Public profile responses are never cached so privacy changes take effect immediately.
 
-**4. Owned badge and Bring your deck**
+**4. Owned badge and Bring your deck — implemented**
 
-- A small marker on a card in play when the player who played it owns it. Cosmetic only.
-- In the lobby the host can deal from one of their logged decks. The server loads the list from the database, never from the browser, and passes it to `start()` as `fixedDeck`, which the engine already supports.
+- [x] A small “Owned” marker on a card in play when its current player logged that mood in a public collection. Cosmetic and self-declared; private collections never expose ownership lists or badges. Privacy and collection changes refresh active tables.
+- [x] The lobby host chooses Standard or a saved deck. Everyone sees its name, owner and size. The server loads the list from the host’s account, checks at least five cards per seat and revalidates at start. Guest play and shared-deck scoring stay unchanged. Rematches keep the selection but reload the saved contents.
 
 **5. Verified owner (later, optional)**
 

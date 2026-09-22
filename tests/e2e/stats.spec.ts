@@ -99,10 +99,14 @@ test("finished games persist once, appear in a profile, and qualify for the lead
       );
       await page.goto(base + "/room/" + code);
       await friend.goto(base + "/room/" + code);
+      await expect(friend.getByRole("status", { name: "Connected", exact: true })).toBeVisible();
+      await expect(page.locator(`#seat-${ids[1]}`)).toBeVisible();
+      await expect(page.locator(`#seat-${ids[1]} .away`)).toHaveCount(0);
       for (const player of [page, friend]) {
         await expect(player.locator(".end-turn")).toBeEnabled();
         await player.locator(".end-turn").click();
-        await player.getByRole("button", { name: "Do it now" }).click();
+        // Let the undo window expire naturally. The optional shortcut may
+        // disappear before a slow browser runner can click it.
       }
       await expect
         .poll(

@@ -1,3 +1,4 @@
+import { DeckPicker } from "./deck-picker";
 import { PublicProfile, CollectionPage } from "./profile";
 import React, {
   lazy,
@@ -937,10 +938,21 @@ function App() {
                 </button>
               </div>
             )}
+            <DeckPicker
+              view={view}
+              enabled={!!account.user?.username && connected}
+              choose={(id) => room.current?.send("deck", { id })}
+            />
             {view.you === view.host ? (
               <button
                 className={`primary ${view.players.length >= 2 && !busy && connected ? "attention" : ""}`}
-                disabled={view.players.length < 2 || busy || !connected}
+                disabled={
+                  view.players.length < 2 ||
+                  busy ||
+                  !connected ||
+                  (!!view.customDeck &&
+                    view.customDeck.count < view.players.length * 5)
+                }
                 onClick={() => {
                   setBusy(true);
                   room.current?.send("start", { mode: "retail" });
@@ -956,7 +968,12 @@ function App() {
             ) : (
               <p>Your host will start when everyone’s here.</p>
             )}
-            <span>45 cards · A fresh deck every game · First to 3 wins</span>
+            <span>
+              {view.customDeck
+                ? `${view.customDeck.count} shared moods`
+                : "45 cards · A fresh deck every game"}{" "}
+              · First to 3 wins
+            </span>
           </div>
           <button className="text-button" onClick={leave}>
             <LogOut size={14} /> Leave table
@@ -2124,6 +2141,15 @@ function MoodCard({ c, onClick }: { c: PublicCard; onClick: () => void }) {
     >
       <img src={c.image} alt={c.name} />
       <span className="value-badge">{c.value}</span>
+      {c.owned && (
+        <span
+          className="owned-badge"
+          title="This player logged this mood in their public physical collection"
+          aria-label="In this player’s physical collection"
+        >
+          ◆ Owned
+        </span>
+      )}
       {c.suppressed && <span className="suppressed-label">SUPPRESSED</span>}
       {effect && (
         <span className="effect-badge" aria-hidden="true">

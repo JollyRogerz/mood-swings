@@ -151,3 +151,43 @@
   min-height: 44px;
   padding: 10px 0;
 }
+
+.deck-picker {
+  text-align: left;
+  width: 100%;
+  max-width: 520px;
+  margin: 18px auto;
+  padding: 16px;
+  border: 1px solid #c2bcae;
+  background: #fffdf5;
+}
+.deck-picker label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+.deck-picker select {
+  width: 100%;
+  min-height: 44px;
+  font-size: 16px;
+  padding: 8px;
+}
+.deck-picker p,
+.deck-picker small {
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.owned-badge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  padding: 3px 5px;
+  background: #176846;
+  color: white;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+}

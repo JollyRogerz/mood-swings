@@ -1,3 +1,4 @@
+import { collectionChanged } from "./collection-service";
 import { cleanDeck, completion } from "../game/collection";
 import { CollectionError } from "./collection";
 import express, {
@@ -171,6 +172,7 @@ export function mountAccountRoutes(
           return;
         }
         await accounts.collection.privacy(res.locals.userId, req.body.public);
+        collectionChanged();
         res.json({ ok: true });
       }),
     );
@@ -183,13 +185,13 @@ export function mountAccountRoutes(
         return;
       }
       try {
-        res.json(
-          await accounts.collection.save(
-            res.locals.userId,
-            value,
-            req.params.id ? String(req.params.id) : undefined,
-          ),
+        const saved = await accounts.collection.save(
+          res.locals.userId,
+          value,
+          req.params.id ? String(req.params.id) : undefined,
         );
+        collectionChanged();
+        res.json(saved);
       } catch (e) {
         if (!(e instanceof CollectionError)) throw e;
         fail(res, 409, e.message);
@@ -209,6 +211,7 @@ export function mountAccountRoutes(
           fail(res, 404, "Deck not found.");
           return;
         }
+        collectionChanged();
         res.json({ ok: true });
       }),
     );
@@ -251,6 +254,7 @@ export function mountAccountRoutes(
             return;
           }
           await accounts.store[action](seat, userId);
+          collectionChanged();
           res.json({ ok: true });
         }),
       );
@@ -260,6 +264,7 @@ export function mountAccountRoutes(
         const userId = await signedIn(req, res);
         if (!userId) return;
         await accounts.destroy(userId);
+        collectionChanged();
         res.json({ ok: true });
       }),
     );

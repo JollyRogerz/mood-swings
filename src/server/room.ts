@@ -1,3 +1,9 @@
+import {
+  decorateCollection,
+  hostDeck,
+  publicOwnership,
+  watchCollections,
+} from "./collection-service";
 import { finishedResult } from "../game/results";
 import { attributeMatch, recordResult } from "./result-service";
 import { Client, Room, ServerError } from "@colyseus/core";
@@ -81,11 +87,28 @@ export class MoodRoom extends Room {
   // introduces them. Never persisted.
   private voice = new Map<string, { muted: boolean }>();
   private reactionSerial = 0;
+  private owned = new Map<string, Set<string>>();
+  private unwatchCollection?: () => void;
+  private async refreshOwnership(game = this.game) {
+    // Cosmetic failures must not prevent joining or playing.
+    try {
+      this.owned = await publicOwnership(game);
+    } catch {
+      this.owned.clear();
+    }
+  }
   async onCreate(options: { key: string; code: string; snapshot: Game }) {
     if (options.key !== serverKey)
       throw new ServerError(403, "Create a table from the home screen.");
     this.roomId = options.code;
     this.game = options.snapshot;
+    await this.refreshOwnership();
+    this.unwatchCollection = watchCollections(() => {
+      void this.enqueue(async () => {
+        await this.refreshOwnership();
+        for (const c of this.clients) this.sendView(c);
+      });
+    });
     void this.flushResult();
     for (const p of this.game.players) p.connected = !!p.bot;
     // A restart should never time someone out the instant they reconnect.
@@ -291,11 +314,38 @@ export class MoodRoom extends Room {
         if (before !== this.activity.get(player)) this.broadcastPresence();
       }, client),
     );
+    this.onMessage("deck", (client, message) =>
+      this.enqueue(async () => {
+        const actor = this.actor(client);
+        if (actor !== this.game.host || this.game.status !== "lobby")
+          throw new RuleError(
+            "Only the host can choose a deck before the game.",
+          );
+        const next = structuredClone(this.game);
+        next.customDeck =
+          message?.id == null
+            ? undefined
+            : (await hostDeck(actor, message.id)).info;
+        next.revision++;
+        await this.commit(next);
+      }, client),
+    );
     this.onMessage("start", (client, message) =>
       this.enqueue(async () => {
         const actor = this.actor(client);
         const next = structuredClone(this.game);
-        startGame(next, actor, message?.mode === "all" ? "all" : "retail");
+        if (actor !== next.host || next.status !== "lobby")
+          throw new RuleError("Only the host can start a waiting table.");
+        const selected = next.customDeck
+          ? await hostDeck(actor, next.customDeck.id)
+          : undefined;
+        if (selected) next.customDeck = selected.info;
+        startGame(
+          next,
+          actor,
+          message?.mode === "all" ? "all" : "retail",
+          selected?.cards,
+        );
         await attributeMatch(next);
         await this.commit(next);
       }, client),
@@ -403,6 +453,7 @@ export class MoodRoom extends Room {
       reclaimSeat(next, id);
       next.players.find((p) => p.id === id)!.connected = true;
       next.revision++;
+      await this.refreshOwnership(next);
       await this.commit(next);
     });
   }
@@ -571,6 +622,7 @@ export class MoodRoom extends Room {
     );
   }
   onDispose() {
+    this.unwatchCollection?.();
     publicRooms.delete(this.roomId);
   }
   private updateListing() {
@@ -673,7 +725,11 @@ export class MoodRoom extends Room {
     const id = spectator ? "spectator" : this.actors.get(client.sessionId);
     if (id)
       client.send("view", {
-        ...publicView(this.game, id, true),
+        ...decorateCollection(
+          publicView(this.game, id, true),
+          this.game,
+          this.owned,
+        ),
         spectator,
         voice: this.voiceRoster(),
         ice: spectator ? undefined : ICE,
