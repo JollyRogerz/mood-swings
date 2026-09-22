@@ -41,6 +41,20 @@ const server = new Server({
 });
 server.define("mood", MoodRoom);
 await store.init();
+const cleanSnapshots = () =>
+  store
+    .purgeExpired?.()
+    .catch(() =>
+      console.error("Room snapshot retention cleanup failed; will retry."),
+    );
+await cleanSnapshots();
+const snapshotCleanup = setInterval(
+  () => {
+    void cleanSnapshots();
+  },
+  60 * 60 * 1000,
+);
+snapshotCleanup.unref();
 const photoCleanup = setInterval(
   () => {
     void accounts?.collection

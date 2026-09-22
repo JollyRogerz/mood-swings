@@ -482,7 +482,7 @@ Each room serializes mutations, and a rejected action does not partially mutate 
 - In a lobby, disconnected guests release their seats; the host retains theirs.
 
 > [!CAUTION]
-> The hosted PostgreSQL store permits recovery of snapshots updated within the last 30 days. **That is a recovery cutoff, not automatic deletion:** expired database records are not currently purged. Local file snapshots have no time cutoff.
+> The hosted PostgreSQL store expires inactive room snapshots after 30 days and deletes them at startup and hourly. Snapshots containing an unrecorded match result are retained and remain recoverable until that exact match appears in durable results storage; cleanup never discards a pending stats write. Finished match statistics have separate retention and are not deleted with snapshots. Local development file snapshots have no time cutoff.
 >
 > Nicknames, game histories, player identifiers, and full game states are part of these snapshots. The hosting platform may also maintain operational logs. Never publish database snapshots, browser credentials, or Playwright traces containing live sessions.
 
@@ -520,13 +520,26 @@ Open **Your profile** for your personal record, or **Leaderboard** on the home s
 
 The server stores `mood_results` and `mood_result_players` in the existing PostgreSQL database. Writes are transactional and idempotent. A saved result remains in the room snapshot as a durable retry record; if recording fails, the active room retries and a restored room retries again. A rematch waits for that result to be recorded. Guest names remain in match records after account deletion, while the account reference is removed. Detailed match-history browsing is not part of this release.
 
-For local PostgreSQL verification, point `TEST_DATABASE_URL` at a disposable test database and run `npm run check`. Tests create and remove their own schema; do not use your production database. Without this variable, the two PostgreSQL-specific tests are skipped. GitHub CI supplies a temporary PostgreSQL service.
+For local PostgreSQL verification, point `TEST_DATABASE_URL` at a disposable test database and run `npm run check`. Tests create and remove their own schema; do not use your production database. Without this variable, PostgreSQL-specific tests are skipped. GitHub CI supplies a temporary PostgreSQL service.
 
 ### Physical deck collection
 
 From **Your profile**, choose **Manage my decks**. Add a name, search or filter the 133 moods, tick the cards in your physical deck, and save. Each account can store ten decks, each containing up to 45 unique cards. Incomplete decks are allowed; the retail rarity mix is a reference, not a save restriction. Collection completion counts distinct moods; owning a mood in several decks increases its quantity without inflating completion.
 
 Collections start private. The sharing checkbox controls whether `/u/<username>` includes decks and completion. Public profiles always show the username, join date and overall game record. Deleting a profile deletes its decks. Collection writes require a session and trusted origin; deck IDs never authorize access by themselves. PostgreSQL serializes edits per profile so concurrent requests cannot bypass the ten-deck limit.
+
+### Deployment follow-ups
+
+Photo badges use the existing app and PostgreSQL; no vision service or paid verification API is needed. Optional reviewers are configured with server-only `MOOD_REVIEWER_IDS`; leave it unset to keep manual review disabled. Grant access only after confirming the account belongs to the intended maintainer.
+
+Social login remains disabled until the owner creates provider applications and sets both variables for each provider in Railway. Use these exact production callback URLs:
+
+- Google: `https://mood-swings-production.up.railway.app/api/auth/callback/google`
+- Discord: `https://mood-swings-production.up.railway.app/api/auth/callback/discord`
+
+Keep provider secrets in Railway variables, never in source control or chat. After deployment, test sign-in, username selection, sign-out, returning sign-in, and profile deletion with a test account. Provider configuration and real-provider browser checks are still outstanding. Automated virtual passkey tests do not replace checking registration and returning sign-in on physical iPhone Safari and Android Chrome.
+
+Voice needs a separate test between real networks (for example Wi-Fi and mobile data), covering mute, leaving, reconnecting and permission denial. TURN configuration is supported but no relay is provisioned. Keep the app at one replica.
 
 ## Run locally
 
@@ -568,8 +581,8 @@ Open the Vite URL printed by the second command. The development proxy forwards 
 
 See the [21 September 2026 game, UX and security review](docs/audit-2026-09-21.md) for the latest fixes, validation and prioritized improvement plan.
 
-- **627** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
-- **24 Playwright scenarios** exercise the actual browser application, 30 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
+- **629** engine, regression, simulation, bot, fly-circuit, planning, selection, score explanation, practice, timer, seat, voice, and real-server tests.
+- **27 Playwright scenarios** exercise the actual browser application, 33 runs across Chromium and WebKit. Voice runs first against a local test network; the remaining Chromium and touch WebKit flows follow.
 - The [14 September 2026 rules audit](docs/rules-audit-2026-09-14.md) covers all 133 cards and 497 official notes, the corrections made, and published ambiguities.
 
 Passing tests are evidence of the covered behavior, not a claim that every combination of 133 cards has been exhaustively proven.
@@ -815,8 +828,8 @@ The collection roadmap is implemented. Provider setup, real-device checks and ma
 **Also open**
 
 - Voice chat is untested on real home networks and phones, iOS Safari especially. Players behind strict NATs need a TURN relay, which is supported through `TURN_URL`, `TURN_USERNAME` and `TURN_CREDENTIAL` but not provided.
-- Expired room snapshots are not purged from PostgreSQL.
-- One app replica only: rooms live in one process.
+- [x] PostgreSQL room snapshots expire after 30 inactive days, with startup/hourly cleanup and retention of unrecorded results. Local development files are intentionally retained.
+- One app replica only: rooms live in one process. Horizontal scaling needs shared matchmaking, room ownership and cross-process notifications; do not raise Railway replica count without that work.
 
 **Ground rules for whoever picks this up**
 
