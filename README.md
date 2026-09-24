@@ -559,6 +559,18 @@ about **3 h 17 min** for the faceted case's faster 0.24 mm process. It includes
 its own fit gauge and editable source. Both estimates require a real-world
 fit test and confirmation of the installed nozzle and filament.
 
+The [locking flat V2](printables/mood-deck-case-v2-flat/README.md) adds an
+accessible, in-plane spring clip that catches the sliding lid, addressing the
+first tray's tendency to open when tilted. The [upright V2](printables/mood-deck-case-v2-upright/README.md)
+stores the same deck standing on its short end and opens at the top with two
+pinch-release catches. Both retain the **70 × 96 × 33 mm** deck clearance and
+include real latch-fit coupons. Print and cycle a coupon with the intended silk
+PLA, then test the complete sleeved stack before printing a full case. Virtual
+mesh checks verify geometry, but cannot prove a physical snap fit or fatigue
+life. The flat K1C 0.28 mm silk slice is estimated at **2 h 27 min / 74 g**
+with a **33 min / 12 g** fit gauge. The upright slice is estimated at
+**3 h 24 min / 87 g**, with a **39 min / 14 g** latch coupon plate.
+
 ## Run locally
 
 Use **Node.js 22** and npm. Python is only needed to rerun the source collector or the fly-circuit extraction.
