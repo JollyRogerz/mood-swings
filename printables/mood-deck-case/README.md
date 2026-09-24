@@ -16,11 +16,14 @@ logo, or character illustration.
 | File | Purpose |
 | --- | --- |
 | `fit_gauge.stl` | Three small test pieces: a stack opening, a rail, and a short lid section. Print this first. |
+| `front_swatch.stl` | Optional upright slice of the decorated front. Print it before the full case to check the silk finish and raised lettering. |
 | `body.stl` | The single-deck case with an opening underneath for pushing up the cards. |
 | `lid.stl` | The flat-printed sliding cover. |
+| `case_plate.3mf` | Body and lid placed side by side. Geometry only; choose your own printer and filament settings before slicing. |
 | `mood_deck_case.scad` | Editable dimensions; regenerate the STLs with OpenSCAD. |
 | `mood_deck_case.blend` | Blender preview scene with lighting and a sample deck. Only the two meshes in **PRINT THESE TWO MESHES** are printable. |
 | `preview.png`, `preview_closed.png` | Exploded and closed renders; illustrative colours, not slicer files. |
+| `make_plate.py` | Rebuilds the portable 3MF from the body and lid STLs without embedding a printer preset or G-code. |
 | `render_blender.py` | Rebuilds the `.blend` and preview from the current STLs. |
 | `validate_meshes.py` | Checks water-tightness, part count, lid collision and vertical card clearance in Blender. |
 
@@ -45,11 +48,15 @@ dimension for every sleeve type; these direct measurements govern this print.
    width, stack depth and rail tolerance, not full card height.
 3. If the rail is tight, increase `slide_clearance` from 0.35 to 0.45 mm. If
    very loose, try 0.25 mm. Regenerate the gauge after either adjustment.
-4. Print the full body and lid only after the gauge fits. Remove any elephant's
+4. Optionally print `front_swatch.stl` upright with a brim. Its raised panels
+   and facet edges are cut from the actual body, so it shows whether your silk
+   PLA makes crisp lettering and the colour split you like. Rotate a second
+   copy on the plate if you want to compare facet colours.
+5. Print the full body and lid only after the gauge fits. Remove any elephant's
    foot or brim from the lid edge and rail entry before testing the full slide.
 
-The default body measures **76 × 44.2 × 104.3 mm** including its raised front. The lid
-measures about **76.3 × 39 × 5 mm**. Creality lists a **220 × 220 × 250 mm**
+The default body measures **76 × 44.2 × 104.3 mm** including its raised front.
+The lid measures about **76.3 × 39 × 5 mm**. Creality lists a **220 × 220 × 250 mm**
 build volume for the K1C 2025, so both parts fit its plate with a brim.
 
 ## Print orientation and starting settings
@@ -59,19 +66,28 @@ build volume for the K1C 2025, so both parts fit its plate with a brim.
   angles to the tri-colour filament. Put the seam on a plain short end rather
   than the titled front.
 - Print the **lid flat, with the raised title and die upward**. Print the
-  gauge in its exported orientation. None of these three STLs needs supports
-  in the intended orientation.
+  gauge in its exported orientation and the front swatch upright with a brim.
+  These STLs do not need supports in their intended orientations, though the
+  shallow lettering overhangs should be inspected on the swatch first.
 - Start with a 0.4 mm nozzle, 0.20 mm layers, four to five walls, and six to
   seven top/bottom layers. A 4–5 mm brim can help the tall body stay put.
   Use the temperature and cooling range supplied with your specific silk PLA.
-- Slow the outer wall to around **35–40 mm/s** for gloss. Do one small gauge
-  at the default rotation and another rotated about 30–45° on the plate to
-  see which face shows your favourite colour split. Exact band placement is
-  not guaranteed by bed rotation because the filament may twist.
+- Slow the outer wall to around **35–40 mm/s** for gloss; a generic K1C
+  preset may set a much faster outer wall, so check this explicitly. Rotate
+  the swatch about 30–45° on a second test to see which facet colour split
+  you like. Exact band placement is not guaranteed by bed rotation because
+  the filament may twist.
 - On the **K1C 2025**, use its 0.4 mm nozzle and PEI plate profile in Creality
   Print or another calibrated slicer. Creality advises removing the clear top
   cover while printing PLA if the chamber exceeds **35°C**. Check the specific
   silk PLA spool for temperatures; the values from another brand may differ.
+  Select a CFS-C printer profile only if that hardware is actually installed.
+
+`case_plate.3mf` carries two named, separate models with their intended
+orientations and a gap on a 220 mm square plate. It contains **no K1C preset,
+filament profile, supports, or G-code**; select those in your slicer. The STLs
+remain the simplest fallback if your slicer rearranges imported 3MF objects.
+Printing the body and lid separately can also reduce travel and stringing.
 
 The lid has a broad stop at its right end. Slide it in from the right until
 the stop rests against the end of the case. Push the deck up through its 15 mm
@@ -90,16 +106,23 @@ dimension:
 openscad --export-format binstl -o body.stl -D 'part="body"' mood_deck_case.scad
 openscad --export-format binstl -o lid.stl -D 'part="lid"' mood_deck_case.scad
 openscad --export-format binstl -o fit_gauge.stl -D 'part="fit_gauge"' mood_deck_case.scad
+openscad --export-format binstl -o front_swatch.stl -D 'part="front_swatch"' mood_deck_case.scad
+python3 make_plate.py
 blender --background --python validate_meshes.py
 blender --background --python render_blender.py
 ```
 
 The default STLs were generated with OpenSCAD 2021.01. Blender 5.2 found
-**zero nonmanifold edges** in the body, lid and gauge, and **zero overlapping
-volume** between the body and lid in their assembled position. The usable
+**zero nonmanifold edges** in the body, lid, gauge and swatch, and **zero
+overlapping volume** between the body and lid in their assembled position. The usable
 height leaves over 4 mm above the measured 92 mm sleeve. A real-world gauge
 print and full-stack fit test are still required; STL validation cannot
 establish your printer's dimensional accuracy.
+
+OrcaSlicer 2.4.2 also imported the geometry-only 3MF as two separate manifold
+models and completed a local slicing smoke test with a generic K1C 0.4 mm
+profile. That G-code is **not supplied**: the exact 2025 machine configuration
+and tri-colour silk spool still need to be selected and calibrated by the owner.
 
 ## Sources for the fit and print assumptions
 
