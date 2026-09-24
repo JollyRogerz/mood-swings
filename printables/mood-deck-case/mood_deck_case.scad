@@ -51,34 +51,96 @@ module outside_profile() {
   ));
 }
 
-module front_relief(points, depth=0.7) {
-  // A relief starts 0.05 mm inside the front face for a sound mesh union.
+module front_ink(depth=0.6) {
+  // Every mark overlaps the flat front face by 0.05 mm for a sound union.
   translate([0, -(outer_depth/2+flute_depth)+0.05, 0])
-    rotate([90, 0, 0]) linear_extrude(height=depth) polygon(points);
+    rotate([90, 0, 0]) linear_extrude(height=depth) children();
+}
+
+module front_relief(points, depth=0.6) {
+  front_ink(depth) polygon(points);
 }
 
 module front_title(label, size, x, z, tilt=0) {
   translate([x, -(outer_depth/2+flute_depth)-0.60, z])
     rotate([90, 0, 0]) rotate([0, 0, tilt])
       linear_extrude(height=0.55)
-        text(label, size=size, font="DejaVu Serif:style=Bold",
+        text(label, size=size, font="DejaVu Sans:style=Bold",
              halign="center", valign="center");
 }
 
+module front_arc(cx, cz, inner, outer, start, finish) {
+  // Small shared radius changes give each band a hand-cut, angular edge.
+  front_relief(concat(
+    [for (j=[0:8]) let(a=start+(finish-start)*j/8,
+                       cut=(j%3==1 ? 0.5 : (j%3==2 ? -0.35 : 0)))
+       [cx+(outer+cut)*cos(a), cz+(outer+cut)*sin(a)]],
+    [for (j=[8:-1:0]) let(a=start+(finish-start)*j/8,
+                           cut=(j%3==1 ? 0.5 : (j%3==2 ? -0.35 : 0)))
+       [cx+(inner+cut)*cos(a), cz+(inner+cut)*sin(a)]]
+  ), 0.65);
+}
+
 module front_graphics() {
-  // Two skewed paper-strip silhouettes. These are original geometry, not a
-  // copy of the game's logo or card frame.
-  front_relief([[-20, 67], [19, 69], [18, 85], [-19, 83]]);
-  front_relief([[-19, 47], [18, 45], [20, 63], [-18, 65]]);
+  // Off-register paper shadows, then two skewed title strips.
+  front_relief([[-21, 66], [18, 68], [20, 86], [-19, 84]], 0.35);
+  front_relief([[-20,67],[-8,67.6],[-7,68.4],[6,68.6],[7,68.3],
+                [19,69],[18,85],[6,84],[-8,83.5],[-9,83],[-19,83]], 0.75);
+  front_relief([[-20, 46], [17, 44], [21, 62], [-17, 64]], 0.35);
+  front_relief([[-19,47],[-5,46.4],[-4,47],[9,45.8],[18,45],
+                [20,63],[7,63.6],[6,62.9],[-5,64.2],[-6,64.6],[-18,65]], 0.75);
   front_title(title_top, 10.2, -0.5, 76, 2);
   front_title(title_bottom, 7.6, 0, 55, -3);
 
-  // Five crooked ribbons nod to the five-color detailing of the packaging.
-  // The tri-color filament supplies the actual shifting color.
+  // Broken five-part wheel around a hand-tilted die. All strokes are at
+  // least 1.5 mm wide so a 0.4 mm nozzle can actually resolve them.
   for (i=[0:4])
-    let(x=-17+i*8, z=13+((i*3)%5))
-      front_relief([[x, z], [x+3.2, z+1],
-                    [x+2.1, z+20], [x-1.1, z+19]], 0.6);
+    front_arc(0, 26, 15.3, 17.1,
+              8+i*72+(i%2)*3, 60+i*72-(i%3)*2);
+  front_ink(0.70) translate([0, 26]) rotate(12)
+    difference() {
+      square([15.5, 15.5], center=true);
+      square([12.5, 12.5], center=true);
+    }
+  front_ink(0.70) translate([0, 26]) rotate(12)
+    for (p=[[-4,-4],[-4,4],[0,0],[4,-4],[4,4]])
+      translate(p) circle(d=2.0, $fn=16);
+
+  // Torn seams and misregistered hatch marks break up the quiet spaces.
+  front_relief([[-19, 89], [-7, 90], [-7, 91.3], [-19, 90.2]], 0.55);
+  front_relief([[7, 88], [19, 89.6], [19, 90.9], [7, 89.3]], 0.55);
+  front_relief([[-20, 41], [-9, 42], [-10, 43.4], [-20, 42.4]], 0.55);
+  front_relief([[10, 41.5], [20, 40.4], [20, 41.8], [10, 42.9]], 0.55);
+  front_relief([[-20, 7], [-15, 7.5], [-15, 9], [-20, 8.5]], 0.55);
+  front_relief([[15, 7.5], [20, 7], [20, 8.5], [15, 9]], 0.55);
+}
+
+module side_relief(side, points, depth=0.6) {
+  // The plain end wall is at X=+/-outer_width/2. Points are (Y,Z).
+  translate([side*(outer_width/2-0.05), 0, 0])
+    rotate([0, side*90, 0]) linear_extrude(height=depth)
+      polygon([for (p=points) [-side*p[1], p[0]]]);
+}
+
+module side_title(side) {
+  translate([side*(outer_width/2-0.05), 0, 77.5])
+    rotate([0, side*90, 0]) rotate([0, 0, side*90])
+      linear_extrude(height=0.65)
+        text("45", size=9, font="DejaVu Sans:style=Bold",
+             halign="center", valign="center");
+}
+
+module side_graphics() {
+  for (side=[-1,1]) {
+    // An index sticker and five uneven diagonal ribbons wrap the composition
+    // around both ends without touching the lid entry at the top.
+    side_relief(side, [[-12,69],[11,71],[12,86],[-11,84]], 0.55);
+    side_title(side);
+    for (i=[0:4])
+      let(left=-14+(i%2)*2, right=12-(i%3)*2, z=10+i*9)
+        side_relief(side,
+          [[left,z],[right,z+5],[right,z+7.5],[left,z+2.5]], 0.60);
+  }
 }
 
 module body() {
@@ -116,6 +178,7 @@ module body() {
         cube([wall+0.5, slot_width, groove_floor+0.4]);
     }
     front_graphics();
+    side_graphics();
   }
 }
 
@@ -124,10 +187,22 @@ module lid_paper(points) {
     linear_extrude(height=0.55) polygon(points);
 }
 
+module lid_ink(depth=0.5) {
+  translate([0, 0, lid_thickness-0.05])
+    linear_extrude(height=depth) children();
+}
+
+module lid_stroke(a, b, width=1.2) {
+  lid_ink() hull() {
+    translate(a) circle(d=width, $fn=12);
+    translate(b) circle(d=width, $fn=12);
+  }
+}
+
 module lid_title(label, size, x, y, tilt=0) {
   translate([x, y, lid_thickness+0.45])
     rotate([0, 0, tilt]) linear_extrude(height=0.5)
-      text(label, size=size, font="DejaVu Serif:style=Bold",
+      text(label, size=size, font="DejaVu Sans:style=Bold",
            halign="center", valign="center");
 }
 
@@ -149,15 +224,33 @@ module lid() {
     lid_paper([[-21, -15], [31, -14], [29, -3], [-22, -4]]);
     lid_title(title_top, 8.8, -7, 9, 2);
     lid_title(title_bottom, 7.0, 5, -9, -2);
+    for (i=[0:4])
+      lid_stroke([-12+i*4,-1.1],[-11+i*4,1.3],1.2);
 
-    translate([27, 9, lid_thickness-0.05])
+    // Interrupted, off-register perimeter marks leave the sliding edges and
+    // underside untouched. They read like ink rules beside torn paper.
+    lid_stroke([-32,14.4],[-27,14.7]);
+    lid_stroke([18,14.3],[22,14.1]);
+    lid_stroke([-33,-11.8],[-32,-2.5]);
+    lid_stroke([-32,-14.3],[-25,-14.5]);
+    lid_stroke([30,-14.3],[34,-13.9]);
+    lid_stroke([34,-12.5],[34,-5]);
+    lid_stroke([-30,-1.5],[-24,-0.8]);
+    lid_stroke([18,-1.4],[23,-0.7]);
+
+    lid_ink(0.55) translate([27, 7.5])
+      difference() {
+        circle(r=7.3, $fn=40);
+        circle(r=6.3, $fn=40);
+      }
+    translate([27, 7.5, lid_thickness-0.05])
       rotate([0, 0, 10]) linear_extrude(height=0.7)
         difference() {
           square([10, 10], center=true);
           square([7, 7], center=true);
         }
     for (p=[[-2, -2], [0, 0], [2, 2]])
-      translate([27+p[0], 9+p[1], lid_thickness-0.05])
+      translate([27+p[0], 7.5+p[1], lid_thickness-0.05])
         cylinder(h=0.7, d=1.5, $fn=20);
 
     for (i=[0:4])
@@ -200,8 +293,8 @@ module front_swatch() {
   // A short upright cut from the actual decorated face checks whether the
   // raised title stays crisp in silk PLA. It includes a facet on each edge.
   // Its approximately 6 mm-deep foot needs a brim to stay steady.
-  swatch_bottom = 42;
-  swatch_height = 46;
+  swatch_bottom = 43.5;
+  swatch_height = 49;
   translate([0, 0, -swatch_bottom])
     intersection() {
       body();
