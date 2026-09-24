@@ -8,6 +8,10 @@ around both ends echo the game's handmade zine aesthetic. The lid has
 interrupted ink rules and a matching die stamp. There is no copied card art,
 official logo, or character illustration.
 
+For a shorter, sturdier print, see the [flat fast tray](../mood-deck-case-fast-tray/README.md).
+It keeps the same measured card space and a decorated sliding lid, with a local
+K1C silk slice of about 2 h 12 min.
+
 ![Exploded preview of the single-deck case](preview.png)
 
 ![Closed case showing the raised front title](preview_closed.png)
@@ -21,6 +25,7 @@ official logo, or character illustration.
 | `body.stl` | The single-deck case with an opening underneath for pushing up the cards. |
 | `lid.stl` | The flat-printed sliding cover. |
 | `case_plate.3mf` | Body and lid placed side by side. Geometry only; choose your own printer and filament settings before slicing. |
+| `profiles/orca_k1c_04_fast_silk_024.json` | OrcaSlicer 2.4 process preset for a faster K1C 0.4 mm silk print. Select your actual printer and filament separately. |
 | `mood_deck_case.scad` | Editable dimensions; regenerate the STLs with OpenSCAD. |
 | `mood_deck_case.blend` | Blender preview scene with lighting and a sample deck. Only the two meshes in **PRINT THESE TWO MESHES** are printable. |
 | `preview.png`, `preview_closed.png` | Exploded and closed renders; illustrative colours, not slicer files. |
@@ -70,14 +75,24 @@ build volume for the K1C 2025, so both parts fit its plate with a brim.
   gauge in its exported orientation and the front swatch upright with a brim.
   These STLs do not need supports in their intended orientations, though the
   shallow lettering overhangs should be inspected on the swatch first.
-- Start with a 0.4 mm nozzle, 0.20 mm layers, four to five walls, and six to
-  seven top/bottom layers. A 4–5 mm brim can help the tall body stay put.
-  Use the temperature and cooling range supplied with your specific silk PLA.
-- Slow the outer wall to around **35–40 mm/s** for gloss; a generic K1C
-  preset may set a much faster outer wall, so check this explicitly. Rotate
-  the swatch about 30–45° on a second test to see which facet colour split
-  you like. Exact band placement is not guaranteed by bed rotation because
-  the filament may twist.
+- For maximum detail and silk gloss, use a 0.4 mm nozzle, 0.20 mm layers,
+  four walls, seven top/bottom layers, and about 40 mm/s outer walls. The
+  current case plate sliced at **6 h 12 min / 111 g** with this profile.
+- For a faster trial, import `profiles/orca_k1c_04_fast_silk_024.json` into
+  OrcaSlicer and select a **K1C 0.4 mm nozzle**, **Textured PEI Plate**, and
+  your actual silk PLA filament. It uses 0.24 mm layers, three walls, five
+  top/bottom layers, 80 mm/s outer walls, 12% gyroid, a 5 mm brim and no
+  supports. With the local 10 mm³/s silk preset, the case plate sliced at
+  **3 h 17 min / 93 g**; the gauge took **33 min** and the swatch **48 min**.
+  A 0.28 mm layer variant sliced in just under three hours, but gives the
+  shallow raised lettering fewer layers, so 0.24 mm is the better starting
+  point for this design. These are slicer estimates, not measured print times.
+- Use the temperature and cooling range supplied with your specific silk PLA.
+  The faster preset is a process only and cannot establish what spool or
+  nozzle is physically installed. Print the fit gauge before the full case,
+  and the front swatch if you want to judge the lettering and gloss. Rotate
+  the swatch about 30–45° on a second test to compare the facet colour split;
+  the filament may twist, so exact colour placement is not guaranteed.
 - On the **K1C 2025**, use its 0.4 mm nozzle and PEI plate profile in Creality
   Print or another calibrated slicer. Creality advises removing the clear top
   cover while printing PLA if the chamber exceeds **35°C**. Check the specific
@@ -121,10 +136,11 @@ height leaves over 4 mm above the measured 92 mm sleeve. A real-world gauge
 print and full-stack fit test are still required; STL validation cannot
 establish your printer's dimensional accuracy.
 
-OrcaSlicer 2.4.2 also imported the geometry-only 3MF as two separate manifold
-models and completed a local slicing smoke test with a generic K1C 0.4 mm
-profile. That G-code is **not supplied**: the exact 2025 machine configuration
-and tri-colour silk spool still need to be selected and calibrated by the owner.
+OrcaSlicer 2.4.2 imported the geometry-only 3MF as two separate manifold
+models and completed local slices with the detailed and fast process presets.
+The process preset is supplied, but machine-specific G-code is **not** in this
+repository: the physical nozzle, printer setup and tri-colour silk spool must
+be checked before printing. Neither process has had a physical fit test yet.
 
 ## Sources for the fit and print assumptions
 

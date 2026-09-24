@@ -552,6 +552,13 @@ zine aesthetic, while
 vertical facets show off tri-colour silk PLA. The case is sized for a measured
 31 mm sleeved stack and the K1C 2025; print the fit gauge before the full case.
 
+The [fast tray variant](printables/mood-deck-case-fast-tray/README.md) holds the
+same single deck under a decorated sliding lid. Printing its large faces flat
+brings the local K1C 0.4 mm silk-PLA slice to about **2 h 12 min**, versus
+about **3 h 17 min** for the faceted case's faster 0.24 mm process. It includes
+its own fit gauge and editable source. Both estimates require a real-world
+fit test and confirmation of the installed nozzle and filament.
+
 ## Run locally
 
 Use **Node.js 22** and npm. Python is only needed to rerun the source collector or the fly-circuit extraction.
