@@ -51,7 +51,8 @@ def report(obj, expected_parts):
 body = load("body")
 lid = load("lid")
 gauge = load("fit_gauge")
-for mesh, count in [(body, 1), (lid, 1), (gauge, 3)]:
+swatch = load("front_swatch")
+for mesh, count in [(body, 1), (lid, 1), (gauge, 3), (swatch, 1)]:
     report(mesh, count)
 
 # The user measured a sleeved card at 66 x 92 mm. The nominal 96 mm usable

@@ -545,8 +545,9 @@ Voice needs a separate test between real networks (for example Wi-Fi and mobile 
 
 The [faceted deck case](printables/mood-deck-case/README.md) holds one 45-card
 stack in Dragon Shield sleeves; print two cases for two decks. It includes STLs,
-a small fit gauge, an editable OpenSCAD model, and a Blender preview. The
-tilted title panels and die detail draw on Mood Swings' zine aesthetic, while
+a small fit gauge, a raised-lettering swatch, a geometry-only 3MF plate layout,
+an editable OpenSCAD model, and Blender previews. The tilted title panels and
+die detail draw on Mood Swings' zine aesthetic, while
 vertical facets show off tri-colour silk PLA. The case is sized for a measured
 31 mm sleeved stack and the K1C 2025; print the fit gauge before the full case.
 

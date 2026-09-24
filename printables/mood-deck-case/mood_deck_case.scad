@@ -1,6 +1,6 @@
 // Mood deck case — dimensions in millimetres.
 // One upright stack of 45 sleeved cards; print the body base down.
-// Set part to "body", "lid", or "fit_gauge" before exporting an STL.
+// Set part to "body", "lid", "fit_gauge", or "front_swatch" before export.
 part = "body";
 
 card_width = 70;          // Sleeve width plus clearance, measured across card face.
@@ -196,7 +196,22 @@ module fit_gauge() {
     }
 }
 
+module front_swatch() {
+  // A short upright cut from the actual decorated face checks whether the
+  // raised title stays crisp in silk PLA. It includes a facet on each edge.
+  // Its approximately 6 mm-deep foot needs a brim to stay steady.
+  swatch_bottom = 42;
+  swatch_height = 46;
+  translate([0, 0, -swatch_bottom])
+    intersection() {
+      body();
+      translate([-27, -(outer_depth/2+flute_depth)-2, swatch_bottom])
+        cube([54, 8, swatch_height]);
+    }
+}
+
 if(part=="body") body();
 else if(part=="lid") lid();
 else if(part=="fit_gauge") fit_gauge();
-else assert(false, "part must be body, lid or fit_gauge");
+else if(part=="front_swatch") front_swatch();
+else assert(false, "part must be body, lid, fit_gauge or front_swatch");
