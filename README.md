@@ -541,6 +541,14 @@ Keep provider secrets in Railway variables, never in source control or chat. Aft
 
 Voice needs a separate test between real networks (for example Wi-Fi and mobile data), covering mute, leaving, reconnecting and permission denial. TURN configuration is supported but no relay is provisioned. Keep the app at one replica.
 
+## Printable case for physical decks
+
+The [faceted deck case](printables/mood-deck-case/README.md) holds one 45-card
+stack in Dragon Shield sleeves; print two cases for two decks. It includes STLs,
+a small fit gauge, an editable OpenSCAD model, and a Blender preview. The
+vertical facets are designed to show off tri-colour silk PLA; print the fit
+gauge with your actual sleeved decks before the full case.
+
 ## Run locally
 
 Use **Node.js 22** and npm. Python is only needed to rerun the source collector or the fly-circuit extraction.
