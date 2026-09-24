@@ -60,8 +60,9 @@ resources = ET.SubElement(model, f"{{{CORE}}}resources")
 build = ET.SubElement(model, f"{{{CORE}}}build")
 
 # Both STLs already have their print orientation: body base down, lid flat.
-# Centers at (60, 110) and (150, 110) leave over 17 mm between them on a
+# Centers at (60, 110) and (150, 110) leave room for separate brims on a
 # 220 × 220 mm build plate, with the whole arrangement inside its bounds.
+placed_bounds = []
 for object_id, name, stl_name, x, y in (
     (1, "Case body - upright", "body.stl", 60, 110),
     (2, "Sliding lid - flat", "lid.stl", 150, 110),
@@ -74,6 +75,7 @@ for object_id, name, stl_name, x, y in (
             0 <= min(ys) < max(ys) <= 220 and
             0 <= min(zs) < max(zs) <= 250):
         raise ValueError(f"{name} exceeds the K1C 2025 build volume")
+    placed_bounds.append((name, min(xs), max(xs), min(ys), max(ys)))
     obj = ET.SubElement(resources, f"{{{CORE}}}object", {"id": str(object_id), "type": "model", "name": name})
     mesh = ET.SubElement(obj, f"{{{CORE}}}mesh")
     verts = ET.SubElement(mesh, f"{{{CORE}}}vertices")
@@ -90,6 +92,14 @@ for object_id, name, stl_name, x, y in (
         "objectid": str(object_id),
         "transform": f"1 0 0 0 1 0 0 0 1 {x} {y} 0",
     })
+
+# Two 5 mm brims should not collide even if the decorative relief grows.
+for i, a in enumerate(placed_bounds):
+    for b in placed_bounds[i + 1:]:
+        x_gap = max(a[1] - b[2], b[1] - a[2], 0)
+        y_gap = max(a[3] - b[4], b[3] - a[4], 0)
+        if x_gap < 10 and y_gap < 10:
+            raise ValueError(f"{a[0]} and {b[0]} need more room for 5 mm brims")
 
 types = ET.Element(f"{{{CONTENT}}}Types")
 ET.SubElement(types, f"{{{CONTENT}}}Default", {

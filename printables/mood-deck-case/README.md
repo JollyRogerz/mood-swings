@@ -2,10 +2,11 @@
 
 An original, printable case for **one stack of 45 sleeved cards**. Print two
 identical cases for two decks. Angled vertical facets catch different colours
-from tri-colour silk PLA as the case turns. Tilted raised panels, an original
-two-line **MOOD / SWINGS** title, five crooked ribbons, and a simple die stamp
-echo the game's handmade zine aesthetic. There is no copied card art, official
-logo, or character illustration.
+from tri-colour silk PLA as the case turns. Off-register title strips, a
+five-part broken mood wheel around a die, torn seams, and ribbons that wrap
+around both ends echo the game's handmade zine aesthetic. The lid has
+interrupted ink rules and a matching die stamp. There is no copied card art,
+official logo, or character illustration.
 
 ![Exploded preview of the single-deck case](preview.png)
 
@@ -48,15 +49,15 @@ dimension for every sleeve type; these direct measurements govern this print.
    width, stack depth and rail tolerance, not full card height.
 3. If the rail is tight, increase `slide_clearance` from 0.35 to 0.45 mm. If
    very loose, try 0.25 mm. Regenerate the gauge after either adjustment.
-4. Optionally print `front_swatch.stl` upright with a brim. Its raised panels
-   and facet edges are cut from the actual body, so it shows whether your silk
+4. Optionally print `front_swatch.stl` upright with an 8 mm brim. Its raised
+   panels and facet edges are cut from the actual body, so it shows whether your silk
    PLA makes crisp lettering and the colour split you like. Rotate a second
    copy on the plate if you want to compare facet colours.
 5. Print the full body and lid only after the gauge fits. Remove any elephant's
    foot or brim from the lid edge and rail entry before testing the full slide.
 
-The default body measures **76 × 44.2 × 104.3 mm** including its raised front.
-The lid measures about **76.3 × 39 × 5 mm**. Creality lists a **220 × 220 × 250 mm**
+The default body measures **77.2 × 44.2 × 104.3 mm** including the raised side
+index marks and front art. The lid measures about **76.3 × 39 × 5 mm**. Creality lists a **220 × 220 × 250 mm**
 build volume for the K1C 2025, so both parts fit its plate with a brim.
 
 ## Print orientation and starting settings
@@ -84,8 +85,9 @@ build volume for the K1C 2025, so both parts fit its plate with a brim.
   Select a CFS-C printer profile only if that hardware is actually installed.
 
 `case_plate.3mf` carries two named, separate models with their intended
-orientations and a gap on a 220 mm square plate. It contains **no K1C preset,
-filament profile, supports, or G-code**; select those in your slicer. The STLs
+orientations and room for separate 5 mm brims on a 220 mm square plate. It
+contains **no K1C preset, filament profile, supports, or G-code**; select those
+in your slicer. The STLs
 remain the simplest fallback if your slicer rearranges imported 3MF objects.
 Printing the body and lid separately can also reduce travel and stringing.
 
