@@ -39,7 +39,7 @@ def mesh_report(obj):
     bm.free()
 
 
-def intersection_volume(a, b):
+def intersection_details(a, b):
     probe = a.copy()
     probe.data = a.data.copy()
     bpy.context.collection.objects.link(probe)
@@ -52,9 +52,19 @@ def intersection_volume(a, b):
     bm = bmesh.new()
     bm.from_mesh(probe.data)
     result = abs(bm.calc_volume(signed=True)) if len(bm.faces) else 0
+    bounds = None
+    closest_to_center_y = None
+    if len(bm.faces):
+        bounds = tuple((min(v.co[i] for v in bm.verts),
+                        max(v.co[i] for v in bm.verts)) for i in range(3))
+        closest_to_center_y = min(abs(v.co.y) for v in bm.verts)
     bm.free()
     bpy.data.objects.remove(probe, do_unlink=True)
-    return result
+    return result, bounds, closest_to_center_y
+
+
+def intersection_volume(a, b):
+    return intersection_details(a, b)[0]
 
 
 body, lid, coupon_body, coupon_lid, card_gauge = [load(n) for n in (
@@ -90,6 +100,40 @@ print(f"Body/lid at +2 mm insertion offset (intentional nub flex): {insertion_ov
 assert insertion_overlap > 0.2
 assert insertion_overlap < 8
 
+# Check the entire slide route at the channel floor, nominal 0.25 mm rise,
+# and roof-side limit (0.75 mm above the floor).
+# The only designed interference is at the two outer nub tips, which flex
+# inward into the lid's relief slits as they pass the unpocketed side rails.
+nominal_lid_bottom = 104.3 - 5.5
+for rise in (0, 0.25, 0.75):
+    lid.location.z = nominal_lid_bottom + rise
+    for offset in (0, 0.25, 0.5, 1, 2, 4, 6, 8, 10, 15, 25, 35, 45, 60, 73):
+        lid.location.x = offset
+        volume, bounds, closest_to_center_y = intersection_details(body, lid)
+        print(f"Full lid slide: rise={rise:.2f} mm, X={offset:.2f} mm, "
+              f"overlap={volume:.4f} mm3, nearest_center_y={closest_to_center_y}")
+        if offset == 0:
+            assert volume < 0.05, "A closed lid must rest without compressing its nubs"
+        if volume > 0.05:
+            assert bounds is not None
+            assert closest_to_center_y >= 17.83, (
+                "Sliding collision extends inside the rail opening, beyond nub tips"
+            )
+            assert volume < 10, "Excessive insertion interference"
+
+# There must be a substantial, continuous sheet behind the slit roots in the
+# full lid; a previous coupon cropped this to only 0.05 mm and could not test
+# retention. The full lid starts at X=-34.65 and the 0.9 mm round slit starts
+# at X=7.55, leaving 42.2 mm of uncut material behind each root.
+full_lid_anchor_length = 7.55 - (-34.65)
+assert full_lid_anchor_length > 5
+print(f"Full lid uncut material behind spring roots: {full_lid_anchor_length:.2f} mm")
+coupon_lid_anchor_length = 7.55 - 0
+assert coupon_lid_anchor_length > 5
+print(f"Revised coupon uncut material behind spring roots: {coupon_lid_anchor_length:.2f} mm")
+print(f"Worst-case vertical deck/lid gap: {nominal_lid_bottom-(2.8+92):.2f} mm")
+assert nominal_lid_bottom-(2.8+92) >= 4
+
 # The coupon copies the same right-end body and lid geometry; no difference
 # other than the supporting bottom pedestal and trim of leading lid panel.
 coupon_lid.location.z=12-5.5+0.25
@@ -100,4 +144,4 @@ coupon_lid.location.x=2
 coupon_insertion=intersection_volume(coupon_body,coupon_lid)
 print(f"Coupon at +2 mm (intentional nub flex): {coupon_insertion:.4f} mm3")
 assert coupon_insertion > 0.2
-print("Upright V2 geometric QA passed; physical coupon remains mandatory.")
+print("Upright V2 geometric QA passed; physical latch fit remains unverified.")

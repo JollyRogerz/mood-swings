@@ -193,9 +193,9 @@ module body() {
       for (side=[-1,1])
         translate([28.7,
                    side>0 ? slot_width/2-0.01 : -slot_width/2-latch_pocket_depth,
-                   outer_height-groove_floor+0.1])
+                   outer_height-groove_floor-0.05])
           cube([4.2,latch_pocket_depth+0.02,
-                groove_floor-groove_roof-0.2]);
+                groove_floor-groove_roof+0.1]);
     }
     front_graphics();
     side_graphics();
@@ -296,24 +296,26 @@ module lid() {
 module latch_gauge_body() {
   // Actual mouth and catch segment, including both side pockets. The thin
   // pedestal joins the side rails so the coupon prints as one stable part.
+  // Start at X=0, a full 7.55 mm behind the spring slit's rounded root at
+  // X=7.55. Cropping at X=7.5 left an unprintable 0.05 mm latch anchor.
   gauge_low = outer_height-12;
   translate([0,0,-gauge_low])
     intersection() {
       body();
-      translate([7.5,-outer_depth/2-flute_depth-1,gauge_low])
-        cube([outer_width/2-7.5+0.1,
+      translate([0,-outer_depth/2-flute_depth-1,gauge_low])
+        cube([outer_width/2+0.1,
               outer_depth+2*flute_depth+2,12.1]);
     }
-  translate([7.5,-outer_depth/2-flute_depth,0])
-    cube([outer_width/2-7.5,outer_depth+2*flute_depth,1.8]);
+  translate([0,-outer_depth/2-flute_depth,0])
+    cube([outer_width/2,outer_depth+2*flute_depth,1.8]);
 }
 module latch_gauge_lid() {
-  // Full-length spring roots, nubs and thumb tips. The omitted leading
-  // cover panel is deliberately beyond the latch mechanics.
+  // Preserve a printable 7.55 mm anchor behind both spring roots, plus the
+  // nubs and thumb tips. Only the distant leading cover panel is omitted.
   intersection() {
     lid();
-    translate([7.5,-outer_depth/2-1,-0.1])
-      cube([39,outer_depth+2,5.8]);
+    translate([0,-outer_depth/2-1,-0.1])
+      cube([outer_width/2+8.5,outer_depth+2,5.8]);
   }
 }
 module card_gauge() {

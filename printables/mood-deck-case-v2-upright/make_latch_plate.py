@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import struct
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
@@ -124,3 +125,24 @@ with ZipFile(target, "w") as archive:
     zip_member(archive, "3D/3dmodel.model", xml_bytes(model))
 
 print(f"Wrote {target} with both closure coupons and card-fit ring; select printer and silk PLA in your slicer.")
+
+# Once the card-fit ring has been checked, retest the corrected latch without
+# spending time and material on another identical ring. Keep the same coupon
+# positions and their already-validated brim spacing.
+latch_only_model = deepcopy(model)
+latch_only_resources = latch_only_model.find(f"{{{CORE}}}resources")
+latch_only_build = latch_only_model.find(f"{{{CORE}}}build")
+for obj in list(latch_only_resources):
+    if obj.get("id") == "3":
+        latch_only_resources.remove(obj)
+for item in list(latch_only_build):
+    if item.get("objectid") == "3":
+        latch_only_build.remove(item)
+
+latch_target = ROOT / "latch_only_plate.3mf"
+with ZipFile(latch_target, "w") as archive:
+    zip_member(archive, "[Content_Types].xml", xml_bytes(types))
+    zip_member(archive, "_rels/.rels", xml_bytes(relationships))
+    zip_member(archive, "3D/3dmodel.model", xml_bytes(latch_only_model))
+
+print(f"Wrote {latch_target} with both closure coupons and no card-fit ring.")
