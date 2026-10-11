@@ -385,6 +385,74 @@ body {
   padding: 12px 18px;
   font-weight: 700;
 }
+.app .recent-tables {
+  margin: 32px 0 0;
+  padding: 24px;
+  border: 2px solid #292727;
+  background: #fcfaf3;
+  box-shadow: 5px 5px 0 #a6c8b4;
+}
+.app .recent-tables-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.app .recent-tables h2 {
+  margin: 5px 0 0;
+  font: 800 clamp(28px, 5vw, 38px) var(--serif);
+  text-transform: uppercase;
+}
+.app .recent-tables-heading .text-button {
+  white-space: nowrap;
+}
+.app .recent-tables > p {
+  margin: 10px 0 0;
+  color: #5a534a;
+  font-size: 13px;
+}
+.app .recent-tables ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 12px;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+.app .recent-tables li {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #b8ae9d;
+  border-left: 6px solid #389bd0;
+  background: #f2efe5;
+}
+.app .recent-tables li:nth-child(3n + 2) {
+  border-left-color: #a66dbc;
+}
+.app .recent-tables li:nth-child(3n) {
+  border-left-color: #da626a;
+}
+.app .recent-tables li strong {
+  font: 800 24px var(--serif);
+  letter-spacing: 2px;
+}
+.app .recent-tables li > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.app .recent-tables .primary {
+  min-height: 44px;
+  padding: 9px 12px;
+}
+.app .recent-tables .text-button {
+  min-height: 44px;
+  color: #4c4a45;
+  text-decoration: underline;
+}
 .app .public-tables {
   margin: 65px 0 55px;
   padding: 32px;

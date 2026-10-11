@@ -103,7 +103,7 @@ describe("fruit fly mushroom body", () => {
     expect(choice.type).toBe("choose");
     expect(() => act(g, g.prompt!.actor, choice)).not.toThrow();
   });
-  it("passes instead of repeating a rules-legal play loop forever", () => {
+  it("uses the structured turn count and supports logs from older saves", () => {
     const g = table();
     add(g, "apathy", "hand");
     const v = publicView(g, "a");
@@ -116,11 +116,13 @@ describe("fruit fly mushroom body", () => {
         text: `Alice played ${loop[i % loop.length]}.`,
       })),
     ];
-    expect(playsThisTurn({ ...v, log })).toBe(TURN_PLAY_LIMIT);
-    expect(flyAction({ ...v, log }, 3)).toEqual({ type: "pass" });
+    expect(playsThisTurn({ ...v, turnPlayCount: 3, log })).toBe(3);
+    const legacy = { ...v, turnPlayCount: undefined, log };
+    expect(playsThisTurn(legacy)).toBe(TURN_PLAY_LIMIT);
+    expect(flyAction(legacy, 3)).toEqual({ type: "pass" });
     expect(
       playsThisTurn({
-        ...v,
+        ...legacy,
         log: [...log, { id: 99, text: "Alice won round 1 with 9 points." }],
       }),
     ).toBe(0);
