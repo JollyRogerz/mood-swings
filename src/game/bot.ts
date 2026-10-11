@@ -1,6 +1,6 @@
 import { act, baseScores, createGame, publicView } from "./engine";
 import { catalog } from "./catalog";
-import { flyAction } from "./fly";
+import { flyAction, playsThisTurn, TURN_PLAY_LIMIT } from "./fly";
 import {
   choiceScore,
   generator,
@@ -23,6 +23,7 @@ function belief(v: View, seed: number): Game {
   g.turnIndex = g.order.indexOf(v.you);
   g.round = v.round;
   g.turn = 1000;
+  g.turnPlayCount = v.turnPlayCount;
   g.grants = structuredClone(v.grants);
   g.suppressions = structuredClone(v.suppressions);
   g.cards = visibleCards(v).map((c) => ({ ...c }));
@@ -81,6 +82,9 @@ export function botAction(v: View, difficulty: Difficulty, seed = 1): Action {
             .sort((a, b) => b.score - a.score)[0].ids;
     return { type: "choose", prompt: v.prompt.id, selected: picked };
   }
+  // Optional extra plays can form rules-legal cycles. Keep autonomous seats
+  // moving without restricting what a human is allowed to do.
+  if (playsThisTurn(v) >= TURN_PLAY_LIMIT) return { type: "pass" };
   const options = Object.entries(v.playable).flatMap(([card, grants]) =>
     grants.map((grant) => ({ type: "play", card, grant }) as const),
   );

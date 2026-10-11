@@ -10,8 +10,92 @@ import {
 } from "../src/game/engine";
 import type { Difficulty } from "../src/game/types";
 import { catalog } from "../src/game/catalog";
+import { TURN_PLAY_LIMIT } from "../src/game/fly";
 import { add, find, play, table } from "./helpers";
 describe("fair, selectable bot policies", () => {
+  it("ends an actual two-Thrill replay cycle while humans may keep playing", () => {
+    let g = table();
+    add(g, "thrill", "play", "a");
+    add(g, "thrill", "hand", "a");
+    // Easy's fixed seed repeatedly picks the other Thrill at each prompt.
+    // Every log line, grant, and card movement is produced by the real engine.
+    for (let i = 0; i < 2 * TURN_PLAY_LIMIT; i++) {
+      const action = botAction(publicView(g, "a"), "easy", 682);
+      expect(action.type).toBe(i % 2 ? "choose" : "play");
+      g = act(g, "a", action);
+    }
+    const v = publicView(g, "a");
+    expect(v.prompt).toBeUndefined();
+    expect(Object.keys(v.playable)).toHaveLength(1);
+    for (const level of ["easy", "normal", "hard", "fly"] as Difficulty[])
+      expect(botAction(v, level, 42)).toEqual({ type: "pass" });
+    const [card, grants] = Object.entries(v.playable)[0];
+    expect(() =>
+      act(g, "a", { type: "play", card, grant: grants[0] }),
+    ).not.toThrow();
+    g = act(g, "a", botAction(v, "easy", 42));
+    expect(g.order[g.turnIndex]).toBe("b");
+  });
+  it("Normal and Hard replay valuable entry effects with Thrill", () => {
+    let g = table();
+    const replayable = [
+      "compulsion",
+      "suspicion",
+      "intimidation",
+      "paranoia",
+      "joy",
+      "charity",
+    ].map((id) => add(g, id));
+    add(g, "apathy");
+    add(g, "validation");
+    add(g, "boredom", "hand", "a");
+    add(g, "boredom", "hand", "b");
+    add(g, "boredom", "deck", "");
+    g = play(g, "thrill");
+    for (const level of ["normal", "hard"] as Difficulty[]) {
+      const action = botAction(publicView(g, "a"), level, 42);
+      expect(action.type).toBe("choose");
+      if (action.type === "choose")
+        expect(new Set(action.selected)).toEqual(new Set(replayable));
+    }
+  });
+  it("prioritizes an opponent's Validation unless another target wins now", () => {
+    for (const ownPoints of [4, 8]) {
+      let g = table();
+      add(g, "apathy", "play", "a");
+      if (ownPoints === 8) add(g, "boredom", "play", "a");
+      const validation = add(g, "validation", "play", "b");
+      const high = add(g, "apathy", "play", "b");
+      g = play(g, "hate");
+      const action = botAction(publicView(g, "a"), "normal", 42);
+      expect(action).toMatchObject({
+        type: "choose",
+        selected: [ownPoints === 8 ? validation : high],
+      });
+    }
+  });
+  it("does not overvalue Shock when every opposing mood is ineligible", () => {
+    const g = table();
+    add(g, "apathy", "play", "b");
+    add(g, "shock", "hand", "a");
+    const joy = add(g, "joy", "hand", "a");
+    expect(botAction(publicView(g, "a"), "normal", 42)).toMatchObject({
+      type: "play",
+      card: joy,
+    });
+  });
+  it("chooses Wonder's color using both the table and discard pile", () => {
+    let g = table();
+    add(g, "anger", "play", "b");
+    add(g, "shock", "play", "b");
+    for (let i = 0; i < 3; i++) add(g, "anxiety", "discard", "");
+    g = play(g, "wonder");
+    for (const level of ["normal", "hard"] as Difficulty[])
+      expect(botAction(publicView(g, "a"), level, 42)).toMatchObject({
+        type: "choose",
+        selected: ["blue"],
+      });
+  });
   it("Normal prefers a useful scoring card to an empty zero-value card", () => {
     const g = table();
     add(g, "creativity", "hand");

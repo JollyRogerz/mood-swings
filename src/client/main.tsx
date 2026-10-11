@@ -103,6 +103,12 @@ import {
   useTurnSound,
 } from "./polish";
 import { Targeting, TableFrame, type Targets } from "./targeting";
+import {
+  clearRecentTables,
+  forgetTable,
+  readRecentTables,
+  rememberTable,
+} from "./recent-tables";
 const botLabel = (d: Difficulty) =>
   d === "fly" ? "fly brain bot" : `${d} bot`;
 const colorNames: Record<string, string> = {
@@ -134,6 +140,13 @@ const startingCode =
 // A watch link seats nobody: /room/CODE?watch=1
 const startingAsSpectator =
   new URLSearchParams(location.search).get("watch") === "1";
+function recentStorage(): Storage | undefined {
+  try {
+    return window.localStorage;
+  } catch {
+    return undefined;
+  }
+}
 function App() {
   usePortableViewport();
   useModalNavigation();
@@ -154,6 +167,10 @@ function App() {
     [activity, setActivity] = useState(false),
     [copied, setCopied] = useState(false);
   const [visibility, setVisibility] = useState<"private" | "public">("private");
+  const [recentRooms, setRecentRooms] = useState(() => {
+    const storage = recentStorage();
+    return storage ? readRecentTables(storage) : [];
+  });
   // A saved profile fills in the name field, but never overwrites a name the
   // player already typed for this table.
   const username = account.user?.username;
@@ -317,7 +334,13 @@ function App() {
     room.current = joined;
     setSocketEpoch((n) => n + 1);
     joined.reconnection.enabled = false;
+    let remembered = false;
     joined.onMessage("view", (v: View) => {
+      if (!remembered) {
+        remembered = true;
+        const storage = recentStorage();
+        if (storage) setRecentRooms(rememberTable(storage, target));
+      }
       setView(v);
       if (v.presence) setPresence(v.presence);
       setClockNow(Date.now());
@@ -728,6 +751,64 @@ function App() {
               Meet all 133 moods <ArrowUpRight size={17} />
             </button>
           </section>
+          {recentRooms.length > 0 && (
+            <section
+              className="recent-tables"
+              aria-label="Recent tables on this device"
+            >
+              <div className="recent-tables-heading">
+                <div>
+                  <span className="eyebrow">PICK UP THE GAME</span>
+                  <h2>Recent tables</h2>
+                </div>
+                <button
+                  className="text-button"
+                  onClick={() => {
+                    const storage = recentStorage();
+                    if (storage) clearRecentTables(storage);
+                    setRecentRooms([]);
+                  }}
+                >
+                  Clear list
+                </button>
+              </div>
+              <p>
+                Table codes saved on this device only. Open one to check whether
+                it still exists; a seat may not be available.
+              </p>
+              <ul>
+                {recentRooms.map((target) => (
+                  <li key={target}>
+                    <strong>{target}</strong>
+                    <div>
+                      <button
+                        className="primary"
+                        disabled={busy}
+                        onClick={() => enter(false, target)}
+                        aria-label={`Open table ${target}`}
+                      >
+                        Open table <ArrowRight size={16} />
+                      </button>
+                      <button
+                        className="text-button"
+                        onClick={() => {
+                          const storage = recentStorage();
+                          setRecentRooms((current) =>
+                            storage
+                              ? forgetTable(storage, target)
+                              : current.filter((code) => code !== target),
+                          );
+                        }}
+                        aria-label={`Remove table ${target} from recent tables`}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <PublicTables
             busy={busy}
             onJoin={(target, spectate) => enter(false, target, spectate)}

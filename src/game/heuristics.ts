@@ -21,6 +21,10 @@ export function selections(v: View, rand: () => number): string[][] {
         sets.push([options[a], options[b]]);
   if (q.max > 2) {
     sets.push(options.slice(0, q.max));
+    if (q.title.toLowerCase().startsWith("thrill ·")) {
+      const replayable = options.filter((id) => choiceScore(v, [id]) > 0);
+      if (replayable.length) sets.push(replayable.slice(0, q.max));
+    }
     for (let trial = 0; trial < 40; trial++) {
       const shuffled = [...options];
       for (let i = shuffled.length - 1; i > 0; i--) {
@@ -143,6 +147,29 @@ export function choiceScore(v: View, ids: string[]): number {
       .filter((c) => c.value === n)
       .reduce((sum, c) => sum + (own(c) ? -c.value : c.value), 0);
   }
+  if (title.startsWith("thrill ·")) {
+    const opponentsHaveCards = v.players.some(
+      (p) => p.id !== v.you && p.handCount > 0,
+    );
+    return chosen.reduce((score, c) => {
+      // Thrill supplies one replay for each returned mood. Prefer entry effects
+      // that gain cards or plays when repeated, rather than returning a mood
+      // solely because its printed value is low.
+      const repeatable: Record<string, number> = {
+        compulsion: opponentsHaveCards ? 6 : 0,
+        suspicion: opponentsHaveCards ? 5 : 0,
+        intimidation: opponentsHaveCards ? 6 : 0,
+        paranoia: opponentsHaveCards && v.deckCount > 0 ? 4 : 0,
+        joy: 4,
+        charity: v.hand.length > 0 ? 4 : 0,
+        anger: v.moods.some((m) => m.owner !== v.you && m.value <= 5) ? 5 : 0,
+        hate: v.moods.some((m) => m.owner !== v.you) ? 5 : 0,
+        shock: v.moods.some((m) => m.owner !== v.you && m.value <= 3) ? 5 : 0,
+      };
+      const benefit = repeatable[c.copy ?? c.def] ?? 0;
+      return score + (benefit > 0 ? benefit : -(c.value + 1));
+    }, 0);
+  }
   if (title.includes("creativity"))
     return chosen.reduce(
       (sum, c) =>
@@ -229,6 +256,32 @@ export function choiceScore(v: View, ids: string[]): number {
     } else score += (own(c) ? -1 : 1) * (c.value + 1);
   }
   if (
+    ["anger", "hate", "shock"].some((id) => title.startsWith(`${id} ·`)) &&
+    chosen.some((c) => c.def === "validation" && !own(c))
+  ) {
+    const projected = (cards: PublicCard[]) =>
+      Math.max(
+        0,
+        ...v.players
+          .filter((p) => p.id !== v.you)
+          .map(
+            (p) =>
+              p.score -
+              cards
+                .filter((c) => c.owner === p.id)
+                .reduce((n, c) => n + c.value, 0),
+          ),
+      );
+    const selectedWouldWin = myScore > projected(chosen);
+    const alternativeWouldWin = q.options.some((o) => {
+      const card = cs.find((c) => c.uid === o.id);
+      return card && !own(card) && myScore > projected([card]);
+    });
+    // Preserve an immediate winning removal; otherwise disrupt the engine
+    // that can generate many future additional plays.
+    if (selectedWouldWin || !alternativeWouldWin) score += 8;
+  }
+  if (
     ids.length &&
     [
       "bravado",
@@ -291,7 +344,14 @@ export function heuristic(v: View, uid: string): number {
     score +=
       Math.max(
         0,
-        ...v.moods.filter((m) => m.owner !== v.you).map((m) => m.value),
+        ...v.moods
+          .filter(
+            (m) =>
+              m.owner !== v.you &&
+              (d.id !== "shock" || m.value <= 3) &&
+              (d.id !== "anger" || m.value <= 5),
+          )
+          .map((m) => m.value),
       ) * 0.8;
   if (["wrath", "bitterness", "fickleness", "rage"].includes(d.id))
     score += max - my;

@@ -114,6 +114,8 @@ Mood Swings Online implements the traditional shared-deck game for **two to four
 7. Select a card from your hand. If its effect needs a decision, the options appear right there under the card; choose them, then choose **Play mood**. Anything you leave undecided is asked at the table after the play.
 8. Use **End turn** once you have finished your plays. Extra plays are optional permissions and may have different restrictions. When you have no legal play left, the table ends your turn for you after the reveal.
 
+The home screen keeps up to six **Recent tables** as room codes in this browser only. Open a code to check whether its table still exists; a seat is not guaranteed. You can remove one code or clear the list, especially on a shared device.
+
 ### While you wait
 
 - **Opponents' seats** show their hand as face-down card backs and a short line about what they are up to: choosing a mood, holding a card, reading a card, checking the rules, deciding on an effect, or away.

@@ -65,6 +65,8 @@ export function createGame(host: string, name: string, seed: number): Game {
     turn: 0,
     order: [],
     turnIndex: 0,
+    turnPlayCount: 0,
+    roundPlays: [],
     rng: seed >>> 0,
     seed: seed >>> 0,
     serial: 0,
@@ -142,6 +144,7 @@ export function startGame(
   g.status = "playing";
   g.round = 1;
   g.turnIndex = 0;
+  g.roundPlays = [];
   beginTurn(g);
   g.revision++;
   log(g, "The table is set. First to three round wins.");
@@ -426,6 +429,7 @@ function grant(g: Game, label: string, opts: Partial<Grant> = {}) {
 }
 function beginTurn(g: Game) {
   g.turn++;
+  g.turnPlayCount = 0;
   g.grants = [];
   g.pride = undefined;
   grant(g, "Your turn");
@@ -519,8 +523,15 @@ function suppress(g: Game, targets: Mood[], source: Mood, temporary = false) {
     );
 }
 function winner(g: Game, scores = g.scores) {
+  const playedAt = (id: string) => {
+    const index = g.roundPlays?.indexOf(id) ?? -1;
+    return index < 0 ? g.order.length : index;
+  };
   return [...g.order].sort(
-    (a, b) => scores[b] - scores[a] || g.order.indexOf(a) - g.order.indexOf(b),
+    (a, b) =>
+      scores[b] - scores[a] ||
+      playedAt(a) - playedAt(b) ||
+      g.order.indexOf(a) - g.order.indexOf(b),
   )[0];
 }
 const costKind: Record<
@@ -775,6 +786,9 @@ function playTask(g: Game, t: Task) {
   insist(gr, "That extra play is no longer available.");
   g.grants = g.grants.filter((x) => x.id !== gr.id);
   move(g, m, "play", t.actor);
+  if (g.turnPlayCount !== undefined) g.turnPlayCount++;
+  if (g.roundPlays && !g.roundPlays.includes(t.actor))
+    g.roundPlays.push(t.actor);
   log(g, `${playerName(g, t.actor)} played ${definition(m).name}.`);
   g.lastPlayed = {
     id: ++g.serial,
@@ -2162,9 +2176,15 @@ function finishRound(g: Game) {
     }
     for (const p of g.players) if (p.id !== who) draw(g, p.id);
     if (g.players.length >= 3) {
+      const playedAt = (id: string) => {
+        const index = g.roundPlays?.indexOf(id) ?? -1;
+        return index < 0 ? -1 : index;
+      };
       const last = [...g.order].sort(
         (a, b) =>
-          g.scores[a] - g.scores[b] || g.order.indexOf(b) - g.order.indexOf(a),
+          g.scores[a] - g.scores[b] ||
+          playedAt(b) - playedAt(a) ||
+          g.order.indexOf(b) - g.order.indexOf(a),
       )[0];
       g.lastRound!.hurtFeelings = last;
       g.nextPlays.push({
@@ -2195,6 +2215,7 @@ function finishRound(g: Game) {
   g.order = [...g.order.slice(index), ...g.order.slice(0, index)];
   g.round++;
   g.turnIndex = 0;
+  g.roundPlays = [];
   g.noScoring = false;
   delete g.nextFirst;
   g.roundAward = 1;
@@ -2270,6 +2291,7 @@ export function publicView(
     discard: g.discard.map((id) => visible(card(g, id))),
     deckCount: g.deck.length,
     round: g.round,
+    turnPlayCount: g.turnPlayCount,
     active: active(g),
     grants: active(g) === you ? g.grants : [],
     playable,

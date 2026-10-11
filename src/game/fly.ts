@@ -347,6 +347,8 @@ export function defaultBrain() {
 // pile) can be repeated forever, and a deterministic player would never stop.
 export const TURN_PLAY_LIMIT = 12;
 export function playsThisTurn(v: View): number {
+  if (v.turnPlayCount !== undefined) return v.turnPlayCount;
+  // Saved games from before the per-turn counter existed still need a cap.
   const me = v.players.find((p) => p.id === v.you)!.name,
     boundary =
       /( won round | wins the game!$|^Round \d+ ended|^The table is set)/;

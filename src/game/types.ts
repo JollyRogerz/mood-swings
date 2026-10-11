@@ -145,6 +145,12 @@ export interface Game {
   turn: number;
   order: string[];
   turnIndex: number;
+  // Number of moods the active player actually played this turn. Optional so
+  // older saved games can use their legacy log fallback until the next turn.
+  turnPlayCount?: number;
+  // First-play order for the current round. Optional for games saved before
+  // this rule was tracked; those games use seat order until the next round.
+  roundPlays?: string[];
   rng: number;
   serial: number;
   grants: Grant[];
@@ -252,6 +258,7 @@ export interface View {
   discard: PublicCard[];
   deckCount: number;
   round: number;
+  turnPlayCount?: number;
   active?: string;
   grants: Grant[];
   playable: Record<string, string[]>;
