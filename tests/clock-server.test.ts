@@ -39,6 +39,7 @@ it("the room drains the bank, then ends an idle player's turn", async () => {
     expect(a.view.clock).toMatchObject({ actor: second, overtime: false });
     // Acting in time keeps the second player's bank intact.
     const mover = second === a.view.you ? a : b;
+    await expect.poll(() => mover.view.revision).toBe(a.view.revision);
     mover.room.send("action", {
       revision: mover.view.revision,
       action: { type: "pass" },

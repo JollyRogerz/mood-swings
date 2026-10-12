@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
-// Chromium's fake microphone produces a repeating beep, so two real browsers
-// can hold a real peer-to-peer call in CI with no hardware.
+// Chromium's fake microphone produces a repeating beep, so two browser
+// sessions can hold a real peer-to-peer call in CI with no hardware.
 test.use({
   launchOptions: {
     args: [
@@ -62,11 +62,16 @@ const seatBadge = (page: Page, name: string) =>
 // stalled link, which the generous connection timeout leaves room for.
 test.describe.configure({ retries: 2 });
 test("two friends talk over a direct connection; the gallery cannot join", async ({
-  page,
   browser,
 }, info) => {
   test.setTimeout(180000);
   const errors: string[] = [];
+  // Give both peers identical explicit contexts. In CI the fixture-created
+  // first peer gathered no host ICE candidates while the second one did.
+  const aliceContext = await browser.newContext({
+    permissions: ["microphone", "local-network-access"],
+  });
+  const page = await aliceContext.newPage();
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(trackConnections);
   await page.goto("/");
@@ -180,6 +185,7 @@ test("two friends talk over a direct connection; the gallery cannot join", async
   expect(errors).toEqual([]);
   await watcherContext.close();
   await friendContext.close();
+  await aliceContext.close();
 });
 
 test("a late microphone permission cannot join voice after leaving the table", async ({

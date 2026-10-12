@@ -94,16 +94,26 @@ test("populated decisions fit phones and preserve selected targets when played",
     proc.stderr?.on("data", (data) => {
       output += data;
     });
-    await expect
-      .poll(async () => {
-        if (proc!.exitCode !== null) throw new Error(output);
-        try {
-          return (await fetch(base + "/api/health")).ok;
-        } catch {
-          return false;
-        }
-      })
-      .toBe(true);
+    try {
+      await expect
+        .poll(
+          async () => {
+            if (proc!.exitCode !== null) return false;
+            try {
+              return (await fetch(base + "/api/health")).ok;
+            } catch {
+              return false;
+            }
+          },
+          { timeout: 30000 },
+        )
+        .toBe(true);
+    } catch (error) {
+      throw new Error(
+        `Server did not become healthy (exit: ${proc.exitCode ?? proc.signalCode ?? "running"}).\n` +
+          `Output: ${output || "(none)"}\n${error instanceof Error ? error.message : error}`,
+      );
+    }
     await page.addInitScript((token) => {
       localStorage.setItem("mood-session", token);
       localStorage.setItem("mood-name", "Alice");
