@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Mood Swings \u2014 Online Table",
   "short_name": "Mood Swings",
-  "description": "An unofficial online table for Mood Swings. Play with friends or bots. Internet connection required.",
+  "description": "Play Mood Swings online with 2–4 players. Free, unofficial, and no account needed. Join friends or bots on desktop or mobile. Internet connection required.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

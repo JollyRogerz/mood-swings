@@ -32,7 +32,6 @@ describe("official-rules audit: confirmed regressions", () => {
     const otherMalice = add(g, "malice", "play", "b");
     g = play(g, "malice");
     const source = inPlay(g, "a").find((c) => c.def === "malice")!.uid;
-    g = choose(g, ["a"]);
     g = choose(g, [black, source]);
     expect(g.cards.find((c) => c.uid === source)!.zone).toBe("play");
     expect(g.cards.find((c) => c.uid === otherMalice)!.zone).toBe("discard");
@@ -43,9 +42,9 @@ describe("official-rules audit: confirmed regressions", () => {
     let g = table(4);
     const first = add(g, "love", "hand", "b");
     const second = add(g, "wrath", "hand", "c");
+    add(g, "apathy", "hand", "c");
     g = play(g, "suspicion");
     g = choose(g, ["b", "c", "d"]); // D has no cards and must be skipped.
-    g = choose(g, [first]);
     expect(g.prompt!.actor).toBe("c");
     for (const viewer of ["a", "c", "d"]) {
       const view = publicView(g, viewer);
@@ -145,10 +144,8 @@ describe("Awe: no scoring is an effect, not a zero-point tie", () => {
       g = play(g, def);
       if (def === "betrayal") {
         g = choose(g, [own]);
-        g = choose(g, ["b"]);
       }
       if (def === "recklessness") g = choose(g, [opponent]);
-      if (def === "sneakiness") g = choose(g, ["b"]);
       if (["gluttony", "insecurity"].includes(def)) g = play(g, "indifference");
       g = extra(g, "awe");
       g = choose(g, ["a"]);
@@ -423,7 +420,6 @@ describe("catalog audit: additional outcome and boundary coverage", () => {
     g = play(g, "meekness");
     expect(value(g, find(g, "self-loathing"))).toBe(0);
     g = extra(g, "generosity");
-    g = choose(g, ["b"]);
     expect(value(g, find(g, "generosity"))).toBe(6);
     g = extra(g, "panic");
     g = choose(g, [find(g, "meekness").uid]);
@@ -526,7 +522,6 @@ describe("catalog audit: additional outcome and boundary coverage", () => {
       );
       expect(value(choose(g, []), find(g, def))).toBe(3);
       g = choose(g, [blue]);
-      g = choose(g, ["b"]);
       expect(hand(g, "b").map((c) => c.uid)).toEqual([blue]);
       expect(value(g, find(g, def))).toBe(def === "fascination" ? 7 : 6);
     },
@@ -538,9 +533,9 @@ describe("catalog audit: additional outcome and boundary coverage", () => {
     add(g, "apathy", "play", "b");
     g = play(g, "arrogance");
     g = choose(g, ["b"]);
-    expect(g.prompt!.actor).toBe("b");
-    expect(g.prompt!.options.map((o) => o.id)).toEqual([target]);
-    g = choose(g, [target]);
+    expect(g.prompt).toBeUndefined();
+    expect(find(g, "complacency").uid).toBe(target);
+    expect(find(g, "complacency").owner).toBe("a");
     const source = find(g, "arrogance").uid;
     g = extra(g, "betrayal");
     g = choose(g, [source]);
@@ -554,12 +549,13 @@ describe("catalog audit: additional outcome and boundary coverage", () => {
   it("Avoidance waits for all choices and preserves transferred properties", () => {
     let g = table(3);
     const target = add(g, "curiosity", "play", "b", { chosenValue: 6 });
+    add(g, "boredom", "play", "b");
     g.suppressions.push({ target, round: 1 });
     g = play(g, "avoidance");
     g = choose(g, ["left"]);
     const source = find(g, "avoidance").uid;
-    g = choose(g, [source]);
     expect(find(g, "avoidance").owner).toBe("a");
+    expect(g.prompt!.actor).toBe("b");
     g = choose(g, [target]); // C has no mood to pass.
     expect(find(g, "avoidance").owner).toBe("b");
     expect(find(g, "curiosity").owner).toBe("c");
@@ -726,7 +722,6 @@ describe("catalog audit: additional outcome and boundary coverage", () => {
     add(g, "apathy", "play", "b");
     g.players[0].wins = 2;
     g = play(g, "sneakiness");
-    g = choose(g, ["b"]);
     g = finish(g);
     expect(g.lastRound!.scores).toEqual({ a: 8, b: 5 });
     expect(g.status).toBe("finished");

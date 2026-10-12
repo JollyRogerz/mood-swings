@@ -606,6 +606,10 @@ select {
     background: #fffdf5;
     z-index: 1;
   }
+  .app .plan-step .choice-actions > .primary {
+    flex: 1 0 100%;
+    justify-content: center;
+  }
   .app .modal-backdrop {
     padding: max(8px, env(safe-area-inset-top)) 8px
       max(8px, env(safe-area-inset-bottom));

@@ -170,14 +170,34 @@ test("catalog search, card inspection, rules, and mobile layout", async ({
   await expect(page.locator(".catalog-grid>button")).toHaveCount(1);
   await page.locator(".catalog-grid>button").hover();
   await expect(page.locator(".card-zoom img")).toHaveAttribute("alt", "Love");
+  await expect
+    .poll(() =>
+      page
+        .locator(".card-zoom img")
+        .evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBeGreaterThan(0);
   const zoom = await page.locator(".card-zoom").boundingBox();
+  const source = await page.locator(".catalog-grid>button").boundingBox();
   expect(zoom!.width).toBeGreaterThanOrEqual(350);
   expect(zoom!.x + zoom!.width).toBeLessThanOrEqual(1440);
+  expect(
+    zoom!.x >= source!.x + source!.width + 8 ||
+      zoom!.x + zoom!.width <= source!.x - 8,
+  ).toBe(true);
   await page.screenshot({
     path: "output/playwright/card-hover.png",
     fullPage: false,
   });
   await page.keyboard.press("Escape");
+  await expect(page.locator(".card-zoom")).toHaveCount(0);
+  await page.locator(".catalog-grid>button").evaluate((element) => {
+    element.dispatchEvent(
+      new PointerEvent("pointerdown", { bubbles: true, pointerType: "mouse" }),
+    );
+    (element as HTMLElement).focus();
+  });
+  await page.mouse.move(2, 2);
   await expect(page.locator(".card-zoom")).toHaveCount(0);
   await page.locator(".catalog-grid>button").click();
   await expect(page.locator(".inspect-modal h2")).toHaveText("Love");

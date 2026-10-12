@@ -71,6 +71,7 @@ import { LeaderboardButton } from "./leaderboard";
 import { AccountButton, useAccount } from "./account";
 const Tutorial = lazy(() => import("./tutorial"));
 import { choiceHint, selectionFeedback } from "./selection";
+import { formatActivityReport } from "./bug-report";
 import { useModalNavigation } from "./dialogs";
 import {
   OpponentOverview,
@@ -165,6 +166,8 @@ function App() {
     [help, setHelp] = useState(false),
     [inspect, setInspect] = useState<string>(),
     [activity, setActivity] = useState(false),
+    [activityCopied, setActivityCopied] = useState(false),
+    [activityCopyError, setActivityCopyError] = useState(false),
     [copied, setCopied] = useState(false);
   const [visibility, setVisibility] = useState<"private" | "public">("private");
   const [recentRooms, setRecentRooms] = useState(() => {
@@ -233,6 +236,33 @@ function App() {
             ? "scoring"
             : "live",
     });
+  }
+  async function copyActivity() {
+    if (!view) return;
+    const activePlayer = view.players.find(
+      (player) => player.id === view.active,
+    );
+    const report = formatActivityReport(
+      {
+        round: view.round,
+        status: view.status,
+        playerCount: view.players.length,
+        activePlayer: activePlayer?.name,
+        log: view.log,
+      },
+      {
+        userAgent: navigator.userAgent,
+        viewport: `${window.innerWidth} × ${window.innerHeight}`,
+      },
+    );
+    try {
+      await navigator.clipboard.writeText(report);
+      setActivityCopied(true);
+      setActivityCopyError(false);
+      setTimeout(() => setActivityCopied(false), 2400);
+    } catch {
+      setActivityCopyError(true);
+    }
   }
   useEffect(() => {
     setScoreSheet(undefined);
@@ -610,6 +640,9 @@ function App() {
                 Bring your friends. Play your moods.
                 <br />
                 One shared deck. A wonderfully unpredictable table.
+              </p>
+              <p className="hero-access">
+                Free · unofficial · 2–4 players · no account needed
               </p>
               <div className="entry-panel">
                 <label htmlFor="name">YOUR NAME AT THE TABLE</label>
@@ -1462,7 +1495,29 @@ function App() {
                 ))}
                 {!view.discard.length && <p>No discarded cards yet.</p>}
               </div>
-              <h4>RECENT ACTIVITY</h4>
+              <div className="activity-log-heading">
+                <h4>RECENT ACTIVITY</h4>
+                <button
+                  type="button"
+                  className="activity-copy"
+                  onClick={copyActivity}
+                  aria-label="Copy recent activity and device details"
+                >
+                  {activityCopied ? <Check size={14} /> : <Copy size={14} />}
+                  {activityCopied ? "Copied" : "Copy bug report"}
+                </button>
+              </div>
+              <p
+                className="activity-copy-status"
+                role="status"
+                aria-live="polite"
+              >
+                {activityCopyError
+                  ? "Clipboard unavailable. Check browser permissions and try again."
+                  : activityCopied
+                    ? "Recent activity and device details copied. Add what happened before sharing."
+                    : ""}
+              </p>
               {!view && (
                 <button
                   className="primary"
@@ -2107,32 +2162,57 @@ function CardZoom() {
     left: number;
     top: number;
     width: number;
+    layer: number;
   }>();
   useEffect(() => {
     let hovered: HTMLElement | null = null;
     let touchInput = false;
+    let keyboardFocus = false;
+    let hoverTimer: ReturnType<typeof setTimeout> | undefined;
     const card = (target: EventTarget | null) =>
       target instanceof Element
         ? target.closest<HTMLElement>("[data-card-image]")
         : null;
+    const cancelHover = () => {
+      if (hoverTimer) clearTimeout(hoverTimer);
+      hoverTimer = undefined;
+    };
     const show = (el: HTMLElement | null) => {
       if (!el || el.closest("[inert]")) {
         setPreview(undefined);
         return;
       }
       const rect = el.getBoundingClientRect();
-      const width = Math.min(420, innerWidth - 24, (innerHeight - 32) * 0.715);
+      const leftRoom = rect.left - 24;
+      const rightRoom = innerWidth - rect.right - 24;
+      const preferRight = rect.left + rect.width / 2 < innerWidth / 2;
+      const placeRight = preferRight
+        ? rightRoom >= 220 || rightRoom >= leftRoom
+        : leftRoom < 220 && rightRoom > leftRoom;
+      const width = Math.min(
+        420,
+        placeRight ? rightRoom : leftRoom,
+        (innerHeight - 32) * 0.715,
+      );
+      // A tiny floating preview is hard to read and obscures nearby controls.
+      // On cramped screens, clicking or tapping the card opens its full view.
+      if (width < 220) {
+        setPreview(undefined);
+        return;
+      }
       const height = width / 0.715;
-      const left =
-        rect.right + width + 16 <= innerWidth
-          ? rect.right + 12
-          : Math.max(12, rect.left - width - 12);
+      const left = placeRight ? rect.right + 12 : rect.left - width - 12;
       setPreview({
         image: el.dataset.cardImage!,
         name: el.dataset.cardName!,
         width,
         left,
         top: Math.max(16, Math.min(rect.top, innerHeight - height - 16)),
+        layer: el.closest(".modal-backdrop")
+          ? 210
+          : el.closest(".activity-panel")
+            ? 50
+            : 19,
       });
     };
     const over = (e: PointerEvent) => {
@@ -2141,31 +2221,45 @@ function CardZoom() {
       const el = card(e.target);
       if (el === hovered) return;
       hovered = el;
-      show(el);
+      cancelHover();
+      if (!keyboardFocus) setPreview(undefined);
+      if (el) {
+        hoverTimer = setTimeout(() => {
+          if (hovered === el && !keyboardFocus) show(el);
+        }, 190);
+      }
     };
     const out = (e: PointerEvent) => {
       if (touchInput || e.pointerType === "touch") return;
       if (card(e.relatedTarget) === hovered) return;
       hovered = null;
-      show(card(document.activeElement));
+      cancelHover();
+      if (keyboardFocus) show(card(document.activeElement));
+      else setPreview(undefined);
     };
     const focus = (e: FocusEvent) => {
-      if (!touchInput) show(card(e.target));
+      if (keyboardFocus && !touchInput) show(card(e.target));
     };
     const blur = () => {
-      if (!touchInput) show(hovered);
+      if (keyboardFocus && !touchInput)
+        queueMicrotask(() => show(card(document.activeElement)));
     };
     const clear = () => {
       hovered = null;
+      keyboardFocus = false;
+      cancelHover();
       setPreview(undefined);
     };
     const key = (e: KeyboardEvent) => {
-      if (e.key === "Tab") touchInput = false;
+      if (e.key === "Tab") {
+        touchInput = false;
+        keyboardFocus = true;
+      }
       if (e.key === "Escape") clear();
     };
     const down = (e: PointerEvent) => {
       touchInput = e.pointerType === "touch";
-      if (touchInput) clear();
+      clear();
     };
     document.addEventListener("pointerdown", down, true);
     document.addEventListener("pointerover", over);
@@ -2176,6 +2270,7 @@ function CardZoom() {
     window.addEventListener("scroll", clear, true);
     window.addEventListener("resize", clear);
     return () => {
+      cancelHover();
       document.removeEventListener("pointerdown", down, true);
       document.removeEventListener("pointerover", over);
       document.removeEventListener("pointerout", out);
@@ -2190,7 +2285,12 @@ function CardZoom() {
     <div
       className="card-zoom"
       aria-hidden="true"
-      style={{ left: preview.left, top: preview.top, width: preview.width }}
+      style={{
+        left: preview.left,
+        top: preview.top,
+        width: preview.width,
+        zIndex: preview.layer,
+      }}
     >
       <img src={preview.image} alt={preview.name} />
     </div>
@@ -2433,6 +2533,23 @@ function Hand({
     }
   }
   const stepOk = !!step && selectionFeedback(step, picked).valid;
+  const playDisabled =
+    disabled ||
+    !options.length ||
+    !current ||
+    (!!step && picked.length > 0 && !stepOk);
+  function playSelected() {
+    if (!card || playDisabled) return;
+    send({
+      type: "play",
+      card: card.uid,
+      grant: activeGrant,
+      choices:
+        step && picked.length
+          ? [...choices, { title: step.title, selected: picked }]
+          : choices,
+    });
+  }
   const playableDiscard = view.discard.filter((c) => view.playable[c.uid]);
   return (
     <>
@@ -2532,36 +2649,16 @@ function Hand({
                 ))}
               </select>
             )}
-            <button
-              className={`primary ${!disabled && options.length && !step ? "attention" : ""}`}
-              disabled={
-                disabled ||
-                !options.length ||
-                !current ||
-                (!!step && picked.length > 0 && !stepOk)
-              }
-              title={
-                step
-                  ? picked.length
-                    ? "Play with your selected choices"
-                    : "Play now and resolve this choice at the table"
-                  : undefined
-              }
-              onClick={() =>
-                send({
-                  type: "play",
-                  card: card.uid,
-                  grant: activeGrant,
-                  choices:
-                    step && picked.length
-                      ? [...choices, { title: step.title, selected: picked }]
-                      : choices,
-                })
-              }
-            >
-              {options.length && !current ? "Checking choices…" : "Play mood"}{" "}
-              <ArrowUpRight size={16} />
-            </button>
+            {!step && (
+              <button
+                className={`primary ${!disabled && options.length ? "attention" : ""}`}
+                disabled={playDisabled}
+                onClick={playSelected}
+              >
+                {options.length && !current ? "Checking choices…" : "Play mood"}{" "}
+                <ArrowUpRight size={16} />
+              </button>
+            )}
             <button
               onClick={() => setSelected(undefined)}
               aria-label="Deselect card"
@@ -2634,12 +2731,23 @@ function Hand({
                       </button>
                     )}
                     <button
-                      className={`primary ${stepOk && picked.length ? "attention" : ""}`}
+                      className="text-button"
                       disabled={disabled || !stepOk}
                       onClick={() => decide(picked)}
                     >
-                      Choose{picked.length ? ` (${picked.length})` : ""}
-                      <Check size={15} />
+                      Preview next choice
+                    </button>
+                    <button
+                      className={`primary ${stepOk && picked.length ? "attention" : ""}`}
+                      disabled={playDisabled}
+                      title={
+                        picked.length
+                          ? "Play with your selected choices"
+                          : "Play now and resolve this choice at the table"
+                      }
+                      onClick={playSelected}
+                    >
+                      Play mood <ArrowUpRight size={16} />
                     </button>
                   </div>
                 </div>

@@ -220,13 +220,30 @@ describe("live values", () => {
     const cost = add(g, "apathy", "hand");
     add(g, "sadness");
     g = play(g, "bliss");
-    g = choose(g, [cost]);
+    expect(g.prompt).toBeUndefined();
+    expect(g.discard).toContain(cost);
     expect(find(g, "bliss").chosenColor).toBe("black");
     expect(baseScores(g).a).toBe(8);
   });
 });
 
 describe("entry abilities and costs", () => {
+  it("auto-resolves forced private choices but preserves optional single-card decisions", () => {
+    let forced = table();
+    const secret = add(forced, "love", "hand", "b");
+    forced = play(forced, "compulsion");
+    expect(forced.prompt).toBeUndefined();
+    expect(forced.cards.find((c) => c.uid === secret)?.owner).toBe("a");
+
+    let optional = table();
+    const qualifying = add(optional, "apathy", "hand");
+    optional = play(optional, "cheer");
+    expect(optional.prompt?.min).toBe(0);
+    expect(optional.prompt?.options.map((o) => o.id)).toEqual([qualifying]);
+    optional = choose(optional, []);
+    expect(find(optional, "apathy").zone).toBe("hand");
+  });
+
   it.each([
     "bliss",
     "guile",
@@ -338,8 +355,8 @@ describe("entry abilities and costs", () => {
   it("Compulsion asks the affected player, without revealing their hand to the actor", () => {
     let g = table();
     const secret = add(g, "love", "hand", "b");
+    add(g, "apathy", "hand", "b");
     g = play(g, "compulsion");
-    g = choose(g, ["b"]);
     expect(g.prompt!.actor).toBe("b");
     expect(publicView(g, "a").prompt).toBeUndefined();
     expect(JSON.stringify(publicView(g, "a"))).not.toContain("Love");
@@ -350,11 +367,14 @@ describe("entry abilities and costs", () => {
     let g = table();
     const a = add(g, "apathy", "hand", "a"),
       b = add(g, "love", "hand", "b");
+    add(g, "boredom", "hand", "b");
     g = play(g, "confusion");
     g = choose(g, ["left"]);
-    g = choose(g, [a]);
+    // Alice's only card is forced, but Bob still has a decision. Neither
+    // transfer happens until both picks are fixed.
     expect(find(g, "apathy").owner).toBe("a");
-    expect(hand(g, "b").map((c) => c.uid)).toEqual([b]);
+    expect(hand(g, "b").map((c) => c.uid)).toContain(b);
+    expect(g.prompt!.actor).toBe("b");
     g = choose(g, [b]);
     expect(find(g, "apathy").owner).toBe("b");
     expect(find(g, "love").owner).toBe("a");
@@ -363,6 +383,7 @@ describe("entry abilities and costs", () => {
     let g = table();
     const a = add(g, "love"),
       b = add(g, "apathy", "play", "b");
+    add(g, "apathy", "play", "b");
     g = play(g, "fury");
     g = choose(g, [a]);
     expect(find(g, "love").zone).toBe("play");
@@ -379,7 +400,7 @@ describe("entry abilities and costs", () => {
     g.grants.push({ id: "extra", label: "Extra", source: "hand" });
     g = play(g, "betrayal", "extra");
     g = choose(g, [find(g, "pacifism").uid]);
-    g = choose(g, ["b"]);
+    expect(g.prompt).toBeUndefined();
     expect(value(g, find(g, "apathy"))).toBe(4);
     g = settle(pass(pass(g)));
     expect(find(g, "pacifism").owner).toBe("a");
@@ -391,7 +412,8 @@ describe("entry abilities and costs", () => {
     const sacrifice = add(g, "apathy");
     g = play(g, "creativity");
     g = choose(g, [find(g, "self-loathing").uid]);
-    g = choose(g, [sacrifice]);
+    expect(g.prompt).toBeUndefined();
+    expect(g.discard).toContain(sacrifice);
     expect(find(g, "apathy").zone).toBe("discard");
     expect(definition(find(g, "creativity")).id).toBe("self-loathing");
   });
@@ -412,7 +434,7 @@ describe("entry abilities and costs", () => {
     expect(g.discard).toHaveLength(2);
   });
   it("after-scoring choices survive JSON save and load", () => {
-    let g = table();
+    let g = table(3);
     add(g, "apathy", "play", "b");
     g = play(g, "sneakiness");
     const restored = JSON.parse(JSON.stringify(g));
@@ -421,12 +443,23 @@ describe("entry abilities and costs", () => {
 });
 
 describe("scoring interactions", () => {
+  it("lets a player decline the only available extra-scoring mood", () => {
+    let g = table();
+    const enthusiasm = add(g, "enthusiasm");
+    g = pass(pass(g));
+    expect(g.prompt?.min).toBe(0);
+    expect(g.prompt?.options.map((o) => o.id)).toEqual([enthusiasm]);
+    g = choose(g, []);
+    expect(g.prompt).toBeUndefined();
+    expect(g.lastRound?.scores.a).toBe(0);
+  });
+
   it("Sneakiness changes the final winner before losers draw", () => {
     let g = table();
     add(g, "love", "play", "b", { chosenValue: 12 });
     for (let i = 0; i < 2; i++) add(g, "apathy", "play", "b");
     g = play(g, "sneakiness");
-    g = choose(g, ["b"]);
+    expect(g.prompt).toBeUndefined();
     g = settle(pass(pass(g)));
     expect(g.players[0].wins).toBe(1);
   });

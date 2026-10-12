@@ -171,6 +171,17 @@ body {
   line-height: 1.7;
   max-width: 490px;
 }
+.app .hero-access {
+  display: inline-block;
+  margin: 4px 0 0;
+  padding: 7px 10px;
+  background: #fff8e8;
+  border: 1px solid #b9a989;
+  color: #39352f;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
 .app .entry-panel {
   margin-top: 28px;
   max-width: 580px;

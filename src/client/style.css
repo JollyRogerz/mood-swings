@@ -1209,6 +1209,39 @@ footer a {
   margin: 20px 0 12px;
   color: #8a967b;
 }
+.activity-log-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+}
+.activity-log-heading h4 {
+  margin: 0;
+}
+.activity-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 9px;
+  border: 1px solid #a2b29b;
+  border-radius: 4px;
+  background: #eaf0e1;
+  color: #31533e;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.activity-copy-status {
+  color: #42664a;
+  font-size: 10px;
+  line-height: 1.45;
+  margin: 7px 0 0;
+}
+.activity-copy-status:empty {
+  display: none;
+}
 .activity-panel ol {
   padding-left: 15px;
   font-size: 11px;
@@ -1315,6 +1348,7 @@ footer a {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 18px;
 }

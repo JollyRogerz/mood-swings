@@ -16,6 +16,7 @@ test("populated decisions fit phones and preserve selected targets when played",
   browser,
   browserName,
 }, info) => {
+  test.setTimeout(120000);
   const root = await mkdtemp(path.join(os.tmpdir(), "mood-clarity-"));
   const tokens = [randomUUID(), randomUUID()];
   const ids = tokens.map((token) =>
@@ -109,6 +110,29 @@ test("populated decisions fit phones and preserve selected targets when played",
     }, tokens[0]);
     await page.goto(base + "/room/UXTESTAB");
     await expect(page).toHaveTitle("Your turn · Mood Swings");
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: {
+          writeText: async (text: string) => {
+            (
+              window as Window & { __copiedActivity?: string }
+            ).__copiedActivity = text;
+          },
+        },
+      });
+    });
+    await page.getByRole("button", { name: "Game activity" }).tap();
+    await page
+      .getByRole("button", { name: "Copy recent activity and device details" })
+      .tap();
+    const copiedActivity = await page.evaluate(
+      () => (window as Window & { __copiedActivity?: string }).__copiedActivity,
+    );
+    expect(copiedActivity).toContain("Round: 3 · Players: 4");
+    expect(copiedActivity).toContain("Browser / device:");
+    expect(copiedActivity).not.toContain("UXTESTAB");
+    await page.getByRole("button", { name: "Close activity" }).tap();
     await page
       .getByRole("button", { name: "Your current points", exact: true })
       .tap();
@@ -143,7 +167,7 @@ test("populated decisions fit phones and preserve selected targets when played",
       "8 / 5 points",
     );
     await expect(
-      panel.getByRole("button", { name: "Choose (2)", exact: true }),
+      panel.getByRole("button", { name: "Preview next choice", exact: true }),
     ).toBeDisabled();
     await expect(
       panel.getByRole("button", { name: "Play mood", exact: true }),
@@ -188,7 +212,9 @@ test("populated decisions fit phones and preserve selected targets when played",
     await expect(page.locator(".board [data-card-name='Apathy']")).toHaveCount(
       1,
     );
-    await expect(page.locator(".effect-notice")).toContainText("Discarded");
+    await expect(
+      page.getByRole("button", { name: "Top of discard pile 2 discarded" }),
+    ).toBeVisible();
     await expect(page.locator(".choice-panel")).toHaveCount(0);
     await expect(page.locator(".card-action")).toHaveCount(0);
     await page.getByRole("button", { name: "Review last round" }).tap();

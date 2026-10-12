@@ -34,7 +34,6 @@ describe("delayed effects and copied identities", () => {
       sourceMood: find(g, "hope").uid,
     });
     g = play(g, "envy", "hope");
-    g = choose(g, [find(g, "hope").uid]);
     expect(g.prompt).toBeUndefined();
     expect(find(g, "envy").zone).toBe("play");
     expect(find(g, "hope").zone).toBe("discard");
@@ -45,7 +44,6 @@ describe("delayed effects and copied identities", () => {
     const uid = add(g, "love");
     g = play(g, "betrayal");
     g = choose(g, [uid]);
-    g = choose(g, ["b"]);
     g.grants.push({ id: "hate", label: "Test", source: "hand" });
     g = play(g, "hate", "hate");
     g = choose(g, [find(g, "betrayal").uid]);
@@ -124,7 +122,6 @@ describe("delayed effects and copied identities", () => {
     g.grants.push({ id: "x", label: "Test", source: "hand" });
     g = play(g, "betrayal", "x");
     g = choose(g, [find(g, "guilt").uid]);
-    g = choose(g, ["b"]);
     expect(value(g, find(g, "boredom"))).toBe(4);
   });
   it("temporary suppression expires at the end of the round", () => {
@@ -144,7 +141,6 @@ describe("delayed effects and copied identities", () => {
     g = play(g, "bashfulness");
     g.grants.push({ id: "s", label: "Test", source: "hand" });
     g = play(g, "sneakiness", "s");
-    g = choose(g, ["b"]);
     g = pass(pass(g));
     const swap = g.prompt!.options.find((o) => o.label.includes("swap"))!.id;
     g = choose(g, [swap]);
@@ -161,7 +157,7 @@ describe("additional card outcomes", () => {
       hope = add(g, "hope", "play", "b");
     g = play(g, "guile");
     g = choose(g, [cost1, cost2]);
-    g = choose(g, [hope]);
+    expect(find(g, "hope").owner).toBe("a");
     expect(g.grants.some((gr) => gr.label === "Hope")).toBe(true);
   });
   it("Altruism distributes starting after the actor and empties the discard", () => {
@@ -208,7 +204,6 @@ describe("additional card outcomes", () => {
     const target = add(g, "love", "discard", "");
     g = play(g, "cynicism");
     g = choose(g, [target]);
-    g = choose(g, ["b"]);
     expect(find(g, "love").owner).toBe("b");
     expect(value(g, find(g, "cynicism"))).toBe(6);
   });
@@ -280,7 +275,7 @@ describe("additional card outcomes", () => {
     const target = add(g, "apathy", "hand", "b");
     g = play(g, "intimidation");
     g = choose(g, ["b"]);
-    g = choose(g, [target]);
+    expect(find(g, "apathy").uid).toBe(target);
     add(g, "boredom", "hand");
     expect(canPlay(g, "a", find(g, "apathy"), g.grants[0])).toBe(true);
     expect(canPlay(g, "a", find(g, "boredom"), g.grants[0])).toBe(false);
@@ -292,7 +287,7 @@ describe("additional card outcomes", () => {
       target = add(g, "charity", "play", "b");
     g = play(g, "guile");
     g = choose(g, [a, b]);
-    g = choose(g, [target]);
+    expect(find(g, "charity").uid).toBe(target);
     expect(find(g, "charity").owner).toBe("a");
     expect(g.grants).toHaveLength(0);
     expect(g.discard).toHaveLength(2);
@@ -305,8 +300,8 @@ it("persists and restores a pending private decision atomically", async () => {
     await store.init();
     let g = table();
     add(g, "love", "hand", "b");
+    add(g, "apathy", "hand", "b");
     g = play(g, "compulsion");
-    g = choose(g, ["b"]);
     await store.save("ABCDEFGH", g);
     const restored = await new FileStore(root).load("ABCDEFGH");
     expect(restored).toEqual(g);
@@ -358,6 +353,7 @@ describe("played-card reveals", () => {
   it("records a completed play, without announcing an unpaid card", () => {
     let g = table();
     const payment = add(g, "apathy", "hand");
+    add(g, "boredom", "hand");
     g = play(g, "bliss");
     expect(g.lastPlayed).toBeUndefined();
     g = choose(g, [payment]);
@@ -383,7 +379,6 @@ describe("played-card reveals", () => {
     g = play(g, "betrayal");
     const announcement = structuredClone(g.lastPlayed);
     g = choose(g, [target]);
-    g = choose(g, ["b"]);
     expect(g.lastPlayed).toEqual(announcement);
     expect(g.lastPlayed!.def).toBe("betrayal");
   });

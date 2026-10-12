@@ -78,7 +78,7 @@ describe("explainable scores", () => {
     add(g, "apathy", "play", "b");
     add(g, "love", "play", "b");
     g.players[0].wins = 2;
-    g = choose(play(g, "sneakiness"), ["b"]);
+    g = play(g, "sneakiness");
     g = settle(pass(pass(g)));
     expect(g.winner).toBe("a");
     const d = publicView(g, "a", true).scoreDetails!;

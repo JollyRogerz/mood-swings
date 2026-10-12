@@ -493,6 +493,20 @@ function ask(
     putFirst(g, { ...t, data: { ...t.data, selected: [] } });
     return;
   }
+  // A mandatory choice with one legal option has no decision to make. Keep
+  // optional single-option prompts: the player can still decline those.
+  if (
+    min === 1 &&
+    max >= 1 &&
+    options.length === 1 &&
+    (!constraints?.allowedCounts || constraints.allowedCounts.includes(1)) &&
+    (constraints?.maxValue === undefined ||
+      !options[0].card ||
+      value(g, card(g, options[0].card)) <= constraints.maxValue)
+  ) {
+    putFirst(g, { ...t, data: { ...t.data, selected: [options[0].id] } });
+    return;
+  }
   g.prompt = {
     id: `q${++g.serial}`,
     actor: t.actor,

@@ -54,6 +54,7 @@ describe("deciding a card's effects from the hand", () => {
   it("walks through several decisions and reports when the plan is complete", () => {
     const g = table();
     add(g, "apathy", "hand");
+    add(g, "boredom", "hand");
     const bliss = add(g, "bliss", "hand");
     const cost = previewPlay(g, "a", bliss, "base", []);
     expect(cost.prompt?.title).toMatch(/^Bliss · Choose cards from your hand/);
